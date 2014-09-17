@@ -1,7 +1,7 @@
 applications:
 - disk_quota: 1024M
-  host: node-no-cache
-  name: node-no-cache
+  host: TruckMuncher
+  name: TruckMuncher
   command: node app.js
   path: .
   domain: mybluemix.net

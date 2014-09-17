@@ -17,17 +17,14 @@ This project is deployed on IBM Bluemix. The following are the steps to get up a
 
 1. [Install the cf command-line tool](https://www.ng.bluemix.net/docs/#starters/BuildingWeb.html#install_cf).
 2. Browse to the this project in the command line 
-4. Connect to Bluemix:
-
-		cf api https://api.ng.bluemix.net
-
-5. Log into Bluemix:
+3. Log into Bluemix:
 
 		cf login -u [email] 
-		cf target -o [email] -s [space (i.e. - dev)]
+		cf target -o [organization (atscott01@gmail.com)] -s [space (dev)]
 
-6. Deploy the app:
+4. Be sure to delete the node_modules folder before deploying the app
+5. Deploy the app:
 
-		cf push node-no-cache
+		cf push [app name (TruckMuncher)]
 
-7. Access the app. This project's dev location is: [truck-muncher.mybluemix.net](//truck-muncher.mybluemix.net)
+6. Access the app. This project's dev location is: [truck-muncher.mybluemix.net](//truck-muncher.mybluemix.net)
