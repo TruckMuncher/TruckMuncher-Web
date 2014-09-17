@@ -1,0 +1,22 @@
+//- body.jade
+//- This file provides the HTML body part.
+
+
+body(data-ng-controller='MessageCtrl')
+    table
+        tr
+            td(style= "width:30%;" )
+                img(src="/images/newapp-icon.png")
+            td
+                h1 Hi there!
+                p= 'Thanks for creating '
+                    span(class ='blue')= 'NodeJS Starter Application. '
+                    | Get started by reading our
+                    a(href='https://www.ng.bluemix.net/docs/#starters/nodejs/index.html#nodejs')= ' documentation '
+                    | or use the quick start guide under your app in your dashboard.
+                p Angular Message: {{message}}
+    script(src='/jquery/jquery.js')
+    script(src='/angular/angular.js')
+    script(src='/bootstrap/dist/js/bootstrap.js')
+    script(src='/js/app/app.js')
+    script(src='/js/app/controller.js')

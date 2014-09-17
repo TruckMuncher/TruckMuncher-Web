@@ -1,0 +1,19 @@
+{
+  "name": "node-no-cache",
+  "version": "0.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/bower_components",
+    "test",
+    "tests"
+  ],
+  
+  "dependencies":{
+	"angular": "~1.2.0",
+        "jquery": "~1.9.0",
+		"bootstrap": "*"
+	}
+}
