@@ -6,6 +6,7 @@
 // and jade as template engine (http://jade-lang.com/).
 
 var express = require('express'),
+	session = require('express-session'),
     path = require('path'),
     config = require('./oauth.js'),
     passport = require('passport'),
@@ -39,12 +40,17 @@ function(accessToken, refreshToken, profile, done) {
 
 // setup middleware
 var app = express();
-app.use(app.router);
-app.use(express.session({ secret: 'keyboard cat' }));
-app.use(express.errorHandler());
-app.use(express.static(__dirname + '/public')); //setup static public directory
+app.use(session({ 
+	secret: '1234567890QWERTY',
+	resave: true, 
+	saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.errorHandler());
+app.use(app.router);
+app.use(express.static(__dirname + '/public')); //setup static public directory
+
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
 
