@@ -6,12 +6,12 @@
 // and jade as template engine (http://jade-lang.com/).
 
 var express = require('express'),
-	session = require('express-session'),
-    path = require('path'),
-    config = require('./oauth.js'),
-    passport = require('passport'),
-    FacebookStrategy = require('passport-facebook').Strategy,
-    TwitterStrategy = require('passport-twitter').Strategy;
+session = require('express-session'),
+path = require('path'),
+config = require('./oauth.js'),
+passport = require('passport'),
+FacebookStrategy = require('passport-facebook').Strategy,
+TwitterStrategy = require('passport-twitter').Strategy;
 
 passport.use(new FacebookStrategy({
 	clientID: config.facebook.clientID,
@@ -31,20 +31,36 @@ passport.use(new TwitterStrategy({
 	callbackURL: config.twitter.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
+	console.log(accessToken);
 	process.nextTick(function () {
 		return done(null, profile);
 	});
 }
 ));
 
-
 // setup middleware
 var app = express();
-app.use(session({ 
+
+
+app.use(function(req, res, next) {
+	console.log(req.session);
+	next();
+})
+
+
+var sess = {
 	secret: '1234567890QWERTY',
 	resave: true, 
-	saveUninitialized: true
-}));
+	saveUninitialized: true,
+	cookie: {}
+}
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(express.cookieParser());
+app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
@@ -57,11 +73,17 @@ app.set('views', __dirname + '/views'); //optional since express defaults to CWD
 
 app.use(express.static(path.join(__dirname, '/lib')));
 
+// // test authentication
+// function ensureAuthenticated(req, res, next) {
+// 	if (req.isAuthenticated()) { return next(); }
+// 	res.redirect('/login')
+// }
+
+
 // render index page
 app.get('/', function(req, res){
 	res.render('index');
 });
-
 
 // Redirect the user to twitter for authentication.  When complete,
 // Twitter will redirect the user back to the application at
@@ -73,8 +95,10 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 app.get('/auth/twitter/callback', 
-		passport.authenticate('twitter', { successRedirect: '/',
-			failureRedirect: '/login' }));
+	passport.authenticate('twitter', { failureRedirect: '/login' }),
+	function(req, res, next) {
+		res.redirect('/');
+	});
 
 // Redirect the user to Facebook for authentication.  When complete,
 // Facebook will redirect the user back to the application at
@@ -86,17 +110,22 @@ app.get('/auth/facebook', passport.authenticate('facebook'));
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 app.get('/auth/facebook/callback', 
-		passport.authenticate('facebook', { successRedirect: '/',
-			failureRedirect: '/login' }));
+	passport.authenticate('facebook', { failureRedirect: '/login' }),
+	function(req, res, next) {
+		res.redirect('/');
+	});
 
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+app.get('/logout', function(req, res){
+	req.logout();
+	res.redirect('/login');
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
+// serialize and deserialize
+passport.serializeUser(function(user, done) {
+	done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+	done(null, obj);
 });
 
 // There are many useful environment variables available in process.env.
@@ -114,12 +143,8 @@ var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 // The port on the DEA for communication with the application:
 var port = (process.env.VCAP_APP_PORT || 3000);
+
+
 // Start server
 app.listen(port, host);
 console.log('App started on port ' + port);
-// test authentication
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) { return next(); }
-	res.redirect('/')
-}
-
