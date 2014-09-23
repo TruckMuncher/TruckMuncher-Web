@@ -31,7 +31,7 @@ passport.use(new TwitterStrategy({
 	callbackURL: config.twitter.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	console.log(accessToken);
+	console.log('accessToken: ' + accessToken);
 	process.nextTick(function () {
 		return done(null, profile);
 	});
@@ -41,17 +41,14 @@ function(accessToken, refreshToken, profile, done) {
 // setup middleware
 var app = express();
 
-app.use(function(req, res, next) {
-	console.log(req.session);
-	next();
-})
-
-
 var sess = {
-	secret: '1234567890QWERTY',
-	resave: true, 
-	saveUninitialized: true,
-	cookie: {}
+// 	genid: function(req) {
+//     return genuuid(); // use UUIDs for session IDs
+// },
+secret: 'MunchyTruckMunch3r',
+resave: true, 
+saveUninitialized: true,
+cookie: {}
 }
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
@@ -63,6 +60,19 @@ app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
+
+app.use(function(req, res, next) {
+	var oauthTwitter = req.session['oauth:twitter'];
+	if(oauthTwitter){
+		req.session.twitterToken = oauthTwitter.oauth_token;
+	}
+	if(req.session.twitterToken){
+		console.log('oauth_token: ' + req.session.twitterToken)
+	}
+	next();
+})
+
+
 app.use(app.router);
 app.use(express.static(__dirname + '/public')); //setup static public directory
 
