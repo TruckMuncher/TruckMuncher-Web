@@ -41,7 +41,6 @@ function(accessToken, refreshToken, profile, done) {
 // setup middleware
 var app = express();
 
-
 app.use(function(req, res, next) {
 	console.log(req.session);
 	next();
