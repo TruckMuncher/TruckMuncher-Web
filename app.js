@@ -13,15 +13,19 @@ passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy,
 TwitterStrategy = require('passport-twitter').Strategy;
 
-// The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
-var host = (process.env.VCAP_APP_HOST || 'localhost');
-// The port on the DEA for communication with the application:
 var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0]
+
+// // The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
+// var host = (process.env.VCAP_APP_HOST || 'localhost');
+// // The port on the DEA for communication with the application:
+// var port = (process.env.VCAP_APP_PORT || 3000);
 
 passport.use(new FacebookStrategy({
 	clientID: config.facebook.clientID,
 	clientSecret: config.facebook.clientSecret,
-	callbackURL: 'http://' + host + ':' + port + '/auth/facebook/callback'
+	callbackURL: 'http://' + url + '/auth/facebook/callback'
 },
 function(accessToken, refreshToken, profile, done) {
 	process.nextTick(function () {
