@@ -13,10 +13,15 @@ passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy,
 TwitterStrategy = require('passport-twitter').Strategy;
 
+// The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+// The port on the DEA for communication with the application:
+var port = (process.env.VCAP_APP_PORT || 3000);
+
 passport.use(new FacebookStrategy({
 	clientID: config.facebook.clientID,
 	clientSecret: config.facebook.clientSecret,
-	callbackURL: config.facebook.callbackURL
+	callbackURL: 'http://' + host + ':' + port + '/auth/facebook/callback'
 },
 function(accessToken, refreshToken, profile, done) {
 	process.nextTick(function () {
@@ -148,10 +153,7 @@ var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 // TODO: Get service credentials and communicate with bluemix services.
 
-// The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
-var host = (process.env.VCAP_APP_HOST || 'localhost');
-// The port on the DEA for communication with the application:
-var port = (process.env.VCAP_APP_PORT || 3000);
+
 
 
 // Start server
