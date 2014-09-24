@@ -2,17 +2,19 @@
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 // The port on the DEA for communication with the application:
 var port = (process.env.VCAP_APP_PORT || 3000);
+// var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0]
+var url = process.env.VCAP_APP_HOST ? 'dev.truckmuncher.com' : host + ':' + port;
 
 var ids = {
 	facebook: {
 		clientID: '691864144229001',
 		clientSecret: '7d8f94b356f6540a440d53abd34e4f80',
-		callbackURL: 'http://' + host + ':' + port + '/auth/facebook/callback'
+		callbackURL: 'http://' + url + '/auth/facebook/callback'
 	},
 	twitter: {
 		consumerKey: 'KCWZ6nlCEykT9S7AjGqJwEsM8',
 		consumerSecret: 'userPqxIrLjeKGDrURvZMWclgIWKsP5WslVEadMU7ii1cJtSqF',
-		callbackURL: 'http://' + host + ':' + port + '/auth/twitter/callback'
+		callbackURL: 'http://' + url + '/auth/twitter/callback'
 	}
 };
 
