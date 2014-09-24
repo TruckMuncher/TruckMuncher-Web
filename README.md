@@ -20,7 +20,7 @@ This project is deployed on IBM Bluemix. The following are the steps to get up a
 3. Log into Bluemix:
 
 		cf login -u [email] 
-		cf target -o [organization (atscott01@gmail.com)] -s [space (dev)]
+		cf target -o [organization (TruckMuncher)] -s [space (dev)]
 
 4. Be sure to delete the node_modules folder before deploying the app
 5. Deploy the app:
