@@ -13,22 +13,13 @@ passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy,
 TwitterStrategy = require('passport-twitter').Strategy;
 
-var port = (process.env.VCAP_APP_PORT || 3000);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
-// var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0]
-var url = process.env.VCAP_APP_HOST ? 'dev.truckmuncher.com' : host + ':' + port;
-
-// // The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
-// var host = (process.env.VCAP_APP_HOST || 'localhost');
-// // The port on the DEA for communication with the application:
-// var port = (process.env.VCAP_APP_PORT || 3000);
-
 passport.use(new FacebookStrategy({
 	clientID: config.facebook.clientID,
 	clientSecret: config.facebook.clientSecret,
-	callbackURL: 'http://' + url + '/auth/facebook/callback'
+	callbackURL: config.facebook.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
+	console.log('accessToken: ' + accessToken);
 	process.nextTick(function () {
 		return done(null, profile);
 	});
@@ -60,10 +51,10 @@ resave: true,
 saveUninitialized: true,
 cookie: {}
 }
-if (app.get('env') === 'production') {
-  app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
-}
+// if (app.get('env') === 'production') {
+//   app.set('trust proxy', 1) // trust first proxy
+//   sess.cookie.secure = true // serve secure cookies
+// }
 
 app.use(express.cookieParser());
 app.use(session(sess));
@@ -71,13 +62,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
 
-app.use(function(req, res, next) {
+app.use(ensureAuthenticated, function(req, res, next) {
 	var oauthTwitter = req.session['oauth:twitter'];
 	if(oauthTwitter){
 		req.session.twitterToken = oauthTwitter.oauth_token;
+		req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
+		console.log(oauthTwitter);
 	}
 	if(req.session.twitterToken){
-		console.log('oauth_token: ' + req.session.twitterToken)
+		// console.log('oauth_token: ' + req.session.twitterToken)
+		// console.log('oauth_token_secret: ' + req.session.twitterTokenSecret)
 	}
 	next();
 })
@@ -92,16 +86,22 @@ app.set('views', __dirname + '/views'); //optional since express defaults to CWD
 
 app.use(express.static(path.join(__dirname, '/lib')));
 
-// // test authentication
-// function ensureAuthenticated(req, res, next) {
-// 	if (req.isAuthenticated()) { return next(); }
-// 	res.redirect('/login')
-// }
+// test authentication
+function ensureAuthenticated(req, res, next) {
+	var path = req.path;
+	if(path.indexOf('/vendors') === 0){
+		if (req.isAuthenticated()) { return next(); }
+		res.redirect('/')
+	}
+	next();
+}
 
-
-// render index page
 app.get('/', function(req, res){
 	res.render('index');
+});
+
+app.get('/vendors', function(req, res){
+	res.render('vendorsOnly');
 });
 
 // Redirect the user to twitter for authentication.  When complete,
@@ -114,9 +114,9 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 app.get('/auth/twitter/callback', 
-	passport.authenticate('twitter', { failureRedirect: '/login' }),
+	passport.authenticate('twitter', { failureRedirect: '/' }),
 	function(req, res, next) {
-		res.redirect('/');
+		res.redirect('/vendors');
 	});
 
 // Redirect the user to Facebook for authentication.  When complete,
@@ -129,14 +129,14 @@ app.get('/auth/facebook', passport.authenticate('facebook'));
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 app.get('/auth/facebook/callback', 
-	passport.authenticate('facebook', { failureRedirect: '/login' }),
+	passport.authenticate('facebook', { failureRedirect: '/' }),
 	function(req, res, next) {
-		res.redirect('/');
+		res.redirect('/vendors');
 	});
 
 app.get('/logout', function(req, res){
 	req.logout();
-	res.redirect('/login');
+	res.redirect('/');
 });
 
 // serialize and deserialize
@@ -146,6 +146,9 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
 	done(null, obj);
 });
+
+var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 // There are many useful environment variables available in process.env.
 // VCAP_APPLICATION contains useful information about a deployed application.
@@ -157,8 +160,6 @@ var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
 // the document or sample of each service.
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 // TODO: Get service credentials and communicate with bluemix services.
-
-
 
 
 // Start server
