@@ -15,7 +15,8 @@ TwitterStrategy = require('passport-twitter').Strategy;
 
 var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
-var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0]
+// var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0]
+var url = process.env.VCAP_APP_HOST ? 'dev.truckmuncher.com' : host + ':' + port;
 
 // // The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
 // var host = (process.env.VCAP_APP_HOST || 'localhost');
