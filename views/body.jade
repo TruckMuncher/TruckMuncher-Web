@@ -8,14 +8,10 @@ body(data-ng-controller='MessageCtrl', style="background-color:#ecf0f1;")
             font(size=8)
                 | Welcome to TruckMuncher!
         h1 Sign in:
-        a(href='/auth/facebook' class='btn btn-primary col-md-6') Facebook
-        //button(class="btn btn-primary col-md-6" onclick="alert('facebook');")
-        //    | Facebook
-            //img(src="/images/facebook.jpeg")
-        a(href='/auth/twitter' class='btn btn-primary col-md-6') Twitter
-        //button(class="btn btn-primary col-md-6" onclick="alert('twitter');")
-        //    | Twitter
-            //img(src="/images/twitter.jpeg")
+        a(href='/auth/facebook' class='btn btn-primary') 
+            i.fa.fa-facebook= '  Facebook' 
+        a(href='/auth/twitter' class='btn btn-primary') 
+            i.fa.fa-twitter= '  Twitter'
     div(class="col-md-4")
     script(src='/jquery/jquery.js')
     script(src='/angular/angular.js')
