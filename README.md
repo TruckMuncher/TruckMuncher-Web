@@ -6,10 +6,12 @@ Downloading and Running the Project Locally
 2. Install all node dependencies:
 
         npm install
-        
+3. Install nodemon. This package will monitor your file system and restart the node server whenever changes are made:
+
+	npm install nodemon
 3. Start the server
 
-        node app.js
+        nodemon app.js
 
 IBM Bluemix
 -----------------------------------
