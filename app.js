@@ -19,7 +19,7 @@ passport.use(new FacebookStrategy({
 	callbackURL: config.facebook.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	console.log('accessToken: ' + accessToken);
+	console.log('Facebook accessToken: ' + accessToken);
 	process.nextTick(function () {
 		return done(null, profile);
 	});
@@ -32,7 +32,7 @@ passport.use(new TwitterStrategy({
 	callbackURL: config.twitter.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	console.log('accessToken: ' + accessToken);
+	console.log('Twitter accessToken: ' + accessToken);
 	process.nextTick(function () {
 		return done(null, profile);
 	});
@@ -116,6 +116,11 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', 
 	passport.authenticate('twitter', { failureRedirect: '/' }),
 	function(req, res, next) {
+		var oauthTwitter = req.session['oauth:Twitter'];
+		if(oauthTwitter){
+			res.locals.twitter_oauth_token = oauthTwitter.oauth_token;
+			res.locals.twitter_oauth_token_secret = oauthTwitter.oauth_token_secret;
+		}
 		res.redirect('/vendors');
 	});
 
