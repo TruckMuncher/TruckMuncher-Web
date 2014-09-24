@@ -8,7 +8,7 @@ Downloading and Running the Project Locally
         npm install
 3. Install nodemon. This package will monitor your file system and restart the node server whenever changes are made:
 
-	npm install nodemon
+        npm install nodemon
 3. Start the server
 
         nodemon app.js
