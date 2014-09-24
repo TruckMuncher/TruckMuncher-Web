@@ -62,7 +62,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
 
-app.use(ensureAuthenticated, function(req, res, next) {
+app.use(function(req, res, next) {
 	var oauthTwitter = req.session['oauth:twitter'];
 	if(oauthTwitter){
 		req.session.twitterToken = oauthTwitter.oauth_token;
@@ -74,7 +74,7 @@ app.use(ensureAuthenticated, function(req, res, next) {
 		// console.log('oauth_token_secret: ' + req.session.twitterTokenSecret)
 	}
 	next();
-})
+});
 
 
 app.use(app.router);
@@ -100,7 +100,7 @@ app.get('/', function(req, res){
 	res.render('index');
 });
 
-app.get('/vendors', function(req, res){
+app.get('/vendors', ensureAuthenticated, function(req, res){
 	res.render('vendorsOnly');
 });
 
