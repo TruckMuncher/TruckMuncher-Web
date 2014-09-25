@@ -1,10 +1,5 @@
 /*jshint node:true*/
 
-// app.js
-// This file contains the server side JavaScript code for your application.
-// This sample application uses express as web application framework (http://expressjs.com/),
-// and jade as template engine (http://jade-lang.com/).
-
 var express = require('express'),
 session = require('express-session'),
 path = require('path'),
@@ -19,9 +14,8 @@ passport.use(new FacebookStrategy({
 	callbackURL: config.facebook.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	console.log('Facebook accessToken: ' + accessToken);
 	process.nextTick(function () {
-		return done(null, profile);
+		return done(null, profile, { accessToken: accessToken});
 	});
 }
 ));
@@ -32,7 +26,6 @@ passport.use(new TwitterStrategy({
 	callbackURL: config.twitter.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
-	console.log('Twitter accessToken: ' + accessToken);
 	process.nextTick(function () {
 		return done(null, profile);
 	});
@@ -67,11 +60,6 @@ app.use(function(req, res, next) {
 	if(oauthTwitter){
 		req.session.twitterToken = oauthTwitter.oauth_token;
 		req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
-		console.log(oauthTwitter);
-	}
-	if(req.session.twitterToken){
-		// console.log('oauth_token: ' + req.session.twitterToken)
-		// console.log('oauth_token_secret: ' + req.session.twitterTokenSecret)
 	}
 	next();
 });
@@ -88,63 +76,52 @@ app.use(express.static(path.join(__dirname, '/lib')));
 
 // test authentication
 function ensureAuthenticated(req, res, next) {
-	var path = req.path;
-	if(path.indexOf('/vendors') === 0){
-		if (req.isAuthenticated()) { return next(); }
-		res.redirect('/')
-	}
-	next();
+	if (req.isAuthenticated()) { return next(); }
+	res.redirect('/')
 }
+
+app.all('/vendors*', ensureAuthenticated);
 
 app.get('/', function(req, res){
 	res.render('index');
 });
 
-app.get('/vendors', ensureAuthenticated, function(req, res){
+app.get('/vendors', function(req, res){
+	res.locals.twitter_oauth_token = req.session.twitterToken;
+	res.locals.twitter_oauth_token_secret = req.session.twitterTokenSecret;
+	res.locals.facebook_access_token = req.session.facebookAccessToken;
 	res.render('vendorsOnly');
 });
 
-// Redirect the user to twitter for authentication.  When complete,
-// Twitter will redirect the user back to the application at
-//     /auth/twitter/callback
+
 app.get('/auth/twitter', passport.authenticate('twitter'));
 
-// twitter will redirect the user to this URL after approval.  Finish the
-// authentication process by attempting to obtain an access token.  If
-// access was granted, the user will be logged in.  Otherwise,
-// authentication has failed.
 app.get('/auth/twitter/callback', 
 	passport.authenticate('twitter', { failureRedirect: '/' }),
 	function(req, res, next) {
-		var oauthTwitter = req.session['oauth:Twitter'];
-		if(oauthTwitter){
-			res.locals.twitter_oauth_token = oauthTwitter.oauth_token;
-			res.locals.twitter_oauth_token_secret = oauthTwitter.oauth_token_secret;
-		}
+		console.log(req.session)
 		res.redirect('/vendors');
 	});
 
-// Redirect the user to Facebook for authentication.  When complete,
-// Facebook will redirect the user back to the application at
-//     /auth/facebook/callback
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
-// Facebook will redirect the user to this URL after approval.  Finish the
-// authentication process by attempting to obtain an access token.  If
-// access was granted, the user will be logged in.  Otherwise,
-// authentication has failed.
-app.get('/auth/facebook/callback', 
-	passport.authenticate('facebook', { failureRedirect: '/' }),
-	function(req, res, next) {
-		res.redirect('/vendors');
-	});
+app.get('/auth/facebook/callback', function(req, res, next){
+	passport.authenticate('facebook', function(err, user, info){
+		if (err) { return next(err); }
+		if (!user) { return res.redirect('/'); }
+		req.logIn(user, function(err) {
+			if (err) { return next(err); }
+			req.session.facebookAccessToken = info.accessToken;
+			return res.redirect('/vendors');
+		});
+	})(req, res, next);
+});
 
 app.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/');
 });
 
-// serialize and deserialize
 passport.serializeUser(function(user, done) {
 	done(null, user);
 });
