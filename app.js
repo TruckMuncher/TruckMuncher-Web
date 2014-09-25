@@ -26,8 +26,9 @@ passport.use(new TwitterStrategy({
 	callbackURL: config.twitter.callbackURL
 },
 function(accessToken, refreshToken, profile, done) {
+	console.log(accessToken);
 	process.nextTick(function () {
-		return done(null, profile);
+		return done(null, profile, {accessToken: accessToken});
 	});
 }
 ));
@@ -89,6 +90,7 @@ app.get('/', function(req, res){
 app.get('/vendors', function(req, res){
 	res.locals.twitter_oauth_token = req.session.twitterToken;
 	res.locals.twitter_oauth_token_secret = req.session.twitterTokenSecret;
+	res.locals.twitter_access_token = req.session.twitterAccessToken;
 	res.locals.facebook_access_token = req.session.facebookAccessToken;
 	res.render('vendorsOnly');
 });
@@ -96,26 +98,29 @@ app.get('/vendors', function(req, res){
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 
-app.get('/auth/twitter/callback', 
-	passport.authenticate('twitter', { failureRedirect: '/' }),
-	function(req, res, next) {
-		console.log(req.session)
-		res.redirect('/vendors');
-	});
+app.get('/auth/twitter/callback', function(req, res, next){
+	passport.authenticate('twitter', function(err, user, info){
+		handleOAuthCallback(req, res, err, user, info, 'twitterAccessToken')
+	})(req, res, next);
+});
 
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback', function(req, res, next){
 	passport.authenticate('facebook', function(err, user, info){
-		if (err) { return next(err); }
-		if (!user) { return res.redirect('/'); }
-		req.logIn(user, function(err) {
-			if (err) { return next(err); }
-			req.session.facebookAccessToken = info.accessToken;
-			return res.redirect('/vendors');
-		});
+		handleOAuthCallback(req, res, err, user, info, 'facebookAccessToken')
 	})(req, res, next);
 });
+
+function handleOAuthCallback(req, res, err, user, info, tokenName){
+	if (err) { return next(err); }
+	if (!user) { return res.redirect('/'); }
+	req.logIn(user, function(err) {
+		if (err) { return next(err); }
+		req.session[tokenName] = info.accessToken;
+		return res.redirect('/vendors');
+	});
+}
 
 app.get('/logout', function(req, res){
 	req.logout();
