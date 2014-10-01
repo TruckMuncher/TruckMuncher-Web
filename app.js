@@ -3,6 +3,7 @@
 var express = require('express'),
 session = require('express-session'),
 path = require('path'),
+routes = require('./routes'),
 config = require('./oauth.js'),
 passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy,
@@ -82,19 +83,15 @@ function ensureAuthenticated(req, res, next) {
 
 app.all('/vendors*', ensureAuthenticated);
 
-app.get('/', function(req, res){
-	res.render('index');
-});
+app.get('/', routes.index);
 
-app.get('/vendors', function(req, res){
-	res.locals.twitter_oauth_token = req.session.twitterToken;
-	res.locals.twitter_oauth_token_secret = req.session.twitterTokenSecret;
-	res.locals.facebook_access_token = req.session.facebookAccessToken;
-	res.render('vendorsOnly');
-});
+app.get('/partials/:name', routes.partials);
 
+app.get('/vendors', routes.vendors);
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/logout', routes.logout);
 
 app.get('/auth/twitter/callback', 
 	passport.authenticate('twitter', { failureRedirect: '/' }),
@@ -114,11 +111,6 @@ app.get('/auth/facebook/callback', function(req, res, next){
 			return res.redirect('/vendors');
 		});
 	})(req, res, next);
-});
-
-app.get('/logout', function(req, res){
-	req.logout();
-	res.redirect('/');
 });
 
 passport.serializeUser(function(user, done) {
