@@ -58,11 +58,18 @@ app.use(express.errorHandler());
 
 app.use(function(req, res, next) {
 	var oauthTwitter = req.session['oauth:twitter'];
+	var host = (process.env.VCAP_APP_HOST || 'localhost');
 	if(oauthTwitter){
 		req.session.twitterToken = oauthTwitter.oauth_token;
 		req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
 	}
-	next();
+	var schema = req.headers['x-forwarded-proto'];
+	if(schema === 'https' || host === 'localhost'){
+		next();
+	}
+	else{
+		res.redirect('https://' + req.headers.host + req.url);
+	}
 });
 
 
