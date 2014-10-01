@@ -1,6 +1,6 @@
 applications:
 - disk_quota: 1024M
-  host: TruckMuncher
+  host: DevTruckMuncher
   name: TruckMuncher
   command: node app.js
   path: .
