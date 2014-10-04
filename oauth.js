@@ -11,11 +11,11 @@ var protocol = host === 'localhost' ? 'http://' : 'https://'
 var ids = {
 	facebook: {
 		clientID: '691864144229001',
-		clientSecret: '',
+		clientSecret: '7d8f94b356f6540a440d53abd34e4f80',
 		callbackURL: protocol + url + '/auth/facebook/callback'
 	},
 	twitter: {
-		consumerKey: 'L2teeXzIVHPFsEb2tc7nBQ9wT',
+		consumerKey: '',
 		consumerSecret: '',
 		callbackURL: protocol + url + '/auth/twitter/callback'
 	}
