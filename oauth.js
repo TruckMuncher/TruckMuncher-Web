@@ -15,8 +15,8 @@ var ids = {
 		callbackURL: protocol + url + '/auth/facebook/callback'
 	},
 	twitter: {
-		consumerKey: '',
-		consumerSecret: '',
+		consumerKey: 'nohing',
+		consumerSecret: 'nothing',
 		callbackURL: protocol + url + '/auth/twitter/callback'
 	}
 };

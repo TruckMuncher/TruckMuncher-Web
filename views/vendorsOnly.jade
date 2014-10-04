@@ -5,19 +5,22 @@ doctype html
 html(data-ng-app='vendorApp')
     include head
     body
+        a(data-ui-sref="itemDetails") Item Details
+        a(data-ui-sref="menu") Menu
         div(data-ui-view)
-        alert.alert-success(role='alert') You're logged in! You can't get to this page if you aren't logged in! Just try!
-        a(href='/logout' class='btn btn-primary') Logout
-        span.row= 'Twitter OAuth Token: ' + twitter_oauth_token
-        span.row= 'Twitter OAuth Token Secret: ' + twitter_oauth_token_secret
-        span.row= 'Facebook Access Token: ' + facebook_access_token
-
-        a(href='/partials/_vendorMenu.jade' class='btn btn-primary') Menu
+        .col-xs-12
+            alert.alert-success(role='alert') You're logged in! You can't get to this page if you aren't logged in! Just try!
+            a(href='/logout' class='btn btn-primary') Logout
+            span.row= 'Twitter OAuth Token: ' + twitter_oauth_token
+            span.row= 'Twitter OAuth Token Secret: ' + twitter_oauth_token_secret
+            span.row= 'Facebook Access Token: ' + facebook_access_token
 
         script(src='/jquery/jquery.js')
         script(src='/angular/angular.js')
         script(src='angular-ui-router/angular-ui-router.js')
+        script(src='ng-resource/dist/ng-resource.js')
         script(src='/bootstrap/bootstrap.js')
         script(src='/js/vendorApp/vendorApp.js')
-        script(src='/js/vendorApp/menuListCtrl.js')
+        script(src='/js/vendorApp/vendorMenuCtrl.js')
+        script(src='/js/vendorApp/itemDetailsCtrl.js')
         script(src='/lodash/lodash.compat.js')

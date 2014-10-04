@@ -92,7 +92,7 @@ app.all('/vendors*', ensureAuthenticated);
 
 app.get('/', routes.index);
 
-app.get('/partials/:name', routes.partials);
+app.get('/partials/*', routes.partials);
 
 app.get('/vendors', routes.vendors);
 

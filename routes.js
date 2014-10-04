@@ -3,8 +3,8 @@ var routes = {
         res.render('index');
     },
     partials: function(req, res){
-        var name = req.params.name;
-        res.render('partials/' + name);
+        var partial = req.url.substring('/partials/'.length);
+        res.render('partials/' + partial);
     },
     vendors: function(req, res){
         res.locals.twitter_oauth_token = req.session.twitterToken;
