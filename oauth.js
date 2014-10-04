@@ -7,6 +7,7 @@ var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' +
 
 var protocol = host === 'localhost' ? 'http://' : 'https://';
 
+console.log(process.env.FACEBOOK_CLIENT_ID || 'facebook_client_id')
 
 var ids = {
 	facebook: {
