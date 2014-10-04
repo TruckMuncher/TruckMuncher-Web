@@ -11,6 +11,9 @@ html(data-ng-app='vendorApp')
         span.row= 'Twitter OAuth Token: ' + twitter_oauth_token
         span.row= 'Twitter OAuth Token Secret: ' + twitter_oauth_token_secret
         span.row= 'Facebook Access Token: ' + facebook_access_token
+
+        a(href='/partials/_vendorMenu.jade' class='btn btn-primary') Menu
+
         script(src='/jquery/jquery.js')
         script(src='/angular/angular.js')
         script(src='angular-ui-router/angular-ui-router.js')
