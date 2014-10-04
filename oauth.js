@@ -7,7 +7,6 @@ var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' +
 
 var protocol = host === 'localhost' ? 'http://' : 'https://'
 
-
 var ids = {
 	facebook: {
 		clientID: '691864144229001',
@@ -15,8 +14,8 @@ var ids = {
 		callbackURL: protocol + url + '/auth/facebook/callback'
 	},
 	twitter: {
-		consumerKey: '',
-		consumerSecret: '',
+		consumerKey: 'none',
+		consumerSecret: 'none',
 		callbackURL: protocol + url + '/auth/twitter/callback'
 	}
 };
