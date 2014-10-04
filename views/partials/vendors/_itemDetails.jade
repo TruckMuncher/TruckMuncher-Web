@@ -1,13 +1,13 @@
 .col-xs-12
     form.col-lg-4.col-md-6.col-xs-12.container-fluid(action='/newMenuItem', method='post', role='form')
         .form-group.row
-            //label(for='menuItemName', class='form-inline', style='margin:10px') Item Name
-            input.form-control(id='itemName', type='text', placeholder='Item Name')
+            label.control-label(for='itemName') Item Name
+            input.form-control(id='itemName', name='itemName', type='text', placeholder='Pizza Burger')
         .form-group.row
+            label.control-label(for='itemPrice') Price
             .input-group
-                //label.form-control.col-md-1(for='menuItemPrice') Price
                 .input-group-addon $
-                input.form-control(id='itemPrice', type='text', placeholder='Price')
+                input.form-control(id='itemPrice', type='text', placeholder='8.50', name='itemPrice')
         .form-group.row
             label.checkbox
                 input(type='checkbox')
