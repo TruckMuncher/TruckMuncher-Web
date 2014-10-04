@@ -1,13 +1,14 @@
-div
-    form(action='/newMenuItem', method='post', role='form')
-        div.form-group(style='margin:10px; width:25%;')
+.col-xs-12
+    form.col-lg-4.col-md-6.col-xs-12.container-fluid(action='/newMenuItem', method='post', role='form')
+        .form-group.row
             //label(for='menuItemName', class='form-inline', style='margin:10px') Item Name
             input.form-control(id='itemName', type='text', placeholder='Item Name')
-        div.form-group(style='margin:10px; width:25%;')
-            div(class='input-group')
+        .form-group.row
+            .input-group
                 //label.form-control.col-md-1(for='menuItemPrice') Price
-                div.input-group-addon $
+                .input-group-addon $
                 input.form-control(id='itemPrice', type='text', placeholder='Price')
-        div.checkbox(style='margin:10px; width:25%')
-            //label(for='menuItemInStock', class='form-inline', style='margin:10px') In-Stock
-            input(id='itemInStock', type='checkbox', style='margin-left:10px')
+        .form-group.row
+            label.checkbox
+                input(type='checkbox')
+                | Available
