@@ -6,11 +6,12 @@ html(data-ng-app='vendorApp')
     include head
     body
         .col-xs-12
-            a(data-ui-sref="itemDetails")= 'Item Details | '
+            a(data-ui-sref="itemDetails")= 'Item Details'
+            = ' | '
             a(data-ui-sref="menu") Menu
+            = ' | '
+            a(href="/logout") Logout
             div(data-ui-view)
-            alert.alert-success(role='alert') You're logged in! You can't get to this page if you aren't logged in! Just try!
-            a(href='/logout' class='btn btn-primary') Logout
             span.row= 'Twitter OAuth Token: ' + twitter_oauth_token
             span.row= 'Twitter OAuth Token Secret: ' + twitter_oauth_token_secret
             span.row= 'Facebook Access Token: ' + facebook_access_token
