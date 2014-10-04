@@ -9,6 +9,14 @@ Downloading and Running the Project Locally
 3. Install nodemon. This package will monitor your file system and restart the node server whenever changes are made:
 
         npm install -g nodemon
+        
+4. Set the environment variables for OAuth:
+
+        export FACEBOOK_CLIENT_ID=[key]
+        export FACEBOOK_CLIENT_SECRET=[key]
+        export TWITTER_CONSUMER_KEY=[key]
+        export TWITTER_CONSUMER_SECRET=[key]
+        
 3. Start the server
 
         nodemon app.js

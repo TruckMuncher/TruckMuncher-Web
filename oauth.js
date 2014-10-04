@@ -2,21 +2,21 @@
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 // The port on the DEA for communication with the application:
 var port = (process.env.VCAP_APP_PORT || 3000);
-var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0]
+var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0];
 //var url = process.env.VCAP_APPLICATION ? 'DevTruckMuncher.mybluemix.net' : host + ':' + port;
 
-var protocol = host === 'localhost' ? 'http://' : 'https://'
+var protocol = host === 'localhost' ? 'http://' : 'https://';
 
 
 var ids = {
 	facebook: {
-		clientID: '691864144229001',
-		clientSecret: '7d8f94b356f6540a440d53abd34e4f80',
+		clientID: process.env.FACEBOOK_CLIENT_ID || 'facebook_client_id',
+		clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'facebook_client_secret',
 		callbackURL: protocol + url + '/auth/facebook/callback'
 	},
 	twitter: {
-		consumerKey: 'nohing',
-		consumerSecret: 'nothing',
+		consumerKey: process.env.TWITTER_CONSUMER_KEY || 'twitter_consumer_key',
+		consumerSecret: process.env.TWITTER_CONSUMER_SECRET || 'twitter_consumer_secret',
 		callbackURL: protocol + url + '/auth/twitter/callback'
 	}
 };
