@@ -5,7 +5,6 @@ angular.module('vendorApp')
                 return $http({
                     method: 'POST',
                     url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus',
-                    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
                     data: {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability},
                     crossDomain: true
                 }).then(function(response){
