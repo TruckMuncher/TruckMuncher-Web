@@ -21,6 +21,7 @@ Downloading and Running the Project Locally
 	* ~/.profile
 	* ~/.bash_profile
 	* /etc/profile
+	You may also need to start a new terminal session after this step.
 
 5. Start the server
 
