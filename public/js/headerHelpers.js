@@ -48,7 +48,8 @@ app.factory('TimestampAndNonceService', function () {
     }
 });
 
-app.factory('httpInterceptor', ['TokenService', function (TokenService) {
+app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService',
+    function (TokenService, TimestampAndNonceService) {
     return{
         request: function (config) {
             if (TokenService.getFacebook().access_token) {
@@ -58,6 +59,8 @@ app.factory('httpInterceptor', ['TokenService', function (TokenService) {
                     'oauth_token=' + TokenService.getTwitter().oauth_token +
                     ', oauth_secret=' + TokenService.getTwitter().oauth_token_secret;
             }
+            config.headers['X-Timestamp'] = TimestampAndNonceService.getTimestamp();
+            config.headers['X-Nonce'] = TimestampAndNonceService.getNonce();
             return config;
         }
     }
