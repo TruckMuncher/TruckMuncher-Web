@@ -1,7 +1,7 @@
-var app = angular.module('vendorApp', ['ui.router']);
+var app = angular.module('vendorApp', ['ui.router', 'truckmuncher.headerHelpers']);
 
-app.config(function($stateProvider, $urlRouterProvider){
-  $urlRouterProvider.otherwise("/menu");
+app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/menu");
 
     $stateProvider
         .state('menu', {
@@ -11,7 +11,7 @@ app.config(function($stateProvider, $urlRouterProvider){
         })
         .state('itemDetails', {
             url: "/itemDetails",
-            templateUrl: "/partials/vendors/_itemDetails.jade", 
+            templateUrl: "/partials/vendors/_itemDetails.jade",
             controller: 'itemDetailsCtrl'
         })
-})
+}]);

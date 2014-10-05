@@ -30,7 +30,7 @@ module.exports = function (grunt) {
         },
         bower: {
             install: {
-                options:{
+                options: {
                     cleanBowerDir: true
                 }
                 //just run 'grunt bower:install' and you'll see files from your Bower packages in lib directory
@@ -64,6 +64,38 @@ module.exports = function (grunt) {
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'qunit']
+        },
+        karma: {
+            //shared config
+            options:{
+                logLevel: 'INFO',
+                colors: true,
+                port: 9876,
+                files: [
+                    'lib/angular/angular.js',
+                    'lib/jquery/jquery.js',
+                    'lib/angular-ui-router/angular-ui-router.js',
+                    'lib/angular-mocks/angular-mocks.js',
+                    'public/js/vendorApp/vendorApp.js',
+                    'public/js/*.js',
+                    'public/js/vendorApp/*.js',
+                    'test/jasmine/**/*.js'
+                ],
+                frameworks: ['jasmine'],
+                browsers: ['PhantomJS'],
+                basePath: ''
+            },
+            //run this one in dev
+            unit: {
+                autowatch: true,
+                reporters: ['dots', 'growl']
+            },
+            //run on CI
+            continuous: {
+                singleRun: true,
+                reporters: ['junit']
+            }
+
         }
     });
 
@@ -73,6 +105,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-karma');
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);

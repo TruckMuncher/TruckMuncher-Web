@@ -1,3 +1,16 @@
+var api = require('./api');
+
+function clearTokensFromSession(req) {
+    req.session.twitterToken = null;
+    req.session.twitterTokenSecret = null;
+    req.session.facebookAccessToken = null;
+}
+
+function logOutOfApi(req) {
+    api.logout(req.session.twitterToken, req.session.twitterTokenSecret, null);
+    api.logout(null, null, req.session.facebookAccessToken);
+}
+
 var routes = {
     index: function(req, res){
         res.render('index');
@@ -13,9 +26,11 @@ var routes = {
         res.render('vendorsOnly');
     },
     logout: function(req, res){
+        logOutOfApi(req);
+        clearTokensFromSession(req);
         req.logout();
         res.redirect('/');
     }
-}
+};
 
 module.exports = routes;
