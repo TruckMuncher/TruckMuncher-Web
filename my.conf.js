@@ -20,8 +20,8 @@ module.exports = function (config) {
             'lib/angular-ui-router/angular-ui-router.js',
             'lib/angular-mocks/angular-mocks.js',
             'public/js/vendorApp/vendorApp.js',
-            'public/js/vendorApp/*.js',
             'public/js/*.js',
+            'public/js/vendorApp/*.js',
             'test/jasmine/**/*.js'
         ],
 

@@ -1,5 +1,5 @@
-angular.module('vendorApp').controller('vendorMenuCtrl', ['$scope',
-    function ($scope) {
+angular.module('vendorApp').controller('vendorMenuCtrl', ['$scope', 'FullMenus',
+    function ($scope, FullMenus) {
         $scope.menu = null;
 
         $scope.$on('menuUpdated', function(event, data){

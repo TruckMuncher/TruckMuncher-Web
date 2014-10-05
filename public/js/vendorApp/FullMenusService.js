@@ -9,7 +9,6 @@ angular.module('vendorApp')
                     crossDomain: true,
                     cache: true
                 }).then(function(response){
-                    console.log(response);
                     return response.data;
                 }, function(error){
                     console.log(error);
