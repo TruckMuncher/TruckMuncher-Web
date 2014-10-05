@@ -20,6 +20,21 @@ Downloading and Running the Project Locally
 3. Start the server
 
         nodemon app.js
+        
+Karma and Jasmine Tests Locally
+-----------------------------------
+1. Install PhantomJS (http://phantomjs.org/download.html). For homebrew on mac:
+
+        brew update && brew install phantomjs
+
+2. (Optional since we're using Grunt to run karma) Install the karma cli so you can run karma as a command
+
+        sudo npm install -g karma-cli
+
+3. Run karma
+
+        grunt karma:unit karma.conf.js
+
 
 IBM Bluemix
 -----------------------------------
