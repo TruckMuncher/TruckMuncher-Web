@@ -30,7 +30,7 @@ module.exports = function (grunt) {
         },
         bower: {
             install: {
-                options:{
+                options: {
                     cleanBowerDir: true
                 }
                 //just run 'grunt bower:install' and you'll see files from your Bower packages in lib directory
@@ -65,11 +65,19 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'qunit']
         },
-	karma: {
-	    unit: {
-		configFile: 'karma.conf.js'
-	    }
-	}
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js',
+                autowatch: true
+            },
+            continuous: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS'],
+                reporters: ['junit']
+            }
+
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
