@@ -1,5 +1,5 @@
 .col-xs-12
-    form.col-lg-4.col-md-6.col-xs-12.container-fluid(action='/newMenuItem', method='post', role='form')
+    form.col-lg-4.col-md-6.col-xs-12.container-fluid(data-ng-submit='submitNewItem()', role='form')
         .form-group.row
             label.control-label(for='itemName') Item Name
             input.form-control(id='itemName', name='itemName', type='text', placeholder='Pizza Burger')
@@ -10,8 +10,14 @@
                 input.form-control(id='itemPrice', type='text', placeholder='8.50', name='itemPrice')
         .form-group.row
             label.checkbox
-                input(type='checkbox')
+                input(type='checkbox', id="itemAvailable")
                 | Available
         .form-group.row
             label.control-label(for='itemNotes') Notes
             textarea.form-control(id='itemNotes', placeholder='A note about the menu item')
+        .form-group.row(ng-controller='itemDetailsCtrl')
+            //select(chosen, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="category", ng-options="c for c in categories")
+            //select(chosen, multiple, data-placeholder="Choose a beer", no-results-text="'Could not find any beers :('", ng-model="category", ng-options="b for b in categories", id='category')
+
+        .form-group.row
+            button.btn.btn-default(type='submit') Submit
