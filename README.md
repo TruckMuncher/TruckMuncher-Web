@@ -27,13 +27,13 @@ Karma and Jasmine Tests Locally
 
         brew update && brew install phantomjs
 
-2. Install the karma cli so you can run karma as a command
+2. (Optional since we're using Grunt to run karma) Install the karma cli so you can run karma as a command
 
         sudo npm install -g karma-cli
 
 3. Run karma
 
-        karma start my.conf.js
+        grunt karma:unit karma.conf.js
 
 
 IBM Bluemix
