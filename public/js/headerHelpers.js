@@ -30,6 +30,18 @@ app.factory('TimestampAndNonceService', function () {
         return n < 10 ? '0' + n : '' + n;
     }
 
+    var guid = (function() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return function() {
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+        };
+    })();
+
     return{
         getTimestamp: function () {
             var d = new Date(new Date().getTime());
@@ -43,7 +55,9 @@ app.factory('TimestampAndNonceService', function () {
             return formattedTime;
         },
         getNonce: function () {
-
+            var uuid = guid();
+            var _32randomChars = uuid.replace(/-/gi, '');
+            return atob(_32randomChars);
         }
     }
 });
