@@ -24,16 +24,16 @@ Downloading and Running the Project Locally
 Karma and Jasmine Tests Locally
 -----------------------------------
 1. Install PhantomJS (http://phantomjs.org/download.html). For homebrew on mac:
-	
-	brew update && brew install phantomjs
+
+        brew update && brew install phantomjs
 
 2. Install the karma cli so you can run karma as a command
-	
-	sudo npm install -g karma-cli
+
+        sudo npm install -g karma-cli
 
 3. Run karma
 
-	karma start my.conf.js
+        karma start my.conf.js
 
 
 IBM Bluemix
