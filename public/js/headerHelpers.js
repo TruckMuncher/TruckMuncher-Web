@@ -1,3 +1,4 @@
+/** Requires base64.js from base-64 package*/
 var app = angular.module('truckmuncher.headerHelpers', []);
 
 app.factory('TokenService', function () {
@@ -57,7 +58,7 @@ app.factory('TimestampAndNonceService', function () {
         getNonce: function () {
             var uuid = guid();
             var _32randomChars = uuid.replace(/-/gi, '');
-            return atob(_32randomChars);
+            return base64.encode(_32randomChars);
         }
     }
 });

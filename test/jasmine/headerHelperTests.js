@@ -21,7 +21,7 @@ describe('headerHelpers', function () {
             it('return an encoded 32 byte thingy', function(){
                 var actual = service.getNonce();
 
-                expect(btoa(actual).length).toBe(32);
+                expect(base64.decode(actual).length).toBe(32);
             })
         })
     })

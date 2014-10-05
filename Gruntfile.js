@@ -76,6 +76,7 @@ module.exports = function (grunt) {
                     'lib/jquery/jquery.js',
                     'lib/angular-ui-router/angular-ui-router.js',
                     'lib/angular-mocks/angular-mocks.js',
+                    'lib/base-64/base64.js',
                     'public/js/vendorApp/vendorApp.js',
                     'public/js/*.js',
                     'public/js/vendorApp/*.js',
