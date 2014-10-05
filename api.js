@@ -6,11 +6,17 @@ function makeRequest(url, method, header) {
     var options = {
         url: url,
         method: method,
+        //TODO: DON'T DO THIS
+        strictSSL: false,
         headers: header
+
     };
 
-    //TODO: can't do this yet because we're using a self-signed cert. I'll look into it later
-//    request(options);
+    request(options, function(error){
+        if(error){
+            console.log('Error logging in: ' + error);
+        }
+    });
 }
 
 function buildTwitterHeader(twitter_token, twitter_secret) {

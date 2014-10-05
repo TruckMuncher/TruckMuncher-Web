@@ -1,7 +1,9 @@
-angular.module('vendorApp').controller('vendorMenuCtrl', ['$scope', 'FullMenus',
-    function ($scope, FullMenus) {
-        FullMenus.get(function(response){
-            $scope.menus = response;
+angular.module('vendorApp').controller('vendorMenuCtrl', ['$scope',
+    function ($scope) {
+        $scope.menu = null;
+
+        $scope.$on('menuUpdated', function(event, data){
+            $scope.menu = data;
         })
     }
 ]);

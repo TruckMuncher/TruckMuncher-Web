@@ -64,7 +64,12 @@ module.exports = function (grunt) {
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'qunit']
-        }
+        },
+	karma: {
+	    unit: {
+		configFile: 'karma.conf.js'
+	    }
+	}
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -73,6 +78,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-karma');
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
