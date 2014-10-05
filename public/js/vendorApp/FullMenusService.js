@@ -6,7 +6,8 @@ angular.module('vendorApp')
                     method: 'POST',
                     url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus',
                     data: {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability},
-                    crossDomain: true
+                    crossDomain: true,
+                    cache: true
                 }).then(function(response){
                     console.log(response);
                     return response.data;

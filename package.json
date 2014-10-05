@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "description": "A sample nodejs app for Bluemix",
   "dependencies": {
-    "express": "3.4.7",
     "ejs": "*",
-    "jade": "1.1.4", 
-	"express-session": "1.8.2",
-	"passport": "0.2.1",
-	"passport-facebook": "1.0.3",
-	"passport-twitter": "1.0.2"
+    "express": "3.4.7",
+    "express-session": "1.8.2",
+    "jade": "1.1.4",
+    "passport": "0.2.1",
+    "passport-facebook": "1.0.3",
+    "passport-twitter": "1.0.2",
+    "request": "^2.44.0"
   },
   "engines": {
     "node": "0.10.26"

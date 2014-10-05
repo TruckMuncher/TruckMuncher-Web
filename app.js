@@ -3,8 +3,9 @@
 var express = require('express'),
 session = require('express-session'),
 path = require('path'),
+api = require('./api'),
 routes = require('./routes'),
-config = require('./oauth.js'),
+config = require('./oauth'),
 passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy,
 TwitterStrategy = require('passport-twitter').Strategy;
@@ -44,7 +45,7 @@ secret: 'MunchyTruckMunch3r',
 resave: true, 
 saveUninitialized: true,
 cookie: {}
-}
+};
 // if (app.get('env') === 'production') {
 //   app.set('trust proxy', 1) // trust first proxy
 //   sess.cookie.secure = true // serve secure cookies
@@ -60,9 +61,12 @@ app.use(function(req, res, next) {
 	var oauthTwitter = req.session['oauth:twitter'];
 	var host = (process.env.VCAP_APP_HOST || 'localhost');
 	if(oauthTwitter){
+        api.login(oauthTwitter.oauth_token, oauthTwitter.oauth_token_secret);
 		req.session.twitterToken = oauthTwitter.oauth_token;
 		req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
 	}
+
+    //force https on everything but localhost
 	var schema = req.headers['x-forwarded-proto'];
 	if(schema === 'https' || host === 'localhost'){
 		next();
@@ -114,6 +118,7 @@ app.get('/auth/facebook/callback', function(req, res, next){
 		if (!user) { return res.redirect('/'); }
 		req.logIn(user, function(err) {
 			if (err) { return next(err); }
+            api.login(null, null, info.accessToken);
 			req.session.facebookAccessToken = info.accessToken;
 			return res.redirect('/vendors');
 		});

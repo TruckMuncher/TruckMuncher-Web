@@ -4,7 +4,8 @@
 doctype html
 html(data-ng-app='vendorApp')
     include head
-    body
+    body(data-ng-controller='initCtrl',
+    data-ng-init="initializeTokens('#{twitter_oauth_token}', '#{twitter_oauth_token_secret}', '#{facebook_access_token}')")
         .col-xs-12
             a(data-ui-sref="itemDetails")= 'Item Details'
             = ' | '
@@ -12,9 +13,6 @@ html(data-ng-app='vendorApp')
             = ' | '
             a(href="/logout") Logout
             div(data-ui-view)
-            span.row= 'Twitter OAuth Token: ' + twitter_oauth_token
-            span.row= 'Twitter OAuth Token Secret: ' + twitter_oauth_token_secret
-            span.row= 'Facebook Access Token: ' + facebook_access_token
 
         script(src='/jquery/jquery.js')
         script(src='/angular/angular.js')
@@ -25,4 +23,6 @@ html(data-ng-app='vendorApp')
         script(src='/js/vendorApp/vendorMenuCtrl.js')
         script(src='/js/vendorApp/itemDetailsCtrl.js')
         script(src='/js/vendorApp/FullMenusService.js')
+        script(src='/js/vendorApp/initCtrl.js')
+        script(src='/js/tokenService.js')
         script(src='/lodash/lodash.compat.js')
