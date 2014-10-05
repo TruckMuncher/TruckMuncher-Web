@@ -66,14 +66,33 @@ module.exports = function (grunt) {
             tasks: ['jshint', 'qunit']
         },
         karma: {
-            unit: {
-                configFile: 'karma.conf.js',
-                autowatch: true
-            },
-            continuous: {
-                configFile: 'karma.conf.js',
-                singleRun: true,
+            //shared config
+            options:{
+                logLevel: 'INFO',
+                colors: true,
+                port: 9876,
+                files: [
+                    'lib/angular/angular.js',
+                    'lib/jquery/jquery.js',
+                    'lib/angular-ui-router/angular-ui-router.js',
+                    'lib/angular-mocks/angular-mocks.js',
+                    'public/js/vendorApp/vendorApp.js',
+                    'public/js/*.js',
+                    'public/js/vendorApp/*.js',
+                    'test/jasmine/**/*.js'
+                ],
+                frameworks: ['jasmine'],
                 browsers: ['PhantomJS'],
+                basePath: ''
+            },
+            //run this one in dev
+            unit: {
+                autowatch: true,
+                reporters: ['dots', 'growl']
+            },
+            //run on CI
+            continuous: {
+                singleRun: true,
                 reporters: ['junit']
             }
 
