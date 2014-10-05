@@ -17,7 +17,12 @@ Downloading and Running the Project Locally
         export TWITTER_CONSUMER_KEY=[key]
         export TWITTER_CONSUMER_SECRET=[key]
         
-3. Start the server
+	Note, to do this permanently, you will need to put these in one of the following:
+	* ~/.profile
+	* ~/.bash_profile
+	* /etc/profile
+
+5. Start the server
 
         nodemon app.js
         
