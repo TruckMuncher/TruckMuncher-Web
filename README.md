@@ -17,7 +17,7 @@ Downloading and Running the Project Locally
         export TWITTER_CONSUMER_KEY=[key]
         export TWITTER_CONSUMER_SECRET=[key]
         
-	Note, to do this permanently, you will need to put these in one of the following:
+	Note, to do for environment variables to be permanent, you will need to put these in one of the following:
 	* ~/.profile
 	* ~/.bash_profile
 	* /etc/profile
