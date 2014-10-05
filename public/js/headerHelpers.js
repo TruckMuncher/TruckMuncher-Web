@@ -63,33 +63,36 @@ app.factory('TimestampAndNonceService', function () {
     }
 });
 
+
 app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService',
     function (TokenService, TimestampAndNonceService) {
-    return{
-        request: function (config) {
-            if (TokenService.getFacebook().access_token) {
-                config.headers['Authorization'] = 'access_token=' + TokenService.getFacebook().access_token;
-            } else {
-                config.headers['Authorization'] =
-                    'oauth_token=' + TokenService.getTwitter().oauth_token +
-                    ', oauth_secret=' + TokenService.getTwitter().oauth_token_secret;
+        return{
+            request: function (config) {
+                // oauth headers
+                if (TokenService.getFacebook().access_token) {
+                    config.headers['Authorization'] = 'access_token=' + TokenService.getFacebook().access_token;
+                } else {
+                    config.headers['Authorization'] =
+                        'oauth_token=' + TokenService.getTwitter().oauth_token +
+                        ', oauth_secret=' + TokenService.getTwitter().oauth_token_secret;
+                }
+
+                //nonce and timestamp headers
+                config.headers['X-Timestamp'] = TimestampAndNonceService.getTimestamp();
+                config.headers['X-Nonce'] = TimestampAndNonceService.getNonce();
+
+                //configure cross domain
+                delete config['X-Requested-With'];
+                config['crossDomain'] = true;
+
+                // json headers
+                config.headers['Accept'] = 'application/json';
+                config.headers['Content-Type'] = 'application/json';
+
+                return config;
             }
-            config.headers['X-Timestamp'] = TimestampAndNonceService.getTimestamp();
-            config.headers['X-Nonce'] = TimestampAndNonceService.getNonce();
-            return config;
         }
-    }
-}]);
+    }]);
 
-app.config(['$httpProvider', function ($httpProvider) {
-    //configure cross domain ajax
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-    $httpProvider.interceptors.push('httpInterceptor');
 
-    $httpProvider.defaults.headers.common['Accept'] = 'application/json';
-    $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
-    $httpProvider.defaults.headers.put['Content-Type'] = 'application/json';
-
-}]);
