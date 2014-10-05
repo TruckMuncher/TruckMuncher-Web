@@ -15,17 +15,3 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: 'itemDetailsCtrl'
         })
 }]);
-
-
-app.factory('myInterceptor', [ 'httpInterceptor',
-    function (httpInterceptor) {
-        return{
-            request: function (config) {
-               return httpInterceptor.request(config);
-            }
-        }
-    }]);
-
-app.config(['$httpProvider' , function ($httpProvider) {
-    $httpProvider.interceptors.push('myInterceptor');
-}]);
