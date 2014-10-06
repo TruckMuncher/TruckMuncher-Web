@@ -1,13 +1,12 @@
 {
   "name": "NodejsStarterApp",
   "version": "0.0.1",
-  "description": "A sample nodejs app for Bluemix",
+  "description": "Tracking Food Trucks and Stuff!",
   "dependencies": {
     "ejs": "*",
     "express": "3.4.7",
     "express-session": "1.8.2",
     "jade": "1.1.4",
-    "nconf": "^0.6.9",
     "passport": "0.2.1",
     "passport-facebook": "1.0.3",
     "passport-twitter": "1.0.2",

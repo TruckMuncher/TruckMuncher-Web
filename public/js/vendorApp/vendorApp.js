@@ -9,9 +9,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             templateUrl: "/partials/vendors/_vendorMenu.jade",
             controller: 'vendorMenuCtrl'
         })
-        .state('itemDetails', {
-            url: "/itemDetails",
+        .state('menu.createItem', {
+            url: "/createItem",
             templateUrl: "/partials/vendors/_itemDetails.jade",
+            controller: 'itemDetailsCtrl'
+        })
+        .state('menu.editItem', {
+            url: "editItem",
+            templateUrl: "partials/vendors/_itemDetails.jade",
             controller: 'itemDetailsCtrl'
         })
 }]);

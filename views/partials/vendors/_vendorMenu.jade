@@ -1,14 +1,24 @@
-.table-responsive
-    table.table.table-bordered
-        thead
-            tr
-                td
-                    span= 'Item'
-                td
-                    span= 'Price'
-        tbody
-            tr
-                td
-                    span= 'abcd'
-                td
-                    span= '1Bil'
+div(data-ng-repeat='category in menu.category track by menuId')
+    .col-xs-12
+        b
+            | {{category.name}}
+    .col-xs-12
+        | {{category.notes}}
+    .table-responsive
+        table.table.table-bordered
+            thead
+                tr
+                    td
+                        span= 'Item'
+                    td
+                        span= 'Price'
+                    td
+                        span= 'Edit'
+            tbody
+                tr(data-ng-repeat='item in category.menuItem')
+                    td
+                        span {{item.name}}
+                    td
+                        span {{item.price}}
+                    td
+                        a(data-ui-sref='menu.createItem')
