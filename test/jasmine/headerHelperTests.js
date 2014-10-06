@@ -1,5 +1,7 @@
 describe('headerHelpers', function () {
-    beforeEach(module('truckmuncher.headerHelpers'));
+    beforeEach(module('truckmuncher.headerHelpers', function ($httpProvider) {
+        $httpProvider.interceptors.push('httpInterceptor');
+    }));
 
     describe('TimestampAndNonceService', function () {
         var service;
@@ -24,5 +26,92 @@ describe('headerHelpers', function () {
                 expect(base64.decode(actual).length).toBe(32);
             })
         })
+    });
+
+    describe('httpInterceptor', function(){
+        var $httpBackend, $http, TokenService;
+
+        beforeEach(inject(function(_$httpBackend_, _$http_, _TokenService_){
+            $httpBackend = _$httpBackend_;
+            $http = _$http_;
+            TokenService = _TokenService_;
+        }));
+
+        it('should put the x-nonce in the header on all requests', function(){
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['X-Nonce'];
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+        it('should put the x-timestamp in the header on all requests', function(){
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['X-Timestamp'];
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+        it('should put the Authorization in the header on all requests', function(){
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['Authorization'];
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+        it('should put the put Facebook token in the Authentication header when available', function(){
+            TokenService.setFacebook('token');
+
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['Authorization'] === 'access_token=token';
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+        it('should put the put Twitter tokens in the Authentication header when available', function(){
+            TokenService.setTwitter('token1', 'token2');
+
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['Authorization'] === 'oauth_token=token1, oauth_secret=token2';
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+        it('should accept json in the header', function(){
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['Accept'] = 'application/json';
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+        it('should have content type of json in the header', function(){
+            $http({method: 'GET', url: '/'});
+
+            $httpBackend.expect('GET', '/', undefined, function(headers){
+                return headers['Content-Type'] = 'application/json';
+            }).respond(200,'');
+
+            $httpBackend.flush();
+        });
+
+
     })
+
 });
