@@ -1,4 +1,4 @@
-angular.module('vendorApp').controller('itemDetailsCtrl', ['$scope', '$stateParams',
+angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$stateParams',
     function ($scope, $stateParams) {
         $scope.stateParams = $stateParams;
 
