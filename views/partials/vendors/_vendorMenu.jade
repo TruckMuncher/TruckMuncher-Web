@@ -21,4 +21,6 @@ div(data-ng-repeat='category in menu.category track by menuId')
                     td
                         span {{item.price}}
                     td
-                        a(data-ui-sref='menu.createItem')
+                        a(data-ui-sref='.editItem({itemId: item.id})') Edit
+
+<div data-ui-view></div>

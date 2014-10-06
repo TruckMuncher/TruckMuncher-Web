@@ -7,8 +7,6 @@ html(data-ng-app='vendorApp')
     body(data-ng-controller='initCtrl',
     data-ng-init="initializeTokens('#{twitter_oauth_token}', '#{twitter_oauth_token_secret}', '#{facebook_access_token}')")
         .col-xs-12
-            a(data-ui-sref="itemDetails")= 'Item Details'
-            = ' | '
             a(data-ui-sref="menu") Menu
             = ' | '
             a(href="/logout") Logout
