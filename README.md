@@ -37,8 +37,12 @@ Karma and Jasmine Tests Locally
 2. (Optional since we're using Grunt to run karma) Install the karma cli so you can run karma as a command
 
         sudo npm install -g karma-cli
+        
+3. Install grunt-cli:
 
-3. Run karma
+        sudo npm install -g grunt-cli
+
+4. Run karma
 
         grunt karma:unit karma.conf.js
 
