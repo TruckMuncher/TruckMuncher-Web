@@ -5,13 +5,14 @@ header#header(data-ng-controller='headerCtrl')
             img(src='img/logo.png', alt='SmartAdmin')
     .pull-right
         // collapse menu button
-        div.btn-header.pull-right
-            span.hidden-lg.hidden-md
-                a(href='javascript:void(0);', data-ng-click='toggleMenu()', title='Toggle Menu')
-                    i.fa.fa-reorder
+        btn-header.pull-right
             // logout button
-            div.btn-header.transparent.pull-right
+            .btn-header.transparent.pull-right
                 span
                     a(href="/logout", title='Sign Out')
                         i.fa.fa-sign-out
             // end logout button
+            #hide-menu.transparent.btn-header.pull-right
+                span
+                    a(href='javascript:void(0);', data-ng-click='toggleMenu()', title='Toggle Menu')
+                        i.fa.fa-reorder

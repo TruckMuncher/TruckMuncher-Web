@@ -37,3 +37,5 @@ smartAdmin/LESS_FILES/*
 smartAdmin/UNMINIFIED_CSS/*
 !smartAdmin/LESS_FILES/custom.less
 !smartAdmin/LESS_FILES/overrides.less
+
+.DS_Store
