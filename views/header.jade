@@ -1,4 +1,4 @@
-header#header
+header#header(data-ng-controller='headerCtrl')
     #logo-group
         // PLACE YOUR LOGO HERE
         span#logo
@@ -7,7 +7,7 @@ header#header
         // collapse menu button
         div.btn-header.pull-right
             span.hidden-lg.hidden-md
-                a(href='javascript:void(0);', data-ng-init='showMenu=true', data-ng-click='showMenu=!showMenu' data-action='toggleMenu', title='Collapse Menu')
+                a(href='javascript:void(0);', data-ng-click='toggleMenu()', title='Toggle Menu')
                     i.fa.fa-reorder
             // logout button
             div.btn-header.transparent.pull-right
