@@ -44,7 +44,7 @@ Karma and Jasmine Tests Locally
 
 4. Run karma
 
-        grunt karma:unit karma.conf.js
+        grunt karma:unit 
 
 
 IBM Bluemix
