@@ -1,26 +1,27 @@
-div(data-ng-repeat='category in menu.category track by menuId')
-    .col-xs-12
-        b
-            | {{category.name}}
-    .col-xs-12
-        | {{category.notes}}
-    .table-responsive
-        table.table.table-bordered
-            thead
-                tr
-                    td
-                        span= 'Item'
-                    td
-                        span= 'Price'
-                    td
-                        span= 'Edit'
-            tbody
-                tr(data-ng-repeat='item in category.menuItem')
-                    td
-                        span {{item.name}}
-                    td
-                        span {{item.price}}
-                    td
-                        a(data-ui-sref='.editItem({itemId: item.id})') Edit
+.jarviswidget.jarviswidget-color-blueDark(data-ng-repeat='category in menu.category track by menuId')
+    header
+        h2 {{category.name}}
+    div
+        .widget-body
+            p {{category.notes}}
+
+            .table-responsive
+                table.table.table-bordered
+                    thead
+                        tr
+                            td
+                                span= 'Item'
+                            td
+                                span= 'Price'
+                            td
+                                span= 'Edit'
+                    tbody
+                        tr(data-ng-repeat='item in category.menuItem')
+                            td
+                                span {{item.name}}
+                            td
+                                span {{item.price}}
+                            td
+                                a(data-ui-sref='.editItem({itemId: item.id})') Edit
 
 <div data-ui-view></div>
