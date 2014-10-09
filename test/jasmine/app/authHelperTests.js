@@ -1,5 +1,5 @@
-describe('headerHelpers', function () {
-    beforeEach(module('truckmuncher.headerHelpers', function ($httpProvider) {
+describe('authHelpers', function () {
+    beforeEach(module('TruckMuncherApp', function ($httpProvider) {
         $httpProvider.interceptors.push('httpInterceptor');
     }));
 
@@ -16,7 +16,7 @@ describe('headerHelpers', function () {
                 var regexPattern = new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$');
 
                 expect(regexPattern.test(actual)).toBe(true, 'Date not in correct format: ' + actual);
-            })
+            });
         });
 
         describe('getNonce', function(){
@@ -24,8 +24,8 @@ describe('headerHelpers', function () {
                 var actual = service.getNonce();
 
                 expect(base64.decode(actual).length).toBe(32);
-            })
-        })
+            });
+        });
     });
 
     describe('httpInterceptor', function(){
@@ -57,23 +57,13 @@ describe('headerHelpers', function () {
             $httpBackend.flush();
         });
 
-        it('should put the Authorization in the header on all requests', function(){
-            $http({method: 'GET', url: '/'});
-
-            $httpBackend.expect('GET', '/', undefined, function(headers){
-                return headers['Authorization'];
-            }).respond(200,'');
-
-            $httpBackend.flush();
-        });
-
         it('should put the put Facebook token in the Authentication header when available', function(){
             TokenService.setFacebook('token');
 
             $http({method: 'GET', url: '/'});
 
             $httpBackend.expect('GET', '/', undefined, function(headers){
-                return headers['Authorization'] === 'access_token=token';
+                return headers.Authorization === 'access_token=token';
             }).respond(200,'');
 
             $httpBackend.flush();
@@ -85,7 +75,7 @@ describe('headerHelpers', function () {
             $http({method: 'GET', url: '/'});
 
             $httpBackend.expect('GET', '/', undefined, function(headers){
-                return headers['Authorization'] === 'oauth_token=token1, oauth_secret=token2';
+                return headers.Authorization === 'oauth_token=token1, oauth_secret=token2';
             }).respond(200,'');
 
             $httpBackend.flush();
@@ -95,23 +85,23 @@ describe('headerHelpers', function () {
             $http({method: 'GET', url: '/'});
 
             $httpBackend.expect('GET', '/', undefined, function(headers){
-                return headers['Accept'] = 'application/json';
+                return headers.Accept === 'application/json';
             }).respond(200,'');
 
             $httpBackend.flush();
         });
 
         it('should have content type of json in the header', function(){
-            $http({method: 'GET', url: '/'});
+            $http({method: 'POST', data: {'abc': 'def'}, url: '/'});
 
-            $httpBackend.expect('GET', '/', undefined, function(headers){
-                return headers['Content-Type'] = 'application/json';
+            $httpBackend.expect('POST', '/', undefined, function(headers){
+                return headers['Content-Type'] === 'application/json';
             }).respond(200,'');
 
             $httpBackend.flush();
         });
 
 
-    })
+    });
 
 });

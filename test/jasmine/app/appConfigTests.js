@@ -1,7 +1,7 @@
-describe('vendorApp', function () {
+describe('TruckMuncherApp', function () {
     var $httpBackend, $http, interceptor;
 
-    beforeEach(module('vendorApp'));
+    beforeEach(module('TruckMuncherApp'));
 
     beforeEach(inject(function (_$httpBackend_, _$http_, httpInterceptor) {
         $httpBackend = _$httpBackend_;

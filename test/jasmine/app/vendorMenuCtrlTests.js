@@ -1,12 +1,11 @@
-describe('vendorApp', function () {
-    beforeEach(module('vendorApp'));
+describe('TruckMuncherApp', function () {
+    beforeEach(module('TruckMuncherApp'));
 
     describe('vendorMenuCtrl', function () {
-        var $scope, $rootScope;
+        var $scope;
 
         beforeEach(inject(function ($rootScope, $controller) {
             $scope = $rootScope.$new();
-            $rootScope = $rootScope;
             $controller('vendorMenuCtrl', {$scope: $scope});
         }));
 
@@ -14,7 +13,7 @@ describe('vendorApp', function () {
             $scope.menu = null;
             $scope.$emit('menuUpdated', {});
             expect($scope.menu).toEqual({});
-        })
-    })
+        });
+    });
 
 });

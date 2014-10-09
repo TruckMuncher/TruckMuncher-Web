@@ -1,7 +1,5 @@
 /** Requires base64.js from base-64 package*/
-var app = angular.module('truckmuncher.headerHelpers', []);
-
-app.factory('TokenService', function () {
+angular.module('TruckMuncherApp').factory('TokenService', function () {
     var twitter_oauth_token;
     var twitter_oauth_token_secret;
     var facebook_access_token;
@@ -17,14 +15,13 @@ app.factory('TokenService', function () {
             return {
                 oauth_token: twitter_oauth_token,
                 oauth_token_secret: twitter_oauth_token_secret
-            }
+            };
         },
         getFacebook: function () {
             return {access_token: facebook_access_token};
         }
-    }
+    };
 });
-
 
 app.factory('TimestampAndNonceService', function () {
     function twoDigitNumber(n) {
@@ -60,7 +57,7 @@ app.factory('TimestampAndNonceService', function () {
             var _32randomChars = uuid.replace(/-/gi, '');
             return base64.encode(_32randomChars);
         }
-    }
+    };
 });
 
 
@@ -70,9 +67,9 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService',
             request: function (config) {
                 // oauth headers
                 if (TokenService.getFacebook().access_token) {
-                    config.headers['Authorization'] = 'access_token=' + TokenService.getFacebook().access_token;
-                } else {
-                    config.headers['Authorization'] =
+                    config.headers.Authorization = 'access_token=' + TokenService.getFacebook().access_token;
+                } else if(TokenService.getTwitter().oauth_token) {
+                    config.headers.Authorization =
                         'oauth_token=' + TokenService.getTwitter().oauth_token +
                         ', oauth_secret=' + TokenService.getTwitter().oauth_token_secret;
                 }
@@ -83,15 +80,15 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService',
 
                 //configure cross domain
                 delete config['X-Requested-With'];
-                config['crossDomain'] = true;
+                config.crossDomain = true;
 
                 // json headers
-                config.headers['Accept'] = 'application/json';
+                config.headers.Accept = 'application/json';
                 config.headers['Content-Type'] = 'application/json';
 
                 return config;
             }
-        }
+        };
     }]);
 
 

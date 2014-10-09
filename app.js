@@ -1,37 +1,37 @@
 /*jshint node:true*/
 
 var express = require('express'),
-session = require('express-session'),
-path = require('path'),
-api = require('./api'),
-routes = require('./routes'),
-config = require('./oauth'),
-passport = require('passport'),
-FacebookStrategy = require('passport-facebook').Strategy,
-TwitterStrategy = require('passport-twitter').Strategy;
+    session = require('express-session'),
+    path = require('path'),
+    api = require('./api'),
+    routes = require('./routes'),
+    config = require('./oauth'),
+    passport = require('passport'),
+    FacebookStrategy = require('passport-facebook').Strategy,
+    TwitterStrategy = require('passport-twitter').Strategy;
 
 passport.use(new FacebookStrategy({
-	clientID: config.facebook.clientID,
-	clientSecret: config.facebook.clientSecret,
-	callbackURL: config.facebook.callbackURL
-},
-function(accessToken, refreshToken, profile, done) {
-	process.nextTick(function () {
-		return done(null, profile, { accessToken: accessToken});
-	});
-}
+        clientID: config.facebook.clientID,
+        clientSecret: config.facebook.clientSecret,
+        callbackURL: config.facebook.callbackURL
+    },
+    function (accessToken, refreshToken, profile, done) {
+        process.nextTick(function () {
+            return done(null, profile, { accessToken: accessToken});
+        });
+    }
 ));
 
 passport.use(new TwitterStrategy({
-	consumerKey: config.twitter.consumerKey,
-	consumerSecret: config.twitter.consumerSecret,
-	callbackURL: config.twitter.callbackURL
-},
-function(token, tokenSecret, profile, done) {
-	process.nextTick(function () {
-		return done(null, profile);
-	});
-}
+        consumerKey: config.twitter.consumerKey,
+        consumerSecret: config.twitter.consumerSecret,
+        callbackURL: config.twitter.callbackURL
+    },
+    function (token, tokenSecret, profile, done) {
+        process.nextTick(function () {
+            return done(null, profile);
+        });
+    }
 ));
 
 // setup middleware
@@ -41,10 +41,10 @@ var sess = {
 // 	genid: function(req) {
 //     return genuuid(); // use UUIDs for session IDs
 // },
-secret: 'MunchyTruckMunch3r',
-resave: true, 
-saveUninitialized: true,
-cookie: {}
+    secret: 'MunchyTruckMunch3r',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {}
 };
 // if (app.get('env') === 'production') {
 //   app.set('trust proxy', 1) // trust first proxy
@@ -57,23 +57,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
 
-app.use(function(req, res, next) {
-	var oauthTwitter = req.session['oauth:twitter'];
-	var host = (process.env.VCAP_APP_HOST || 'localhost');
-	if(oauthTwitter){
+app.use(function (req, res, next) {
+    var oauthTwitter = req.session['oauth:twitter'];
+    var host = (process.env.VCAP_APP_HOST || 'localhost');
+    if (oauthTwitter) {
         api.login(oauthTwitter.oauth_token, oauthTwitter.oauth_token_secret);
-		req.session.twitterToken = oauthTwitter.oauth_token;
-		req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
-	}
+        req.session.twitterToken = oauthTwitter.oauth_token;
+        req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
+    }
 
     //force https on everything but localhost
-	var schema = req.headers['x-forwarded-proto'];
-	if(schema === 'https' || host === 'localhost'){
-		next();
-	}
-	else{
-		res.redirect('https://' + req.headers.host + req.url);
-	}
+    var schema = req.headers['x-forwarded-proto'];
+    if (schema === 'https' || host === 'localhost') {
+        next();
+    }
+    else {
+        res.redirect('https://' + req.headers.host + req.url);
+    }
 });
 
 
@@ -88,48 +88,54 @@ app.use(express.static(path.join(__dirname, '/lib')));
 
 // test authentication
 function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) { return next(); }
-	res.redirect('/')
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/')
 }
 
-app.all('/vendors*', ensureAuthenticated);
+//app.all('/vendors*', ensureAuthenticated);
 
 app.get('/', routes.index);
 
 app.get('/partials/*', routes.partials);
 
-app.get('/vendors', routes.vendors);
-
 app.get('/auth/twitter', passport.authenticate('twitter'));
 
 app.get('/logout', routes.logout);
 
-app.get('/auth/twitter/callback', 
-	passport.authenticate('twitter', { failureRedirect: '/' }),
-	function(req, res, next) {
-		res.redirect('/vendors');
-	});
+app.get('/auth/twitter/callback',
+    passport.authenticate('twitter', { failureRedirect: '/' }),
+    function (req, res, next) {
+        res.redirect('/#/vendors/menu');
+    });
 
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
-app.get('/auth/facebook/callback', function(req, res, next){
-	passport.authenticate('facebook', function(err, user, info){
-		if (err) { return next(err); }
-		if (!user) { return res.redirect('/'); }
-		req.logIn(user, function(err) {
-			if (err) { return next(err); }
+app.get('/auth/facebook/callback', function (req, res, next) {
+    passport.authenticate('facebook', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
             api.login(null, null, info.accessToken);
-			req.session.facebookAccessToken = info.accessToken;
-			return res.redirect('/vendors');
-		});
-	})(req, res, next);
+            req.session.facebookAccessToken = info.accessToken;
+            return res.redirect('/#/vendors/menu');
+        });
+    })(req, res, next);
 });
 
-passport.serializeUser(function(user, done) {
-	done(null, user);
+passport.serializeUser(function (user, done) {
+    done(null, user);
 });
-passport.deserializeUser(function(obj, done) {
-	done(null, obj);
+passport.deserializeUser(function (obj, done) {
+    done(null, obj);
 });
 
 var port = (process.env.VCAP_APP_PORT || 3000);

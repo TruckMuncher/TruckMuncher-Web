@@ -1,4 +1,4 @@
-angular.module('vendorApp')
+angular.module('TruckMuncherApp')
     .factory('FullMenus', ['$http', function($http){
         return {
             get: function(latitude, longitude, includeAvailability){
@@ -15,5 +15,5 @@ angular.module('vendorApp')
                     return [];
                 });
             }
-        }
+        };
     }]);
