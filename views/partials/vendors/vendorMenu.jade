@@ -1,10 +1,17 @@
+div.form-group
+    a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory') Add Category
 .jarviswidget.jarviswidget-color-blueDark(data-ng-repeat='category in menu.category track by menuId')
     header
         h2 {{category.name}}
+        .jarviswidget-ctrls
+            a.button-icon.jarviswidget-toggle-btn(href="", title="Delete Category")
+                i.fa.fa-trash
+        .jarviswidget-ctrls
+            a.button-icon.jarviswidget-toggle-btn(href="", title='Edit Category')
+                i.fa.fa-edit
     div
         .widget-body
             p {{category.notes}}
-
             .table-responsive
                 table.table.table-bordered
                     thead

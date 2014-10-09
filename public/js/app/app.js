@@ -17,6 +17,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             templateUrl: "/partials/vendors/itemDetails.jade",
             controller: 'itemDetailsCtrl'
         })
+        .state('menu.addCategory', {
+            url: "/addCategory"
+        })
         .state('login', {
             url: "/login",
             templateUrl: "partials/login.jade"
