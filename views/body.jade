@@ -1,6 +1,6 @@
 //- body.jade
 //- This file provides the HTML body part.
-body.menu-on-top(data-ng-class='{"hidden-menu": !showMenu}')
+body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": showMenu}')
     include header
     include leftNav
 
@@ -21,5 +21,8 @@ body.menu-on-top(data-ng-class='{"hidden-menu": !showMenu}')
     script(src='/js/app/FullMenusService.js')
     script(src='/js/app/initCtrl.js')
     script(src='/js/app/authHelpers.js')
+    script(src='/js/app/headerCtrl.js')
+    script(src='/js/app/navCtrl.js')
+    script(src='/js/app/cssCtrl.js')
     script(src='/lodash/lodash.compat.js')
 

@@ -1,6 +1,6 @@
 // Left panel : Navigation area
 // Note: This width of the aside area can be adjusted through LESS variables
-aside#left-panel
+aside#left-panel(data-ng-controller='navCtrl')
     // User info
     div.login-info
         span
@@ -21,22 +21,22 @@ aside#left-panel
                                         Please note that these links work a bit different than
                                         traditional href="" links. See documentation for details.
         ul
-            li(ui-sref-active="active")
+            li(ui-sref-active="active", data-ng-click='menuItemClicked()()')
                 a(data-ui-sref='home', title='Home')
                     i.fa.fa-lg.fa-fw.fa-home
                     span.menu-item-parent Home
-            li(ui-sref-active="active")
+            li(ui-sref-active="active", data-ng-click='menuItemClicked()')
                 a(data-ui-sref='vendorProfile')
                     i.fa.fa-lg.fa-fw.fa-truck
                     span.menu-item-parent Profile
                 ul
-                    li
+                    li(data-ng-click='menuItemClicked()')
                         a test sub menu
-            li(ui-sref-active="active")
+            li(ui-sref-active="active", data-ng-click='menuItemClicked()')
                 a(data-ui-sref='menu')
                     i.fa.fa-lg.fa-fw.fa-bars
                     span.menu-item-parent My Menu
-            li(ui-sref-active="active")
+            li(ui-sref-active="active", data-ng-click='menuItemClicked()')
                 a(data-ui-sref='map')
                     i.fa.fa-lg.fa-fw.fa-map-marker
                     span.menu-item-parent Map
