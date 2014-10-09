@@ -5,10 +5,13 @@ div.form-group
         h2 {{category.name}}
         .jarviswidget-ctrls
             a.button-icon.jarviswidget-toggle-btn(href="", title="Delete Category")
-                i.fa.fa-trash
+                i.fa.fa-trash.fa-lg
         .jarviswidget-ctrls
             a.button-icon.jarviswidget-toggle-btn(href="", title='Edit Category')
-                i.fa.fa-edit
+                i.fa.fa-edit.fa-lg
+        .jarviswidget-ctrls
+            a.button-icon.jarviswidget-toggle-btn(href="", title='Add Item')
+                i.fa.fa-plus.fa-lg
     div
         .widget-body
             p {{category.notes}}
