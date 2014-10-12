@@ -29,7 +29,7 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
 
         $scope.addItem = function () {
             $state.go('.addItem');
-        }
+        };
 
     }
 ]);

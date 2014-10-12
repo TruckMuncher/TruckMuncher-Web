@@ -8,5 +8,5 @@ angular.module('TruckMuncherApp').controller('cssCtrl', ['$scope', '$rootScope',
 
         $rootScope.$on('toggleMenu', function(){
             $scope.showMenu = !$scope.showMenu;
-        })
+        });
     }]);

@@ -2,5 +2,5 @@ angular.module('TruckMuncherApp').controller('headerCtrl', ['$scope', '$rootScop
     function ($scope, $rootScope) {
         $scope.toggleMenu = function(){
             $rootScope.$emit('toggleMenu');
-        }
+        };
     }]);
