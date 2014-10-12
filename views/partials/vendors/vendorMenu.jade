@@ -1,6 +1,9 @@
 div.form-group
+    label(for='truckList') Menu for Truck:
+    select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.truckId as truck.name for truck in trucks')
+div.form-group
     a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory') Add Category
-.jarviswidget.jarviswidget-color-blueDark.col-lg-6(data-ng-repeat='category in menu.category track by menuId')
+.jarviswidget.jarviswidget-color-blueDark.col-lg-6(data-ng-repeat='category in menu.category track by category.id')
     header
         h2 {{category.name}}
         .jarviswidget-ctrls
@@ -16,13 +19,13 @@ div.form-group
                 table.table.table-bordered.table-hover
                     thead
                         tr
-                            td
+                            th
                                 span Item
-                            td
+                            th
                                 span Price
-                            td(colspan='2')
+                            th(colspan='2')
                     tbody
-                        tr(data-ng-repeat='item in category.menuItem')
+                        tr(data-ng-repeat='item in category.menuItem track by id')
                             td(style='width:80%')
                                 span
                                     b {{item.name}}:

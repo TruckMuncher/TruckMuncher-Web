@@ -1,11 +1,10 @@
 angular.module('TruckMuncherApp')
-    .factory('FullMenus', ['$http', function($http){
+    .factory('TruckService', ['$http', function($http){
         return {
-            get: function(latitude, longitude, includeAvailability){
+            getTrucksForVendor: function(){
                 return $http({
                     method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus',
-                    data: {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability},
+                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/TrucksForVendorRequest',
                     crossDomain: true,
                     cache: true
                 }).then(function(response){
