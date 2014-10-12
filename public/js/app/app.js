@@ -32,7 +32,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('vendorProfile', {
             url: "/vendors/profile",
-            templateUrl: "/partials/vendors/profile.jade"
+            templateUrl: "/partials/vendors/profile.jade",
+            controller: 'vendorProfileCtrl'
         })
         .state('map', {
             url: "/map",

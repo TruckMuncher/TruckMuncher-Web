@@ -15,4 +15,5 @@ describe('TruckMuncherApp', function () {
             expect($scope.menu).toEqual({});
         });
     });
+
 });

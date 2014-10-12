@@ -1,5 +1,5 @@
 angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state',
-    function ($scope, MenuService, TruckService, $state) {
+    function ($scope, MenuService, TruckService) {
         $scope.trucks = [
             {'truckId': 1234, 'name': 'South Side Truck'},
             {'truckId': 1235, 'name': 'East Side Truck'}
@@ -22,14 +22,6 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         $scope.$on('menuUpdated', function (event, data) {
             $scope.menu = data;
         });
-
-        $scope.editItem = function (itemId) {
-            $state.go('.editItem', {itemId: itemId});
-        };
-
-        $scope.addItem = function () {
-            $state.go('.addItem');
-        };
 
     }
 ]);
