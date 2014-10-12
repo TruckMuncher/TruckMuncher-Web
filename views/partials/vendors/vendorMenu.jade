@@ -1,37 +1,42 @@
 div.form-group
     a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory') Add Category
-.jarviswidget.jarviswidget-color-blueDark(data-ng-repeat='category in menu.category track by menuId')
+.jarviswidget.jarviswidget-color-blueDark.col-lg-6(data-ng-repeat='category in menu.category track by menuId')
     header
         h2 {{category.name}}
         .jarviswidget-ctrls
-            a.button-icon.jarviswidget-toggle-btn(href="", title="Delete Category")
+            a.button-icon.jarviswidget-toggle-btn(title="Delete Category")
                 i.fa.fa-trash.fa-lg
         .jarviswidget-ctrls
-            a.button-icon.jarviswidget-toggle-btn(href="", title='Edit Category')
+            a.button-icon.jarviswidget-toggle-btn(data-ui-sref='.editCategory({categoryId: category.id})', href="", title='Edit Category')
                 i.fa.fa-edit.fa-lg
-        .jarviswidget-ctrls
-            a.button-icon.jarviswidget-toggle-btn(href="", title='Add Item')
-                i.fa.fa-plus.fa-lg
     div
         .widget-body
             p {{category.notes}}
             .table-responsive
-                table.table.table-bordered
+                table.table.table-bordered.table-hover
                     thead
                         tr
                             td
-                                span= 'Item'
+                                span Item
                             td
-                                span= 'Price'
-                            td
-                                span= 'Edit'
+                                span Price
+                            td(colspan='2')
                     tbody
                         tr(data-ng-repeat='item in category.menuItem')
+                            td(style='width:80%')
+                                span
+                                    b {{item.name}}:
+                                =  ' {{item.notes}}'
                             td
-                                span {{item.name}}
-                            td
-                                span {{item.price}}
-                            td
-                                a(data-ui-sref='.editItem({itemId: item.id})') Edit
+                                span {{item.price | currency:"$":0}}
+                            td(style='border-right:0px')
+                                a(data-ui-sref='.editItem({itemId: item.id})', title="Edit Item")
+                                    i.fa.fa-edit.fa-lg
+                            td(style='border-left:0px')
+                                a(href='' title="Delete tem")
+                                    i.fa.fa-trash.fa-lg
+                        tr.pointer(data-ng-click='addItem()', )
+                            td.borderit.text-center(colspan='4')
+                                span Add Item
 
 <div data-ui-view></div>
