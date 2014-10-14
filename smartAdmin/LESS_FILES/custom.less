@@ -8,3 +8,87 @@
 .chosen-container{
   width:100%!important;
 }
+
+
+
+/************ style **************/
+@truckMuncherGreenBase : #009688;
+@truckMuncherPinkBase : #c2185b;
+
+.smart-style-truckmuncher #header {
+  background-color: @truckMuncherGreenBase;
+  background-image: -moz-linear-gradient(top, @truckMuncherGreenBase #006e63);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@truckMuncherGreenBase , to(#006e63)));
+  background-image: -webkit-linear-gradient(top, @truckMuncherGreenBase, #006e63);
+  background-image: -o-linear-gradient(top, @truckMuncherGreenBase,  #006e63);
+  background-image: linear-gradient(to bottom, @truckMuncherGreenBase, #006e63);
+}
+
+.smart-style-truckmuncher aside {
+  background: @truckMuncherGreenBase;
+  border-right:2px solid @truckMuncherGreenBase;
+}
+
+
+/*
+ * Truckmuncher Top Menu
+ */
+
+.smart-style-truckmuncher.menu-on-top aside {
+  background: @truckMuncherPinkBase;
+  border-right:2px solid @truckMuncherPinkBase
+}
+
+
+.smart-style-truckmuncher.menu-on-top aside#left-panel {
+  -webkit-box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
+  box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
+  border-bottom: 1px solid @truckMuncherPinkBase;
+  border-top: 1px solid @truckMuncherPinkBase;
+}
+
+
+/* Hover state */
+.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover {
+  background: #fff; /* Old browsers */
+  background: -moz-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@truckMuncherGreenBase), color-stop(66%,#2E3E57)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  @truckMuncherGreenBase 0%,#2E3E57 66%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  @truckMuncherGreenBase 0%,#2E3E57 66%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  @truckMuncherGreenBase 0%,#2E3E57 66%); /* IE10+ */
+  background: linear-gradient(to bottom,@truckMuncherGreenBase,#2E3E57 66%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04070C', endColorstr='#2E3E57',GradientType=0 ); /* IE6-9 */
+}
+
+.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover > a {
+  color:#F1F1F1 !important;
+  border-left: 1px solid @truckMuncherGreenBase;
+  border-right: 1px solid @truckMuncherGreenBase;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li > ul {
+  background: @truckMuncherGreenBase;
+}
+
+
+.smart-style-truckmuncher.menu-on-top nav ul ul li a,
+.smart-style-truckmuncher.menu-on-top nav ul ul ul li a {
+  color: @truckMuncherGreenBase;
+}
+
+.smart-style-truckmuncher.menu-on-top nav ul ul li a:hover,
+.smart-style-truckmuncher.menu-on-top nav ul ul ul li a:hover {
+  color: @truckMuncherPinkBase;
+  background-color: @truckMuncherGreenBase !important;
+}
+
+.smart-style-truckmuncher.menu-on-top nav ul ul li:hover > a {
+  color: @truckMuncherPinkBase;
+  background-color: @truckMuncherGreenBase;
+}
+
+.smart-style-truckmuncher.menu-on-top nav > ul ul ul {
+  border-top: 1px solid @truckMuncherGreenBase !important;
+}

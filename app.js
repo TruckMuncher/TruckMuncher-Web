@@ -29,7 +29,7 @@ passport.use(new TwitterStrategy({
     },
     function (token, tokenSecret, profile, done) {
         process.nextTick(function () {
-            return done(null, profile);
+            return done(null, profile, {token: token, tokenSecret: tokenSecret});
         });
     }
 ));
@@ -58,14 +58,6 @@ app.use(passport.session());
 app.use(express.errorHandler());
 
 app.use(function (req, res, next) {
-    var oauthTwitter = req.session['oauth:twitter'];
-    var host = (process.env.VCAP_APP_HOST || 'localhost');
-    if (oauthTwitter) {
-        api.login(oauthTwitter.oauth_token, oauthTwitter.oauth_token_secret);
-        req.session.twitterToken = oauthTwitter.oauth_token;
-        req.session.twitterTokenSecret = oauthTwitter.oauth_token_secret;
-    }
-
     //force https on everything but localhost
     var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https' || host === 'localhost') {
@@ -100,18 +92,30 @@ app.get('/', routes.index);
 
 app.get('/partials/*', routes.partials);
 
-app.get('/auth/twitter', passport.authenticate('twitter'));
-
 app.get('/logout', routes.logout);
 
-app.get('/auth/twitter/callback',
-    passport.authenticate('twitter', { failureRedirect: '/' }),
-    function (req, res, next) {
-        res.redirect('/#/vendors/menu');
-    });
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', function (req, res, next) {
+    passport.authenticate('twitter', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            api.login(info.token, info.tokenSecret, null);
+            req.session.twitterToken = info.token;
+            req.session.twitterTokenSecret = info.tokenSecret;
+            return res.redirect('/#/vendors/menu');
+        });
+    })(req, res, next);
+});
 
 app.get('/auth/facebook', passport.authenticate('facebook'));
-
 app.get('/auth/facebook/callback', function (req, res, next) {
     passport.authenticate('facebook', function (err, user, info) {
         if (err) {

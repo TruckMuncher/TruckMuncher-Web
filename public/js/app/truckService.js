@@ -4,7 +4,7 @@ angular.module('TruckMuncherApp')
             getTrucksForVendor: function(){
                 return $http({
                     method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/TrucksForVendorRequest',
+                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor',
                     crossDomain: true,
                     cache: true
                 }).then(function(response){
