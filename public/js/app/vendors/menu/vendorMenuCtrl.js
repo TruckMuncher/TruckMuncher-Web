@@ -1,10 +1,6 @@
 angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state',
     function ($scope, MenuService, TruckService, $state) {
-        $scope.trucks = [
-            {'truckId': 1234, 'name': 'South Side Truck'},
-            {'truckId': 1235, 'name': 'East Side Truck'}
-        ];
-        $scope.selectedTruck = 1234;
+        $scope.selectedTruck = null;
 
         $scope.menu = {"truckId": 1234, "menuId": 1234, "category": [
             {"id": 1234, "name": "Sandwiches", "notes": "Free drink with all sandwiches", "orderInMenu": 0, "menuItem": [
@@ -16,7 +12,18 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         ], "unknownFieldsSerializedSize": 0, "serializedSize": 128};
 
         TruckService.getTrucksForVendor().then(function (response) {
-//            $scope.trucks = response;
+            $scope.trucks = response;
+            if ($scope.trucks.length > 0) {
+                $scope.selectedTruck = $scope.trucks[0].id;
+            }
+        });
+
+        $scope.$watch('selectedTruck', function () {
+            if ($scope.selectedTruck) {
+                MenuService.getMenu($scope.selectedTruck);
+            } else {
+//                $scope.menu = {};
+            }
         });
 
         $scope.$on('menuUpdated', function (event, data) {

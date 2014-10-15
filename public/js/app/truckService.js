@@ -9,7 +9,7 @@ angular.module('TruckMuncherApp')
                     crossDomain: true,
                     cache: true
                 }).then(function(response){
-                    return response.data;
+                    return response.data.trucks;
                 }, function(error){
                     console.log(error);
                     return [];

@@ -2,7 +2,7 @@
     article.col-lg-3.col-md-6.col-sm-9
         div.form-group
             label(for='truckList') Menu for Truck:
-            select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.truckId as truck.name for truck in trucks')
+            select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
         div.form-group
             a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({menuId: selectedTruck})') Add Category
 .row

@@ -14,6 +14,19 @@ angular.module('TruckMuncherApp')
                     console.log(error);
                     return [];
                 });
+            },
+            getMenu: function(truckId){
+                return $http({
+                    method: 'POST',
+                    url:'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus',
+                    data: {'truckId': truckId},
+                    crossDomain: true
+                }).then(function(response){
+
+                }, function(error){
+                    console.log(error);
+                    return [];
+                });
             }
         };
     }]);
