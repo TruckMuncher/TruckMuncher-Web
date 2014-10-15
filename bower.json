@@ -14,7 +14,7 @@
     "angular": "~1.2.0",
     "jquery": "~1.9.0",
     "angular-ui-router": "~0.2.11",
-    "base-64": "~0.1.0",
-    "angular-chosen-localytics": "~1.0.6"
+    "angular-chosen-localytics": "~1.0.6",
+    "base-64": "~0.1.0"
   }
 }

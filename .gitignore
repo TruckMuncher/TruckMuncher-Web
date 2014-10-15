@@ -39,3 +39,5 @@ smartAdmin/UNMINIFIED_CSS/*
 !smartAdmin/LESS_FILES/overrides.less
 
 .DS_Store
+
+bower_components/*

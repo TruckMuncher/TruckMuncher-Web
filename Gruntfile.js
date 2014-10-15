@@ -119,6 +119,7 @@ module.exports = function (grunt) {
                     'lib/angular/angular.js',
                     'lib/jquery/jquery.js',
                     'lib/angular-chosen-localytics/chosen.js',
+                    'lib/angular-bootstrap/ui-bootstrap-tpls.js',
                     'lib/chosen/*.js',
                     'lib/angular-ui-router/angular-ui-router.js',
                     'lib/angular-mocks/angular-mocks.js',

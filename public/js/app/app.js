@@ -1,4 +1,4 @@
-var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives']);
+var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives', 'ui.bootstrap']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("home");
@@ -14,7 +14,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('menu.editItem', {
             url: "/editItem/:itemId",
-            templateUrl: "/partials/vendors/itemDetails.jade",
+//            templateUrl: "/partials/vendors/itemDetails.jade",
             controller: 'itemDetailsCtrl'
         })
         .state('menu.addItem', {
