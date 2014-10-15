@@ -4,7 +4,7 @@
             label(for='truckList') Menu for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.truckId as truck.name for truck in trucks')
         div.form-group
-            a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory') Add Category
+            a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({menuId: selectedTruck})') Add Category
 .row
     article.col-lg-6(data-ng-repeat='category in menu.category track by category.id')
         .jarviswidget.jarviswidget-color-blueDark

@@ -2,10 +2,11 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
     function ($scope, $modalInstance, $stateParams, $state) {
         $scope.item = {};
 
+        //TODO: add tests to this. Might be difficult since it's self invoking
         (function () {
-            //call api to get list of categories
-            if ($state.current.name === 'editItem') {
-                //call api and grab item
+            //TODO: call api to get list of categories
+            if ($state.current.name === 'menu.editItem') {
+                //TODO: call api and grab item
             } else if ($stateParams.categoryId) {
                 $scope.item.category = $stateParams.categoryId;
             }
@@ -13,7 +14,9 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
 
 
         $scope.ok = function () {
-            //call method to server to update item
+            //TODO: call method to server to update item
+
+            //TODO: return only on success and return the entire menu, which should be in the response instead of this item
             $modalInstance.close($scope.item);
         };
 
