@@ -11,8 +11,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$sta
 
             $scope.modalInstance.result.then(function (response) {
 
-            }, function () {
-                if($state.current.name !== 'menu'){
+            }, function (response) {
+                if ($state.current.name !== 'menu' && response !== 'dismissFromStateChange') {
                     $state.go('menu');
                 }
             });
@@ -24,8 +24,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$sta
 ]);
 
 
-angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance', '$state',
-    function ($scope, $modalInstance, $state) {
+angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance', '$state', '$stateParams',
+    function ($scope, $modalInstance, $state, $stateParams) {
         $scope.item = {};
 
         $scope.ok = function () {
@@ -33,9 +33,7 @@ angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', 
             console.log($scope.item)
         };
 
-        $scope.$on('$stateChangeSuccess', function(){
-            if($state.current.name === 'menu'){
-                $modalInstance.dismiss();
-            }
+        $scope.$on('$stateChangeSuccess', function () {
+            $modalInstance.dismiss('dismissFromStateChange');
         });
     }]);
