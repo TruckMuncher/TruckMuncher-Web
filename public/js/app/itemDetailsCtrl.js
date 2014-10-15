@@ -1,18 +1,20 @@
-angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$stateParams', '$modal',
-    function ($scope, $stateParams, $modal) {
+angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$stateParams', '$modal', '$state',
+    function ($scope, $stateParams, $modal, $state) {
 
-        $scope.categories = {"item": "test1", "item2":"test2"};
+        $scope.categories = {"item": "test1", "item2": "test2"};
 
         $scope.openModal = function () {
-            var modalInstance = $modal.open({
+            $scope.modalInstance = $modal.open({
                 templateUrl: '/partials/vendors/itemDetails.jade',
                 controller: 'itemDetailsModalCtrl'
             });
 
-            modalInstance.result.then(function(response){
+            $scope.modalInstance.result.then(function (response) {
 
-            }, function(){
-
+            }, function () {
+                if($state.current.name !== 'menu'){
+                    $state.go('menu');
+                }
             });
         };
 
@@ -23,14 +25,15 @@ angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$sta
 
 
 angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance',
-    function($scope, $modalInstance) {
+    function ($scope, $modalInstance) {
+        $scope.item = {};
 
-    $scope.ok = function() {
-        var json = {"name":$('#itemName').val(), "price":$('#itemPrice').val(), "available":$('#itemAvailable').is(':checked'), "notes":$('#itemNotes').val()}
-        console.log(json)
-    };
+        $scope.ok = function () {
+            //do logic here
+            console.log($scope.item)
+        };
 
-    $scope.cancel = function () {
-        console.log("cancel")
-    }
-}]);
+        $scope.$on('$stateChangeSuccess', function(){
+            $modalInstance.dismiss();
+        });
+    }]);
