@@ -24,8 +24,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$sta
 ]);
 
 
-angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance', '$state', '$stateParams',
-    function ($scope, $modalInstance, $state, $stateParams) {
+angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance',
+    function ($scope, $modalInstance) {
         $scope.item = {};
 
         $scope.ok = function () {
