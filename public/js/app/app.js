@@ -14,17 +14,25 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('menu.editItem', {
             url: "/editItem/:itemId",
-//            templateUrl: "/partials/vendors/itemDetails.jade",
-            controller: 'itemDetailsCtrl'
+            data: {
+                templateUrl: '/partials/vendors/itemDetails.jade',
+                controller: 'addOrEditItemModalCtrl'
+            },
+            controller: 'menuActionModalCtrl'
         })
         .state('menu.addItem', {
-            url: '/addItem'
+            url: '/category/:categoryId/addItem',
+            data: {
+                templateUrl: 'partials/vendors/itemDetails.jade',
+                controller: 'addOrEditItemModalCtrl'
+            },
+            controller: 'menuActionModalCtrl'
         })
         .state('menu.editCategory', {
-            url: "/editCategory/:categoryId"
+            url: "/category/:categoryId"
         })
         .state('menu.addCategory', {
-            url: "/addCategory"
+            url: "/category"
         })
         .state('login', {
             url: "/login",

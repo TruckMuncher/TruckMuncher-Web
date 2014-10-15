@@ -125,7 +125,7 @@ module.exports = function (grunt) {
                     'lib/angular-mocks/angular-mocks.js',
                     'lib/base-64/base64.js',
                     'public/js/app/app.js',
-                    'public/js/app/*.js',
+                    'public/js/app/**/*.js',
                     'test/jasmine/**/*.js'
                 ],
                 frameworks: ['jasmine'],

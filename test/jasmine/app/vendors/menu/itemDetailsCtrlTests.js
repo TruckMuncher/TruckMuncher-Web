@@ -1,7 +1,7 @@
 describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
-    describe('itemDetailsModalCtrl', function () {
+    describe('addOrEditItemModalCtrl', function () {
         var $scope;
         var modalInstance;
         var $state;
@@ -21,7 +21,7 @@ describe('TruckMuncherApp', function () {
                 }
             };
 
-            $controller('itemDetailsModalCtrl', {$scope: $scope, $modalInstance: modalInstance});
+            $controller('addOrEditItemModalCtrl', {$scope: $scope, $modalInstance: modalInstance});
         }));
 
         it('should dismiss the modal when the state changes', function(){
@@ -33,7 +33,7 @@ describe('TruckMuncherApp', function () {
 
     });
 
-    describe('itemDetailsCtrl', function () {
+    describe('menuActionModalCtrl', function () {
         var $scope;
         var $state;
         var modalConfirmCallback;
@@ -51,8 +51,9 @@ describe('TruckMuncherApp', function () {
         beforeEach(inject(function ($rootScope, $controller, $modal, _$state_) {
             $scope = $rootScope.$new();
             $state = _$state_;
+            $state.current.data = {templateUrl: '', controller: ''};
             spyOn($modal, 'open').andReturn(fakeModal);
-            $controller('itemDetailsCtrl', {$scope: $scope, $modal: $modal, $state: $state});
+            $controller('menuActionModalCtrl', {$scope: $scope, $modal: $modal, $state: $state});
         }));
 
         it('should emit a menuUpdated event with the response data when the modal successfully returns', function(){

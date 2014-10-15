@@ -1,10 +1,10 @@
 angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state',
-    function ($scope, MenuService, TruckService) {
+    function ($scope, MenuService, TruckService, $state) {
         $scope.trucks = [
             {'truckId': 1234, 'name': 'South Side Truck'},
             {'truckId': 1235, 'name': 'East Side Truck'}
         ];
-        $scope.selectedTruck=1234;
+        $scope.selectedTruck = 1234;
 
         $scope.menu = {"truckId": 1234, "menuId": 1234, "category": [
             {"id": 1234, "name": "Sandwiches", "notes": "Free drink with all sandwiches", "orderInMenu": 0, "menuItem": [
@@ -22,6 +22,10 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         $scope.$on('menuUpdated', function (event, data) {
             $scope.menu = data;
         });
+
+        $scope.addItem = function (categoryId) {
+            $state.go('.addItem', {categoryId: categoryId})
+        }
 
     }
 ]);
