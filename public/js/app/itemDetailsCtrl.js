@@ -10,7 +10,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$sta
             });
 
             $scope.modalInstance.result.then(function (response) {
-
+                $scope.$emit('menuUpdated', response);
+                $state.go('menu');
             }, function (response) {
                 if ($state.current.name !== 'menu' && response !== 'dismissFromStateChange') {
                     $state.go('menu');
@@ -29,8 +30,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', 
         $scope.item = {};
 
         $scope.ok = function () {
-            //do logic here
-            console.log($scope.item)
+            //call method to server to update item
+            $modalInstance.close($scope.item);
         };
 
         $scope.$on('$stateChangeSuccess', function () {
