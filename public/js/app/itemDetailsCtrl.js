@@ -24,8 +24,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsCtrl', ['$scope', '$sta
 ]);
 
 
-angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance',
-    function ($scope, $modalInstance) {
+angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', '$modalInstance', '$state',
+    function ($scope, $modalInstance, $state) {
         $scope.item = {};
 
         $scope.ok = function () {
@@ -34,6 +34,8 @@ angular.module('TruckMuncherApp').controller('itemDetailsModalCtrl', ['$scope', 
         };
 
         $scope.$on('$stateChangeSuccess', function(){
-            $modalInstance.dismiss();
+            if($state.current.name === 'menu'){
+                $modalInstance.dismiss();
+            }
         });
     }]);
