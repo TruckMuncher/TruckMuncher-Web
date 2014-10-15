@@ -1,0 +1,17 @@
+header#header
+    #logo-group
+        // PLACE YOUR LOGO HERE
+        span#logo
+            img(src='img/logo.png', alt='SmartAdmin')
+    .pull-right
+        // collapse menu button
+        div.btn-header.pull-right
+            span.hidden-lg.hidden-md
+                a(href='javascript:void(0);', data-ng-init='showMenu=true', data-ng-click='showMenu=!showMenu' data-action='toggleMenu', title='Collapse Menu')
+                    i.fa.fa-reorder
+            // logout button
+            div.btn-header.transparent.pull-right
+                span
+                    a(href="/logout", title='Sign Out')
+                        i.fa.fa-sign-out
+            // end logout button
