@@ -2,10 +2,12 @@
 .modal-body.smart-form
     section
         label.label(for='categoryName') Category Name
-        input.form-control(id='categoryName', name='categoryName', type='text', placeholder='Ex: Sandwiches', data-ng-model='category.name')
+        label.input
+            input(id='categoryName', type='text', placeholder='Ex: Sandwiches', data-ng-model='category.name')
     section
         label.label(for='categoryNotes') Notes
-        input.form-control(id='categoryNotes', type='text', placeholder='Ex: All sandwiches come with free chips and a drink', name='categoryNotes', data-ng-model='category.notes')
+        label.input
+            input(id='categoryNotes', type='text', placeholder='Ex: All sandwiches come with free chips and a drink', data-ng-model='category.notes')
 
 .modal-footer
     .form-group.row

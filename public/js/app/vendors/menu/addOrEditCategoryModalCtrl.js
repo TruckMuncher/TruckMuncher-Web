@@ -18,8 +18,6 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
                 $scope.category.notes,
                 $scope.category.orderInMenu).then(function (response) {
                     $modalInstance.close(response);
-                }, function (error) {
-                    alert(error);
                 });
         };
 
