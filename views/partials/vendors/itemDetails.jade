@@ -2,12 +2,13 @@
 .modal-body.smart-form
     section
         label.label(for='itemName') Item Name
-        input.form-control(id='itemName', name='itemName', type='text', placeholder='Pizza Burger', data-ng-model='item.name')
+        label.input
+            input(id='itemName', name='itemName', type='text', placeholder='Pizza Burger', data-ng-model='item.name')
     section
         label.label(for='itemPrice') Price
         .input-group
             .input-group-addon $
-            input.form-control(id='itemPrice', type='text', placeholder='8.50', name='itemPrice', data-ng-model='item.price')
+            input.form-control(id='itemPrice', type='text', placeholder='8.50', data-ng-model='item.price')
     section
         label.checkbox
             input(type='checkbox', id="itemAvailable", data-ng-model='item.available')

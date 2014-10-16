@@ -2,23 +2,10 @@
 .modal-body.smart-form
     section
         label.label(for='categoryName') Category Name
-        input.form-control(id='categoryName', name='categoryName', type='text', placeholder='Sandwiches', data-ng-model='category.name')
-    //section
-    //    label.label(for='itemPrice') Price
-    //    .input-group
-    //        .input-group-addon $
-    //        input.form-control(id='itemPrice', type='text', placeholder='8.50', name='itemPrice', data-ng-model='item.price')
-    //section
-    //    label.checkbox
-    //        input(type='checkbox', id="itemAvailable", data-ng-model='item.available')
-    //        i
-    //        | Available
-    //section
-    //    label.label(for='itemNotes') Notes
-    //    textarea.form-control(id='itemNotes', placeholder='A note about the menu item', data-ng-model='item.notes')
-    //section
-        //select(chosen, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="category", ng-options="c for c in categories")
-        //select(chosen, multiple, data-placeholder="Choose a beer", no-results-text="'Could not find any beers :('", ng-model="category", ng-options="b for b in categories", id='category')
+        input.form-control(id='categoryName', name='categoryName', type='text', placeholder='Ex: Sandwiches', data-ng-model='category.name')
+    section
+        label.label(for='categoryNotes') Notes
+        input.form-control(id='categoryNotes', type='text', placeholder='Ex: All sandwiches come with free chips and a drink', name='categoryNotes', data-ng-model='category.notes')
 
 .modal-footer
     .form-group.row

@@ -19,8 +19,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         });
 
         $scope.$watch('selectedTruck', function () {
-            if ($scope.selectedTruck) {
-                MenuService.getMenu($scope.selectedTruck);
+            if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
+                MenuService.getMenu($scope.selectedTruck).then(function (response) {
+                });
             } else {
 //                $scope.menu = {};
             }
@@ -28,6 +29,7 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
 
         $scope.$on('menuUpdated', function (event, data) {
             $scope.menu = data;
+            $scope.selectedTruck = $scope.menu.truckId;
         });
 
         $scope.addItem = function (categoryId) {
