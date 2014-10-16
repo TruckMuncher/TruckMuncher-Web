@@ -23,8 +23,8 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             $scope.selectedTruck = $scope.menu.truckId;
         });
 
-        $scope.addItem = function (categoryId) {
-            $state.go('.addItem', {categoryId: categoryId})
+        $scope.addItem = function (truckId, categoryId) {
+            $state.go('.addItem', {truckId: truckId, categoryId: categoryId})
         }
 
     }

@@ -1,20 +1,26 @@
-angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state',
-    function ($scope, $modalInstance, $stateParams, $state) {
+angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService',
+    function ($scope, $modalInstance, $stateParams, $state, MenuService) {
         $scope.category = {};
 
         (function () {
             if ($state.current.name === 'menu.editCategory') {
-                //TODO: call api and grab category
-            } else if ($stateParams.menuId) {
-                $scope.category.menuId = $stateParams.menuId;
+                MenuService.getCategory($stateParams.categoryId).then(function (response) {
+                    $scope.category = response;
+                });
             }
         })();
 
         $scope.ok = function () {
-            //TODO: call method to server to update item
-
-            //TODO: return only on success and return the entire menu, which should be in the response instead of this category
-            $modalInstance.close($scope.category);
+            MenuService.addOrUpdateCategory(
+                $stateParams.truckId,
+                $scope.category.id,
+                $scope.category.name,
+                $scope.category.notes,
+                $scope.category.orderInMenu).then(function (response) {
+                    $modalInstance.close(response);
+                }, function (error) {
+                    alert(error);
+                });
         };
 
         $scope.$on('$stateChangeSuccess', function () {

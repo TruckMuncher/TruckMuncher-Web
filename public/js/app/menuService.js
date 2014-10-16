@@ -31,11 +31,37 @@ angular.module('TruckMuncherApp')
             getItem: function (itemId) {
                 return $http({
                     method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuAdminService/getItem',
+                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem',
                     data: {'itemId': itemId},
                     crossDomain: true
                 }).then(function (response) {
                     return response.data;
+                }, function (error) {
+                    console.log(error);
+                    return [];
+                });
+            },
+            getCategory: function(categoryId){
+                return $http({
+                    method: 'POST',
+                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getCategory',
+                    data: {'categoryId': categoryId},
+                    crossDomain: true
+                }).then(function (response) {
+                    return response.data;
+                }, function (error) {
+                    console.log(error);
+                    return [];
+                });
+            },
+            addOrUpdateCategory: function(truckId, id, name, notes, orderInMenu){
+                return $http({
+                    method: 'POST',
+                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory',
+                    data: {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu},
+                    crossDomain: true
+                }).then(function (response) {
+                    return response.data.menu;
                 }, function (error) {
                     console.log(error);
                     return [];
