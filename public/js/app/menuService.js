@@ -1,5 +1,5 @@
 angular.module('TruckMuncherApp')
-    .factory('MenuService', ['$http', 'httpHelperService', function (httpHelperService) {
+    .factory('MenuService', ['httpHelperService', function (httpHelperService) {
         return {
             getFullMenus: function (latitude, longitude, includeAvailability) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus';
