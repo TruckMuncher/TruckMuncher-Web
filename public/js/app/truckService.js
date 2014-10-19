@@ -1,19 +1,9 @@
 angular.module('TruckMuncherApp')
-    .factory('TruckService', ['$http', function($http){
+    .factory('TruckService', ['httpHelperService', function (httpHelperService) {
         return {
-            getTrucksForVendor: function(){
-                return $http({
-                    method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor',
-                    data: {},
-                    crossDomain: true,
-                    cache: true
-                }).then(function(response){
-                    return response.data.trucks;
-                }, function(error){
-                    console.log(error);
-                    return [];
-                });
+            getTrucksForVendor: function () {
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
+                return httpHelperService.post(url, {}, 'trucks');
             }
         };
     }]);
