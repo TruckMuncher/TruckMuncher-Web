@@ -24,8 +24,8 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         });
 
         $scope.addItem = function (truckId, categoryId) {
-            $state.go('.addItem', {truckId: truckId, categoryId: categoryId})
-        }
+            $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
+        };
 
     }
 ]);
