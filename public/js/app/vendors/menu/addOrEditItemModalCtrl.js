@@ -12,9 +12,10 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
 
 
         $scope.ok = function () {
-            MenuService.addOrUpdateItem($scope.item, $stateParams.truckId, $stateParams.categoryId)
-                .then(
-                function (response) {
+            MenuService.addOrUpdateItem(
+                $scope.item,
+                $stateParams.truckId,
+                $stateParams.categoryId).then(function (response) {
                     $modalInstance.close(response)
                 });
         };
