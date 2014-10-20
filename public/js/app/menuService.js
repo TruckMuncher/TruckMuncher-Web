@@ -1,45 +1,30 @@
 angular.module('TruckMuncherApp')
-    .factory('MenuService', ['$http', function ($http) {
+    .factory('MenuService', ['httpHelperService', function (httpHelperService) {
         return {
             getFullMenus: function (latitude, longitude, includeAvailability) {
-                return $http({
-                    method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus',
-                    data: {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability},
-                    crossDomain: true,
-                    cache: true
-                }).then(function (response) {
-                    return response.data;
-                }, function (error) {
-                    console.log(error);
-                    return [];
-                });
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus';
+                var data = {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability};
+                return httpHelperService.post(url, data);
             },
             getMenu: function (truckId) {
-                return $http({
-                    method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getMenu',
-                    data: {'truckId': truckId},
-                    crossDomain: true
-                }).then(function (response) {
-                    return response.data;
-                }, function (error) {
-                    console.log(error);
-                    return [];
-                });
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getMenu';
+                var data = {'truckId': truckId};
+                return httpHelperService.post(url, data);
             },
             getItem: function (itemId) {
-                return $http({
-                    method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuAdminService/getItem',
-                    data: {'itemId': itemId},
-                    crossDomain: true
-                }).then(function (response) {
-                    return response.data;
-                }, function (error) {
-                    console.log(error);
-                    return [];
-                });
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem';
+                var data = {'itemId': itemId};
+                return httpHelperService.post(url, data);
+            },
+            getCategory: function (categoryId) {
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getCategory';
+                var data = {'categoryId': categoryId};
+                return httpHelperService.post(url, data);
+            },
+            addOrUpdateCategory: function (truckId, id, name, notes, orderInMenu) {
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory';
+                var data = {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu};
+                return httpHelperService.post(url, data, 'menu');
             }
         };
     }]);

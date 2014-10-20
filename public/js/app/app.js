@@ -13,7 +13,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: 'vendorMenuCtrl'
         })
         .state('menu.editItem', {
-            url: "/editItem/:itemId",
+            url: "/:truckId/category/:categoryId/item/:itemId",
             data: {
                 templateUrl: '/partials/vendors/itemDetails.jade',
                 controller: 'addOrEditItemModalCtrl'
@@ -21,7 +21,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: 'menuActionModalCtrl'
         })
         .state('menu.addItem', {
-            url: '/addItem/:categoryId',
+            url: '/:truckId/category/:categoryId/item',
             data: {
                 templateUrl: 'partials/vendors/itemDetails.jade',
                 controller: 'addOrEditItemModalCtrl'
@@ -29,7 +29,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: 'menuActionModalCtrl'
         })
         .state('menu.editCategory', {
-            url: "/editCategory/:categoryId",
+            url: "/:truckId/category/:categoryId",
             data: {
                 templateUrl: 'partials/vendors/categoryDetails.jade',
                 controller: 'addOrEditCategoryModalCtrl'
@@ -37,7 +37,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: 'menuActionModalCtrl'
         })
         .state('menu.addCategory', {
-            url: "/addCategory/:menuId",
+            url: "/:truckId/category",
             data: {
                 templateUrl: 'partials/vendors/categoryDetails.jade',
                 controller: 'addOrEditCategoryModalCtrl'

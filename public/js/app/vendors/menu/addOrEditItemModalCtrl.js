@@ -1,7 +1,6 @@
 angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state',
     function ($scope, $modalInstance, $stateParams, $state) {
         $scope.item = {};
-        $scope.somethingelse = {};
 
         //TODO: add tests to this. Might be difficult since it's self invoking
         (function () {
@@ -19,7 +18,6 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
             //TODO: call method to server to update item
             //MenuService.updateItem($scope.item).then(function(response){ $modalInstance.close(response)});
             //TODO: return only on success and return the entire menu, which should be in the response instead of this item
-            console.log(somethingelse);
             $modalInstance.close($scope.item);
         };
 

@@ -4,6 +4,6 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope',
         $scope.keywords = null;
 
         $scope.submit = function(){
-            console.log($scope.truckName + $scope.keywords)
-        }
+            console.log($scope.truckName + $scope.keywords);
+        };
     }]);
