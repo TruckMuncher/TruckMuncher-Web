@@ -27,17 +27,9 @@ angular.module('TruckMuncherApp')
                 return httpHelperService.post(url, data, 'menu');
             },
             updateItem: function(item, truckId, categoryId) {
-                return $http({
-                    method: 'POST',
-                    url: 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem',
-                    data: {'menuItem': item, 'truckId': truckId, 'categoryId': categoryId},
-                    crossDoamin: true
-                }).then(function (response) {
-                    return response.data;
-                }, function (error) {
-                    console.log(error);
-                    return [];
-                });
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem';
+                var data = {'menuItem': item, 'truckId': truckId, 'categoryId': categoryId};
+                return httpHelperService.post(url, data, 'menu');
             }
         };
     }]);
