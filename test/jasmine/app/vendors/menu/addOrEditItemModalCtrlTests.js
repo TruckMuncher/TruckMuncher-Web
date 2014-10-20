@@ -38,7 +38,7 @@ describe('TruckMuncherApp', function () {
             $state.current.name = 'menu.editItem';
             createControllerFn();
             //TODO: uncomment this when the controller acutally does it
-//            $httpBackend.verifyNoOutstandingExpectation();
+            $httpBackend.verifyNoOutstandingExpectation();
         });
     });
 });
