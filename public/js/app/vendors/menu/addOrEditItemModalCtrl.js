@@ -1,7 +1,6 @@
 angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state',
     function ($scope, MenuService, $modalInstance, $stateParams, $state) {
         $scope.item = {};
-        $scope.somethingelse = {};
 
         //TODO: add tests to this. Might be difficult since it's self invoking
         (function () {
