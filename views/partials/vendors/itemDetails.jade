@@ -1,27 +1,29 @@
 .modal-header Item Details
 .modal-body.smart-form
-    section
-        label.label(for='itemName') Item Name
-        label.input
-            input(id='itemName', name='itemName', type='text', placeholder='Pizza Burger', data-ng-model='item.name')
-    section
-        label.label(for='itemPrice') Price
-        .input-group
-            .input-group-addon $
-            input.form-control(id='itemPrice', type='text', placeholder='8.50', data-ng-model='item.price')
-    section
-        label.checkbox
-            input(type='checkbox', id="itemAvailable", data-ng-model='item.available')
-            i
-            | Available
-    section
-        label.label(for='itemNotes') Notes
-        textarea.form-control(id='itemNotes', placeholder='A note about the menu item', data-ng-model='item.notes')
-    section
-        //select(chosen, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="category", ng-options="c for c in categories")
-        //select(chosen, multiple, data-placeholder="Choose a beer", no-results-text="'Could not find any beers :('", ng-model="category", ng-options="b for b in categories", id='category')
+    form(name='itemForm')
+        section(data-ng-class="{ 'has-error' : itemForm.itemName.$invalid}")
+            label.label(for='itemName') Item Name
+            .input
+                input(id='itemName', name='itemName', type='text', placeholder='Ex: Pizza Burger', data-ng-model='item.name', required='')
+        section(data-ng-class="{ 'has-error' : itemForm.itemPrice.$invalid}")
+            label.label(for='itemPrice') Price
+            .input
+                i.icon-prepend.fa.fa-dollar
+                input(id='itemPrice', name='itemPrice', type='text', placeholder='Ex: 8.50', data-ng-model='item.price', required='')
+        section
+            label.checkbox
+                input(type='checkbox', id="itemAvailable", data-ng-model='item.available')
+                i
+                | Available
+        section
+            label.label(for='itemNotes') Notes
+            .textarea
+                textarea(id='itemNotes', placeholder='Ex: Delicious sausage and pizza sauce on a bagel', data-ng-model='item.notes')
+        section
+            //select(chosen, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="category", ng-options="c for c in categories")
+            //select(chosen, multiple, data-placeholder="Choose a beer", no-results-text="'Could not find any beers :('", ng-model="category", ng-options="b for b in categories", id='category')
 
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        button.btn.btn-default(data-ng-click='ok()') Submit
+        button.btn.btn-default(data-ng-click='ok()' data-ng-disabled="itemForm.$invalid") Submit
