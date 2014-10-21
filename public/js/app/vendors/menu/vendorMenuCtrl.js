@@ -18,6 +18,18 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             }
         });
 
+        $scope.deleteItem = function (itemId) {
+            MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
+                $scope.menu = response;
+            });
+        };
+
+        $scope.deleteCategory = function (categoryId) {
+            MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
+                $scope.menu = response;
+            });
+        };
+
         $scope.$on('menuUpdated', function (event, data) {
             $scope.menu = data;
             $scope.selectedTruck = $scope.menu.truckId;
