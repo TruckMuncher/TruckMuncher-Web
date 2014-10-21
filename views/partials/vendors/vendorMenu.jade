@@ -3,7 +3,7 @@
         div.form-group
             label(for='truckList') Menu for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
-        div.form-group
+        div.form-group(data-ng-show='selectedTruck')
             a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Category
 .row
     article.col-lg-6(data-ng-repeat='category in menu.categories track by category.id')

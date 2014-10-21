@@ -9,21 +9,21 @@ angular.module('TruckMuncherApp')
             getMenu: function (truckId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getMenu';
                 var data = {'truckId': truckId};
-                return httpHelperService.post(url, data);
+                return httpHelperService.post(url, data, 'menu');
             },
             getItem: function (itemId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem';
                 var data = {'itemId': itemId};
-                return httpHelperService.post(url, data);
+                return httpHelperService.post(url, data, 'item');
             },
             getCategory: function (categoryId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getCategory';
                 var data = {'categoryId': categoryId};
-                return httpHelperService.post(url, data);
+                return httpHelperService.post(url, data, 'category');
             },
             addOrUpdateCategory: function (truckId, id, name, notes, orderInMenu) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory';
-                var data = {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu};
+                var data = {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu, 'truckId': truckId};
                 return httpHelperService.post(url, data, 'menu');
             },
             addOrUpdateItem: function(item, truckId, categoryId) {
