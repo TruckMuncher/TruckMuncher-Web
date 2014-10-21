@@ -9,7 +9,8 @@
             label.label(for='itemPrice') Price
             .input
                 i.icon-prepend.fa.fa-dollar
-                input(id='itemPrice', name='itemPrice', type='text', placeholder='Ex: 8.50', data-ng-model='item.price', required='')
+                input(id='itemPrice', name='itemPrice', data-smart-price='', type='text', placeholder='Ex: 8.50', data-ng-model='item.price', required='')
+            .control-label(data-ng-show='itemForm.itemPrice.$error.float') Not a valid price
         section
             label.checkbox
                 input(type='checkbox', id="itemAvailable", data-ng-model='item.available')
