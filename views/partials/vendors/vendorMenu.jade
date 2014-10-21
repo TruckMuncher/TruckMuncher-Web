@@ -11,10 +11,10 @@
             header
                 h2 {{category.name}}
                 .jarviswidget-ctrls
-                    a.button-icon.jarviswidget-toggle-btn(title="Delete Category")
+                    a.button-icon.jarviswidget-toggle-btn(data-ui-sref='menu', data-ng-click='deleteCategory(category.id)', title="Delete Category")
                         i.fa.fa-trash.fa-lg
                 .jarviswidget-ctrls
-                    a.button-icon.jarviswidget-toggle-btn(data-ui-sref='.editCategory({truckId: selectedTruck, categoryId: category.id})', href="", title='Edit Category')
+                    a.button-icon.jarviswidget-toggle-btn(data-ui-sref='.editCategory({truckId: selectedTruck, categoryId: category.id})', title='Edit Category')
                         i.fa.fa-edit.fa-lg
             div
                 .widget-body
@@ -40,7 +40,7 @@
                                         a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
                                             i.fa.fa-edit.fa-lg
                                     td(style='border-left:0px')
-                                        a(href='' title="Delete tem")
+                                        a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete tem")
                                             i.fa.fa-trash.fa-lg
                                 tr.pointer(data-ng-click='addItem(selectedTruck, category.id)', )
                                     td.borderit.text-center(colspan='4')
