@@ -16,6 +16,7 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
     script(src='ng-resource/dist/ng-resource.js')
     script(src='/bootstrap/bootstrap.js')
     script(src='/js/app/app.js')
+    script(src='/js/app/directives/smart-price.js')
     script(src='/js/app/httpHelperService.js')
     script(src='/js/app/vendors/menu/vendorMenuCtrl.js')
     script(src='/js/app/vendors/menu/menuActionModalCtrl.js')
@@ -34,5 +35,4 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
     script(src='/chosen/chosen.jquery.js')
     //script(src='angular-bootstrap/ui-bootstrap.js')
     script(src='angular-bootstrap/ui-bootstrap-tpls.js')
-
-
+    div(data-ng-include="'/partials/auth.jade'")

@@ -26,7 +26,7 @@ angular.module('TruckMuncherApp')
                 var data = {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu};
                 return httpHelperService.post(url, data, 'menu');
             },
-            updateItem: function(item, truckId, categoryId) {
+            addOrUpdateItem: function(item, truckId, categoryId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem';
                 var data = {'menuItem': item, 'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
