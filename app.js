@@ -58,6 +58,9 @@ app.use(passport.session());
 app.use(express.errorHandler());
 
 app.use(function (req, res, next) {
+    res.locals.twitter_oauth_token = req.session.twitterToken;
+    res.locals.twitter_oauth_token_secret = req.session.twitterTokenSecret;
+    res.locals.facebook_access_token = req.session.facebookAccessToken;
     //force https on everything but localhost
     var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https' || host === 'localhost') {
