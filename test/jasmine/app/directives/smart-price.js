@@ -29,10 +29,10 @@ describe('TruckMuncherApp', function () {
             expect(form.somePrice.$valid).toBe(false);
         });
 
-        it('should be invalid for 5.1', function(){
+        it('should be valid for 5.1', function(){
             form.somePrice.$setViewValue('5.1');
             $scope.$digest();
-            expect(form.somePrice.$valid).toBe(false);
+            expect(form.somePrice.$valid).toBe(true);
         });
 
         it('should be valid for 5.10', function(){

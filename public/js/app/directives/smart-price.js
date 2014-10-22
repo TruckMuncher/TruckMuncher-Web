@@ -1,4 +1,4 @@
-var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{2})?$/;
+var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{1,2})?$/;
 angular.module('TruckMuncherApp').directive('smartPrice', function() {
     return {
         require: 'ngModel',
