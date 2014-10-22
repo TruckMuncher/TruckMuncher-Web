@@ -1,15 +1,16 @@
 .modal-header Category Details
 .modal-body.smart-form
-    section
-        label.label(for='categoryName') Category Name
-        label.input
-            input(id='categoryName', type='text', placeholder='Ex: Sandwiches', data-ng-model='category.name')
-    section
-        label.label(for='categoryNotes') Notes
-        label.input
-            input(id='categoryNotes', type='text', placeholder='Ex: All sandwiches come with free chips and a drink', data-ng-model='category.notes')
+    form(id='categoryForm', name='categoryForm', data-ng-submit='ok()')
+        section
+            label.label(for='categoryName') Category Name
+            label.input
+                input(id='categoryName', type='text', placeholder='Ex: Sandwiches', data-ng-model='category.name')
+        section
+            label.label(for='categoryNotes') Notes
+            label.input
+                input(id='categoryNotes', type='text', placeholder='Ex: All sandwiches come with free chips and a drink', data-ng-model='category.notes')
 
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        button.btn.btn-default(data-ng-click='ok()') Submit
+        input.btn.btn-default(type='submit', form='categoryForm', data-ng-disabled='categoryForm.$invalid')
