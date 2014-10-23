@@ -45,6 +45,6 @@ describe('TruckMuncherApp', function () {
             form.somePrice.$setViewValue('5.101');
             $scope.$digest();
             expect(form.somePrice.$valid).toBe(false);
-        })
+        });
     });
 });

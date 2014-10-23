@@ -1,6 +1,6 @@
 .modal-header Category Details
 .modal-body.smart-form
-    form(id='categoryForm', name='categoryForm', data-ng-submit='ok()')
+    form(id='categoryForm', name='categoryForm', data-ng-submit='categoryForm.$valid && submit()')
         section
             label.label(for='categoryName') Category Name
             label.input
@@ -13,4 +13,4 @@
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        input.btn.btn-default(type='submit', form='categoryForm', data-ng-disabled='categoryForm.$invalid')
+        input.btn.btn-default(type='submit', form='categoryForm')

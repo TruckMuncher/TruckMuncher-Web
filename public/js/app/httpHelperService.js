@@ -10,10 +10,9 @@ angular.module('TruckMuncherApp')
                 }).then(function (response) {
                     if (responseDataName) return response.data[responseDataName];
                     else return response.data;
-                }, function (error) {
-                    console.log(error);
+                }, function () {
                     return {hasError: true};
                 });
             }
-        }
+        };
     }]);

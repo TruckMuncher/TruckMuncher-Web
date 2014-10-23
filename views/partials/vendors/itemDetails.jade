@@ -1,6 +1,6 @@
 .modal-header Item Details
 .modal-body.smart-form
-    form(name='itemForm', id='itemForm', data-ng-submit='ok()')
+    form(name='itemForm', id='itemForm', focus-invalid-form='', data-ng-submit='itemForm.$valid && submit()')
         section(data-ng-class="{ 'has-error' : itemForm.itemName.$invalid}")
             label.label(for='itemName') Item Name
             .input
@@ -27,4 +27,4 @@
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        input.btn.btn-default(type='submit', form='itemForm', data-ng-disabled='itemForm.$invalid')
+        input.btn.btn-default(type='submit', form='itemForm')
