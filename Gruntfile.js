@@ -72,7 +72,7 @@ module.exports = function (grunt) {
         'jshint': {
             files: ['Gruntfile.js', 'app/**/*.js', 'test/**/*.js'],
             options: {
-//                // options here to override JSHint defaults
+                // options here to override JSHint defaults
                 globals: {
                     jQuery: true,
                     console: true,
@@ -122,6 +122,10 @@ module.exports = function (grunt) {
             app: {
                 files: ['app/**/*.js', 'lib/**/*'],
                 tasks: ['concat:dev']
+            },
+            bower:{
+                files: ['bower.json'],
+                tasks: ['bower:install']
             }
         },
 
