@@ -1,12 +1,18 @@
 //- body.jade
 //- This file provides the HTML body part.
 body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": showMenu}')
-    include header
-    include leftNav
-
-    #main(role='main')
+    #main
         #content.container-fluid
-            <div data-ui-view></div>
+            div(style="width:100%; text-align:center; font-size:64px; margin: 5% 0 5% 0; font-weight:bold")
+                | Welcome to TruckMuncher!
+            span(style="display:block; text-align:center; vertical-align:middle;")
+                img(src='img/logo2.png', alt='SmartAdmin', style="height:25%; width:25%;")
+
+            div(style="width:100%; text-align:center; font-size:24px; font-style:italic")
+                | We'll munch your truck!
+
+
+
 
     script(src='/jquery/jquery.js')
     script(src='/angular/angular.js')
