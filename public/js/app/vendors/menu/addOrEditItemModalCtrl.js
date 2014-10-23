@@ -1,7 +1,7 @@
 angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state',
     function ($scope, MenuService, $modalInstance, $stateParams, $state) {
         $scope.item = {};
-        $scope.preventNextSubmit = false;
+        $scope.requestInProgress = false;
 
         (function () {
             if ($state.current.name === 'menu.editItem') {
@@ -13,15 +13,15 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
 
 
         $scope.submit = function () {
-            if (!$scope.preventNextSubmit) {
-                $scope.preventNextSubmit = true;
+            if (!$scope.requestInProgress ) {
+                $scope.requestInProgress = true;
                 MenuService.addOrUpdateItem(
                     $scope.item,
                     $stateParams.truckId,
                     $stateParams.categoryId).then(function (response) {
                         if (response && response.hasError) {
                             alert('error');
-                            $scope.preventNextSubmit = false;
+                            $scope.requestInProgress  = false;
                         } else {
                             $modalInstance.close(response);
                         }

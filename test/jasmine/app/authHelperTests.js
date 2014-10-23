@@ -110,8 +110,5 @@ describe('authHelpers', function () {
 
             expect($location.path()).toBe('/login');
         });
-
-
     });
-
 });
