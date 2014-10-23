@@ -16,6 +16,18 @@
 
  */
 module.exports = function (grunt) {
+    var jsVendorSourceFiles = [
+        'lib/jquery/jquery.js',
+        'lib/angular/angular.js',
+        'lib/lodash/lodash.compat.js',
+        'lib/angular-ui-router/angular-ui-router.js',
+        'lib/base-64/base64.js',
+        'lib/ng-resource/dist/ng-resource.js',
+        'lib/bootstrap/bootstrap.js',
+        'lib/angular-chosen-localytics/chosen.js',
+        'lib/chosen/chosen.jquery.js',
+        'lib/angular-bootstrap/ui-bootstrap-tpls.js'
+    ];
 
     var globalConfig = {
         smartAdmin: 'SmartAdmin',
@@ -31,9 +43,9 @@ module.exports = function (grunt) {
             options: {
                 separator: ';'
             },
-            dist: {
-                src: ['src/**/*.js'],
-                dest: 'dist/<%= pkg.name %>.js'
+            dev: {
+                src: [ jsVendorSourceFiles, 'app/**/*.js'],
+                dest: 'public/js/<%= pkg.name %>.js'
             }
         },
 
@@ -50,22 +62,17 @@ module.exports = function (grunt) {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
-            dist: {
+            prod: {
                 files: {
-                    'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                    'public/js/<%= pkg.name %>.js': ['<%= concat.dev.dest %>']
                 }
             }
         },
 
-        'qunit': {
-            files: ['test/**/*.html']
-        },
-
-
         'jshint': {
-            files: ['Gruntfile.js', 'public/**/*.js', 'test/**/*.js'],
+            files: ['Gruntfile.js', 'app/**/*.js', 'test/**/*.js'],
             options: {
-                // options here to override JSHint defaults
+//                // options here to override JSHint defaults
                 globals: {
                     jQuery: true,
                     console: true,
@@ -99,13 +106,22 @@ module.exports = function (grunt) {
                 ext: '.min.css'
             }
         },
-
+        'nodemon': {
+            dev: {
+                ignore: ['lib/**', 'public/js/**'],
+                script: 'app.js'
+            }
+        },
         'watch': {
             files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'qunit'],
+            tasks: ['jshint'],
             less: {
                 files: ['<%= globalConfig.smartAdmin %>/LESS_FILES/custom.less', '<%= globalConfig.smartAdmin %>/LESS_FILES/overrides.less'],
                 tasks: ['less', 'cssmin']
+            },
+            app: {
+                files: ['app/**/*.js', 'lib/**/*'],
+                tasks: ['concat:dev']
             }
         },
 
@@ -124,8 +140,8 @@ module.exports = function (grunt) {
                     'lib/angular-ui-router/angular-ui-router.js',
                     'lib/angular-mocks/angular-mocks.js',
                     'lib/base-64/base64.js',
-                    'public/js/app/app.js',
-                    'public/js/app/**/*.js',
+                    'app/app.js',
+                    'app/**/*.js',
                     'test/jasmine/**/*.js'
                 ],
                 frameworks: ['jasmine'],
@@ -134,7 +150,6 @@ module.exports = function (grunt) {
             },
             //run this one in dev
             unit: {
-                autowatch: true,
                 reporters: ['dots', 'growl']
             },
             //run on CI
@@ -142,24 +157,34 @@ module.exports = function (grunt) {
                 singleRun: true,
                 reporters: ['junit']
             }
-
+        },
+        'concurrent': {
+            target: {
+                tasks: ['karma:unit', 'watch', 'nodemon'],
+                options: {
+                    logConcurrentOutput: true
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-nodemon');
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
 //    grunt.registerTask('default', ['bower:install']);
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'concat:dev']);
+    grunt.registerTask('dev', ['concurrent:target']);
+    grunt.registerTask('build-prod', ['jshint', 'uglify:prod']);
 
 };
