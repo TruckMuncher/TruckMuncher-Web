@@ -108,7 +108,7 @@ module.exports = function (grunt) {
         },
         'nodemon': {
             dev: {
-                ignore: ['lib/**', 'public/js/**'],
+                ignore: ['lib/**/*', 'app/**/*', 'public/js/**/*'],
                 script: 'app.js'
             }
         },

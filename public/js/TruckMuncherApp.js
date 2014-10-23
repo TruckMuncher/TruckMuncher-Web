@@ -50641,7 +50641,44 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $rootScope.$emit('menuItemClicked');
         };
     }]);
-;angular.module('TruckMuncherApp')
+;angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
+    $scope.dialogInfo = dialogInfo;
+
+    $scope.ok = function () {
+        $modalInstance.close({});
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss({});
+    };
+});;angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', function ($modal) {
+    return{
+        launch: function (size, title, body, acceptText, rejectText) {
+
+            var modalInstance = $modal.open({
+                templateUrl: '/partials/shared/confirmDialog.jade',
+                controller: 'confirmDialogCtrl',
+                size: size,
+                resolve: {
+                    dialogInfo: function () {
+                        return {
+                            title: title,
+                            body: body,
+                            acceptText: acceptText,
+                            rejectText: rejectText
+                        };
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                return true;
+            }, function () {
+                return false;
+            });
+        }
+    };
+}]);;angular.module('TruckMuncherApp')
     .factory('TruckService', ['httpHelperService', function (httpHelperService) {
         return {
             getTrucksForVendor: function () {
@@ -50743,8 +50780,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     }
 
 ]);
-;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state',
-    function ($scope, MenuService, TruckService, $state) {
+;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService',
+    function ($scope, MenuService, TruckService, $state, confirmDialog) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
@@ -50764,15 +50801,21 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         });
 
         $scope.deleteItem = function (itemId) {
-            MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
-                $scope.menu = response;
-            });
+            var body = 'Are you sure you want to delete this item?';
+            if (confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No')) {
+                MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
+                    $scope.menu = response;
+                });
+            }
         };
 
         $scope.deleteCategory = function (categoryId) {
-            MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
-                $scope.menu = response;
-            });
+            var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
+            if (confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No')) {
+                MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
+                    $scope.menu = response;
+                });
+            }
         };
 
         $scope.$on('menuUpdated', function (event, data) {
@@ -50783,7 +50826,6 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.addItem = function (truckId, categoryId) {
             $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
         };
-
     }
 ]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope',
     function ($scope) {

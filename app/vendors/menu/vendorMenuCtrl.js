@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state',
-    function ($scope, MenuService, TruckService, $state) {
+angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService',
+    function ($scope, MenuService, TruckService, $state, confirmDialog) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
@@ -19,15 +19,21 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         });
 
         $scope.deleteItem = function (itemId) {
-            MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
-                $scope.menu = response;
-            });
+            var body = 'Are you sure you want to delete this item?';
+            if (confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No')) {
+                MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
+                    $scope.menu = response;
+                });
+            }
         };
 
         $scope.deleteCategory = function (categoryId) {
-            MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
-                $scope.menu = response;
-            });
+            var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
+            if (confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No')) {
+                MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
+                    $scope.menu = response;
+                });
+            }
         };
 
         $scope.$on('menuUpdated', function (event, data) {
@@ -38,6 +44,5 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         $scope.addItem = function (truckId, categoryId) {
             $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
         };
-
     }
 ]);
