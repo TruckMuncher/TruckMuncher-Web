@@ -50338,12 +50338,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 
     $stateProvider
         .state('home', {
-            url: "/home"
+            url: "/home",
+            authenticate: false
         })
         .state('menu', {
             url: "/vendors/menu",
             templateUrl: "/partials/vendors/vendorMenu.jade",
-            controller: 'vendorMenuCtrl'
+            controller: 'vendorMenuCtrl',
+            authenticate: true
         })
         .state('menu.editItem', {
             url: "/:truckId/category/:categoryId/item/:itemId",
@@ -50351,7 +50353,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
                 templateUrl: '/partials/vendors/itemDetails.jade',
                 controller: 'addOrEditItemModalCtrl'
             },
-            controller: 'menuActionModalCtrl'
+            controller: 'menuActionModalCtrl',
+            authenticate: true
         })
         .state('menu.addItem', {
             url: '/:truckId/category/:categoryId/item',
@@ -50359,7 +50362,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
                 templateUrl: 'partials/vendors/itemDetails.jade',
                 controller: 'addOrEditItemModalCtrl'
             },
-            controller: 'menuActionModalCtrl'
+            controller: 'menuActionModalCtrl',
+            authenticate: true
         })
         .state('menu.editCategory', {
             url: "/:truckId/category/:categoryId",
@@ -50367,7 +50371,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
                 templateUrl: 'partials/vendors/categoryDetails.jade',
                 controller: 'addOrEditCategoryModalCtrl'
             },
-            controller: 'menuActionModalCtrl'
+            controller: 'menuActionModalCtrl',
+            authenticate: true
         })
         .state('menu.addCategory', {
             url: "/:truckId/category",
@@ -50375,20 +50380,24 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
                 templateUrl: 'partials/vendors/categoryDetails.jade',
                 controller: 'addOrEditCategoryModalCtrl'
             },
-            controller: 'menuActionModalCtrl'
+            controller: 'menuActionModalCtrl',
+            authenticate: true
         })
         .state('login', {
             url: "/login",
-            templateUrl: "partials/login.jade"
+            templateUrl: "partials/login.jade",
+            authenticate: false
         })
         .state('vendorProfile', {
             url: "/vendors/profile",
             templateUrl: "/partials/vendors/profile.jade",
-            controller: 'vendorProfileCtrl'
+            controller: 'vendorProfileCtrl',
+            authenticate: true
         })
         .state('map', {
             url: "/map",
-            templateUrl: "partials/map.jade"
+            templateUrl: "partials/map.jade",
+            authenticate: false
         });
 }]);
 
@@ -50399,7 +50408,19 @@ app.factory('myInterceptor', [ 'httpInterceptor', function (httpInterceptor) {
 
 app.config(['$httpProvider' , function ($httpProvider) {
     $httpProvider.interceptors.push('myInterceptor');
-}]);;/** Requires base64.js from base-64 package*/
+}]);
+
+app.run(function ($rootScope, $state, TokenService) {
+
+    $rootScope.$on("$stateChangeStart",
+        function (event, toState, toParams, fromState, fromParams) {
+            if (toState.authenticate && !TokenService.hasTokens()) {
+                $state.go("login");
+                event.preventDefault();
+            }
+        });
+});
+;/** Requires base64.js from base-64 package*/
 angular.module('TruckMuncherApp').factory('TokenService', function () {
     var twitter_oauth_token;
     var twitter_oauth_token_secret;
@@ -50420,6 +50441,9 @@ angular.module('TruckMuncherApp').factory('TokenService', function () {
         },
         getFacebook: function () {
             return {access_token: facebook_access_token};
+        },
+        hasTokens: function () {
+            return twitter_oauth_token || twitter_oauth_token_secret || facebook_access_token;
         }
     };
 });
@@ -50488,8 +50512,8 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
 
                 return config;
             },
-            responseError: function(rejection){
-                if(rejection.status === 401) $location.path('/login');
+            responseError: function (rejection) {
+                if (rejection.status === 401) $location.path('/login');
                 return $q.reject(rejection);
             }
         };

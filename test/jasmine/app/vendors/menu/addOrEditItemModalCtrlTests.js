@@ -26,8 +26,8 @@ describe('TruckMuncherApp', function () {
         }));
 
         it('should dismiss the modal when the state changes', function () {
-            $httpBackend.expect('GET', '/partials/vendors/vendorMenu.jade', undefined).respond(200, '');
-            $state.go('menu');
+            $httpBackend.expect('GET', 'partials/map.jade', undefined).respond(200, '');
+            $state.go('map');
             rootScope.$apply();
             expect(modalInstance.dismiss).toHaveBeenCalled();
         });
