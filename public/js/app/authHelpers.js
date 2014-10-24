@@ -28,13 +28,14 @@ app.factory('TimestampAndNonceService', function () {
         return n < 10 ? '0' + n : '' + n;
     }
 
-    var guid = (function() {
+    var guid = (function () {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
                 .substring(1);
         }
-        return function() {
+
+        return function () {
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
         };
@@ -43,14 +44,12 @@ app.factory('TimestampAndNonceService', function () {
     return{
         getTimestamp: function () {
             var d = new Date(new Date().getTime());
-            var formattedTime =
-                d.getUTCFullYear() + '-' +
-                    twoDigitNumber(d.getUTCMonth()+1) + '-' +
-                    twoDigitNumber(d.getUTCDate()) + 'T' +
-                    twoDigitNumber(d.getUTCHours()) + ':' +
-                    twoDigitNumber(d.getUTCMinutes()) + ':' +
-                    twoDigitNumber(d.getUTCSeconds()) + 'Z';
-            return formattedTime;
+            return d.getUTCFullYear() + '-' +
+                twoDigitNumber(d.getUTCMonth() + 1) + '-' +
+                twoDigitNumber(d.getUTCDate()) + 'T' +
+                twoDigitNumber(d.getUTCHours()) + ':' +
+                twoDigitNumber(d.getUTCMinutes()) + ':' +
+                twoDigitNumber(d.getUTCSeconds()) + 'Z';
         },
         getNonce: function () {
             var uuid = guid();
@@ -61,14 +60,14 @@ app.factory('TimestampAndNonceService', function () {
 });
 
 
-app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService',
-    function (TokenService, TimestampAndNonceService) {
+app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q',
+    function (TokenService, TimestampAndNonceService, $location, $q) {
         return{
             request: function (config) {
                 // oauth headers
                 if (TokenService.getFacebook().access_token) {
                     config.headers.Authorization = 'access_token=' + TokenService.getFacebook().access_token;
-                } else if(TokenService.getTwitter().oauth_token) {
+                } else if (TokenService.getTwitter().oauth_token) {
                     config.headers.Authorization =
                         'oauth_token=' + TokenService.getTwitter().oauth_token +
                         ', oauth_secret=' + TokenService.getTwitter().oauth_token_secret;
@@ -87,6 +86,10 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService',
                 config.headers['Content-Type'] = 'application/json';
 
                 return config;
+            },
+            responseError: function(rejection){
+                if(rejection.status === 401) $location.path('/login');
+                return $q.reject(rejection);
             }
         };
     }]);

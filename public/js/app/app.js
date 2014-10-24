@@ -60,14 +60,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 }]);
 
 
-app.factory('myInterceptor', [ 'httpInterceptor',
-    function (httpInterceptor) {
-        return{
-            request: function (config) {
-                return httpInterceptor.request(config);
-            }
-        };
-    }]);
+app.factory('myInterceptor', [ 'httpInterceptor', function (httpInterceptor) {
+    return httpInterceptor;
+}]);
 
 app.config(['$httpProvider' , function ($httpProvider) {
     $httpProvider.interceptors.push('myInterceptor');

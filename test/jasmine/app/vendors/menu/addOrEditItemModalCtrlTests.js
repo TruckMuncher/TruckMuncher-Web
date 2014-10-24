@@ -32,12 +32,35 @@ describe('TruckMuncherApp', function () {
             expect(modalInstance.dismiss).toHaveBeenCalled();
         });
 
+        it('should make a call to the api when the form is submitted', function () {
+            $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem', undefined).respond(200, '');
+            $scope.submit();
+            $httpBackend.verifyNoOutstandingExpectation();
+        });
+
+        it('should prevent double submission of the form', function () {
+            $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem', undefined).respond(200, '');
+            $scope.submit();
+            $scope.submit();
+            $httpBackend.verifyNoOutstandingExpectation();
+        });
+
+        it('should allow another submit if the first one had an error', function() {
+            $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem', undefined).respond(500, '');
+            $scope.submit();
+            $httpBackend.flush();
+
+            $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem', undefined).respond(200, '');
+            $scope.submit();
+            $httpBackend.flush();
+
+            $httpBackend.verifyNoOutstandingExpectation();
+        });
 
         it('should request the item from the API if the state is edit', function () {
             $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem', undefined).respond(200, '');
             $state.current.name = 'menu.editItem';
             createControllerFn();
-            //TODO: uncomment this when the controller acutally does it
             $httpBackend.verifyNoOutstandingExpectation();
         });
     });
