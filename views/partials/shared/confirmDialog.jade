@@ -1,0 +1,8 @@
+.modal-header {{dialogInfo.title}}
+.modal-body.smart-form
+    | {{dialogInfo.body}}
+
+.modal-footer
+    .form-group.row
+        a.btn.btn-default(data-ng-click='cancel()') {{dialogInfo.rejectText}}
+        a.btn.btn-primary(data-ng-click='ok()') {{dialogInfo.acceptText}}

@@ -46,6 +46,28 @@ Karma and Jasmine Tests Locally
 
         grunt karma:unit 
 
+Building the source
+-----------------------------------
+* When you make changes to the less files, the grunt tasks 'less' and 'cssmin' need to be run so that the less files 
+get converted to css, minified, and placed in the correct directory.
+
+* When you add a new bower component, run 'grunt:bower'.
+
+* When you make changes to the angular application in app/**/*.js or add libraries to lib, you will need to run 'grunt concat:dev'
+to concatenate all of the javascript files into on giant file that is placed in public/js. 
+
+* If you don't want to worry about remembering to do these things, run the following command that watches the files and automatically compiles
+the sources as well as runs the karma tests, jshint and starts a nodemon instance:
+
+        grunt dev
+        
+* If you do not wish to have nodemon or karma running, simply run the following command to only compile sources on change:
+
+        grunt watch
+        
+* To build the production, minified javascripts, run:
+
+        grunt build-prod
 
 IBM Bluemix
 -----------------------------------
