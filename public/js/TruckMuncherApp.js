@@ -50341,6 +50341,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             url: "/home",
             authenticate: false
         })
+        .state('login', {
+            url: "/login",
+            templateUrl: "partials/login.jade",
+            authenticate: false
+        })
+        .state('map', {
+            url: "/map",
+            templateUrl: "partials/map.jade",
+            authenticate: false
+        })
         .state('menu', {
             url: "/vendors/menu",
             templateUrl: "/partials/vendors/vendorMenu.jade",
@@ -50383,21 +50393,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: 'menuActionModalCtrl',
             authenticate: true
         })
-        .state('login', {
-            url: "/login",
-            templateUrl: "partials/login.jade",
-            authenticate: false
-        })
         .state('vendorProfile', {
             url: "/vendors/profile",
             templateUrl: "/partials/vendors/profile.jade",
             controller: 'vendorProfileCtrl',
             authenticate: true
-        })
-        .state('map', {
-            url: "/map",
-            templateUrl: "partials/map.jade",
-            authenticate: false
         });
 }]);
 
@@ -50413,7 +50413,7 @@ app.config(['$httpProvider' , function ($httpProvider) {
 app.run(function ($rootScope, $state, TokenService) {
 
     $rootScope.$on("$stateChangeStart",
-        function (event, toState, toParams, fromState, fromParams) {
+        function (event, toState) {
             if (toState.authenticate && !TokenService.hasTokens()) {
                 $state.go("login");
                 event.preventDefault();

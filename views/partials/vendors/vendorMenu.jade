@@ -29,7 +29,7 @@
                                         span Price
                                     th(colspan='2')
                             tbody
-                                tr(data-ng-repeat='item in category.menuItems track by id')
+                                tr(data-ng-repeat='item in category.menuItems track by item.id')
                                     td(style='width:80%')
                                         span
                                             b {{item.name}}:
