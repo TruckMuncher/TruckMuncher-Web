@@ -27,6 +27,46 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             }
         };
 
+        $scope.moveItemDown = function (categoryId, index) {
+            var sortedItems = getSortedItems(categoryId);
+
+            var theItem = sortedItems[index];
+            var otherItem = sortedItems[index + 1];
+            theItem.orderInCategory = index + 1;
+            otherItem.orderInCategory = index;
+
+            MenuService.addOrUpdateItem(theItem, $scope.selectedTruck, categoryId).then(function (response) {
+                $scope.menu = response;
+            });
+            MenuService.addOrUpdateItem(otherItem, $scope.selectedTruck, categoryId).then(function (response) {
+                $scope.menu = response;
+            });
+        };
+
+        function getSortedItems(categoryId) {
+            var category = _.find($scope.menu.categories, function (c) {
+                return c.id === categoryId;
+            });
+            return  _.sortBy(category.menuItems, function (i) {
+                return i.orderInCategory;
+            });
+        }
+
+        $scope.moveItemUp = function (categoryId, index) {
+            var sortedItems = getSortedItems(categoryId);
+            var theItem = sortedItems[index];
+            var otherItem = sortedItems[index - 1];
+            theItem.orderInCategory = index - 1;
+            otherItem.orderInCategory = index;
+
+            MenuService.addOrUpdateItem(theItem, $scope.selectedTruck, categoryId).then(function (response) {
+                $scope.menu = response;
+            });
+            MenuService.addOrUpdateItem(otherItem, $scope.selectedTruck, categoryId).then(function (response) {
+                $scope.menu = response;
+            });
+        };
+
         $scope.deleteCategory = function (categoryId) {
             var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
             if (confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No')) {

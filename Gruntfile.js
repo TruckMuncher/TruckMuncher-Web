@@ -164,7 +164,7 @@ module.exports = function (grunt) {
         },
         'concurrent': {
             target: {
-                tasks: ['karma:unit', 'watch', 'nodemon'],
+                tasks: ['karma:unit', 'watch'],
                 options: {
                     logConcurrentOutput: true
                 }

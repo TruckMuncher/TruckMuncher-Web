@@ -6,7 +6,7 @@
         div.form-group(data-ng-show='selectedTruck')
             a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Category
 .row
-    article.col-lg-6(data-ng-repeat='category in menu.categories track by category.id')
+    article.col-lg-6(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
         .jarviswidget.jarviswidget-color-blueDark
             header
                 h2 {{category.name}}
@@ -29,11 +29,14 @@
                                         span Price
                                     th(colspan='2')
                             tbody
-                                tr(data-ng-repeat='item in category.menuItems track by item.id')
+                                tr(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
                                     td(style='width:80%')
                                         span
+                                            i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
+                                            i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')
+                                            = '  '
                                             b {{item.name}}:
-                                        =  ' {{item.notes}}'
+                                            =  ' {{item.notes}}'
                                     td
                                         span {{item.price | currency:"$":0}}
                                     td(style='border-right:0px')
