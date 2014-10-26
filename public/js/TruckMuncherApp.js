@@ -50675,7 +50675,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     $scope.cancel = function () {
         $modalInstance.dismiss({});
     };
-});;angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', function ($modal) {
+});;angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', '$q', function ($modal, $q) {
     return{
         launch: function (size, title, body, acceptText, rejectText) {
 
@@ -50695,11 +50695,13 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 }
             });
 
+            var deferred = $q.defer();
             modalInstance.result.then(function () {
-                return true;
+                deferred.resolve(true);
             }, function () {
-                return false;
+                deferred.resolve(false);
             });
+            return deferred.promise;
         }
     };
 }]);;angular.module('TruckMuncherApp')
@@ -50826,11 +50828,13 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 
         $scope.deleteItem = function (itemId) {
             var body = 'Are you sure you want to delete this item?';
-            if (confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No')) {
-                MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
-                    $scope.menu = response;
-                });
-            }
+            confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function (response) {
+                if (response) {
+                    MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
+                        $scope.menu = response;
+                    });
+                }
+            });
         };
 
         $scope.moveItemDown = function (categoryId, index) {
@@ -50875,11 +50879,13 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 
         $scope.deleteCategory = function (categoryId) {
             var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
-            if (confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No')) {
-                MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
-                    $scope.menu = response;
-                });
-            }
+            confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No').then(function (response) {
+                if (response) {
+                    MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
+                        $scope.menu = response;
+                    });
+                }
+            });
         };
 
         $scope.$on('menuUpdated', function (event, data) {

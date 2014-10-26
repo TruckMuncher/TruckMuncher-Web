@@ -6,7 +6,9 @@ describe('TruckMuncherApp', function () {
 
         var mockModalDialog = {
             launch: function () {
-                return modalConfirmResponse;
+                var deferred = $q.defer();
+                deferred.resolve(modalConfirmResponse);
+                return deferred.promise;
             }
         };
 
@@ -46,6 +48,7 @@ describe('TruckMuncherApp', function () {
             modalConfirmResponse = false;
             spyOn(mockMenuService, 'deleteCategory');
             $scope.deleteCategory();
+            $scope.$apply();
             expect(mockMenuService.deleteCategory).not.toHaveBeenCalled();
         });
 
@@ -53,6 +56,7 @@ describe('TruckMuncherApp', function () {
             modalConfirmResponse = true;
             spyOn(mockMenuService, 'deleteCategory').andCallThrough();
             $scope.deleteCategory();
+            $scope.$apply();
             expect(mockMenuService.deleteCategory).toHaveBeenCalled();
         });
 
@@ -60,6 +64,7 @@ describe('TruckMuncherApp', function () {
             modalConfirmResponse = false;
             spyOn(mockMenuService, 'deleteItem');
             $scope.deleteItem();
+            $scope.$apply();
             expect(mockMenuService.deleteItem).not.toHaveBeenCalled();
         });
 
@@ -67,6 +72,7 @@ describe('TruckMuncherApp', function () {
             modalConfirmResponse = true;
             spyOn(mockMenuService, 'deleteItem').andCallThrough();
             $scope.deleteItem();
+            $scope.$apply();
             expect(mockMenuService.deleteItem).toHaveBeenCalled();
         });
 
