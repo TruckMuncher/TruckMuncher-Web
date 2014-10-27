@@ -7,6 +7,7 @@ var express = require('express'),
     routes = require('./routes'),
     config = require('./oauth'),
     passport = require('passport'),
+    favicon = require('serve-favicon'),
     FacebookStrategy = require('passport-facebook').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -36,6 +37,8 @@ passport.use(new TwitterStrategy({
 
 // setup middleware
 var app = express();
+
+app.use(favicon(__dirname + '/public/img/favicon.ico'))
 
 var sess = {
 // 	genid: function(req) {
