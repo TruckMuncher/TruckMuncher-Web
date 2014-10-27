@@ -2,12 +2,16 @@ describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
     describe('vendorMenuCtrl', function () {
-        var $scope, $q, modalConfirmResponse;
+        var $scope, $q, modalDialogShouldResolve;
 
         var mockModalDialog = {
             launch: function () {
                 var deferred = $q.defer();
-                deferred.resolve(modalConfirmResponse);
+                if (modalDialogShouldResolve) {
+                    deferred.resolve();
+                } else {
+                    deferred.reject();
+                }
                 return deferred.promise;
             }
         };
@@ -55,7 +59,7 @@ describe('TruckMuncherApp', function () {
         }));
 
         it('should not make a delete category request to the API when the user does not confirm deletion', function () {
-            modalConfirmResponse = false;
+            modalDialogShouldResolve = false;
             spyOn(mockMenuService, 'deleteCategory');
             $scope.deleteCategory();
             $scope.$apply();
@@ -63,7 +67,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should make a delete category request to the API when the user confirms deletion', function () {
-            modalConfirmResponse = true;
+            modalDialogShouldResolve = true;
             spyOn(mockMenuService, 'deleteCategory').andCallThrough();
             $scope.deleteCategory();
             $scope.$apply();
@@ -71,7 +75,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should not make a delete item request to the API when the user does not confirm deletion', function () {
-            modalConfirmResponse = false;
+            modalDialogShouldResolve = false;
             spyOn(mockMenuService, 'deleteItem');
             $scope.deleteItem();
             $scope.$apply();
@@ -79,7 +83,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should make a delete item request to the API when the user confirms deletion', function () {
-            modalConfirmResponse = true;
+            modalDialogShouldResolve = true;
             spyOn(mockMenuService, 'deleteItem').andCallThrough();
             $scope.deleteItem();
             $scope.$apply();

@@ -18,13 +18,7 @@ angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', '$q
                 }
             });
 
-            var deferred = $q.defer();
-            modalInstance.result.then(function () {
-                deferred.resolve(true);
-            }, function () {
-                deferred.resolve(false);
-            });
-            return deferred.promise;
+            return modalInstance.result;
         }
     };
 }]);
