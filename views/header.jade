@@ -1,19 +1,17 @@
-header#header(data-ng-controller='headerCtrl')
+header#header(data-ng-controller='headerCtrl', data-ng-cloak)
     #logo-group
         // PLACE YOUR LOGO HERE
         span#logo
             img(src='img/logo.png', alt='SmartAdmin')
     .pull-right
-        // collapse menu button
-        .btn-header.pull-right
-            // logout button
-            .btn-header.transparent.pull-right
-                span(data-ng-show='loggedIn()')
-                    a(href="/logout", title='Sign Out')
-                        i.fa.fa-sign-out
-                span(data-ng-hide='loggedIn()')
-                    a(href="/logout", title='Sign In')
-                        i.fa.fa-sign-in
+        .btn-header.pull-right.transparent(data-ng-show='loggedIn()')
+            span
+                a(href="/logout", title='Sign Out')
+                    i.fa.fa-sign-out
+        .btn-header.pull-right.transparent(data-ng-hide='loggedIn()')
+            span
+                a(href="/logout", title='Sign In')
+                    i.fa.fa-sign-in
             // end logout button
             #hide-menu.transparent.btn-header.pull-right
                 span
