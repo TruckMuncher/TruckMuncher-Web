@@ -50578,11 +50578,15 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             });
         }
     };
-});;angular.module('TruckMuncherApp').controller('headerCtrl', ['$scope', '$rootScope',
-    function ($scope, $rootScope) {
+});;angular.module('TruckMuncherApp').controller('headerCtrl', ['$scope', '$rootScope', 'TokenService',
+    function ($scope, $rootScope, TokenService) {
         $scope.toggleMenu = function(){
             $rootScope.$emit('toggleMenu');
         };
+
+        $scope.loggedIn = function(){
+            return TokenService.hasTokens();
+        }
     }]);
 ;angular.module('TruckMuncherApp')
     .factory('httpHelperService', ['$http', function ($http) {
@@ -50665,11 +50669,15 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return httpHelperService.post(url, data, 'menu');
             }
         };
-    }]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope',
-    function ($scope, $rootScope) {
+    }]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
+    function ($scope, $rootScope, TokenService) {
         $scope.menuItemClicked = function () {
             $rootScope.$emit('menuItemClicked');
         };
+
+        $scope.loggedIn = function(){
+            return TokenService.hasTokens();
+        }
     }]);
 ;angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
     $scope.dialogInfo = dialogInfo;
