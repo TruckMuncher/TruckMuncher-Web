@@ -21,22 +21,28 @@ angular.module('TruckMuncherApp')
                 var data = {'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'category');
             },
-            addOrUpdateCategory: function (truckId, id, name, notes, orderInMenu) {
+            addOrUpdateCategory: function (category, truckId) {
+                return this.addOrUpdateCategories([category], truckId);
+            },
+            addOrUpdateCategories: function(categories, truckId){
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory';
-                var data = {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu, 'truckId': truckId};
+                var data = {'categories': categories, 'truckId': truckId};
                 return httpHelperService.post(url, data, 'menu');
             },
-            addOrUpdateItem: function(item, truckId, categoryId) {
+            addOrUpdateItem: function (item, truckId, categoryId) {
+                return this.addOrUpdateItems([item], truckId, categoryId);
+            },
+            addOrUpdateItems: function (items, truckId, categoryId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem';
-                var data = {'menuItem': item, 'truckId': truckId, 'categoryId': categoryId};
+                var data = {'menuItems': items, 'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
             },
-            deleteCategory: function(truckId, categoryId){
+            deleteCategory: function (truckId, categoryId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteCategory';
                 var data = {'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
             },
-            deleteItem: function(truckId, menuItemId){
+            deleteItem: function (truckId, menuItemId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteMenuItem';
                 var data = {'truckId': truckId, 'menuItemId': menuItemId};
                 return httpHelperService.post(url, data, 'menu');

@@ -17,6 +17,12 @@
                 .jarviswidget-ctrls
                     a.button-icon.jarviswidget-toggle-btn(data-ui-sref='.editCategory({truckId: selectedTruck, categoryId: category.id})', title='Edit Category')
                         i.fa.fa-edit.fa-lg
+                .jarviswidget-ctrls(data-ng-hide='$first', data-ng-click='moveCategoryUp($index)')
+                    .button-icon.jarvis-widget-toggle-btn.pointer.text-center
+                        .fa.fa-sort-up.fa-lg
+                .jarviswidget-ctrls(data-ng-hide='$last', data-ng-click='moveCategoryDown($index)')
+                    .button-icon.jarvis-widget-toggle-btn.pointer.text-center
+                        .fa.fa-sort-desc.fa-lg
             div
                 .widget-body
                     p {{category.notes}}
@@ -31,7 +37,7 @@
                                     th(colspan='2')
                             tbody
                                 tr(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
-                                    td(style='width:80%')
+                                    td
                                         span
                                             i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
                                             i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')

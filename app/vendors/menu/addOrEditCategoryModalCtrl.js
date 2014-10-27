@@ -14,19 +14,13 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
         $scope.submit = function () {
             if (!$scope.requestInProgress) {
                 $scope.requestInProgress = true;
-                MenuService.addOrUpdateCategory(
-                    $stateParams.truckId,
-                    $scope.category.id,
-                    $scope.category.name,
-                    $scope.category.notes,
-                    $scope.category.orderInMenu).then(function (response) {
-                        if (response && response.hasError) {
-                            alert('error');
-                            $scope.requestInProgress = false;
-                        } else {
-                            $modalInstance.close(response);
-                        }
-                    });
+                MenuService.addOrUpdateCategory($scope.category, $stateParams.truckId).then(function (response) {
+                    if (response && response.hasError) {
+                        $scope.requestInProgress = false;
+                    } else {
+                        $modalInstance.close(response);
+                    }
+                });
             }
         };
 

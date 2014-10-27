@@ -50638,22 +50638,28 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 var data = {'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'category');
             },
-            addOrUpdateCategory: function (truckId, id, name, notes, orderInMenu) {
+            addOrUpdateCategory: function (category, truckId) {
+                return this.addOrUpdateCategories([category], truckId);
+            },
+            addOrUpdateCategories: function(categories, truckId){
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory';
-                var data = {'id': id, 'name': name, 'notes': notes, 'orderInMenu': orderInMenu, 'truckId': truckId};
+                var data = {'categories': categories, 'truckId': truckId};
                 return httpHelperService.post(url, data, 'menu');
             },
-            addOrUpdateItem: function(item, truckId, categoryId) {
+            addOrUpdateItem: function (item, truckId, categoryId) {
+                return this.addOrUpdateItems([item], truckId, categoryId);
+            },
+            addOrUpdateItems: function (items, truckId, categoryId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem';
-                var data = {'menuItem': item, 'truckId': truckId, 'categoryId': categoryId};
+                var data = {'menuItems': items, 'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
             },
-            deleteCategory: function(truckId, categoryId){
+            deleteCategory: function (truckId, categoryId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteCategory';
                 var data = {'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
             },
-            deleteItem: function(truckId, menuItemId){
+            deleteItem: function (truckId, menuItemId) {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteMenuItem';
                 var data = {'truckId': truckId, 'menuItemId': menuItemId};
                 return httpHelperService.post(url, data, 'menu');
@@ -50729,19 +50735,13 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.submit = function () {
             if (!$scope.requestInProgress) {
                 $scope.requestInProgress = true;
-                MenuService.addOrUpdateCategory(
-                    $stateParams.truckId,
-                    $scope.category.id,
-                    $scope.category.name,
-                    $scope.category.notes,
-                    $scope.category.orderInMenu).then(function (response) {
-                        if (response && response.hasError) {
-                            alert('error');
-                            $scope.requestInProgress = false;
-                        } else {
-                            $modalInstance.close(response);
-                        }
-                    });
+                MenuService.addOrUpdateCategory($scope.category, $stateParams.truckId).then(function (response) {
+                    if (response && response.hasError) {
+                        $scope.requestInProgress = false;
+                    } else {
+                        $modalInstance.close(response);
+                    }
+                });
             }
         };
 
@@ -50771,7 +50771,6 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                     $stateParams.truckId,
                     $stateParams.categoryId).then(function (response) {
                         if (response && response.hasError) {
-                            alert('error');
                             $scope.requestInProgress  = false;
                         } else {
                             $modalInstance.close(response);
@@ -50821,37 +50820,53 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
-                    $scope.menu = response;
+                    if (response.hasError) {
+                        //TODO: handle error
+                    } else {
+                        $scope.menu = response;
+                    }
                 });
             }
         });
 
         $scope.deleteItem = function (itemId) {
             var body = 'Are you sure you want to delete this item?';
-            confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function (response) {
-                if (response) {
+            confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function (confirmed) {
+                if (confirmed) {
                     MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
-                        $scope.menu = response;
+                        if (response.hasError) {
+                            //TODO: handle error
+                        } else {
+                            $scope.menu = response;
+                        }
                     });
                 }
             });
         };
 
         $scope.moveItemDown = function (categoryId, index) {
-            var sortedItems = getSortedItems(categoryId);
-
-            var theItem = sortedItems[index];
-            var otherItem = sortedItems[index + 1];
-            theItem.orderInCategory = index + 1;
-            otherItem.orderInCategory = index;
-
-            MenuService.addOrUpdateItem(theItem, $scope.selectedTruck, categoryId).then(function (response) {
-                $scope.menu = response;
-            });
-            MenuService.addOrUpdateItem(otherItem, $scope.selectedTruck, categoryId).then(function (response) {
-                $scope.menu = response;
-            });
+            moveItem(categoryId, index, 1);
         };
+
+        $scope.moveItemUp = function (categoryId, index) {
+            moveItem(categoryId, index, -1);
+        };
+
+        function moveItem(categoryId, indexOfItem, swapLocationFromIndex) {
+            var sortedItems = getSortedItems(categoryId);
+            var theItem = _.clone(sortedItems[indexOfItem]);
+            var otherItem = _.clone(sortedItems[indexOfItem + swapLocationFromIndex]);
+            theItem.orderInCategory = indexOfItem + swapLocationFromIndex;
+            otherItem.orderInCategory = indexOfItem;
+
+            MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
+                if (response.hasError) {
+                    //TODO: handle error
+                } else {
+                    $scope.menu = response;
+                }
+            });
+        }
 
         function getSortedItems(categoryId) {
             var category = _.find($scope.menu.categories, function (c) {
@@ -50862,27 +50877,48 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             });
         }
 
-        $scope.moveItemUp = function (categoryId, index) {
-            var sortedItems = getSortedItems(categoryId);
-            var theItem = sortedItems[index];
-            var otherItem = sortedItems[index - 1];
-            theItem.orderInCategory = index - 1;
-            otherItem.orderInCategory = index;
-
-            MenuService.addOrUpdateItem(theItem, $scope.selectedTruck, categoryId).then(function (response) {
-                $scope.menu = response;
-            });
-            MenuService.addOrUpdateItem(otherItem, $scope.selectedTruck, categoryId).then(function (response) {
-                $scope.menu = response;
-            });
+        $scope.moveCategoryUp = function (index) {
+            moveCategory(index, -1);
         };
+
+        $scope.moveCategoryDown = function (index) {
+            moveCategory(index, 1);
+        };
+
+        function moveCategory(indexOfCategory, swapLocationFromIndex) {
+            var sorted = getSortedCategories();
+            var theCategory = _.clone(sorted[indexOfCategory]);
+            var otherCategory = _.clone(sorted[indexOfCategory + swapLocationFromIndex]);
+            theCategory.orderInMenu = indexOfCategory + swapLocationFromIndex;
+            otherCategory.orderInMenu = indexOfCategory;
+
+            delete theCategory.menuItems;
+            delete otherCategory.menuItems;
+            MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
+                if (response.hasError) {
+                    //TODO: handle error
+                } else {
+                    $scope.menu = response;
+                }
+            });
+        }
+
+        function getSortedCategories() {
+            return _.sortBy($scope.menu.categories, function (c) {
+                return c.orderInMenu;
+            });
+        }
 
         $scope.deleteCategory = function (categoryId) {
             var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
             confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No').then(function (response) {
                 if (response) {
                     MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
-                        $scope.menu = response;
+                        if (response.hasError) {
+                            //TODO: handle error
+                        } else {
+                            $scope.menu = response;
+                        }
                     });
                 }
             });

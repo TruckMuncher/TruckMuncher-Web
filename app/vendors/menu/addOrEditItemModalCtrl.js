@@ -20,7 +20,6 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
                     $stateParams.truckId,
                     $stateParams.categoryId).then(function (response) {
                         if (response && response.hasError) {
-                            alert('error');
                             $scope.requestInProgress  = false;
                         } else {
                             $modalInstance.close(response);
