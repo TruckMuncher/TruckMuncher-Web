@@ -27,6 +27,16 @@ describe('TruckMuncherApp', function () {
                 var deferred = $q.defer();
                 deferred.resolve({});
                 return deferred.promise;
+            },
+            addOrUpdateCategories: function () {
+                var deferred = $q.defer();
+                deferred.resolve({});
+                return deferred.promise;
+            },
+            addOrUpdateItems: function () {
+                var deferred = $q.defer();
+                deferred.resolve({});
+                return deferred.promise;
             }
         };
 
@@ -101,6 +111,69 @@ describe('TruckMuncherApp', function () {
             $scope.selectedTruck = 'abcd';
             $scope.$apply();
             expect(mockMenuService.getMenu).not.toHaveBeenCalled();
+        });
+
+        it('should call the api to update the item ordering for moveItemUp', function () {
+            spyOn(mockMenuService, 'addOrUpdateItems').andCallThrough();
+            $scope.selectedTruck = 'truck';
+            $scope.menu = {};
+            $scope.menu.categories = [
+                {id: '1', orderInCategory: 0, menuItems: [
+                    {id: '2', orderInCategory: 0},
+                    {id: '3', orderInCategory: 1 }
+                ]}
+            ];
+
+            $scope.moveItemUp('1', 1);
+
+            expect(mockMenuService.addOrUpdateItems).toHaveBeenCalledWith([
+                { id: '3', orderInCategory: 0 },
+                { id: '2', orderInCategory: 1 }
+            ], 'truck', '1');
+        });
+
+        it('should not modify the scope menu directly when changing item ordering, but rather wait for the API to respond with a success', function () {
+            $scope.selectedTruck = 'truck';
+            $scope.menu = {};
+            $scope.menu.categories = [
+                {id: '1', orderInCategory: 0, menuItems: [
+                    {id: '2', orderInCategory: 0},
+                    {id: '3', orderInCategory: 1 }
+                ]}
+            ];
+
+            $scope.moveItemUp('1', 1);
+            expect($scope.menu.categories[0].menuItems[0]).toEqual({id: '2', orderInCategory: 0});
+        });
+
+        it('should call the api to update the category ordering for moveCategoryDown', function () {
+            spyOn(mockMenuService, 'addOrUpdateCategories').andCallThrough();
+            $scope.selectedTruck = 'truck';
+            $scope.menu = {};
+            $scope.menu.categories = [
+                {id: '1', orderInMenu: 0},
+                {id: '2', orderInMenu: 1}
+            ];
+
+            $scope.moveCategoryDown(0);
+
+            expect(mockMenuService.addOrUpdateCategories).toHaveBeenCalledWith([
+                { id: '1', orderInMenu: 1 },
+                { id: '2', orderInMenu: 0 }
+            ], 'truck');
+
+        });
+
+        it('should not modify the scope menu directly when changing category ordering, but rather wait for the API to respond with a success', function () {
+            $scope.selectedTruck = 'truck';
+            $scope.menu = {};
+            $scope.menu.categories = [
+                {id: '1', orderInMenu: 0},
+                {id: '2', orderInMenu: 1}
+            ];
+
+            $scope.moveCategoryDown(0);
+            expect($scope.menu.categories[0]).toEqual({id: '1', orderInMenu: 0});
         });
     });
 

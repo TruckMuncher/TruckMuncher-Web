@@ -144,6 +144,7 @@ module.exports = function (grunt) {
                     'lib/angular-ui-router/angular-ui-router.js',
                     'lib/angular-mocks/angular-mocks.js',
                     'lib/base-64/base64.js',
+                    'lib/lodash/lodash.compat.js',
                     'app/app.js',
                     'app/**/*.js',
                     'test/jasmine/**/*.js'
