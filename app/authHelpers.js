@@ -19,6 +19,9 @@ angular.module('TruckMuncherApp').factory('TokenService', function () {
         },
         getFacebook: function () {
             return {access_token: facebook_access_token};
+        },
+        hasTokens: function () {
+            return twitter_oauth_token || twitter_oauth_token_secret || facebook_access_token;
         }
     };
 });
@@ -87,8 +90,8 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
 
                 return config;
             },
-            responseError: function(rejection){
-                if(rejection.status === 401) $location.path('/login');
+            responseError: function (rejection) {
+                if (rejection.status === 401) $location.path('/login');
                 return $q.reject(rejection);
             }
         };

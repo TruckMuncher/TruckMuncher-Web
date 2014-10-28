@@ -1,14 +1,47 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
-.pointer{
+.pointer {
   cursor: pointer;
 }
 
 //make chosen selects fluid
-.chosen-container{
-  width:100%!important;
+.chosen-container {
+  width: 100% !important;
 }
 
+.fa.pointer:hover, .fa.pointer:hover {
+  color: #3276b1;
+}
+
+td.pack-column {
+  width: 1px;
+}
+
+td.merge-with-right {
+  border-right: 0px!important;
+}
+
+td.merge-with-left {
+  border-left: 0px!important;
+}
+
+/* 
+  Allow angular.js to be loaded in body, hiding cloaked elements until 
+  templates compile.  The !important is important given that there may be 
+  other selectors that are more specific or come later and might alter display.  
+ */
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+#logo img {
+  height: 49px;
+  width: auto;
+}
+
+#logo{
+  margin-top: 0px;
+}
 
 
 /************ style **************/
@@ -20,15 +53,14 @@
   background-image: -moz-linear-gradient(top, @truckMuncherGreenBase #006e63);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@truckMuncherGreenBase , to(#006e63)));
   background-image: -webkit-linear-gradient(top, @truckMuncherGreenBase, #006e63);
-  background-image: -o-linear-gradient(top, @truckMuncherGreenBase,  #006e63);
+  background-image: -o-linear-gradient(top, @truckMuncherGreenBase, #006e63);
   background-image: linear-gradient(to bottom, @truckMuncherGreenBase, #006e63);
 }
 
 .smart-style-truckmuncher aside {
   background: @truckMuncherGreenBase;
-  border-right:2px solid @truckMuncherGreenBase;
+  border-right: 2px solid @truckMuncherGreenBase;
 }
-
 
 /*
  * Truckmuncher Top Menu
@@ -36,9 +68,8 @@
 
 .smart-style-truckmuncher.menu-on-top aside {
   background: @truckMuncherPinkBase;
-  border-right:2px solid @truckMuncherPinkBase
+  border-right: 2px solid @truckMuncherPinkBase
 }
-
 
 .smart-style-truckmuncher.menu-on-top aside#left-panel {
   -webkit-box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
@@ -47,21 +78,20 @@
   border-top: 1px solid @truckMuncherPinkBase;
 }
 
-
 /* Hover state */
 .smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover {
   background: #fff; /* Old browsers */
   background: -moz-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@truckMuncherGreenBase), color-stop(66%,#2E3E57)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  @truckMuncherGreenBase 0%,#2E3E57 66%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  @truckMuncherGreenBase 0%,#2E3E57 66%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  @truckMuncherGreenBase 0%,#2E3E57 66%); /* IE10+ */
-  background: linear-gradient(to bottom,@truckMuncherGreenBase,#2E3E57 66%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04070C', endColorstr='#2E3E57',GradientType=0 ); /* IE6-9 */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@truckMuncherGreenBase), color-stop(66%, #2E3E57)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* IE10+ */
+  background: linear-gradient(to bottom,@truckMuncherGreenBase, #2E3E57 66%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#04070C', endColorstr='#2E3E57', GradientType=0); /* IE6-9 */
 }
 
 .smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover > a {
-  color:#F1F1F1 !important;
+  color: #F1F1F1 !important;
   border-left: 1px solid @truckMuncherGreenBase;
   border-right: 1px solid @truckMuncherGreenBase;
   padding-left: 8px !important;
@@ -71,7 +101,6 @@
 .smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li > ul {
   background: @truckMuncherGreenBase;
 }
-
 
 .smart-style-truckmuncher.menu-on-top nav ul ul li a,
 .smart-style-truckmuncher.menu-on-top nav ul ul ul li a {

@@ -1,4 +1,4 @@
-angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', function ($modal) {
+angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', '$q', function ($modal, $q) {
     return{
         launch: function (size, title, body, acceptText, rejectText) {
 
@@ -18,11 +18,7 @@ angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', fun
                 }
             });
 
-            modalInstance.result.then(function () {
-                return true;
-            }, function () {
-                return false;
-            });
+            return modalInstance.result;
         }
     };
 }]);
