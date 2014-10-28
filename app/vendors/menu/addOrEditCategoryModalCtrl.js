@@ -18,11 +18,9 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
                 delete categoryClone.menuItems;
 
                 MenuService.addOrUpdateCategory(categoryClone, $stateParams.truckId).then(function (response) {
-                    if (response && response.hasError) {
-                        $scope.requestInProgress = false;
-                    } else {
-                        $modalInstance.close(response);
-                    }
+                    $modalInstance.close(response);
+                }, function () {
+                    $scope.requestInProgress = false;
                 });
             }
         };

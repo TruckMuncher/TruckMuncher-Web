@@ -13,11 +13,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
-                    if (response.hasError) {
-                        //TODO: handle error
-                    } else {
-                        $scope.menu = response;
-                    }
+                    $scope.menu = response;
+                }, function (error) {
+                    //TODO: handle error
                 });
             }
         });
@@ -26,11 +24,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             var body = 'Are you sure you want to delete this item?';
             confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function () {
                 MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
-                    if (response.hasError) {
-                        //TODO: handle error
-                    } else {
-                        $scope.menu = response;
-                    }
+                    $scope.menu = response;
+                }, function (error) {
+                    //TODO: handle error
                 });
             });
         };
@@ -51,11 +47,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             otherItem.orderInCategory = indexOfItem;
 
             MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
-                if (response.hasError) {
-                    //TODO: handle error
-                } else {
-                    $scope.menu = response;
-                }
+                $scope.menu = response;
+            }, function (error) {
+                //TODO: handle error
             });
         }
 
@@ -86,11 +80,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             delete theCategory.menuItems;
             delete otherCategory.menuItems;
             MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
-                if (response.hasError) {
-                    //TODO: handle error
-                } else {
-                    $scope.menu = response;
-                }
+                $scope.menu = response;
+            }, function (error) {
+                //TODO: handle error
             });
         }
 
@@ -104,11 +96,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
             confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No').then(function () {
                 MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
-                    if (response.hasError) {
-                        //TODO: handle error
-                    } else {
-                        $scope.menu = response;
-                    }
+                    $scope.menu = response;
+                }, function (error) {
+                    //TODO: handle error
                 });
             });
         };
