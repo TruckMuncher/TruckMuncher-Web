@@ -21,7 +21,7 @@ describe('TruckMuncherApp', function () {
         expect(interceptor.request).toHaveBeenCalled();
     });
 
-    it('should redirect to the login page if the user tries to go to a route that requires authentication and is not logged in', function(){
+    it('should redirect to the login page if the user tries to go to a route that requires authentication and is not logged in', function () {
         $state.go('menu');
 
         $httpBackend.expect('GET', 'partials/login.jade', undefined).respond(200, '');
@@ -29,8 +29,8 @@ describe('TruckMuncherApp', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should allow the user to get to pages that require authentication when the user is logged in', function(){
-        tokenService.setFacebook('abcdefg');
+    it('should allow the user to get to pages that require authentication when the user is logged in', function () {
+        tokenService.setToken('abcdefg');
         $state.go('menu');
 
         $httpBackend.expect('GET', '/partials/vendors/vendorMenu.jade', undefined).respond(200, '');

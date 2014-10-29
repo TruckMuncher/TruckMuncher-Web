@@ -1,6 +1,7 @@
-var request = require('request');
+var request = require('request'),
+    q = require('q');
 
-var apiUrl = 'https://api.truckmuncher.com:8443/auth';
+var apiUrl = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.auth.AuthService/';
 
 function makeRequest(url, method, header) {
     var options = {
@@ -12,11 +13,17 @@ function makeRequest(url, method, header) {
 
     };
 
-    request(options, function(error){
-        if(error){
-            console.log('Error logging in: ' + error);
+    var deferred = q.defer();
+    request(options, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            deferred.resolve(body);
+        }
+        if (error) {
+            deferred.reject(error);
         }
     });
+
+    return deferred.promise;
 }
 
 function buildTwitterHeader(twitter_token, twitter_secret) {
@@ -36,21 +43,15 @@ function buildFacebookHeader(facebook_token) {
 var api = {
     login: function (twitter_token, twitter_secret, facebook_token) {
         if (twitter_token) {
-            makeRequest(apiUrl, 'GET', buildTwitterHeader(twitter_token, twitter_secret));
+            return makeRequest(apiUrl + 'getAuth', 'POST', buildTwitterHeader(twitter_token, twitter_secret));
         }
 
         if (facebook_token) {
-            makeRequest(apiUrl, 'GET', buildFacebookHeader(facebook_token));
+            return makeRequest(apiUrl, 'POST', buildFacebookHeader(facebook_token));
         }
     },
-    logout: function (twitter_token, twitter_secret, facebook_token) {
-        if (twitter_token) {
-            makeRequest(apiUrl, 'DELETE', buildTwitterHeader(twitter_token, twitter_secret));
-        }
-
-        if (facebook_token) {
-            makeRequest(apiUrl, 'DELETE', buildFacebookHeader(facebook_token));
-        }
+    logout: function (sessionToken) {
+        return makeRequest(apiUrl + 'deleteAuth', 'POST', {'session_token': sessionToken, 'Accept': 'application/json'});
     }
 };
 
