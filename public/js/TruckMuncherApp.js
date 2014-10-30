@@ -50589,20 +50589,22 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         }
     }]);
 ;angular.module('TruckMuncherApp')
-    .factory('httpHelperService', ['$http', function ($http) {
+    .factory('httpHelperService', ['$http', '$q', function ($http, $q) {
         return {
             post: function (url, data, responseDataName) {
-                return $http({
+                var deferred = $q.defer();
+                $http({
                     method: 'POST',
                     url: url,
                     data: data,
                     crossDomain: true
                 }).then(function (response) {
-                    if (responseDataName) return response.data[responseDataName];
-                    else return response.data;
-                }, function () {
-                    return {hasError: true};
+                    if (responseDataName) deferred.resolve(response.data[responseDataName]);
+                    else deferred.resolve(response.data);
+                }, function (error) {
+                    deferred.reject(error);
                 });
+                return deferred.promise;
             }
         };
     }]);;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService',
@@ -50675,9 +50677,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $rootScope.$emit('menuItemClicked');
         };
 
-        $scope.loggedIn = function(){
+        $scope.loggedIn = function () {
             return TokenService.hasTokens();
-        }
+        };
     }]);
 ;angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
     $scope.dialogInfo = dialogInfo;
@@ -50741,11 +50743,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 delete categoryClone.menuItems;
 
                 MenuService.addOrUpdateCategory(categoryClone, $stateParams.truckId).then(function (response) {
-                    if (response && response.hasError) {
-                        $scope.requestInProgress = false;
-                    } else {
-                        $modalInstance.close(response);
-                    }
+                    $modalInstance.close(response);
+                }, function () {
+                    $scope.requestInProgress = false;
                 });
             }
         };
@@ -50769,17 +50769,15 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 
 
         $scope.submit = function () {
-            if (!$scope.requestInProgress ) {
+            if (!$scope.requestInProgress) {
                 $scope.requestInProgress = true;
                 MenuService.addOrUpdateItem(
                     $scope.item,
                     $stateParams.truckId,
                     $stateParams.categoryId).then(function (response) {
-                        if (response && response.hasError) {
-                            $scope.requestInProgress  = false;
-                        } else {
-                            $modalInstance.close(response);
-                        }
+                        $modalInstance.close(response);
+                    }, function () {
+                        $scope.requestInProgress = false;
                     });
             }
         };
@@ -50825,11 +50823,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
-                    if (response.hasError) {
-                        //TODO: handle error
-                    } else {
-                        $scope.menu = response;
-                    }
+                    $scope.menu = response;
+                }, function (error) {
+                    //TODO: handle error
                 });
             }
         });
@@ -50838,11 +50834,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             var body = 'Are you sure you want to delete this item?';
             confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function () {
                 MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
-                    if (response.hasError) {
-                        //TODO: handle error
-                    } else {
-                        $scope.menu = response;
-                    }
+                    $scope.menu = response;
+                }, function (error) {
+                    //TODO: handle error
                 });
             });
         };
@@ -50863,11 +50857,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             otherItem.orderInCategory = indexOfItem;
 
             MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
-                if (response.hasError) {
-                    //TODO: handle error
-                } else {
-                    $scope.menu = response;
-                }
+                $scope.menu = response;
+            }, function (error) {
+                //TODO: handle error
             });
         }
 
@@ -50898,11 +50890,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             delete theCategory.menuItems;
             delete otherCategory.menuItems;
             MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
-                if (response.hasError) {
-                    //TODO: handle error
-                } else {
-                    $scope.menu = response;
-                }
+                $scope.menu = response;
+            }, function (error) {
+                //TODO: handle error
             });
         }
 
@@ -50916,11 +50906,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
             confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No').then(function () {
                 MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
-                    if (response.hasError) {
-                        //TODO: handle error
-                    } else {
-                        $scope.menu = response;
-                    }
+                    $scope.menu = response;
+                }, function (error) {
+                    //TODO: handle error
                 });
             });
         };
