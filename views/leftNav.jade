@@ -1,5 +1,6 @@
 // Left panel : Navigation area
 // Note: This width of the aside area can be adjusted through LESS variables
+<<<<<<< HEAD
 //aside#left-panel(data-ng-controller='navCtrl')
 //    nav
 //        ul
@@ -36,17 +37,47 @@ nav.navbar.navbar-default(role="navigation")
 
         .collapse.navbar-collapse#bs-example-navbar-collapse-1
             ul.nav.navbar-nav(style="width:auto")
+=======
+// Left panel : Navigation area
+// Note: This width of the aside area can be adjusted through LESS variables
+
+nav.navbar.navbar-default(ng-cloak='ng-cloak', data-ng-controller='navCtrl')
+    .container-fluid
+        .navbar-header
+            .visible-xs.btn-header.pull-right(data-ng-show='loggedIn()')
+                span
+                    a(href="/logout", title='Sign Out')
+                        i.fa.fa-sign-out
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-collapse')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            .navbar-brand
+                span#logo
+                    img(src='img/logo.png', alt='TruckMuncher')
+
+        #navbar-collapse.collapse.navbar-collapse
+            ul.nav.navbar-nav
+>>>>>>> master
                 li(ui-sref-active="active", data-ng-click='menuItemClicked()')
                     a(data-ui-sref='home', title='Home')
                         i.fa.fa-lg.fa-fw.fa-home
                         span.menu-item-parent Home
+<<<<<<< HEAD
+=======
+                    //a(href='#/manageSubscriptions') manage subscriptions
+>>>>>>> master
                 li(ui-sref-active="active", data-ng-click='menuItemClicked()', data-ng-show='loggedIn()')
                     a(data-ui-sref='vendorProfile')
                         i.fa.fa-lg.fa-fw.fa-truck
                         span.menu-item-parent Profile
+<<<<<<< HEAD
                     ul
                         li(data-ng-click='menuItemClicked()')
                             a test sub menu
+=======
+>>>>>>> master
                 li(ui-sref-active="active", data-ng-click='menuItemClicked()', data-ng-show='loggedIn()')
                     a(data-ui-sref='menu')
                         i.fa.fa-lg.fa-fw.fa-bars
@@ -55,3 +86,16 @@ nav.navbar.navbar-default(role="navigation")
                     a(data-ui-sref='map')
                         i.fa.fa-lg.fa-fw.fa-map-marker
                         span.menu-item-parent Map
+<<<<<<< HEAD
+=======
+            ul.nav.navbar-nav.navbar-right.hidden-xs
+                li
+                    .btn-header(data-ng-show='loggedIn()')
+                        span
+                            a(href="/logout", title='Sign Out')
+                                i.fa.fa-sign-out
+                    .btn-header(data-ng-hide='loggedIn()')
+                        span
+                            a(href="/logout", title='Sign In')
+                                i.fa.fa-sign-in
+>>>>>>> master
