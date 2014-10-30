@@ -30,7 +30,7 @@ module.exports = function (grunt) {
     ];
 
     var globalConfig = {
-        smartAdmin: 'SmartAdmin',
+        smartAdmin: 'smartAdmin',
 
         cssDest: 'public/stylesheets'
     };

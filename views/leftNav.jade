@@ -1,7 +1,5 @@
 // Left panel : Navigation area
 // Note: This width of the aside area can be adjusted through LESS variables
-// Left panel : Navigation area
-// Note: This width of the aside area can be adjusted through LESS variables
 
 nav.navbar.navbar-default(ng-cloak='ng-cloak', data-ng-controller='navCtrl')
     .container-fluid
@@ -21,23 +19,30 @@ nav.navbar.navbar-default(ng-cloak='ng-cloak', data-ng-controller='navCtrl')
 
         #navbar-collapse.collapse.navbar-collapse
             ul.nav.navbar-nav
-                li(ui-sref-active="active", data-ng-click='menuItemClicked()')
+
+                li(ui-sref-active="active", style="text-align:center")
                     a(data-ui-sref='home', title='Home')
                         i.fa.fa-lg.fa-fw.fa-home
                         span.menu-item-parent Home
-                    //a(href='#/manageSubscriptions') manage subscriptions
-                li(ui-sref-active="active", data-ng-click='menuItemClicked()', data-ng-show='loggedIn()')
+
+                li(ui-sref-active="active", data-ng-show='loggedIn()', style="text-align:center")
                     a(data-ui-sref='vendorProfile')
                         i.fa.fa-lg.fa-fw.fa-truck
                         span.menu-item-parent Profile
-                li(ui-sref-active="active", data-ng-click='menuItemClicked()', data-ng-show='loggedIn()')
+
+                    ul
+                        li
+                            a test sub menu
+
+                li(ui-sref-active="active", data-ng-show='loggedIn()', style="text-align:center")
                     a(data-ui-sref='menu')
                         i.fa.fa-lg.fa-fw.fa-bars
                         span.menu-item-parent My Menu
-                li(ui-sref-active="active", data-ng-click='menuItemClicked()')
+                li(ui-sref-active="active", style="text-align:center")
                     a(data-ui-sref='map')
                         i.fa.fa-lg.fa-fw.fa-map-marker
                         span.menu-item-parent Map
+
             ul.nav.navbar-nav.navbar-right.hidden-xs
                 li
                     .btn-header(data-ng-show='loggedIn()')
