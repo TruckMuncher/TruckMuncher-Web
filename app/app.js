@@ -81,7 +81,7 @@ app.run(function ($rootScope, $state, TokenService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {
-            if (toState.authenticate && !TokenService.hasTokens()) {
+            if (toState.authenticate && !TokenService.getToken()) {
                 $state.go("login");
                 event.preventDefault();
             }

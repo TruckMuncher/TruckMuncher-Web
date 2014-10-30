@@ -5,6 +5,6 @@ angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope',
         };
 
         $scope.loggedIn = function () {
-            return TokenService.hasTokens();
+            return !_.isNull(TokenService.getToken());
         };
     }]);
