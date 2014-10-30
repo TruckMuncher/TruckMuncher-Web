@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Tracking Food Trucks and Stuff!",
   "dependencies": {
+    "base64": "^2.1.0",
     "ejs": "*",
     "express": "3.4.7",
     "express-session": "1.8.2",

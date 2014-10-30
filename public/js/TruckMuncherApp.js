@@ -50414,7 +50414,7 @@ app.run(function ($rootScope, $state, TokenService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {
-            if (toState.authenticate && !TokenService.hasTokens()) {
+            if (toState.authenticate && !TokenService.getToken()) {
                 $state.go("login");
                 event.preventDefault();
             }
@@ -50422,28 +50422,13 @@ app.run(function ($rootScope, $state, TokenService) {
 });
 ;/** Requires base64.js from base-64 package*/
 angular.module('TruckMuncherApp').factory('TokenService', function () {
-    var twitter_oauth_token;
-    var twitter_oauth_token_secret;
-    var facebook_access_token;
+    var session_token = null;
     return {
-        setTwitter: function (oauth_token, oauth_token_secret) {
-            twitter_oauth_token = oauth_token;
-            twitter_oauth_token_secret = oauth_token_secret;
+        setToken: function (sessionToken) {
+            session_token = sessionToken;
         },
-        setFacebook: function (access_token) {
-            facebook_access_token = access_token;
-        },
-        getTwitter: function () {
-            return {
-                oauth_token: twitter_oauth_token,
-                oauth_token_secret: twitter_oauth_token_secret
-            };
-        },
-        getFacebook: function () {
-            return {access_token: facebook_access_token};
-        },
-        hasTokens: function () {
-            return twitter_oauth_token || twitter_oauth_token_secret || facebook_access_token;
+        getToken: function () {
+            return session_token;
         }
     };
 });
@@ -50490,12 +50475,8 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
         return{
             request: function (config) {
                 // oauth headers
-                if (TokenService.getFacebook().access_token) {
-                    config.headers.Authorization = 'access_token=' + TokenService.getFacebook().access_token;
-                } else if (TokenService.getTwitter().oauth_token) {
-                    config.headers.Authorization =
-                        'oauth_token=' + TokenService.getTwitter().oauth_token +
-                        ', oauth_secret=' + TokenService.getTwitter().oauth_token_secret;
+                if (TokenService.getToken()) {
+                    config.headers.Authorization = 'session_token=' + TokenService.getToken();
                 }
 
                 //nonce and timestamp headers
@@ -50585,7 +50566,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         };
 
         $scope.loggedIn = function(){
-            return TokenService.hasTokens();
+            return !_.isNull(TokenService.getToken());
         };
     }]);
 ;angular.module('TruckMuncherApp')
@@ -50609,16 +50590,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         };
     }]);;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService',
     function ($scope, TokenService) {
-        $scope.initializeTokens = function (twitter_token, twitter_token_secret, facebook_token) {
-            if(twitter_token === 'undefined' || twitter_token === 'null')
-                TokenService.setTwitter(null, null);
-            else
-                TokenService.setTwitter(twitter_token, twitter_token_secret);
-
-            if(facebook_token === 'undefined' || facebook_token === 'null')
-                TokenService.setFacebook(null);
-            else
-                TokenService.setFacebook(facebook_token);
+        $scope.initializeToken = function (sessionToken) {
+                TokenService.setToken(sessionToken);
         };
     }
 ]);;angular.module('TruckMuncherApp')
@@ -50678,7 +50651,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         };
 
         $scope.loggedIn = function () {
-            return TokenService.hasTokens();
+            return !_.isNull(TokenService.getToken());
         };
     }]);
 ;angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
