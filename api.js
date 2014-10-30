@@ -47,9 +47,7 @@ function makeRequest(url, method, header) {
         body: JSON.stringify({}),
         //TODO: DON'T DO THIS
         strictSSL: false,
-        headers: header,
-        body: {}
-
+        headers: header
     };
 
     var deferred = q.defer();
