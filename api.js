@@ -8,7 +8,8 @@ function makeRequest(url, method, header) {
         method: method,
         //TODO: DON'T DO THIS
         strictSSL: false,
-        headers: header
+        headers: header,
+        body: {}
 
     };
 
