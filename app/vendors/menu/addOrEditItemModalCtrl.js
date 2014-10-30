@@ -13,17 +13,15 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
 
 
         $scope.submit = function () {
-            if (!$scope.requestInProgress ) {
+            if (!$scope.requestInProgress) {
                 $scope.requestInProgress = true;
                 MenuService.addOrUpdateItem(
                     $scope.item,
                     $stateParams.truckId,
                     $stateParams.categoryId).then(function (response) {
-                        if (response && response.hasError) {
-                            $scope.requestInProgress  = false;
-                        } else {
-                            $modalInstance.close(response);
-                        }
+                        $modalInstance.close(response);
+                    }, function () {
+                        $scope.requestInProgress = false;
                     });
             }
         };

@@ -4,7 +4,7 @@ angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope',
             $rootScope.$emit('menuItemClicked');
         };
 
-        $scope.loggedIn = function(){
+        $scope.loggedIn = function () {
             return TokenService.hasTokens();
-        }
+        };
     }]);
