@@ -44,23 +44,20 @@ function makeRequest(url, method, header) {
     var options = {
         url: url,
         method: method,
+        body: JSON.stringify({}),
         //TODO: DON'T DO THIS
         strictSSL: false,
         headers: header
 
     };
-    console.log(header);
 
     var deferred = q.defer();
     request(options, function (error, response, body) {
-        console.log(response.statusCode);
-        console.log(response.body);
         if (!error && response.statusCode == 200) {
-            console.log(body);
             deferred.resolve(body);
+        } else {
+            deferred.reject(error);
         }
-        console.log(error);
-        deferred.reject(error);
     });
 
     return deferred.promise;
