@@ -9,11 +9,5 @@ describe('TruckMuncherApp', function () {
             rootScope = $rootScope;
             $controller('navCtrl', {$scope: $scope});
         }));
-
-        it('should emit menuItemClicked event to rootScope when scope\'s menuItemClicked is called', function(){
-            spyOn(rootScope, '$emit');
-            $scope.menuItemClicked();
-            expect(rootScope.$emit).toHaveBeenCalledWith('menuItemClicked');
-        });
     });
 });
