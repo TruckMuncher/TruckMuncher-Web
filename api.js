@@ -1,29 +1,14 @@
 var request = require('request'),
-    q = require('q'),
-    base64 = require('base64');
+    q = require('q');
 
 var apiUrl = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.auth.AuthService/';
 
-function nonceAndTimestampHelper() {
-    function twoDigitNumber(n) {
-        return n < 10 ? '0' + n : '' + n;
-    }
-
-    var guid = (function () {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-
-        return function () {
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                s4() + '-' + s4() + s4() + s4();
-        };
-    })();
-
-    return{
+var nonceAndTimestampHelper = {
         getTimestamp: function () {
+            function twoDigitNumber(n) {
+                return n < 10 ? '0' + n : '' + n;
+            }
+
             var d = new Date(new Date().getTime());
             return d.getUTCFullYear() + '-' +
                 twoDigitNumber(d.getUTCMonth() + 1) + '-' +
@@ -33,12 +18,23 @@ function nonceAndTimestampHelper() {
                 twoDigitNumber(d.getUTCSeconds()) + 'Z';
         },
         getNonce: function () {
+            var guid = (function () {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+                }
+
+                return function () {
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+                };
+            })();
             var uuid = guid();
             var _32randomChars = uuid.replace(/-/gi, '');
-            return base64.encode(_32randomChars);
+            return (new Buffer(_32randomChars).toString('base64'));
         }
-    };
-}
+};
 
 function makeRequest(url, method, header) {
     var options = {
@@ -67,8 +63,8 @@ function buildTwitterHeader(twitter_token, twitter_secret) {
         'Authorization': 'oauth_token=' + twitter_token + ', oauth_secret=' + twitter_secret,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-Nonce': nonceAndTimestampHelper().getNonce(),
-        'X-Timestamp': nonceAndTimestampHelper().getTimestamp()
+        'X-Nonce': nonceAndTimestampHelper.getNonce(),
+        'X-Timestamp': nonceAndTimestampHelper.getTimestamp()
     }
 }
 
@@ -77,8 +73,8 @@ function buildFacebookHeader(facebook_token) {
         'Authorization': 'access_token=' + facebook_token,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-Nonce': nonceAndTimestampHelper().getNonce(),
-        'X-Timestamp': nonceAndTimestampHelper().getTimestamp()
+        'X-Nonce': nonceAndTimestampHelper.getNonce(),
+        'X-Timestamp': nonceAndTimestampHelper.getTimestamp()
     }
 }
 
