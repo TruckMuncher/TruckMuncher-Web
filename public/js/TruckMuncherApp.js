@@ -50586,7 +50586,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 
         $scope.loggedIn = function(){
             return TokenService.hasTokens();
-        }
+        };
     }]);
 ;angular.module('TruckMuncherApp')
     .factory('httpHelperService', ['$http', '$q', function ($http, $q) {
