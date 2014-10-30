@@ -58,25 +58,13 @@ describe('authHelpers', function () {
             $httpBackend.flush();
         });
 
-        it('should put the put Facebook token in the Authentication header when available', function () {
-            TokenService.setFacebook('token');
+        it('should put the put token in the Authentication header when available', function () {
+            TokenService.setToken('token');
 
             $http({method: 'GET', url: '/'});
 
             $httpBackend.expect('GET', '/', undefined, function (headers) {
-                return headers.Authorization === 'access_token=token';
-            }).respond(200, '');
-
-            $httpBackend.flush();
-        });
-
-        it('should put the put Twitter tokens in the Authentication header when available', function () {
-            TokenService.setTwitter('token1', 'token2');
-
-            $http({method: 'GET', url: '/'});
-
-            $httpBackend.expect('GET', '/', undefined, function (headers) {
-                return headers.Authorization === 'oauth_token=token1, oauth_secret=token2';
+                return headers.Authorization === 'session_token=token';
             }).respond(200, '');
 
             $httpBackend.flush();

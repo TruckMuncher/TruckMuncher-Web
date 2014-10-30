@@ -8,6 +8,7 @@ var express = require('express'),
     config = require('./oauth'),
     passport = require('passport'),
     favicon = require('serve-favicon'),
+    q = require('q'),
     FacebookStrategy = require('passport-facebook').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -113,10 +114,10 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             if (err) {
                 return next(err);
             }
-            api.login(info.token, info.tokenSecret, null);
-            req.session.twitterToken = info.token;
-            req.session.twitterTokenSecret = info.tokenSecret;
-            return res.redirect('/#/vendors/menu');
+            api.login(info.token, info.tokenSecret, null).then(function (response) {
+                req.session.sessionToken = response.sessionToken;
+                return res.redirect('/#/vendors/menu');
+            });
         });
     })(req, res, next);
 });
@@ -134,9 +135,10 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             if (err) {
                 return next(err);
             }
-            api.login(null, null, info.accessToken);
-            req.session.facebookAccessToken = info.accessToken;
-            return res.redirect('/#/vendors/menu');
+            api.login(null, null, info.accessToken).then(function (response) {
+                req.session.sessionToken = response.sessionToken;
+                return res.redirect('/#/vendors/menu');
+            });
         });
     })(req, res, next);
 });
