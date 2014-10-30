@@ -54,7 +54,7 @@ function makeRequest(url, method, header) {
     var deferred = q.defer();
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            deferred.resolve(body);
+            deferred.resolve(JSON.parse(body));
         } else {
             deferred.reject(error);
         }
