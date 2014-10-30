@@ -1,5 +1,8 @@
 /*jshint node:true*/
 
+if (process.env.VCAP_APP_HOST) {
+    require('loganalysis');
+}
 var express = require('express'),
     session = require('express-session'),
     path = require('path'),
@@ -62,9 +65,7 @@ app.use(passport.session());
 app.use(express.errorHandler());
 
 app.use(function (req, res, next) {
-    res.locals.twitter_oauth_token = req.session.twitterToken;
-    res.locals.twitter_oauth_token_secret = req.session.twitterTokenSecret;
-    res.locals.facebook_access_token = req.session.facebookAccessToken;
+    res.locals.sessionToken = req.session.sessionToken;
     //force https on everything but localhost
     var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https' || host === 'localhost') {
@@ -117,6 +118,9 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             api.login(info.token, info.tokenSecret, null).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
                 return res.redirect('/#/vendors/menu');
+            }, function () {
+                //TODO: handle error
+                return next();
             });
         });
     })(req, res, next);
@@ -138,6 +142,9 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             api.login(null, null, info.accessToken).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
                 return res.redirect('/#/vendors/menu');
+            }, function () {
+                //TODO: handle error
+                return next;
             });
         });
     })(req, res, next);
@@ -162,8 +169,6 @@ var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
 // this application. For details of its content, please refer to
 // the document or sample of each service.
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
-// TODO: Get service credentials and communicate with bluemix services.
-
 
 // Start server
 app.listen(port, host);
