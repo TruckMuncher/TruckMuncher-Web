@@ -1,13 +1,12 @@
-// Left panel : Navigation area
-// Note: This width of the aside area can be adjusted through LESS variables
-
-nav.navbar.navbar-default(ng-cloak='ng-cloak', data-ng-controller='navCtrl')
+nav.navbar.navbar-default(data-ng-cloak='ng-cloak', data-ng-controller='navCtrl')
     .container-fluid
         .navbar-header
-            .visible-xs.btn-header.pull-right(data-ng-show='loggedIn()')
+            .visible-xs.btn-header.pull-right
                 span
-                    a(href="/logout", title='Sign Out')
+                    a(href="/logout", title='Sign Out', data-ng-show='loggedIn()')
                         i.fa.fa-sign-out
+                    a(href="/logout", title='Sign In', data-ng-hide='loggedIn()')
+                        i.fa.fa-sign-in
             button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-collapse')
                 span.sr-only Toggle navigation
                 span.icon-bar
@@ -20,12 +19,12 @@ nav.navbar.navbar-default(ng-cloak='ng-cloak', data-ng-controller='navCtrl')
         #navbar-collapse.collapse.navbar-collapse
             ul.nav.navbar-nav
 
-                li(ui-sref-active="active", style="text-align:center")
+                li.text-center(ui-sref-active="active")
                     a(data-ui-sref='home', title='Home')
                         i.fa.fa-lg.fa-fw.fa-home
                         span.menu-item-parent Home
 
-                li(ui-sref-active="active", data-ng-show='loggedIn()', style="text-align:center")
+                li.text-center(ui-sref-active="active", data-ng-show='loggedIn()')
                     a(data-ui-sref='vendorProfile')
                         i.fa.fa-lg.fa-fw.fa-truck
                         span.menu-item-parent Profile
@@ -34,11 +33,11 @@ nav.navbar.navbar-default(ng-cloak='ng-cloak', data-ng-controller='navCtrl')
                         li
                             a test sub menu
 
-                li(ui-sref-active="active", data-ng-show='loggedIn()', style="text-align:center")
+                li.text-center(ui-sref-active="active", data-ng-show='loggedIn()')
                     a(data-ui-sref='menu')
                         i.fa.fa-lg.fa-fw.fa-bars
                         span.menu-item-parent My Menu
-                li(ui-sref-active="active", style="text-align:center")
+                li.text-center(ui-sref-active="active")
                     a(data-ui-sref='map')
                         i.fa.fa-lg.fa-fw.fa-map-marker
                         span.menu-item-parent Map
