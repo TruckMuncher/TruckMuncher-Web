@@ -43,9 +43,13 @@ module.exports = function (grunt) {
             options: {
                 separator: ';'
             },
-            dev: {
-                src: [ jsVendorSourceFiles, 'app/**/*.js'],
+            app:{
+                src: ['app/**/*.js'],
                 dest: 'public/js/<%= pkg.name %>.js'
+            },
+            vendorScripts:{
+                src: [ jsVendorSourceFiles],
+                dest: 'public/js/vendorScripts.js'
             }
         },
 
@@ -64,7 +68,8 @@ module.exports = function (grunt) {
             },
             prod: {
                 files: {
-                    'public/js/<%= pkg.name %>.js': ['<%= concat.dev.dest %>']
+                    'public/js/<%= pkg.name %>.js': ['<%= concat.app.dest %>'],
+                    'public/js/<%= vendorScripts %>.js': ['<%= concat.vendorScripts.dest %>']
                 }
             }
         },
@@ -121,7 +126,7 @@ module.exports = function (grunt) {
             },
             app: {
                 files: ['app/**/*.js', 'lib/**/*'],
-                tasks: ['concat:dev']
+                tasks: ['concat:app', 'concat:vendorScripts']
             },
             bower:{
                 files: ['bower.json'],
@@ -188,7 +193,7 @@ module.exports = function (grunt) {
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
 //    grunt.registerTask('default', ['bower:install']);
-    grunt.registerTask('default', ['jshint', 'concat:dev']);
+    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts']);
     grunt.registerTask('dev', ['concurrent:target']);
     grunt.registerTask('build-prod', ['jshint', 'uglify:prod']);
 
