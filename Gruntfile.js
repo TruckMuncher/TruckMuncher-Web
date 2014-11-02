@@ -18,15 +18,15 @@
 module.exports = function (grunt) {
     var jsVendorSourceFiles = [
         'lib/jquery/jquery.js',
-        'lib/angular/angular.js',
-        'lib/lodash/lodash.compat.js',
-        'lib/angular-ui-router/angular-ui-router.js',
-        'lib/base-64/base64.js',
-        'lib/ng-resource/dist/ng-resource.js',
-        'lib/bootstrap/bootstrap.js',
-        'lib/chosen-angular/chosen.js',
-        'lib/chosen/chosen.jquery.js',
-        'lib/angular-bootstrap/ui-bootstrap-tpls.js'
+        'bower_components/angular/angular.js',
+        'bower_components/lodash/dist/lodash.compat.js',
+        'bower_components/angular-ui-router/release/angular-ui-router.js',
+        'bower_components/base-64/base64.js',
+        'bower_components/ng-resource/dist/ng-resource.js',
+        'bower_components/bootstrap/bootstrap.js',
+        'bower_components/chosen-angular/chosen.js',
+        'bower_components/chosen/chosen.jquery.js',
+        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
     ];
 
     var globalConfig = {
@@ -50,15 +50,6 @@ module.exports = function (grunt) {
             vendorScripts:{
                 src: [ jsVendorSourceFiles],
                 dest: 'public/js/vendorScripts.js'
-            }
-        },
-
-        'bower': {
-            install: {
-                options: {
-                    cleanBowerDir: true
-                }
-                //just run 'grunt bower:install' and you'll see files from your Bower packages in lib directory
             }
         },
 
@@ -113,7 +104,7 @@ module.exports = function (grunt) {
         },
         'nodemon': {
             dev: {
-                ignore: ['lib/**/*', 'app/**/*', 'public/js/**/*'],
+                ignore: ['bower_components/**/*', 'app/**/*', 'public/js/**/*'],
                 script: 'app.js'
             }
         },
@@ -125,7 +116,7 @@ module.exports = function (grunt) {
                 tasks: ['less', 'cssmin']
             },
             app: {
-                files: ['app/**/*.js', 'lib/**/*'],
+                files: ['app/**/*.js', 'bower_components/**/*'],
                 tasks: ['concat:app', 'concat:vendorScripts']
             },
             bower:{
@@ -141,15 +132,15 @@ module.exports = function (grunt) {
                 colors: true,
                 port: 9876,
                 files: [
-                    'lib/angular/angular.js',
-                    'lib/jquery/jquery.js',
-                    'lib/chosen-angular/chosen.js',
-                    'lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                    'lib/chosen/*.js',
-                    'lib/angular-ui-router/angular-ui-router.js',
-                    'lib/angular-mocks/angular-mocks.js',
-                    'lib/base-64/base64.js',
-                    'lib/lodash/lodash.compat.js',
+                    'bower_components/angular/angular.js',
+                    'bower_components/jquery/jquery.js',
+                    'bower_components/chosen-angular/chosen.js',
+                    'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+                    'bower_components/chosen/*.js',
+                    'bower_components/angular-ui-router/release/angular-ui-router.js',
+                    'bower_components/angular-mocks/angular-mocks.js',
+                    'bower_components/base-64/base64.js',
+                    'bower_components/lodash/dist/lodash.compat.js',
                     'app/app.js',
                     'app/**/*.js',
                     'test/jasmine/**/*.js'
