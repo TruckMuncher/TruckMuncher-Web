@@ -181,7 +181,8 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
         $rootScope.$on('toggleMenu', function(){
             $scope.showMenu = !$scope.showMenu;
         });
-    }]);;angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
+    }]);
+;angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
     var link = function (scope, elem) {
         elem.on('submit', function () {
             var invalidElements = elem.find('.ng-invalid');

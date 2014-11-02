@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         'lib/base-64/base64.js',
         'lib/ng-resource/dist/ng-resource.js',
         'lib/bootstrap/bootstrap.js',
-        'lib/angular-chosen-localytics/chosen.js',
+        'lib/chosen-angular/chosen.js',
         'lib/chosen/chosen.jquery.js',
         'lib/angular-bootstrap/ui-bootstrap-tpls.js'
     ];
@@ -143,7 +143,7 @@ module.exports = function (grunt) {
                 files: [
                     'lib/angular/angular.js',
                     'lib/jquery/jquery.js',
-                    'lib/angular-chosen-localytics/chosen.js',
+                    'lib/chosen-angular/chosen.js',
                     'lib/angular-bootstrap/ui-bootstrap-tpls.js',
                     'lib/chosen/*.js',
                     'lib/angular-ui-router/angular-ui-router.js',
