@@ -45,12 +45,12 @@
                                             b {{item.name}}:
                                             =  ' {{item.notes}}'
                                     td
-                                        span {{item.price | currency:"$":0}}
+                                        span {{item.price | currency:"$":2}}
                                     td.pack-column.merge-with-right
                                         a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
                                             i.fa.fa-edit.fa-lg
                                     td.pack-column.merge-with-left
-                                        a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete tem")
+                                        a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
                                             i.fa.fa-trash.fa-lg
                                 tr.pointer(data-ng-click='addItem(selectedTruck, category.id)', )
                                     td.borderit.text-center(colspan='4')

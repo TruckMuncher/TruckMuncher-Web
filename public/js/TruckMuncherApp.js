@@ -468,7 +468,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response;
                 }, function (error) {
-                    growl.addErrorMessage('Error: could not retrieve menu for truck', {ttl: 2000});
+                    growl.addErrorMessage('Error: could not retrieve menu for truck', {ttl: 3000});
                 });
             }
         });
@@ -479,7 +479,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
                     $scope.menu = response;
                 }, function (error) {
-                    growl.addErrorMessage('Error: could not delete item', {ttl: 2000});
+                    growl.addErrorMessage('Error: could not delete item', {ttl: 3000});
                 });
             });
         };
@@ -502,7 +502,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
                 $scope.menu = response;
             }, function (error) {
-                growl.addErrorMessage('Error: could not change item ordering', {ttl: 2000});
+                growl.addErrorMessage('Error: could not change item ordering', {ttl: 3000});
             });
         }
 
@@ -535,7 +535,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
                 $scope.menu = response;
             }, function (error) {
-                growl.addErrorMessage('Error: could not change category ordering', {ttl: 2000});
+                growl.addErrorMessage('Error: could not change category ordering', {ttl: 3000});
             });
         }
 
@@ -551,7 +551,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
                     $scope.menu = response;
                 }, function (error) {
-                    growl.addErrorMessage('Error: could not delete category', {ttl: 2000});
+                    growl.addErrorMessage('Error: could not delete category', {ttl: 3000});
                 });
             });
         };
@@ -565,8 +565,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
         };
     }
-]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
-    function ($scope, TruckService, growl) {
+]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$timeout',
+    function ($scope, TruckService, growl, $timeout) {
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
@@ -580,18 +580,30 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 $scope.selectedTruck.id,
                 $scope.selectedTruck.name,
                 $scope.selectedTruck.imageUrl,
-                keywords).then(function () {
-                    growl.addSuccessMessage('Profile Updated Successfully', {ttl: 2000});
+                keywords).then(function (response) {
+                    growl.addSuccessMessage('Profile Updated Successfully', {ttl: 3000});
+                    refreshTruck(response);
                 }, function (error) {
-                    growl.addErrorMessage('Error: profile was not saved', {ttl: 2000});
+                    growl.addErrorMessage('Error: profile was not saved', {ttl: 3000});
                 });
         };
+
+        function refreshTruck(truck) {
+            var index = _.findIndex($scope.trucks, function (t) {
+                return t.id === truck.id;
+            });
+            if (index >= 0) {
+                $scope.trucks[index] = truck;
+            }
+        }
 
         TruckService.getTrucksForVendor().then(function (response) {
             $scope.trucks = response;
             if ($scope.trucks.length > 0) {
                 $scope.selectedTruck = $scope.trucks[0];
             }
+        }, function () {
+            growl.addErrorMessage('Error: could not retrieve vendor trucks', {ttl: 3000});
         });
 
         $scope.$watch('selectedTruck', function () {
