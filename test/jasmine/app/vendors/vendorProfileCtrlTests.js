@@ -91,7 +91,7 @@ describe('TruckMuncherApp', function () {
             expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', 'c', 'b', ['abc', 'def', 'ghi']);
         });
 
-        it('should update the correct truck in the trucks Array when saving the profile is successful', function () {
+        it('should update the correct truck in the trucks Array when saving the profile is successful and set selectedTruck', function () {
             $scope.$apply();
             $scope.trucks = [
                 {id: '1', name:'name'},
@@ -105,6 +105,7 @@ describe('TruckMuncherApp', function () {
             $scope.$apply();
 
             expect($scope.trucks[1].name).toEqual(modifyTruckResponse.name);
+            expect($scope.selectedTruck).toEqual(modifyTruckResponse);
         });
 
     });

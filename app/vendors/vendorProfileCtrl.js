@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$timeout',
-    function ($scope, TruckService, growl, $timeout) {
+angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
+    function ($scope, TruckService, growl) {
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
@@ -27,6 +27,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             });
             if (index >= 0) {
                 $scope.trucks[index] = truck;
+                $scope.selectedTruck = truck;
             }
         }
 

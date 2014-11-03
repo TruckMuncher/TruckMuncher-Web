@@ -565,8 +565,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
         };
     }
-]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$timeout',
-    function ($scope, TruckService, growl, $timeout) {
+]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
+    function ($scope, TruckService, growl) {
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
@@ -594,6 +594,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             });
             if (index >= 0) {
                 $scope.trucks[index] = truck;
+                $scope.selectedTruck = truck;
             }
         }
 
