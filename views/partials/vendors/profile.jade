@@ -11,12 +11,14 @@
                 fieldset
                     section
                         label.control-label(for='truckName') Truck Name
-                        input.form-control(id='truckName', data-ng-model='selectedTruck.name')
+                        .input
+                            input(id='truckName', data-ng-model='selectedTruck.name')
                     section
                         label.control-label(for='image') Image Url
-                        input.form-control(id='image', data-ng-model='selectedTruck.imageUrl')
+                        .input
+                            input(id='image', data-ng-model='selectedTruck.imageUrl')
                     section
                         label.control-label(for='keywords') Keywords
-                        input.form-control(id='keywords', data-ng-model='keywords')
+                        tags-input(id='keywords', data-ng-model='tags')
                 footer
                     button.btn.btn-default Submit

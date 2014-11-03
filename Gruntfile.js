@@ -28,7 +28,8 @@ module.exports = function (grunt) {
         'bower_components/chosen/chosen.jquery.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-growl/build/angular-growl.js',
-        'bower_components/angular-animate/angular-animate.js'
+        'bower_components/angular-animate/angular-animate.js',
+        'bower_components/ng-tags-input/ng-tags-input.js'
     ];
 
     var globalConfig = {
@@ -100,7 +101,9 @@ module.exports = function (grunt) {
                         src: ['bower_components/chosen/chosen.min.css',
                             'bower_components/chosen/chosen-sprite.png',
                             'bower_components/chosen/chosen-sprite@2x.png',
-                            'bower_components/angular-growl/build/angular-growl.min.css'
+                            'bower_components/angular-growl/build/angular-growl.min.css',
+                            'bower_components/ng-tags-input/ng-tags-input.css',
+                            'bower_components/ng-tags-input/ng-tags-input.bootstrap.css'
                             ],
                         dest: '<%= globalConfig.cssDest %>',
                         flatten: true
@@ -133,8 +136,12 @@ module.exports = function (grunt) {
                 tasks: ['less', 'cssmin']
             },
             app: {
-                files: ['app/**/*.js', 'bower_components/**/*'],
-                tasks: ['concat:app', 'concat:vendorScripts']
+                files: ['app/**/*.js'],
+                tasks: ['concat:app']
+            },
+            vendorFiles: {
+                files: ['Gruntfile.js'],
+                tasks: ['concat:vendorScripts']
             },
             bower: {
                 files: ['bower.json'],
@@ -149,17 +156,8 @@ module.exports = function (grunt) {
                 colors: true,
                 port: 9876,
                 files: [
-                    'bower_components/angular/angular.js',
-                    'bower_components/jquery/jquery.js',
-                    'bower_components/chosen-angular/chosen.js',
-                    'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-                    'bower_components/chosen/*.js',
-                    'bower_components/angular-ui-router/release/angular-ui-router.js',
+                    'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
-                    'bower_components/angular-animate/angular-animate.js',
-                    'bower_components/base-64/base64.js',
-                    'bower_components/lodash/dist/lodash.compat.js',
-                    'bower_components/angular-growl/build/angular-growl.js',
                     'app/app.js',
                     'app/**/*.js',
                     'test/jasmine/**/*.js'
