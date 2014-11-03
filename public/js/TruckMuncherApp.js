@@ -1,4 +1,4 @@
-var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives', 'ui.bootstrap']);
+var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives', 'ui.bootstrap', 'angular-growl', 'ngAnimate']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("home");
@@ -359,6 +359,10 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             getTrucksForVendor: function () {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
                 return httpHelperService.post(url, {}, 'trucks');
+            },
+            modifyTruckProfile: function (truckId, name, imageUrl, keywords) {
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
+                return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
             }
         };
     }]);
@@ -447,8 +451,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     }
 
 ]);
-;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService',
-    function ($scope, MenuService, TruckService, $state, confirmDialog) {
+;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService', 'growl',
+    function ($scope, MenuService, TruckService, $state, confirmDialog, growl) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
@@ -464,7 +468,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response;
                 }, function (error) {
-                    //TODO: handle error
+                    growl.addErrorMessage('Error: could not retrieve menu for truck', {ttl: 2000});
                 });
             }
         });
@@ -475,7 +479,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
                     $scope.menu = response;
                 }, function (error) {
-                    //TODO: handle error
+                    growl.addErrorMessage('Error: could not delete item', {ttl: 2000});
                 });
             });
         };
@@ -498,7 +502,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
                 $scope.menu = response;
             }, function (error) {
-                //TODO: handle error
+                growl.addErrorMessage('Error: could not change item ordering', {ttl: 2000});
             });
         }
 
@@ -531,7 +535,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
                 $scope.menu = response;
             }, function (error) {
-                //TODO: handle error
+                growl.addErrorMessage('Error: could not change category ordering', {ttl: 2000});
             });
         }
 
@@ -547,7 +551,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
                     $scope.menu = response;
                 }, function (error) {
-                    //TODO: handle error
+                    growl.addErrorMessage('Error: could not delete category', {ttl: 2000});
                 });
             });
         };
@@ -561,13 +565,21 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
         };
     }
-]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService',
-    function ($scope, TruckService) {
+]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
+    function ($scope, TruckService, growl) {
         $scope.trucks = [];
 
 
         $scope.submit = function () {
-            console.log($scope.truckName + $scope.keywords);
+            TruckService.modifyTruckProfile(
+                $scope.selectedTruck.id,
+                $scope.selectedTruck.name,
+                $scope.selectedTruck.imageUrl,
+                $scope.selectedTruck.keywords).then(function () {
+                    growl.addSuccessMessage('Profile Updated Successfully', {ttl: 2000});
+                }, function (error) {
+                    growl.addErrorMessage('Error: profile was not saved', {ttl: 2000});
+                });
         };
 
         TruckService.getTrucksForVendor().then(function (response) {

@@ -1,5 +1,5 @@
 .row
-    article.col-lg-3.col-md-6.col-sm-9
+    article.col-xs-12.col-md-3.col-md-offset-3
         div.form-group
             label(for='truckList') Profile for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
@@ -11,13 +11,10 @@
                 fieldset
                     section
                         label.control-label(for='truckName') Truck Name
-                        input.form-control(id='truckName', data-ng-model='truckName')
+                        input.form-control(id='truckName', data-ng-model='selectedTruck.name')
                     section
-                        label.control-label Image
-                        .input.input-file
-                            span.button Browse
-                                input(type='file', onchange="this.parentNode.nextSibling.value = this.value")
-                            input(readonly='')
+                        label.control-label(for='image') Image Url
+                        input.form-control(id='image', data-ng-model='selectedTruck.imageUrl')
                     section
                         label.control-label(for='keywords') Keywords
                         input.form-control(id='keywords', data-ng-model='keywords')

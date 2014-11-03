@@ -1,4 +1,4 @@
-var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives', 'ui.bootstrap']);
+var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives', 'ui.bootstrap', 'angular-growl', 'ngAnimate']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("home");

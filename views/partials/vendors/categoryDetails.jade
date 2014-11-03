@@ -14,4 +14,4 @@
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
         button.btn.btn-primary(type='submit',  form='categoryForm') Submit
-            i.fa.fa-spinner.fa-spin(data-ng-show='requestInProgress')
+            i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')

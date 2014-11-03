@@ -26,7 +26,9 @@ module.exports = function (grunt) {
         'bower_components/bootstrap/dist/js/bootstrap.js',
         'bower_components/chosen-angular/chosen.js',
         'bower_components/chosen/chosen.jquery.js',
-        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
+        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+        'bower_components/angular-growl/build/angular-growl.js',
+        'bower_components/angular-animate/angular-animate.js'
     ];
 
     var globalConfig = {
@@ -91,11 +93,15 @@ module.exports = function (grunt) {
             }
         },
         'copy': {
-            chosen: {
+            bower: {
                 files: [
                     {
                         expand: true,
-                        src: ['bower_components/chosen/chosen.min.css', 'bower_components/chosen/chosen-sprite.png', 'bower_components/chosen/chosen-sprite@2x.png'],
+                        src: ['bower_components/chosen/chosen.min.css',
+                            'bower_components/chosen/chosen-sprite.png',
+                            'bower_components/chosen/chosen-sprite@2x.png',
+                            'bower_components/angular-growl/build/angular-growl.min.css'
+                            ],
                         dest: '<%= globalConfig.cssDest %>',
                         flatten: true
                     }
@@ -150,8 +156,10 @@ module.exports = function (grunt) {
                     'bower_components/chosen/*.js',
                     'bower_components/angular-ui-router/release/angular-ui-router.js',
                     'bower_components/angular-mocks/angular-mocks.js',
+                    'bower_components/angular-animate/angular-animate.js',
                     'bower_components/base-64/base64.js',
                     'bower_components/lodash/dist/lodash.compat.js',
+                    'bower_components/angular-growl/build/angular-growl.js',
                     'app/app.js',
                     'app/**/*.js',
                     'test/jasmine/**/*.js'
@@ -198,6 +206,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts']);
     grunt.registerTask('dev', ['concurrent:target']);
     grunt.registerTask('build-prod', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:prod']);
-    grunt.registerTask('update-chosen-css', ['copy:chosen']);
+    grunt.registerTask('update-bower-css', ['copy:bower']);
 
 };
