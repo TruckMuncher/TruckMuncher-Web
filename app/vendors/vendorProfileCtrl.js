@@ -14,10 +14,10 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 $scope.selectedTruck.name,
                 $scope.selectedTruck.imageUrl,
                 keywords).then(function (response) {
-                    growl.addSuccessMessage('Profile Updated Successfully', {ttl: 3000});
+                    growl.addSuccessMessage('Profile Updated Successfully');
                     refreshTruck(response);
                 }, function (error) {
-                    growl.addErrorMessage('Error: profile was not saved', {ttl: 3000});
+                    growl.addErrorMessage('Error: profile was not saved');
                 });
         };
 
@@ -37,7 +37,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 $scope.selectedTruck = $scope.trucks[0];
             }
         }, function () {
-            growl.addErrorMessage('Error: could not retrieve vendor trucks', {ttl: 3000});
+            growl.addErrorMessage('Error: could not retrieve vendor trucks');
         });
 
         $scope.$watch('selectedTruck', function () {
