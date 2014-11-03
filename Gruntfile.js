@@ -17,13 +17,13 @@
  */
 module.exports = function (grunt) {
     var jsVendorSourceFiles = [
-        'lib/jquery/jquery.js',
+        'bower_components/jquery/jquery.js',
         'bower_components/angular/angular.js',
         'bower_components/lodash/dist/lodash.compat.js',
         'bower_components/angular-ui-router/release/angular-ui-router.js',
         'bower_components/base-64/base64.js',
         'bower_components/ng-resource/dist/ng-resource.js',
-        'bower_components/bootstrap/bootstrap.js',
+        'bower_components/bootstrap/dist/js/bootstrap.js',
         'bower_components/chosen-angular/chosen.js',
         'bower_components/chosen/chosen.jquery.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
@@ -43,11 +43,11 @@ module.exports = function (grunt) {
             options: {
                 separator: ';'
             },
-            app:{
+            app: {
                 src: ['app/**/*.js'],
                 dest: 'public/js/<%= pkg.name %>.js'
             },
-            vendorScripts:{
+            vendorScripts: {
                 src: [ jsVendorSourceFiles],
                 dest: 'public/js/vendorScripts.js'
             }
@@ -90,7 +90,18 @@ module.exports = function (grunt) {
                 }
             }
         },
-
+        'copy': {
+            chosen: {
+                files: [
+                    {
+                        expand: true,
+                        src: ['bower_components/chosen/chosen.min.css', 'bower_components/chosen/chosen-sprite.png', 'bower_components/chosen/chosen-sprite@2x.png'],
+                        dest: '<%= globalConfig.cssDest %>',
+                        flatten: true
+                    }
+                ]
+            }
+        },
         // MINIFY CSS
         'cssmin': {
             minify: {
@@ -119,7 +130,7 @@ module.exports = function (grunt) {
                 files: ['app/**/*.js', 'bower_components/**/*'],
                 tasks: ['concat:app', 'concat:vendorScripts']
             },
-            bower:{
+            bower: {
                 files: ['bower.json'],
                 tasks: ['bower:install']
             }
@@ -179,13 +190,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
-//    grunt.registerTask('default', ['bower:install']);
     grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts']);
     grunt.registerTask('dev', ['concurrent:target']);
-    grunt.registerTask('build-prod', ['jshint', 'uglify:prod']);
+    grunt.registerTask('build-prod', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:prod']);
+    grunt.registerTask('update-chosen-css', ['copy:chosen']);
 
 };
