@@ -73,12 +73,6 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             },
             responseError: function (rejection) {
                 if (rejection.status === 401) {
-                    if (TokenService.getToken()) {
-                        TokenService.setToken(null);
-                        growl.addInfoMessage('Session expired');
-                    } else {
-                        growl.addInfoMessage('Log in to perform that action');
-                    }
                     $location.path('/login');
                 }
                 return $q.reject(rejection);

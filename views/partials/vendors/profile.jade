@@ -1,8 +1,10 @@
 .row
-    article.col-xs-12.col-md-3.col-md-offset-3
+    article.col-xs-12.col-sm-6.col-md-3.col-md-offset-3
         div.form-group
             label(for='truckList') Profile for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
+        div.form-group
+            a.btn.bg-color-blueLight.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
 .row
     .col-xs-12.col-md-6.col-md-offset-3
         .well.no-padding

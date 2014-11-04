@@ -167,12 +167,6 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             },
             responseError: function (rejection) {
                 if (rejection.status === 401) {
-                    if (TokenService.getToken()) {
-                        TokenService.setToken(null);
-                        growl.addInfoMessage('Session expired');
-                    } else {
-                        growl.addInfoMessage('Log in to perform that action');
-                    }
                     $location.path('/login');
                 }
                 return $q.reject(rejection);
@@ -264,7 +258,6 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                     if (responseDataName) deferred.resolve(response.data[responseDataName]);
                     else deferred.resolve(response.data);
                 }, function (error) {
-                    console.log(error);
                     growl.addErrorMessage('Error: ' + error.data.userMessage);
                     deferred.reject(error);
                 });
@@ -577,6 +570,18 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
+
+        $scope.createTruck = function () {
+            $scope.requestInProgress = true;
+            TruckService.modifyTruckProfile(null, 'New Truck', null, []).then(function (response) {
+                $scope.requestInProgress = false;
+                growl.addSuccessMessage('Profile Updated Successfully');
+                $scope.trucks.push(response);
+                refreshTruck(response);
+            }, function () {
+                $scope.requestInProgress = false;
+            });
+        };
 
         $scope.submit = function () {
             var keywords = _.map($scope.tags, function (tag) {

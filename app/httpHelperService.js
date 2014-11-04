@@ -12,7 +12,6 @@ angular.module('TruckMuncherApp')
                     if (responseDataName) deferred.resolve(response.data[responseDataName]);
                     else deferred.resolve(response.data);
                 }, function (error) {
-                    console.log(error);
                     growl.addErrorMessage('Error: ' + error.data.userMessage);
                     deferred.reject(error);
                 });
