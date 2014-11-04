@@ -167,7 +167,11 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             },
             responseError: function (rejection) {
                 if (rejection.status === 401) {
-                    growl.addInfoMessage('Log in to perform that action');
+                    if(TokenService.getToken()){
+                        growl.addInfoMessage('Session expired');
+                    }else{
+                        growl.addInfoMessage('Log in to perform that action');
+                    }
                     $location.path('/login');
                 }
                 return $q.reject(rejection);
@@ -267,8 +271,11 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     }]);;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService',
     function ($scope, TokenService) {
         $scope.initializeToken = function (sessionToken) {
-            if(sessionToken != 'undefined')
+            if (sessionToken !== 'undefined' && sessionToken !== 'null') {
                 TokenService.setToken(sessionToken);
+            } else {
+                TokenService.setToken(null);
+            }
         };
     }
 ]);;angular.module('TruckMuncherApp')

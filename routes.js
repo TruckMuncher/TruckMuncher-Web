@@ -1,14 +1,11 @@
 var api = require('./api');
 
 function clearTokensFromSession(req) {
-    req.session.twitterToken = null;
-    req.session.twitterTokenSecret = null;
-    req.session.facebookAccessToken = null;
+    req.session.sessionToken = null;
 }
 
 function logOutOfApi(req) {
-    api.logout(req.session.twitterToken, req.session.twitterTokenSecret, null);
-    api.logout(null, null, req.session.facebookAccessToken);
+    api.logout(req.session.sessionToken);
 }
 
 var routes = {
