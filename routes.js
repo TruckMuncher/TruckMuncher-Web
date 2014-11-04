@@ -16,12 +16,13 @@ var routes = {
     },
     partials: function (req, res) {
         var partial = req.url.substring('/partials/'.length);
-        if (partial === 'login.jade') {
+        if (partial === 'login.jade' && req.session.sessionToken) {
             logout(req);
         }
         res.render('partials/' + partial);
     },
     logout: function (req, res) {
+        logout(req);
         res.redirect('/#/login');
     }
 };
