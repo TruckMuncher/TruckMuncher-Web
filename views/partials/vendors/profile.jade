@@ -21,4 +21,4 @@
                         label.control-label(for='keywords') Keywords
                         tags-input(id='keywords', data-ng-model='tags')
                 footer
-                    button.btn.btn-default Submit
+                    button.btn.btn-default(data-ng-disabled='requestInProgress') Submit

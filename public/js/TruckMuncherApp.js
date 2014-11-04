@@ -590,15 +590,18 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return tag.text;
             });
 
+            $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(
                 $scope.selectedTruck.id,
                 $scope.selectedTruck.name,
                 $scope.selectedTruck.imageUrl,
                 keywords).then(function (response) {
+                    $scope.requestInProgress = false;
                     growl.addSuccessMessage('Profile Updated Successfully');
                     refreshTruck(response);
                 }, function (error) {
                     growl.addErrorMessage('Error: profile was not saved');
+                    $scope.requestInProgress = false;
                 });
         };
 
