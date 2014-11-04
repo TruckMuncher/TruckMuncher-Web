@@ -48,8 +48,8 @@ app.factory('TimestampAndNonceService', function () {
 });
 
 
-app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q',
-    function (TokenService, TimestampAndNonceService, $location, $q) {
+app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
+    function (TokenService, TimestampAndNonceService, $location, $q, growl) {
         return{
             request: function (config) {
                 // oauth headers
@@ -72,7 +72,15 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
                 return config;
             },
             responseError: function (rejection) {
-                if (rejection.status === 401) $location.path('/login');
+                if (rejection.status === 401) {
+                    if (TokenService.getToken()) {
+                        TokenService.setToken(null);
+                        growl.addInfoMessage('Session expired');
+                    } else {
+                        growl.addInfoMessage('Log in to perform that action');
+                    }
+                    $location.path('/login');
+                }
                 return $q.reject(rejection);
             }
         };

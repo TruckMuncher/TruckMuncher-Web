@@ -9,16 +9,29 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 return tag.text;
             });
 
+            $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(
                 $scope.selectedTruck.id,
                 $scope.selectedTruck.name,
                 $scope.selectedTruck.imageUrl,
-                keywords).then(function () {
-                    growl.addSuccessMessage('Profile Updated Successfully', {ttl: 2000});
-                }, function (error) {
-                    growl.addErrorMessage('Error: profile was not saved', {ttl: 2000});
+                keywords).then(function (response) {
+                    $scope.requestInProgress = false;
+                    growl.addSuccessMessage('Profile Updated Successfully');
+                    refreshTruck(response);
+                }, function () {
+                    $scope.requestInProgress = false;
                 });
         };
+
+        function refreshTruck(truck) {
+            var index = _.findIndex($scope.trucks, function (t) {
+                return t.id === truck.id;
+            });
+            if (index >= 0) {
+                $scope.trucks[index] = truck;
+                $scope.selectedTruck = truck;
+            }
+        }
 
         TruckService.getTrucksForVendor().then(function (response) {
             $scope.trucks = response;

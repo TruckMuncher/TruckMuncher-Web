@@ -18,11 +18,11 @@ td.pack-column {
 }
 
 td.merge-with-right {
-  border-right: 0px!important;
+  border-right: 0px !important;
 }
 
 td.merge-with-left {
-  border-left: 0px!important;
+  border-left: 0px !important;
 }
 
 /* 
@@ -34,18 +34,25 @@ td.merge-with-left {
   display: none !important;
 }
 
+@logoHeight:49px;
 #logo img {
-  height: 49px;
+  height: @logoHeight;
   width: auto;
 }
 
-#logo{
+#logo {
   margin-top: 0px;
 }
 
-.navbar-brand{
+.navbar-brand {
   padding-top: 0px;
 }
+
+.growl {
+  top: @logoHeight;
+  z-index: 99999999;
+}
+
 /************ style **************/
 @truckMuncherGreenBase : #009688;
 @truckMuncherPinkBase : #c2185b;

@@ -1,28 +1,28 @@
 var api = require('./api');
 
 function clearTokensFromSession(req) {
-    req.session.twitterToken = null;
-    req.session.twitterTokenSecret = null;
-    req.session.facebookAccessToken = null;
+    req.session.sessionToken = null;
 }
 
-function logOutOfApi(req) {
-    api.logout(req.session.twitterToken, req.session.twitterTokenSecret, null);
-    api.logout(null, null, req.session.facebookAccessToken);
+function logout(req) {
+    api.logout(req.session.sessionToken);
+    clearTokensFromSession(req);
+    req.logout();
 }
 
 var routes = {
-    index: function(req, res){
+    index: function (req, res) {
         res.render('index');
     },
-    partials: function(req, res){
+    partials: function (req, res) {
         var partial = req.url.substring('/partials/'.length);
+        if (partial === 'login.jade' && req.session.sessionToken) {
+            logout(req);
+        }
         res.render('partials/' + partial);
     },
-    logout: function(req, res){
-        logOutOfApi(req);
-        clearTokensFromSession(req);
-        req.logout();
+    logout: function (req, res) {
+        logout(req);
         res.redirect('/#/login');
     }
 };

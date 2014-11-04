@@ -7,7 +7,6 @@
     .col-xs-12.col-md-6.col-md-offset-3
         .well.no-padding
             form.smart-form(data-ng-submit='submit()')
-                header Registration is Free
                 fieldset
                     section
                         label.control-label(for='truckName') Truck Name
@@ -21,4 +20,4 @@
                         label.control-label(for='keywords') Keywords
                         tags-input(id='keywords', data-ng-model='tags')
                 footer
-                    button.btn.btn-default Submit
+                    button.btn.btn-primary(data-ng-disabled='requestInProgress') Submit

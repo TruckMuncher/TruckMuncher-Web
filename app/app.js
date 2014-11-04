@@ -77,6 +77,10 @@ app.config(['$httpProvider' , function ($httpProvider) {
     $httpProvider.interceptors.push('myInterceptor');
 }]);
 
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.globalTimeToLive(3000);
+}]);
+
 app.run(function ($rootScope, $state, TokenService) {
 
     $rootScope.$on("$stateChangeStart",

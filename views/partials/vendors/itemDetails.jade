@@ -27,5 +27,5 @@
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        button.btn.btn-primary(type='submit',  form='itemForm') Submit
+        button.btn.btn-primary(type='submit',  form='itemForm', data-ng-disabled='requestInProgress') Submit
             i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
