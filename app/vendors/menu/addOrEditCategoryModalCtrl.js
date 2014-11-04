@@ -21,7 +21,6 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
                     $modalInstance.close(response);
                 }, function () {
                     $scope.requestInProgress = false;
-                    growl.addErrorMessage('Error: could not save item');
                 });
             }
         };

@@ -14,8 +14,6 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response;
-                }, function (error) {
-                    growl.addErrorMessage('Error: could not retrieve menu for truck');
                 });
             }
         });
@@ -25,8 +23,6 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function () {
                 MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
                     $scope.menu = response;
-                }, function (error) {
-                    growl.addErrorMessage('Error: could not delete item');
                 });
             });
         };
@@ -48,8 +44,6 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
 
             MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
                 $scope.menu = response;
-            }, function (error) {
-                growl.addErrorMessage('Error: could not change item ordering');
             });
         }
 
@@ -81,8 +75,6 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             delete otherCategory.menuItems;
             MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
                 $scope.menu = response;
-            }, function (error) {
-                growl.addErrorMessage('Error: could not change category ordering');
             });
         }
 
@@ -97,8 +89,6 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No').then(function () {
                 MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
                     $scope.menu = response;
-                }, function (error) {
-                    growl.addErrorMessage('Error: could not delete category');
                 });
             });
         };

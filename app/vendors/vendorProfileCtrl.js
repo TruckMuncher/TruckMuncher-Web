@@ -18,8 +18,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                     $scope.requestInProgress = false;
                     growl.addSuccessMessage('Profile Updated Successfully');
                     refreshTruck(response);
-                }, function (error) {
-                    growl.addErrorMessage('Error: profile was not saved');
+                }, function () {
                     $scope.requestInProgress = false;
                 });
         };
@@ -39,8 +38,6 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             if ($scope.trucks.length > 0) {
                 $scope.selectedTruck = $scope.trucks[0];
             }
-        }, function () {
-            growl.addErrorMessage('Error: could not retrieve vendor trucks');
         });
 
         $scope.$watch('selectedTruck', function () {

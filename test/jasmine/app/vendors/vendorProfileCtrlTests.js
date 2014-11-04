@@ -52,14 +52,6 @@ describe('TruckMuncherApp', function () {
             expect(TruckServiceMock.getTrucksForVendor).toHaveBeenCalled();
         });
 
-        it('should notify of error if cannot retrieve trucks for vendor', function () {
-            rejectRequests = true;
-            spyOn(growlMock, 'addErrorMessage');
-            createCtrlFn();
-            $scope.$apply();
-            expect(growlMock.addErrorMessage).toHaveBeenCalled();
-        });
-
         it('should convert the keywords on the selectedTruck to tags', function () {
             $scope.selectedTruck = {keywords: ['abc', 'def', 'ghi']};
             $scope.$apply();
@@ -68,14 +60,6 @@ describe('TruckMuncherApp', function () {
                 {text: 'def'},
                 {text: 'ghi'}
             ]);
-        });
-
-        it('should notify of error if cannot save truck profile', function () {
-            spyOn(growlMock, 'addErrorMessage');
-            rejectRequests = true;
-            $scope.submit();
-            $scope.$apply();
-            expect(growlMock.addErrorMessage).toHaveBeenCalled();
         });
 
         it('should convert the tags to keywords when submitting', function () {
