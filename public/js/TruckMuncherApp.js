@@ -468,8 +468,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     }
 
 ]);
-;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService', 'growl',
-    function ($scope, MenuService, TruckService, $state, confirmDialog, growl) {
+;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService',
+    function ($scope, MenuService, TruckService, $state, confirmDialog) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
