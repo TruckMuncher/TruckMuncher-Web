@@ -383,8 +383,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             }
         };
     }]);
-;angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService', 'growl',
-    function ($scope, $modalInstance, $stateParams, $state, MenuService, growl) {
+;angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService',
+    function ($scope, $modalInstance, $stateParams, $state, MenuService) {
         $scope.category = {};
         $scope.requestInProgress = false;
 
@@ -414,8 +414,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $modalInstance.dismiss('dismissFromStateChange');
         });
     }]);
-;angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', 'growl',
-    function ($scope, MenuService, $modalInstance, $stateParams, $state, growl) {
+;angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state',
+    function ($scope, MenuService, $modalInstance, $stateParams, $state) {
         $scope.item = {};
         $scope.requestInProgress = false;
 
