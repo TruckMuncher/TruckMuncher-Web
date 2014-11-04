@@ -1,13 +1,12 @@
 .row(data-ng-cloak='')
-    article.col-lg-3.col-md-6.col-sm-9(data-ng-class='{"col-lg-offset-1": menu.categories.length < 2}')
+    article.col-lg-3.col-md-6.col-sm-9.col-lg-offset-1
         div.form-group
             label(for='truckList') Menu for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
         div.form-group(data-ng-show='selectedTruck')
             a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Category
 .row(data-ng-cloak='')
-    article.col-xs-12(data-ng-class='{"col-lg-6": menu.categories.length > 1, "col-lg-10 col-lg-offset-1": menu.categories.length < 2}',
-                        data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
+    article.col-xs-12.col-lg-10.col-lg-offset-1(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
         .jarviswidget.jarviswidget-color-blueDark
             header
                 h2 {{category.name}}
