@@ -4,36 +4,36 @@ var request = require('request'),
 var apiUrl = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.auth.AuthService/';
 
 var nonceAndTimestampHelper = {
-        getTimestamp: function () {
-            function twoDigitNumber(n) {
-                return n < 10 ? '0' + n : '' + n;
+    getTimestamp: function () {
+        function twoDigitNumber(n) {
+            return n < 10 ? '0' + n : '' + n;
+        }
+
+        var d = new Date(new Date().getTime());
+        return d.getUTCFullYear() + '-' +
+            twoDigitNumber(d.getUTCMonth() + 1) + '-' +
+            twoDigitNumber(d.getUTCDate()) + 'T' +
+            twoDigitNumber(d.getUTCHours()) + ':' +
+            twoDigitNumber(d.getUTCMinutes()) + ':' +
+            twoDigitNumber(d.getUTCSeconds()) + 'Z';
+    },
+    getNonce: function () {
+        var guid = (function () {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
             }
 
-            var d = new Date(new Date().getTime());
-            return d.getUTCFullYear() + '-' +
-                twoDigitNumber(d.getUTCMonth() + 1) + '-' +
-                twoDigitNumber(d.getUTCDate()) + 'T' +
-                twoDigitNumber(d.getUTCHours()) + ':' +
-                twoDigitNumber(d.getUTCMinutes()) + ':' +
-                twoDigitNumber(d.getUTCSeconds()) + 'Z';
-        },
-        getNonce: function () {
-            var guid = (function () {
-                function s4() {
-                    return Math.floor((1 + Math.random()) * 0x10000)
-                        .toString(16)
-                        .substring(1);
-                }
-
-                return function () {
-                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                        s4() + '-' + s4() + s4() + s4();
-                };
-            })();
-            var uuid = guid();
-            var _32randomChars = uuid.replace(/-/gi, '');
-            return (new Buffer(_32randomChars).toString('base64'));
-        }
+            return function () {
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                    s4() + '-' + s4() + s4() + s4();
+            };
+        })();
+        var uuid = guid();
+        var _32randomChars = uuid.replace(/-/gi, '');
+        return (new Buffer(_32randomChars).toString('base64'));
+    }
 };
 
 function makeRequest(url, method, header) {
@@ -58,19 +58,8 @@ function makeRequest(url, method, header) {
     return deferred.promise;
 }
 
-function buildTwitterHeader(twitter_token, twitter_secret) {
+function buildHeader() {
     return {
-        'Authorization': 'oauth_token=' + twitter_token + ', oauth_secret=' + twitter_secret,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-Nonce': nonceAndTimestampHelper.getNonce(),
-        'X-Timestamp': nonceAndTimestampHelper.getTimestamp()
-    }
-}
-
-function buildFacebookHeader(facebook_token) {
-    return {
-        'Authorization': 'access_token=' + facebook_token,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-Nonce': nonceAndTimestampHelper.getNonce(),
@@ -80,16 +69,19 @@ function buildFacebookHeader(facebook_token) {
 
 var api = {
     login: function (twitter_token, twitter_secret, facebook_token) {
+        var header = buildHeader();
         if (twitter_token) {
-            return makeRequest(apiUrl + 'getAuth', 'POST', buildTwitterHeader(twitter_token, twitter_secret));
+            header.Authorization = 'oauth_token=' + twitter_token + ', oauth_secret=' + twitter_secret;
         }
-
         if (facebook_token) {
-            return makeRequest(apiUrl + 'getAuth', 'POST', buildFacebookHeader(facebook_token));
+            header.Authorization = 'access_token=' + facebook_token;
         }
+        return makeRequest(apiUrl + 'getAuth', 'POST', header);
     },
     logout: function (sessionToken) {
-        return makeRequest(apiUrl + 'deleteAuth', 'POST', {'session_token': sessionToken, 'Accept': 'application/json'});
+        var header = buildHeader();
+        header.session_token = sessionToken;
+        return makeRequest(apiUrl + 'deleteAuth', 'POST', header);
     }
 };
 
