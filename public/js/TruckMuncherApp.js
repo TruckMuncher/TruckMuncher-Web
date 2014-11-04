@@ -380,8 +380,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             }
         };
     }]);
-;angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService',
-    function ($scope, $modalInstance, $stateParams, $state, MenuService) {
+;angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService', 'growl',
+    function ($scope, $modalInstance, $stateParams, $state, MenuService, growl) {
         $scope.category = {};
         $scope.requestInProgress = false;
 
@@ -403,6 +403,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                     $modalInstance.close(response);
                 }, function () {
                     $scope.requestInProgress = false;
+                    growl.addErrorMessage('Error: could not save item');
                 });
             }
         };
@@ -411,8 +412,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $modalInstance.dismiss('dismissFromStateChange');
         });
     }]);
-;angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state',
-    function ($scope, MenuService, $modalInstance, $stateParams, $state) {
+;angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', 'growl',
+    function ($scope, MenuService, $modalInstance, $stateParams, $state, growl) {
         $scope.item = {};
         $scope.requestInProgress = false;
 
@@ -435,6 +436,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                         $modalInstance.close(response);
                     }, function () {
                         $scope.requestInProgress = false;
+                        growl.addErrorMessage('Error: could not save item');
                     });
             }
         };

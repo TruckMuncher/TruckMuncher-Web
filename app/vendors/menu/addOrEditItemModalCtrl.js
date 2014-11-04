@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state',
-    function ($scope, MenuService, $modalInstance, $stateParams, $state) {
+angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', 'growl',
+    function ($scope, MenuService, $modalInstance, $stateParams, $state, growl) {
         $scope.item = {};
         $scope.requestInProgress = false;
 
@@ -22,6 +22,7 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
                         $modalInstance.close(response);
                     }, function () {
                         $scope.requestInProgress = false;
+                        growl.addErrorMessage('Error: could not save item');
                     });
             }
         };
