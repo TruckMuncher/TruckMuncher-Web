@@ -424,13 +424,12 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.item = {};
         $scope.requestInProgress = false;
 
+        MenuService.getTags().then(function (response) {
+            $scope.allTags = response;
+            console.log($scope.allTags);
+        });
+
         (function () {
-
-            MenuService.getTags().then(function (response) {
-                $scope.allTags = response;
-                console.log($scope.allTags);
-            });
-
             if ($state.current.name === 'menu.editItem') {
                 MenuService.getItem($stateParams.itemId).then(function (response) {
                     $scope.item = response;

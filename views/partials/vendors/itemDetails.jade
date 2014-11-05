@@ -20,7 +20,8 @@
             div.form-group
                 label(for='itemTags') Tags:
                 //select.form-control(id='itemTags', data-chosen='', data-ng-model='item.tags', ng-options='item.tags for tag in allTags')
-                select(id='itemTags', chosen, multiple, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="item.tags", ng-options="c for c in allTags")
+                select(id='itemTags', chosen, multiple, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="item.tags", ng-options="tag for tag in allTags")
+
         section
             label.label(for='itemNotes') Notes
             .textarea

@@ -4,8 +4,7 @@
             header
                 h2 Sign in:
             div
-                .widget-body
-                    a(href='/auth/facebook' class='btn btn-primary')
-                        i.fa.fa-facebook= '  Facebook'
-                    a(href='/auth/twitter' class='btn btn-primary')
-                        i.fa.fa-twitter= '  Twitter'
+                a(id="facebookBtn", href='/auth/facebook', class='btn btn-primary')
+                    i.fa.fa-facebook= '  Facebook'
+                a(id="twitterBtn", href='/auth/twitter', class='btn btn-primary')
+                    i.fa.fa-twitter= '  Twitter'
