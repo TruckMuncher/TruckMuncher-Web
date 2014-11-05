@@ -327,6 +327,11 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteMenuItem';
                 var data = {'truckId': truckId, 'menuItemId': menuItemId};
                 return httpHelperService.post(url, data, 'menu');
+            },
+            getTags: function () {
+                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getValidMenuItemTags';
+                var data = {};
+                return httpHelperService.post(url, data, 'tags');
             }
         };
     }]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
@@ -418,10 +423,20 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.requestInProgress = false;
 
         (function () {
+
+            MenuService.getTags().then(function (response) {
+                $scope.allTags = response;
+                $scope.item.tags = [];
+
+
+            });
+
             if ($state.current.name === 'menu.editItem') {
                 MenuService.getItem($stateParams.itemId).then(function (response) {
                     $scope.item = response;
                 });
+
+
             }
         })();
 

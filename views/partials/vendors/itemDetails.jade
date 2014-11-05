@@ -17,12 +17,14 @@
                 i
                 | Available
         section
+            div.form-group
+                label(for='itemTags') Tags:
+                select(id='itemTags', data-chosen, multiple, data-placeholder="Choose a category", data-no-results-text="'Could not find any categories matching'", data-ng-model="item.tags", data-ng-options="c for c in allTags")
+        section
             label.label(for='itemNotes') Notes
             .textarea
                 textarea(id='itemNotes', placeholder='Ex: Delicious sausage and pizza sauce on a bagel', data-ng-model='item.notes')
         section
-            //select(chosen, data-placeholder="Choose a category", no-results-text="'Could not find any categories'", ng-model="category", ng-options="c for c in categories")
-            //select(chosen, multiple, data-placeholder="Choose a beer", no-results-text="'Could not find any beers :('", ng-model="category", ng-options="b for b in categories", id='category')
 
 .modal-footer
     .form-group.row
