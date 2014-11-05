@@ -24,4 +24,16 @@ describe('httpHelperService', function () {
 
         expect(growl.addErrorMessage).toHaveBeenCalledWith('Error: ' + userMessage);
     });
+
+    it('should show an unknown error notification when there is no user message on the error response', function(){
+        spyOn(growl, 'addErrorMessage');
+
+        service.post('/', {});
+        $httpBackend.expect('POST', '/', undefined).respond(500, '');
+        $httpBackend.flush();
+
+        expect(growl.addErrorMessage).toHaveBeenCalledWith('An unknown error occurred');
+    });
+
+
 });
