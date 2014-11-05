@@ -89,6 +89,7 @@ module.exports = function (grunt) {
                 files: {
                     "<%= globalConfig.smartAdmin %>/UNMINIFIED_CSS/bootstrap.css": "<%= globalConfig.smartAdmin %>/LESS_FILES/bootstrap.less",
                     "<%= globalConfig.smartAdmin %>/UNMINIFIED_CSS/smartadmin-production.css": "<%= globalConfig.smartAdmin %>/LESS_FILES/smartadmin-production.less",
+                    "<%= globalConfig.smartAdmin %>/UNMINIFIED_CSS/smartadmin-production-plugins.css": "<%= globalConfig.smartAdmin %>/LESS_FILES/smartadmin-production-plugins.less",
                     "<%= globalConfig.smartAdmin %>/UNMINIFIED_CSS/smartadmin-skins.css": "<%= globalConfig.smartAdmin %>/LESS_FILES/smartadmin-skin/smartadmin-skins.less"
                 }
             }
