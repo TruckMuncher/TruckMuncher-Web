@@ -49,7 +49,7 @@ app.factory('TimestampAndNonceService', function () {
 
 
 app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
-    function (TokenService, TimestampAndNonceService, $location, $q, growl) {
+    function (TokenService, TimestampAndNonceService, $location, $q) {
         return{
             request: function (config) {
                 // oauth headers
@@ -73,6 +73,7 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             },
             responseError: function (rejection) {
                 if (rejection.status === 401) {
+                    TokenService.setToken(null);
                     $location.path('/login');
                 }
                 return $q.reject(rejection);
