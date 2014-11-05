@@ -4,10 +4,18 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
         $scope.requestInProgress = false;
 
         (function () {
+
+            MenuService.getTags().then(function (response) {
+                $scope.allTags = response;
+                console.log($scope.allTags);
+            });
+
             if ($state.current.name === 'menu.editItem') {
                 MenuService.getItem($stateParams.itemId).then(function (response) {
                     $scope.item = response;
                 });
+
+
             }
         })();
 
