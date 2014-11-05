@@ -23,6 +23,9 @@ describe('TruckMuncherApp', function () {
             };
 
             createControllerFn();
+
+            $httpBackend.when('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getValidMenuItemTags', undefined).respond(200, '');
+
         }));
 
         it('should dismiss the modal when the state changes', function () {
@@ -60,6 +63,12 @@ describe('TruckMuncherApp', function () {
         it('should request the item from the API if the state is edit', function () {
             $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem', undefined).respond(200, '');
             $state.current.name = 'menu.editItem';
+            createControllerFn();
+            $httpBackend.verifyNoOutstandingExpectation();
+        });
+
+        it('should request the tags when the controller loads', function () {
+            $httpBackend.expect('POST', 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getValidMenuItemTags', undefined).respond(200, '');
             createControllerFn();
             $httpBackend.verifyNoOutstandingExpectation();
         });

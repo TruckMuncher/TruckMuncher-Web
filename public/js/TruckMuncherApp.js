@@ -430,7 +430,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 $scope.allTags = response;
                 $scope.item.tags = [];
 
-                
+
             });
 
             if ($state.current.name === 'menu.editItem') {
