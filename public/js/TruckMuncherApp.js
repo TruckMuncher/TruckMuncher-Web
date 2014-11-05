@@ -428,7 +428,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 
             MenuService.getTags().then(function (response) {
                 $scope.allTags = response;
-                console.log($scope.allTags);
+                $scope.item.tags = [];
+
+                
             });
 
             if ($state.current.name === 'menu.editItem') {
