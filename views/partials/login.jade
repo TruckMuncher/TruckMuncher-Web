@@ -1,10 +1,23 @@
+.container-fluid
+    div(style="width:100%; text-align:center; font-size:64px;")
+        | Welcome to TruckMuncher!
+    span(style="display:block; text-align:center; vertical-align:middle;")
+        img(src='img/logo.png', alt='SmartAdmin', style="height:25%; width:15%;")
+    //div(style="width:100%; text-align:center; font-size:24px; font-style:italic")
+    //    | We'll munch your truck! ;)
+
+
+//.row
+//    .col-xs-12.col-lg-4.col-lg-offset-4
+//        .jarviswidget.jarviswidget-color-blueDark
 .row
     .col-xs-12.col-lg-4.col-lg-offset-4
-        .jarviswidget.jarviswidget-color-blueDark
-            header
-                h2 Sign in:
-            div
-                a(id="facebookBtn", href='/auth/facebook', class='btn btn-primary')
-                    i.fa.fa-facebook= '  Facebook'
-                a(id="twitterBtn", href='/auth/twitter', class='btn btn-primary')
-                    i.fa.fa-twitter= '  Twitter'
+        header.text-center
+            h2 Sign in:
+        div.text-center
+            a(id="facebookBtn", href='/auth/facebook', class='btn btn-primary')
+                i.fa.fa-facebook= '  Facebook'
+            a(id="twitterBtn", href='/auth/twitter', class='btn btn-primary')
+                i.fa.fa-twitter= '  Twitter'
+
+
