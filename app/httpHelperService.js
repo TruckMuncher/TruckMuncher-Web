@@ -12,7 +12,11 @@ angular.module('TruckMuncherApp')
                     if (responseDataName) deferred.resolve(response.data[responseDataName]);
                     else deferred.resolve(response.data);
                 }, function (error) {
-                    growl.addErrorMessage('Error: ' + error.data.userMessage);
+                    if(error.data && error.data.userMessage){
+                        growl.addErrorMessage('Error: ' + error.data.userMessage);
+                    }else{
+                        growl.addErrorMessage('An unknown error occurred');
+                    }
                     deferred.reject(error);
                 });
                 return deferred.promise;
