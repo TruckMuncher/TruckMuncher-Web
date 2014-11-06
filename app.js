@@ -66,9 +66,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
 
-app.all('*', function (req, res) {
+app.all('*', function (req, res, next) {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-Content-Type-Options', 'nosniff');
+    next();
 });
 
 app.use(function (req, res, next) {
