@@ -42,7 +42,7 @@ passport.use(new TwitterStrategy({
 // setup middleware
 var app = express();
 
-app.use(favicon(__dirname + '/public/img/favicon.ico'))
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var sess = {
 // 	genid: function(req) {
@@ -53,10 +53,12 @@ var sess = {
     saveUninitialized: true,
     cookie: {}
 };
-// if (app.get('env') === 'production') {
-//   app.set('trust proxy', 1) // trust first proxy
-//   sess.cookie.secure = true // serve secure cookies
-// }
+
+//use secure cookies on bluemix
+if (process.env.VCAP_APP_HOST) {
+   app.set('trust proxy', 1); // trust first proxy
+   sess.cookie.secure = true; // serve secure cookies
+}
 
 app.use(express.cookieParser());
 app.use(session(sess));
