@@ -22,7 +22,7 @@ passport.use(new FacebookStrategy({
     },
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
-            return done(null, profile, { accessToken: accessToken});
+            return done(null, profile, {accessToken: accessToken});
         });
     }
 ));
@@ -64,6 +64,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
 
+app.all('*', function (req, res) {
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+});
+
 app.use(function (req, res, next) {
     res.locals.sessionToken = req.session.sessionToken;
     //force https on everything but localhost
@@ -76,7 +81,6 @@ app.use(function (req, res, next) {
     }
 });
 
-
 app.use(app.router);
 app.use(express.static(__dirname + '/public')); //setup static public directory
 
@@ -85,16 +89,6 @@ app.set('views', __dirname + '/views'); //optional since express defaults to CWD
 
 
 app.use(express.static(path.join(__dirname, '/lib')));
-
-// test authentication
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/')
-}
-
-//app.all('/vendors*', ensureAuthenticated);
 
 app.get('/', routes.index);
 
