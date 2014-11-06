@@ -66,13 +66,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler());
 
-app.all('*', function (req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    next();
-});
-
-app.use(function (req, res, next) {
     res.locals.sessionToken = req.session.sessionToken;
     //force https on everything but localhost
     var schema = req.headers['x-forwarded-proto'];
