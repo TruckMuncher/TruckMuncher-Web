@@ -1,8 +1,11 @@
 /*jshint node:true*/
 
-if (process.env.VCAP_APP_HOST) {
+var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+if (host !== 'localhost') {
     require('loganalysis');
 }
+
 var express = require('express'),
     session = require('express-session'),
     path = require('path'),
@@ -55,7 +58,7 @@ var sess = {
 };
 
 //use secure cookies on bluemix
-if (process.env.VCAP_APP_HOST) {
+if (host !== 'localhost') {
    app.set('trust proxy', 1); // trust first proxy
    sess.cookie.secure = true; // serve secure cookies
 }
@@ -70,6 +73,8 @@ app.use(function (req, res, next) {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.locals.sessionToken = req.session.sessionToken;
+    res.locals.apiUrl = process.env.API_URL;
+
     //force https on everything but localhost
     var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https' || host === 'localhost') {
@@ -150,8 +155,6 @@ passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
 
-var port = (process.env.VCAP_APP_PORT || 3000);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 // There are many useful environment variables available in process.env.
 // VCAP_APPLICATION contains useful information about a deployed application.

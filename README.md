@@ -16,6 +16,7 @@ Downloading and Running the Project Locally
         export FACEBOOK_CLIENT_SECRET=[key]
         export TWITTER_CONSUMER_KEY=[key]
         export TWITTER_CONSUMER_SECRET=[key]
+        export API_URL=https://api.truckmuncher.com:8443
         
 	Note, to do for environment variables to be permanent, you will need to put these in one of the following:
 	* ~/.profile
