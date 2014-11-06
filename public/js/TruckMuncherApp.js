@@ -274,6 +274,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 TokenService.setToken(null);
             }
         };
+
         $scope.initializeApiUrl = function (url) {
             httpHelperService.setApiUrl(url);
         };
@@ -422,23 +423,18 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.requestInProgress = false;
 
         (function () {
-
             MenuService.getTags().then(function (response) {
                 $scope.allTags = response;
                 $scope.item.tags = [];
-
-
             });
+            $scope.item.isAvailable = true;
 
             if ($state.current.name === 'menu.editItem') {
                 MenuService.getItem($stateParams.itemId).then(function (response) {
                     $scope.item = response;
                 });
-
-
             }
         })();
-
 
         $scope.submit = function () {
             if (!$scope.requestInProgress) {
