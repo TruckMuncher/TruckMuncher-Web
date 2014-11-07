@@ -14,20 +14,20 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
                 | TruckMuncher is launching in time for the 2015 season.
 
 
-            .col-md-6.col-md-offset-3
-                .panel.panel-primary.col-md-4.col-md-offset-1(style="font-size:24px; font-style:italic; padding: 0; border-color:#009688;")
+            .col-md-6.col-sm-12.col-xs-12.col-md-offset-3
+                .panel.panel-primary.col-md-4.col-sm-12.col-xs-12.col-md-offset-1.text-center(style="font-size:24px; font-style:italic; padding: 0; border-color:#009688; min-height:250px;")
                     .panel-heading(style="background-color:#009688")
                         | Looking for lunch?
                     .panel-body
                         | Use TruckMuncher to discover food trucks nearby and view their menus!
 
-                .panel.panel-primary.col-md-4.col-md-offset-2(style="font-size:24px; font-style:italic; padding: 0; border-color:#009688;")
+                .panel.panel-primary.col-md-4.col-sm-12.col-xs-12.col-md-offset-2.text-center(style="font-size:24px; font-style:italic; padding: 0; border-color:#009688; min-height:250px;")
                     .panel-heading(style="background-color:#009688")
                         | Do you run a truck?
                     .panel-body
                         | Use TruckMuncher to engage your customers and report your location.
 
-            .panel.panel-primary.col-md-4.col-md-offset-4(style="font-style:italic; border-color:#009688;")
+            .panel.panel-primary.col-md-4.col-sm-12.col-xs-12.col-md-offset-4(style="font-style:italic; border-color:#009688;")
                 .panel-body.text-center
                     div(style="font-size:24px;")
                         | Sign up for updates today!
@@ -36,10 +36,19 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
                             span.input-group-btn
                                 button.btn(style="background-color:#009688; color:#ffffff", onclick='sendEmail()') Submit
 
-                    div(style="font-size:18px;")
-                        | Want to get started early? Send us an email @ support@truckmuncher.com
+                    .alert.alert-danger.alert-dismissible(id="emailError", role="alert", style="display:none")
+                        button.close(type="button", data-dissmiss="alert")
+                            span(aria-hidden=true) &times;
+                        h4 Please enter a valid email
 
-            .col-md-4.col-md-offset-4.input-group
+                    .alert.alert-success.alert-dismissible(id="emailSuccess", role="alert", style="display:none")
+                        button.close(type="button", data-dissmiss="alert")
+                            span(aria-hidden=true) &times;
+                        h4 Your email has been submitted!
+
+                    div(style="font-size:18px;")
+                        | Want to get started early? Send us an email: </br>
+                        a(href="mailto:support@truckmuncher.com?subject=TruckMuncher Beta Access") support@truckmuncher.com
 
 
             .col-md-12.text-center(style="font-size:18px; margin: 10px;")
@@ -52,11 +61,32 @@ script.
 
         if (email.indexOf('@') >= 1) {
             console.log('true');
-        } else {
+            $('#emailError').hide();
+            document.getElementById('emailInput').value = "";
 
+            var data = {"email":email};
+
+            $.ajax({
+                type: "POST",
+                url: "https://api.truckmuncher.com:8443/com.truckmuncher.api.subscription.SubscriptionService/subscribe",
+                data: JSON.stringify(data),
+                accept: "application/json",
+                contentType: "application/json",
+                success: function (data) {
+                    $('#emailSuccess').show();
+                },
+                error: function (jqhxr, status) {
+
+                }
+            });
+        } else {
+            $('#emailError').show();
             console.log('false');
         }
 
         console.log(email);
     }
+
+script(src='/jquery/jquery.js')
+script(src='/bootstrap/bootstrap.js')
 
