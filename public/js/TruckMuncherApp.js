@@ -423,11 +423,11 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.requestInProgress = false;
 
         (function () {
+            $scope.item.isAvailable = true;
             MenuService.getTags().then(function (response) {
                 $scope.allTags = response;
                 $scope.item.tags = [];
             });
-            $scope.item.isAvailable = true;
 
             if ($state.current.name === 'menu.editItem') {
                 MenuService.getItem($stateParams.itemId).then(function (response) {
@@ -495,6 +495,17 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 });
             }
         });
+
+        $scope.toggleItemAvailability = function(item, categoryId){
+            var itemClone = _.clone(item);
+            itemClone.isAvailable = !item.isAvailable;
+            MenuService.addOrUpdateItem(
+                itemClone,
+                $scope.selectedTruck,
+                categoryId).then(function (response) {
+                    $scope.menu = response;
+                });
+        };
 
         $scope.deleteItem = function (itemId) {
             var body = 'Are you sure you want to delete this item?';
