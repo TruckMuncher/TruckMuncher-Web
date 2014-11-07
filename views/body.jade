@@ -42,6 +42,11 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
                             span(aria-hidden=true) &times;
                         h4 Please enter a valid email
 
+                    .alert.alert-danger.alert-dismissible(id="emailNetworkError", role="alert", style="display:none")
+                        button.close(type="button", data-dismiss="alert")
+                            span(aria-hidden=true) &times;
+                        h4 There has been an issue submitting your email
+
                     .alert.alert-success.alert-dismissible(id="emailSuccess", role="alert", style="display:none")
                         button.close(type="button", data-dismiss="alert")
                             span(aria-hidden=true) &times;
@@ -63,6 +68,7 @@ script.
     $('#signup').submit(function (event) {
         var emailError = $('#emailError');
         var emailSuccess = $('#emailSuccess');
+        var emailNetworkError = $('#emailNetworkError');
 
         emailError.hide();
         emailSuccess.hide();
@@ -85,7 +91,7 @@ script.
                     emailSuccess.show();
                 },
                 error: function (jqhxr, status) {
-
+                    emailNetworkError.show();
                 }
             });
         } else {
