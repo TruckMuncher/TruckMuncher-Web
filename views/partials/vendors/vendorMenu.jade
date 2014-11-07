@@ -1,12 +1,12 @@
 .row(data-ng-cloak='')
-    article.col-lg-3.col-md-6.col-sm-9.col-lg-offset-1
+    article.col-lg-3.col-md-6.col-sm-9.col-lg-offset-2
         div.form-group
             label(for='truckList') Menu for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
         div.form-group(data-ng-show='selectedTruck')
             a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Category
 .row(data-ng-cloak='')
-    article.col-xs-12.col-lg-10.col-lg-offset-1(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
+    article.col-xs-12.col-lg-8.col-lg-offset-2(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
         .jarviswidget.jarviswidget-color-blueDark
             header
                 h2 {{category.name}}
@@ -33,6 +33,8 @@
                                         span Item
                                     th
                                         span Price
+                                    th
+                                        span Available
                                     th(colspan='2')
                             tbody
                                 tr(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
@@ -45,6 +47,9 @@
                                             =  ' {{item.notes}}'
                                     td
                                         span {{item.price | currency:"$":2}}
+                                    td.text-center
+                                        i.fa.fa-check.pointer(data-ng-if='item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
+                                        i.fa.fa-close.pointer(data-ng-if='!item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
                                     td.pack-column.merge-with-right
                                         a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
                                             i.fa.fa-edit.fa-lg
@@ -52,7 +57,7 @@
                                         a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
                                             i.fa.fa-trash.fa-lg
                                 tr.pointer(data-ng-click='addItem(selectedTruck, category.id)', )
-                                    td.borderit.text-center(colspan='4')
+                                    td.borderit.text-center(colspan='5')
                                         span Add Item
 
 <div data-ui-view></div>

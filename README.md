@@ -16,6 +16,7 @@ Downloading and Running the Project Locally
         export FACEBOOK_CLIENT_SECRET=[key]
         export TWITTER_CONSUMER_KEY=[key]
         export TWITTER_CONSUMER_SECRET=[key]
+        export API_URL=https://api.truckmuncher.com:8443
         
 	Note, to do for environment variables to be permanent, you will need to put these in one of the following:
 	* ~/.profile
@@ -71,21 +72,3 @@ the sources as well as runs the karma tests, jshint and starts a nodemon instanc
         
 * To get growl notifications to correctly show up, make sure that the "OS X Notifications" setting is set to "OFF" in the growl preferences.
 
-IBM Bluemix
------------------------------------
-This project is deployed on IBM Bluemix. The following are the steps to get up and running:
-
-1. [Install the cf command-line tool](https://www.ng.bluemix.net/docs/#starters/BuildingWeb.html#install_cf).
-2. Browse to the this project in the command line 
-3. Log into Bluemix:
-
-		cf login -u [email] 
-		cf api https://api.ng.bluemix.net
-		cf target -o [organization (TruckMuncher)] -s [space (dev)]
-
-4. Be sure to delete the node_modules folder before deploying the app
-5. Deploy the app:
-
-		cf push [app name (TruckMuncher)]
-
-6. Access the app. This project's dev location is: [truck-muncher.mybluemix.net](//truck-muncher.mybluemix.net)

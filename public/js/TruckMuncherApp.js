@@ -144,7 +144,7 @@ app.factory('TimestampAndNonceService', function () {
 
 
 app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
-    function (TokenService, TimestampAndNonceService, $location, $q, growl) {
+    function (TokenService, TimestampAndNonceService, $location, $q) {
         return{
             request: function (config) {
                 // oauth headers
@@ -168,6 +168,7 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             },
             responseError: function (rejection) {
                 if (rejection.status === 401) {
+                    TokenService.setToken(null);
                     $location.path('/login');
                 }
                 return $q.reject(rejection);
@@ -177,18 +178,6 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
 
 
 
-;angular.module('TruckMuncherApp').controller('cssCtrl', ['$scope', '$rootScope',
-    function ($scope, $rootScope) {
-        $scope.showMenu = false;
-
-        $rootScope.$on('menuItemClicked', function () {
-            $scope.showMenu = false;
-        });
-
-        $rootScope.$on('toggleMenu', function(){
-            $scope.showMenu = !$scope.showMenu;
-        });
-    }]);
 ;angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
     var link = function (scope, elem) {
         elem.on('submit', function () {
@@ -247,6 +236,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     }]);
 ;angular.module('TruckMuncherApp')
     .factory('httpHelperService', ['$http', '$q', 'growl', function ($http, $q, growl) {
+        var apiUrl = 'https://api.truckmuncher.com:8443';
         return {
             post: function (url, data, responseDataName) {
                 var deferred = $q.defer();
@@ -259,18 +249,24 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                     if (responseDataName) deferred.resolve(response.data[responseDataName]);
                     else deferred.resolve(response.data);
                 }, function (error) {
-                    if(error.data && error.data.userMessage){
+                    if (error.data && error.data.userMessage) {
                         growl.addErrorMessage('Error: ' + error.data.userMessage);
-                    }else{
+                    } else {
                         growl.addErrorMessage('An unknown error occurred');
                     }
                     deferred.reject(error);
                 });
                 return deferred.promise;
+            },
+            setApiUrl: function (url) {
+                apiUrl = url;
+            },
+            getApiUrl: function () {
+                return apiUrl;
             }
         };
-    }]);;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService',
-    function ($scope, TokenService) {
+    }]);;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
+    function ($scope, TokenService, httpHelperService) {
         $scope.initializeToken = function (sessionToken) {
             if (sessionToken !== 'undefined' && sessionToken !== 'null') {
                 TokenService.setToken(sessionToken);
@@ -278,27 +274,31 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 TokenService.setToken(null);
             }
         };
+
+        $scope.initializeApiUrl = function (url) {
+            httpHelperService.setApiUrl(url);
+        };
     }
 ]);;angular.module('TruckMuncherApp')
     .factory('MenuService', ['httpHelperService', function (httpHelperService) {
         return {
             getFullMenus: function (latitude, longitude, includeAvailability) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getFullMenus';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menu.MenuService/getFullMenus';
                 var data = {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability};
                 return httpHelperService.post(url, data);
             },
             getMenu: function (truckId) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menu.MenuService/getMenu';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menu.MenuService/getMenu';
                 var data = {'truckId': truckId};
                 return httpHelperService.post(url, data, 'menu');
             },
             getItem: function (itemId) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/getMenuItem';
                 var data = {'menuItemId': itemId};
                 return httpHelperService.post(url, data, 'menuItem');
             },
             getCategory: function (categoryId) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getCategory';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/getCategory';
                 var data = {'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'category');
             },
@@ -306,7 +306,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return this.addOrUpdateCategories([category], truckId);
             },
             addOrUpdateCategories: function(categories, truckId){
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/modifyCategory';
                 var data = {'categories': categories, 'truckId': truckId};
                 return httpHelperService.post(url, data, 'menu');
             },
@@ -314,22 +314,22 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return this.addOrUpdateItems([item], truckId, categoryId);
             },
             addOrUpdateItems: function (items, truckId, categoryId) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/modifyMenuItem';
                 var data = {'menuItems': items, 'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
             },
             deleteCategory: function (truckId, categoryId) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteCategory';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/deleteCategory';
                 var data = {'truckId': truckId, 'categoryId': categoryId};
                 return httpHelperService.post(url, data, 'menu');
             },
             deleteItem: function (truckId, menuItemId) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/deleteMenuItem';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/deleteMenuItem';
                 var data = {'truckId': truckId, 'menuItemId': menuItemId};
                 return httpHelperService.post(url, data, 'menu');
             },
             getTags: function () {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.menuadmin.MenuAdminService/getValidMenuItemTags';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menuadmin.MenuAdminService/getValidMenuItemTags';
                 var data = {};
                 return httpHelperService.post(url, data, 'tags');
             }
@@ -377,11 +377,11 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
     .factory('TruckService', ['httpHelperService', function (httpHelperService) {
         return {
             getTrucksForVendor: function () {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
                 return httpHelperService.post(url, {}, 'trucks');
             },
             modifyTruckProfile: function (truckId, name, imageUrl, keywords) {
-                var url = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
                 return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
             }
         };
@@ -422,29 +422,17 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.item = {};
         $scope.requestInProgress = false;
 
-<<<<<<< HEAD
-        MenuService.getTags().then(function (response) {
-            $scope.allTags = response;
-            console.log($scope.allTags);
-        });
-=======
         (function () {
-
+            $scope.item.isAvailable = true;
             MenuService.getTags().then(function (response) {
                 $scope.allTags = response;
                 $scope.item.tags = [];
-
-
             });
->>>>>>> master
 
-        (function () {
             if ($state.current.name === 'menu.editItem') {
                 MenuService.getItem($stateParams.itemId).then(function (response) {
                     $scope.item = response;
                 });
-
-
             }
         })();
 
@@ -508,6 +496,17 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 });
             }
         });
+
+        $scope.toggleItemAvailability = function(item, categoryId){
+            var itemClone = _.clone(item);
+            itemClone.isAvailable = !item.isAvailable;
+            MenuService.addOrUpdateItem(
+                itemClone,
+                $scope.selectedTruck,
+                categoryId).then(function (response) {
+                    $scope.menu = response;
+                });
+        };
 
         $scope.deleteItem = function (itemId) {
             var body = 'Are you sure you want to delete this item?';

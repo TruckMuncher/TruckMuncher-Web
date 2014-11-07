@@ -34,7 +34,7 @@ td.merge-with-left {
   display: none !important;
 }
 
-@logoHeight:49px;
+@logoHeight: 49px;
 #logo img {
   height: @logoHeight;
   width: auto;
@@ -82,6 +82,22 @@ td.merge-with-left {
 .growl {
   top: @logoHeight;
   z-index: 99999999;
+}
+
+.chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+  background: url(chosen-sprite.png) -42px 2px no-repeat;
+}
+
+@media screen and (max-width: 767px) {
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tfoot > tr > td,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > thead > tr > th {
+    overflow-x: auto;
+    max-width: 300px;
+  }
 }
 
 /************ style **************/

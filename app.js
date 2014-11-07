@@ -1,8 +1,11 @@
 /*jshint node:true*/
 
-if (process.env.VCAP_APP_HOST) {
+var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+if (host !== 'localhost') {
     require('loganalysis');
 }
+
 var express = require('express'),
     session = require('express-session'),
     path = require('path'),
@@ -22,7 +25,7 @@ passport.use(new FacebookStrategy({
     },
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
-            return done(null, profile, { accessToken: accessToken});
+            return done(null, profile, {accessToken: accessToken});
         });
     }
 ));
@@ -42,7 +45,7 @@ passport.use(new TwitterStrategy({
 // setup middleware
 var app = express();
 
-app.use(favicon(__dirname + '/public/img/favicon.ico'))
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var sess = {
 // 	genid: function(req) {
@@ -53,10 +56,12 @@ var sess = {
     saveUninitialized: true,
     cookie: {}
 };
-// if (app.get('env') === 'production') {
-//   app.set('trust proxy', 1) // trust first proxy
-//   sess.cookie.secure = true // serve secure cookies
-// }
+
+//use secure cookies on bluemix
+if (host !== 'localhost') {
+   app.set('trust proxy', 1); // trust first proxy
+   sess.cookie.secure = true; // serve secure cookies
+}
 
 app.use(express.cookieParser());
 app.use(session(sess));
@@ -65,7 +70,14 @@ app.use(passport.session());
 app.use(express.errorHandler());
 
 app.use(function (req, res, next) {
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate, private");
+    res.setHeader("Pragma", "no-cache");
+
     res.locals.sessionToken = req.session.sessionToken;
+    res.locals.apiUrl = process.env.API_URL;
+
     //force https on everything but localhost
     var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https' || host === 'localhost') {
@@ -76,7 +88,6 @@ app.use(function (req, res, next) {
     }
 });
 
-
 app.use(app.router);
 app.use(express.static(__dirname + '/public')); //setup static public directory
 
@@ -85,16 +96,6 @@ app.set('views', __dirname + '/views'); //optional since express defaults to CWD
 
 
 app.use(express.static(path.join(__dirname, '/lib')));
-
-// test authentication
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/')
-}
-
-//app.all('/vendors*', ensureAuthenticated);
 
 app.get('/', routes.index);
 
@@ -157,8 +158,6 @@ passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
 
-var port = (process.env.VCAP_APP_PORT || 3000);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 // There are many useful environment variables available in process.env.
 // VCAP_APPLICATION contains useful information about a deployed application.

@@ -18,6 +18,17 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             }
         });
 
+        $scope.toggleItemAvailability = function(item, categoryId){
+            var itemClone = _.clone(item);
+            itemClone.isAvailable = !item.isAvailable;
+            MenuService.addOrUpdateItem(
+                itemClone,
+                $scope.selectedTruck,
+                categoryId).then(function (response) {
+                    $scope.menu = response;
+                });
+        };
+
         $scope.deleteItem = function (itemId) {
             var body = 'Are you sure you want to delete this item?';
             confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function () {
