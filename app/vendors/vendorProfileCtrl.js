@@ -4,6 +4,18 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.selectedTruck = {};
         $scope.tags = [];
 
+        $scope.createTruck = function () {
+            $scope.requestInProgress = true;
+            TruckService.modifyTruckProfile(null, 'New Truck', null, []).then(function (response) {
+                $scope.requestInProgress = false;
+                growl.addSuccessMessage('Profile Updated Successfully');
+                $scope.trucks.push(response);
+                refreshTruck(response);
+            }, function () {
+                $scope.requestInProgress = false;
+            });
+        };
+
         $scope.submit = function () {
             var keywords = _.map($scope.tags, function (tag) {
                 return tag.text;

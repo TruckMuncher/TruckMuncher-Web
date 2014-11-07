@@ -68,6 +68,8 @@ the sources as well as runs the karma tests, jshint and starts a nodemon instanc
 * To build the production, minified javascripts, run:
 
         grunt build-prod
+        
+* To get growl notifications to correctly show up, make sure that the "OS X Notifications" setting is set to "OFF" in the growl preferences.
 
 IBM Bluemix
 -----------------------------------

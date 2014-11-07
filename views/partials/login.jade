@@ -1,23 +1,20 @@
 .container-fluid
-    div(style="width:100%; text-align:center; font-size:64px;")
+    span.center-logo
+        img(src='img/logo4.png', alt='SmartAdmin')
+    .center-header
         | Welcome to TruckMuncher!
-    span(style="display:block; text-align:center; vertical-align:middle;")
-        img(src='img/logo.png', alt='SmartAdmin', style="height:25%; width:15%;")
-    //div(style="width:100%; text-align:center; font-size:24px; font-style:italic")
-    //    | We'll munch your truck! ;)
 
 
-//.row
-//    .col-xs-12.col-lg-4.col-lg-offset-4
-//        .jarviswidget.jarviswidget-color-blueDark
-.row
-    .col-xs-12.col-lg-4.col-lg-offset-4
-        header.text-center
+.col-md-4.col-sm-12.col-xs-12.col-md-offset-4
+    .panel.panel-primary
+        .panel-heading.text-center
             h2 Sign in:
-        div.text-center
-            a(id="facebookBtn", href='/auth/facebook', class='btn btn-primary')
-                i.fa.fa-facebook= '  Facebook'
-            a(id="twitterBtn", href='/auth/twitter', class='btn btn-primary')
-                i.fa.fa-twitter= '  Twitter'
+        .panel-body.text-center
+            .row
+                div
+                    a.btn.btn-primary(id="facebookBtn", href='/auth/facebook')
+                        i.fa.fa-facebook= '  Facebook'
+                    a.btn.btn-primary(id="twitterBtn", href='/auth/twitter')
+                        i.fa.fa-twitter= '  Twitter'
 
 

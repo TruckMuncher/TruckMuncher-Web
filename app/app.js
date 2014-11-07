@@ -79,6 +79,7 @@ app.config(['$httpProvider' , function ($httpProvider) {
 
 app.config(['growlProvider', function(growlProvider) {
     growlProvider.globalTimeToLive(3000);
+    growlProvider.onlyUniqueMessages(false);
 }]);
 
 app.run(function ($rootScope, $state, TokenService) {
