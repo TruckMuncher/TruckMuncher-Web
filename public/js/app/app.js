@@ -56,10 +56,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state('map', {
             url: "/map",
             templateUrl: "partials/map.jade"
-        })
-        .state('landing', {
-            url: "/landing",
-            templateUrl: "partials/landingPage.jade"
         });
 }]);
 
