@@ -72,7 +72,7 @@ app.use(express.errorHandler());
 app.use(function (req, res, next) {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader("Cache-Control", "no-cache,no-store");
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate, private");
     res.setHeader("Pragma", "no-cache");
 
     res.locals.sessionToken = req.session.sessionToken;
