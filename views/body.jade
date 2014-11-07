@@ -31,18 +31,19 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
                 .panel-body.text-center
                     div(style="font-size:24px;")
                         | Sign up for updates today!
-                        .input-group
-                            input.form-control(id="emailInput", type="email", placeholder="Enter email")
-                            span.input-group-btn
-                                button.btn(style="background-color:#009688; color:#ffffff", onclick='sendEmail()') Submit
+                        form(id='signup')
+                            .input-group
+                                input.form-control(id="emailInput", type="email", placeholder="Enter email")
+                                span.input-group-btn
+                                    button.btn(style="background-color:#009688; color:#ffffff", type='submit') Submit
 
                     .alert.alert-danger.alert-dismissible(id="emailError", role="alert", style="display:none")
-                        button.close(type="button", data-dissmiss="alert")
+                        button.close(type="button", data-dismiss="alert")
                             span(aria-hidden=true) &times;
                         h4 Please enter a valid email
 
                     .alert.alert-success.alert-dismissible(id="emailSuccess", role="alert", style="display:none")
-                        button.close(type="button", data-dissmiss="alert")
+                        button.close(type="button", data-dismiss="alert")
                             span(aria-hidden=true) &times;
                         h4 Your email has been submitted!
 
@@ -55,16 +56,24 @@ body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": sh
                 | Copyright 2014  TruckMuncher, LLC
 
 
+script(src='/jquery/jquery.js')
+script(src='/bootstrap/bootstrap.js')
+
 script.
-    function sendEmail() {
+    $('#signup').submit(function (event) {
+        var emailError = $('#emailError');
+        var emailSuccess = $('#emailSuccess');
+
+        emailError.hide();
+        emailSuccess.hide();
+        event.preventDefault();
+
         var email = document.getElementById('emailInput').value;
 
         if (email.indexOf('@') >= 1) {
-            console.log('true');
-            $('#emailError').hide();
             document.getElementById('emailInput').value = "";
 
-            var data = {"email":email};
+            var data = {"email": email};
 
             $.ajax({
                 type: "POST",
@@ -73,20 +82,15 @@ script.
                 accept: "application/json",
                 contentType: "application/json",
                 success: function (data) {
-                    $('#emailSuccess').show();
+                    emailSuccess.show();
                 },
                 error: function (jqhxr, status) {
 
                 }
             });
         } else {
-            $('#emailError').show();
-            console.log('false');
+            emailError.show();
         }
+    });
 
-        console.log(email);
-    }
-
-script(src='/jquery/jquery.js')
-script(src='/bootstrap/bootstrap.js')
 
