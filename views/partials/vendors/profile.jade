@@ -9,7 +9,7 @@
     .col-xs-12.col-md-6.col-md-offset-3
         .well.no-padding
             form.smart-form(data-ng-submit='submit()')
-                .col-sm-3
+                .col-sm-3(data-ng-controller='profileImageUploadCtrl')
                     img.img-responsive(data-ng-src='{{displayImage}}', alt='Profile Image')
                     section
                         .input.input-file
@@ -25,18 +25,10 @@
                         section
                             label.control-label(for='truckName') Truck Name
                             .input
-                                input(id='truckName', data-ng-model='selectedTruck.name')
-                        //section
-                        //    label.control-label Image
-                        //    .input.input-file
-                        //        span.button Browse
-                        //            input(type='file', data-nv-file-select='', data-uploader='uploader')
-                        //        input(readonly='', data-ng-model='imageName')
-                            //label.control-label(for='image') Image Url
-                            //.input
-                            //    input(id='image', data-ng-model='selectedTruck.imageUrl')
+                                input(id='truckName', data-ng-model='selectedTruck.newName')
                         section
                             label.control-label(for='keywords') Keywords
                             tags-input(id='keywords', data-ng-model='tags')
                 footer
                     button.btn.btn-primary(data-ng-disabled='requestInProgress') Submit
+                    button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)') Reset
