@@ -70,7 +70,7 @@ describe('TruckMuncherApp', function () {
                 {text: 'ghi'}
             ];
             spyOn(TruckServiceMock, 'modifyTruckProfile').andCallThrough();
-            $scope.submit();
+            $scope.saveTruck();
             $scope.$apply();
             expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', 'c', 'b', ['abc', 'def', 'ghi']);
         });
@@ -85,7 +85,7 @@ describe('TruckMuncherApp', function () {
             modifyTruckResponse = {id:'2', name:'newName'};
             spyOn(TruckServiceMock, 'modifyTruckProfile').andCallThrough();
 
-            $scope.submit();
+            $scope.saveTruck();
             $scope.$apply();
 
             expect($scope.trucks[1].name).toEqual(modifyTruckResponse.name);

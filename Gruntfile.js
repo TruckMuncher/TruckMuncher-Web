@@ -29,7 +29,8 @@ module.exports = function (grunt) {
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-growl/build/angular-growl.js',
         'bower_components/angular-animate/angular-animate.js',
-        'bower_components/ng-tags-input/ng-tags-input.js'
+        'bower_components/ng-tags-input/ng-tags-input.js',
+        'bower_components/angular-file-upload/angular-file-upload.js'
     ];
 
     var globalConfig = {

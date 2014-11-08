@@ -1,4 +1,13 @@
-var app = angular.module('TruckMuncherApp', ['ui.router', 'localytics.directives', 'ui.bootstrap', 'angular-growl', 'ngAnimate', 'ngTagsInput']);
+var app = angular.module('TruckMuncherApp',
+    [
+        'ui.router',
+        'localytics.directives',
+        'ui.bootstrap',
+        'angular-growl',
+        'ngAnimate',
+        'ngTagsInput',
+        'angularFileUpload'
+    ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("home");
@@ -69,15 +78,15 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 }]);
 
 
-app.factory('myInterceptor', [ 'httpInterceptor', function (httpInterceptor) {
+app.factory('myInterceptor', ['httpInterceptor', function (httpInterceptor) {
     return httpInterceptor;
 }]);
 
-app.config(['$httpProvider' , function ($httpProvider) {
+app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('myInterceptor');
 }]);
 
-app.config(['growlProvider', function(growlProvider) {
+app.config(['growlProvider', function (growlProvider) {
     growlProvider.globalTimeToLive(3000);
     growlProvider.onlyUniqueMessages(false);
 }]);
