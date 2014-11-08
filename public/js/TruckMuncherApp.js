@@ -651,7 +651,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.tags = [];
 
         $scope.resetTruck = function () {
-            $scope.selectedTruck.name = $scope.selectedTruck.newName;
+            $scope.selectedTruck.newName = $scope.selectedTruck.name;
             convertKeywordsToTags();
         };
 

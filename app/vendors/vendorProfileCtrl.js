@@ -5,7 +5,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.tags = [];
 
         $scope.resetTruck = function () {
-            $scope.selectedTruck.name = $scope.selectedTruck.newName;
+            $scope.selectedTruck.newName = $scope.selectedTruck.name;
             convertKeywordsToTags();
         };
 
