@@ -35,7 +35,7 @@ describe('TruckMuncherApp', function () {
             }
         };
 
-        beforeEach(inject(function ($rootScope, $controller, _$q_, $timeout) {
+        beforeEach(inject(function ($rootScope, $controller, _$q_) {
             rejectRequests = false;
             $scope = $rootScope.$new();
             $q = _$q_;
@@ -44,7 +44,6 @@ describe('TruckMuncherApp', function () {
                 $controller('vendorProfileCtrl', {
                     $scope: $scope,
                     growl: growlMock,
-                    $timeout: $timeout,
                     TruckService: TruckServiceMock
                 });
             };

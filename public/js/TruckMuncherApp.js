@@ -392,6 +392,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             modifyTruckProfile: function (truckId, name, imageUrl, keywords) {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
                 return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
+            },
+            getImageUploadUrl: function(truckId){
+                return httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
             }
         };
     }]);
@@ -602,8 +605,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         };
     }
 ]);;angular.module('TruckMuncherApp').controller('profileImageUploadCtrl',
-    ['$scope', 'TruckService', 'growl', 'FileUploader', 'httpHelperService', 'TimestampAndNonceService', 'TokenService',
-        function ($scope, TruckService, growl, FileUploader, httpHelperService, TimestampAndNonceService, TokenService) {
+    ['$scope', 'TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService',
+        function ($scope, TruckService, growl, FileUploader, TimestampAndNonceService, TokenService) {
             $scope.uploader = new FileUploader({
                 autoUpload: true,
                 headers: {
@@ -633,7 +636,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             };
 
             $scope.$on('selectedTruckChanged', function (event, selectedTruck) {
-                $scope.uploader.url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + selectedTruck.id;
+                $scope.uploader.url = TruckService.getImageUploadUrl(selectedTruck.id);
 
                 if (selectedTruck && selectedTruck.imageUrl) {
                     $scope.displayImage = selectedTruck.imageUrl + '?' + new Date().getTime();
