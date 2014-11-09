@@ -12,17 +12,8 @@
                 header
                     h2 Main Profile
                 form.smart-form(data-ng-submit='submit()')
-                    .col-sm-3(data-ng-controller='profileImageUploadCtrl')
-                        img.img-responsive(data-ng-src='{{displayImage}}', alt='Profile Image')
-                        section
-                            .input.input-file
-                                span.button Change Image
-                                    input(type='file', data-nv-file-select='', data-uploader='uploader')
-                                input(style="visibility: hidden")
-                        section
-                            .progress(data-ng-show='progress')
-                                .progress.progress-striped.active
-                                    .progress-bar.bg-color-darken(role='progressbar', style="width: {{progress}}%")
+                    .col-sm-3
+                        div(data-profile-image-upload='', data-truck='selectedTruck')
                     .col-sm-9
                         fieldset
                             section

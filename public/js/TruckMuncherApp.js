@@ -217,6 +217,55 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
         link: link
     };
 });
+;angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService',
+    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService) {
+        var link = {
+            pre: function preLink(scope) {
+                scope.uploader = new FileUploader({
+                    autoUpload: true,
+                    removeAfterUpload: true,
+                    headers: {
+                        Authorization: 'session_token=' + TokenService.getToken(),
+                        Accept: 'application/json',
+                        'X-Nonce': TimestampAndNonceService.getNonce(),
+                        'X-Timestamp': TimestampAndNonceService.getTimestamp()
+                    }
+                });
+
+                scope.uploader.onProgressItem = function (item, progress) {
+                    scope.progress = progress;
+                };
+
+                scope.uploader.onErrorItem = function () {
+                    growl.addErrorMessage('Error: could not upload image');
+                };
+
+                scope.uploader.onSuccessItem = function (fileItem, response) {
+                    scope.truck.imageUrl = response.url + '?' + new Date().getTime();
+                    scope.displayImage = scope.truck.imageUrl;
+                    scope.progress = null;
+                };
+
+                scope.$watch('truck', function () {
+                    scope.uploader.url = TruckService.getImageUploadUrl(scope.truck.id);
+
+                    if (scope.truck && scope.truck.imageUrl) {
+                        scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
+                    } else {
+                        scope.displayImage = null;
+                    }
+                });
+            }
+        };
+
+        return {
+            restrict: 'A',
+            link: link,
+            scope: {truck: '='},
+            replace: true,
+            templateUrl: '/partials/directiveTemplates/profile-image-upload.jade'
+        };
+    }]);
 ;angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope', 'colorThief', '$timeout', 'colorService',
     function ($rootScope, colorThief, $timeout, colorService) {
         var link = function (scope) {
@@ -685,49 +734,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $state.go('.addItem', {truckId: truckId, categoryId: categoryId});
         };
     }
-]);;angular.module('TruckMuncherApp').controller('profileImageUploadCtrl',
-    ['$scope', 'TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService',
-        function ($scope, TruckService, growl, FileUploader, TimestampAndNonceService, TokenService) {
-            $scope.uploader = new FileUploader({
-                autoUpload: true,
-                headers: {
-                    Authorization: 'session_token=' + TokenService.getToken(),
-                    Accept: 'application/json',
-                    'X-Nonce': TimestampAndNonceService.getNonce(),
-                    'X-Timestamp': TimestampAndNonceService.getTimestamp()
-                }
-            });
-
-            $scope.uploader.onAfterAddingFile = function (item) {
-                $scope.imageName = item.file.name;
-            };
-
-            $scope.uploader.onProgressItem = function (item, progress) {
-                $scope.progress = progress;
-            };
-
-            $scope.uploader.onErrorItem = function () {
-                growl.addErrorMessage('Error: could not upload image');
-            };
-
-            $scope.uploader.onSuccessItem = function (fileItem, response) {
-                $scope.displayImage = response.url + '?' + new Date().getTime();
-                $scope.progress = null;
-            };
-
-            $scope.$on('selectedTruckChanged', function (event, selectedTruck) {
-                $scope.uploader.url = TruckService.getImageUploadUrl(selectedTruck.id);
-
-                if (selectedTruck && selectedTruck.imageUrl) {
-                    $scope.displayImage = selectedTruck.imageUrl + '?' + new Date().getTime();
-                } else {
-                    $scope.displayImage = null;
-                }
-            });
-
-        }]);
-
-;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
+]);;angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
     function ($scope, TruckService, growl) {
         $scope.trucks = [];
         $scope.selectedTruck = {};

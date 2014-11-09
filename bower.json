@@ -26,7 +26,8 @@
     "color-thief": "*"
   },
   "devDependencies": {
-    "angular-mocks": "~1.3.1"
+    "angular-mocks": "~1.3.1",
+    "sinonjs": "~1.10.2"
   },
   "resolutions": {
     "angular": "~1.3.1"

@@ -156,16 +156,26 @@ module.exports = function (grunt) {
         'karma': {
             //shared config
             options: {
+                preprocessors: {
+                    '**/*.jade': ['ng-jade2js']
+                },
                 logLevel: 'INFO',
                 colors: true,
                 port: 9876,
                 files: [
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
+                    'bower_components/sinonjs/sinon.js',
                     'app/app.js',
                     'app/**/*.js',
-                    'test/jasmine/**/*.js'
+                    'test/jasmine/**/*.js',
+                    'views/**/*.jade'
                 ],
+                ngJade2JsPreprocessor:{
+                    stripPrefix: 'views/',
+                    templateExtension: 'jade',
+                    moduleName: 'tpl'
+                },
                 frameworks: ['jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
