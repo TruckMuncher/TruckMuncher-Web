@@ -5,7 +5,7 @@
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
         div.form-group
             a.btn.bg-color-blueLight.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
-.row(data-ng-cloak='')
+.row(data-ng-show='selectedTruck !== null')
     .col-xs-12.col-md-6.col-md-offset-1
         article
             .jarviswidget.jarviswidget-color-blueDark
@@ -26,7 +26,7 @@
                     footer
                         button.btn.btn-primary(data-ng-disabled='requestInProgress', type='submit') Submit
                         button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
-    .col-xs-12.col-md-5
+    .col-xs-12.col-md-4
         article
             .jarviswidget.jarviswidget-color-blueDark
                 header

@@ -1,7 +1,9 @@
-angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService',
-    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService) {
+angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', '$timeout',
+    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService, $timeout) {
+        var blankImageUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
         var link = {
             pre: function preLink(scope) {
+                scope.imageLoading = false;
                 scope.uploader = new FileUploader({
                     autoUpload: true,
                     removeAfterUpload: true,
@@ -32,10 +34,17 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
 
                     if (scope.truck && scope.truck.imageUrl) {
                         scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
+                        //clearAndSetImageInTimeoutSoNothingShowsWhileLoading();
                     } else {
-                        scope.displayImage = null;
+                        scope.displayImage = blankImageUri;
                     }
                 });
+
+                function clearAndSetImageInTimeoutSoNothingShowsWhileLoading() {
+                    scope.displayImage = blankImageUri;
+                    $timeout(function () {
+                    });
+                }
             }
         };
 

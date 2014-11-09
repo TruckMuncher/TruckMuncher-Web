@@ -1,5 +1,10 @@
 div
-    img.img-responsive(data-ng-src='{{displayImage}}', alt='Profile Image')
+    img.img-responsive(data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Profile Image',
+                        image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading')
+    div(data-ng-show='imageLoading')
+        .progress
+            .progress.progress-striped.active
+                .progress-bar.indeterminate.bg-color-darken(role='progressbar') Loading Image
     section
         .input.input-file
             span.button Change Image
