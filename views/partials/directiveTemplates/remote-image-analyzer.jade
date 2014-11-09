@@ -3,7 +3,8 @@ div
         .progress
             .progress.progress-striped.active
                 .progress-bar.indeterminate.bg-color-darken(role='progressbar') Analyzing
-    div
+    div(data-ng-if='dominantColor', class='yoyo-in-animation')
         span.color-blob(data-ng-style='{"background-color": dominantColor.hexColor}', data-ng-class='{"light-text": dominantColor.isDark}') {{dominantColor.hexColor}}
-    div
+        |Dominant Color
+    div(data-ng-if='palette && palette.length > 0', class='yoyo-in-animation')
         .color-blob(data-ng-style='{"background-color": color.hexColor}', data-ng-class='{"light-text": color.isDark}', data-ng-repeat='color in palette') {{color.hexColor}}

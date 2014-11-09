@@ -1,5 +1,11 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
+@import "animations";
+
+.fixed-height-palette {
+  height: 150px;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -18,11 +24,11 @@ td.pack-column {
 }
 
 td.merge-with-right {
-  border-right: 0px !important;
+  border-right: 0 !important;
 }
 
 td.merge-with-left {
-  border-left: 0px !important;
+  border-left: 0 !important;
 }
 
 /* 
@@ -96,8 +102,7 @@ h2 {
 
 .color-blob {
   display: inline-block;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin: 3px 3px 3px 3px;
   width: 50px;
   height: 50px;
   border-radius: 25px;
@@ -106,7 +111,7 @@ h2 {
   text-align: center;
 }
 
-.light-text{
+.light-text {
   color: white;
 }
 

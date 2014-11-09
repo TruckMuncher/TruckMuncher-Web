@@ -1,10 +1,10 @@
 div
-    img.img-responsive(data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Profile Image',
-                        image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading')
-    div(data-ng-show='imageLoading')
+    div(data-ng-show='imageLoading', class='progress-cssSlideUp')
         .progress
             .progress.progress-striped.active
                 .progress-bar.indeterminate.bg-color-darken(role='progressbar') Loading Image
+    div(class='image-cssSlideRight', data-ng-hide='imageLoading')
+        img.img-responsive(data-ng-src='{{displayImage}}', alt='Profile Image', image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading')
     section
         .input.input-file
             span.button Change Image
