@@ -44,5 +44,5 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
             replace: true,
             scope: {imageUrl: '='},
             templateUrl: '/partials/directiveTemplates/remote-image-analyzer.jade'
-        }
+        };
     }]);

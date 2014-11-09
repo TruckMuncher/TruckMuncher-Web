@@ -17,5 +17,5 @@ angular.module('TruckMuncherApp').directive('imageLoader', ['$timeout', function
         restrict: 'A',
         scope: {mysrc: '=', isLoading: '='},
         link: link
-    }
+    };
 }]);

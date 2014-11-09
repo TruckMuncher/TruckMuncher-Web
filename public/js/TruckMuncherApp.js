@@ -236,10 +236,10 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
         restrict: 'A',
         scope: {mysrc: '=', isLoading: '='},
         link: link
-    }
+    };
 }]);
 ;angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', '$timeout',
-    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService, $timeout) {
+    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService) {
         var blankImageUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
         var link = {
             pre: function preLink(scope) {
@@ -274,17 +274,11 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
 
                     if (scope.truck && scope.truck.imageUrl) {
                         scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
-                        //clearAndSetImageInTimeoutSoNothingShowsWhileLoading();
                     } else {
                         scope.displayImage = blankImageUri;
                     }
                 });
 
-                function clearAndSetImageInTimeoutSoNothingShowsWhileLoading() {
-                    scope.displayImage = blankImageUri;
-                    $timeout(function () {
-                    });
-                }
             }
         };
 
@@ -342,7 +336,7 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             replace: true,
             scope: {imageUrl: '='},
             templateUrl: '/partials/directiveTemplates/remote-image-analyzer.jade'
-        }
+        };
     }]);;var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{1,2})?$/;
 angular.module('TruckMuncherApp').directive('smartPrice', function() {
     return {
@@ -508,7 +502,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return {'hexColor': pair[0], 'isDark': pair[1]};
             });
         }
-    }
+    };
 });;angular.module('TruckMuncherApp')
     .factory('TruckService', ['httpHelperService', function (httpHelperService) {
         return {
@@ -798,7 +792,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(null, 'New Truck', null, []).then(function (response) {
                 $scope.requestInProgress = false;
-                growl.addSuccessMessage('Profile Updated Successfully');
+                growl.addSuccessMessage('Truck Created Successfully');
                 $scope.trucks.push(response);
                 refreshTruck(response);
             }, function () {

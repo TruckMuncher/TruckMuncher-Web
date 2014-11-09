@@ -21,10 +21,9 @@ describe('TruckMuncherApp', function () {
     }));
 
     describe('profile-image-upload', function () {
-        var scope, element, $timeout;
+        var scope, element;
 
-        beforeEach(inject(function ($compile, $rootScope, $templateCache, _$timeout_) {
-            $timeout = _$timeout_;
+        beforeEach(inject(function ($compile, $rootScope, $templateCache) {
             element = angular.element("<div data-profile-image-upload='' data-truck='{id: 1}'></div>");
             $compile(element)($rootScope);
             $templateCache.put('/partials/directiveTemplates/profile-image-upload.jade', '<div></div>');
@@ -49,7 +48,6 @@ describe('TruckMuncherApp', function () {
         it('should update the displayImage with a timestamp so the ngSrc refreshes when selectedTruckChanged event occurs', function () {
             scope.truck = {id: 'abcd', imageUrl: 'www.image'};
             scope.$apply();
-            $timeout.flush();
 
             //ex: www.image?1415465045199
             var re = /www\.image\?\d{13}/;

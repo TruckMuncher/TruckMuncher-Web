@@ -28,5 +28,5 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
                 return {'hexColor': pair[0], 'isDark': pair[1]};
             });
         }
-    }
+    };
 });
