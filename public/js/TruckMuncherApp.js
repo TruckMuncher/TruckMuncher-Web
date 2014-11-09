@@ -213,11 +213,58 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
     };
 
     return {
-        retrict: 'A',
+        restrict: 'A',
         link: link
     };
 });
-;var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{1,2})?$/;
+;angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope', 'colorThief', '$timeout', 'colorService',
+    function ($rootScope, colorThief, $timeout, colorService) {
+        var link = function (scope) {
+            var img = document.createElement('img');
+            var crossOriginImage = document.createElement('img');
+            var canvas = document.createElement('canvas');
+
+            var ctx = canvas.getContext('2d');
+            crossOriginImage.onload = function () {
+                ctx.drawImage(crossOriginImage, 0, 0, canvas.width, canvas.height);
+                analyzeImage(canvas.toDataURL());
+            };
+            crossOriginImage.crossOrigin = '';
+            scope.$watch('imageUrl', function () {
+                scope.palette = null;
+                scope.dominantColor = null;
+
+                if (scope.imageUrl) {
+                    scope.processing = true;
+                    crossOriginImage.src = scope.imageUrl + '?' + new Date().getTime();
+                }
+            });
+
+            function analyzeImage(imageData) {
+                img.src = imageData;
+            }
+
+
+            img.onload = function () {
+                var rgbPalette = colorThief.getPalette(img, 8);
+                var dominant = colorThief.getColor(img);
+
+                $timeout(function () {
+                    scope.processing = false;
+                    scope.palette = colorService.RGBsToHexWithDarkIndicator(rgbPalette);
+                    scope.dominantColor = colorService.RGBsToHexWithDarkIndicator([dominant])[0];
+                });
+            };
+        };
+
+        return {
+            restrict: 'A',
+            link: link,
+            replace: true,
+            scope: {imageUrl: '='},
+            templateUrl: '/partials/directiveTemplates/remote-image-analyzer.jade'
+        }
+    }]);;var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{1,2})?$/;
 angular.module('TruckMuncherApp').directive('smartPrice', function() {
     return {
         require: 'ngModel',
@@ -233,13 +280,36 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             });
         }
     };
-});;angular.module('TruckMuncherApp').controller('headerCtrl', ['$scope', '$rootScope', 'TokenService',
+});;angular.module('TruckMuncherApp').factory('colorThief', function () {
+    return new ColorThief();
+});
+;angular.module('TruckMuncherApp').controller('headerCtrl', ['$scope', '$rootScope', 'TokenService',
     function ($scope, $rootScope, TokenService) {
         $scope.toggleMenu = function(){
             $rootScope.$emit('toggleMenu');
         };
 
         $scope.loggedIn = function(){
+            return !_.isNull(TokenService.getToken());
+        };
+    }]);
+;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
+    function ($scope, TokenService, httpHelperService) {
+        $scope.initializeToken = function (sessionToken) {
+            if (sessionToken !== 'undefined' && sessionToken !== 'null') {
+                TokenService.setToken(sessionToken);
+            } else {
+                TokenService.setToken(null);
+            }
+        };
+
+        $scope.initializeApiUrl = function (url) {
+            httpHelperService.setApiUrl(url);
+        };
+    }
+]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
+    function ($scope, $rootScope, TokenService) {
+        $scope.loggedIn = function () {
             return !_.isNull(TokenService.getToken());
         };
     }]);
@@ -274,21 +344,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return apiUrl;
             }
         };
-    }]);;angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
-    function ($scope, TokenService, httpHelperService) {
-        $scope.initializeToken = function (sessionToken) {
-            if (sessionToken !== 'undefined' && sessionToken !== 'null') {
-                TokenService.setToken(sessionToken);
-            } else {
-                TokenService.setToken(null);
-            }
-        };
-
-        $scope.initializeApiUrl = function (url) {
-            httpHelperService.setApiUrl(url);
-        };
-    }
-]);;angular.module('TruckMuncherApp')
+    }]);;angular.module('TruckMuncherApp')
     .factory('MenuService', ['httpHelperService', function (httpHelperService) {
         return {
             getFullMenus: function (latitude, longitude, includeAvailability) {
@@ -343,10 +399,51 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
                 return httpHelperService.post(url, data, 'tags');
             }
         };
-    }]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
-    function ($scope, $rootScope, TokenService) {
-        $scope.loggedIn = function () {
-            return !_.isNull(TokenService.getToken());
+    }]);;angular.module('TruckMuncherApp').factory('colorService', function () {
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function isDark(r, g, b) {
+        var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq < 128);
+    }
+
+    return {
+        RGBsToHexWithDarkIndicator: function (rgbArray) {
+            var hexArray = _.map(rgbArray, function (val) {
+                return rgbToHex(val[0], val[1], val[2]);
+            });
+            var isDarkArray = _.map(rgbArray, function (val) {
+                return isDark(val[0], val[1], val[2]);
+            });
+
+            var pairs = _.zip(hexArray, isDarkArray);
+
+            return _.map(pairs, function (pair) {
+                return {'hexColor': pair[0], 'isDark': pair[1]};
+            });
+        }
+    }
+});;angular.module('TruckMuncherApp')
+    .factory('TruckService', ['httpHelperService', function (httpHelperService) {
+        return {
+            getTrucksForVendor: function () {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
+                return httpHelperService.post(url, {}, 'trucks');
+            },
+            modifyTruckProfile: function (truckId, name, imageUrl, keywords) {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
+                return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
+            },
+            getImageUploadUrl: function(truckId){
+                return httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
+            }
         };
     }]);
 ;angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
@@ -382,23 +479,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             return modalInstance.result;
         }
     };
-}]);;angular.module('TruckMuncherApp')
-    .factory('TruckService', ['httpHelperService', function (httpHelperService) {
-        return {
-            getTrucksForVendor: function () {
-                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
-                return httpHelperService.post(url, {}, 'trucks');
-            },
-            modifyTruckProfile: function (truckId, name, imageUrl, keywords) {
-                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
-                return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
-            },
-            getImageUploadUrl: function(truckId){
-                return httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
-            }
-        };
-    }]);
-;angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService',
+}]);;angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService',
     function ($scope, $modalInstance, $stateParams, $state, MenuService) {
         $scope.category = {};
         $scope.requestInProgress = false;
@@ -630,8 +711,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             };
 
             $scope.uploader.onSuccessItem = function (fileItem, response) {
-                //$scope.selectedTruck.imageUrl = response.url;
-                $scope.displayImage = $scope.selectedTruck.imageUrl + '?' + new Date().getTime();
+                $scope.displayImage = response.url + '?' + new Date().getTime();
                 $scope.progress = null;
             };
 

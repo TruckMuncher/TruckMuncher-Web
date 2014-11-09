@@ -1,0 +1,9 @@
+div
+    div(data-ng-if='processing')
+        .progress
+            .progress.progress-striped.active
+                .progress-bar.indeterminate.bg-color-darken(role='progressbar') Analyzing
+    div
+        span.color-blob(data-ng-style='{"background-color": dominantColor.hexColor}', data-ng-class='{"light-text": dominantColor.isDark}') {{dominantColor.hexColor}}
+    div
+        .color-blob(data-ng-style='{"background-color": color.hexColor}', data-ng-class='{"light-text": color.isDark}', data-ng-repeat='color in palette') {{color.hexColor}}

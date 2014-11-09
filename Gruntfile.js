@@ -30,7 +30,9 @@ module.exports = function (grunt) {
         'bower_components/angular-growl/build/angular-growl.js',
         'bower_components/angular-animate/angular-animate.js',
         'bower_components/ng-tags-input/ng-tags-input.js',
-        'bower_components/angular-file-upload/angular-file-upload.js'
+        'bower_components/angular-file-upload/angular-file-upload.js',
+        'bower_components/es5-shim/es5-shim.js',
+        'bower_components/color-thief/src/color-thief.js'
     ];
 
     var globalConfig = {

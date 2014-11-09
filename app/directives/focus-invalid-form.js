@@ -24,7 +24,7 @@ angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
     };
 
     return {
-        retrict: 'A',
+        restrict: 'A',
         link: link
     };
 });

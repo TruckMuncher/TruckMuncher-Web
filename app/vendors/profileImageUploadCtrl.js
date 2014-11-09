@@ -24,8 +24,7 @@ angular.module('TruckMuncherApp').controller('profileImageUploadCtrl',
             };
 
             $scope.uploader.onSuccessItem = function (fileItem, response) {
-                //$scope.selectedTruck.imageUrl = response.url;
-                $scope.displayImage = $scope.selectedTruck.imageUrl + '?' + new Date().getTime();
+                $scope.displayImage = response.url + '?' + new Date().getTime();
                 $scope.progress = null;
             };
 
