@@ -12,7 +12,7 @@ describe('TruckMuncherApp', function () {
     }));
 
     it('should put the x-timestamp in the header on all requests', function () {
-        spyOn(interceptor, 'request').andCallThrough();
+        spyOn(interceptor, 'request').and.callThrough();
 
         $http({method: 'GET', url: '/'});
         $httpBackend.expect('GET', '/').respond(200, '');

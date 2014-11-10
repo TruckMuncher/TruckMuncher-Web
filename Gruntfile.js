@@ -172,11 +172,10 @@ module.exports = function (grunt) {
                     'views/**/*.jade'
                 ],
                 ngJade2JsPreprocessor:{
-                    stripPrefix: 'views/',
-                    templateExtension: 'jade',
-                    moduleName: 'tpl'
+                    stripPrefix: 'views',
+                    templateExtension: 'jade'
                 },
-                frameworks: ['jasmine'],
+                frameworks: ['jasmine-jquery', 'jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
             },

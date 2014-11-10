@@ -20,13 +20,14 @@ describe('TruckMuncherApp', function () {
         $provide.value('TruckService', mockTruckService);
     }));
 
+    beforeEach(module('/partials/directiveTemplates/profile-image-upload.jade'));
+
     describe('profile-image-upload', function () {
         var scope, element;
 
-        beforeEach(inject(function ($compile, $rootScope, $templateCache) {
+        beforeEach(inject(function ($compile, $rootScope) {
             element = angular.element("<div data-profile-image-upload='' data-truck='{id: 1}'></div>");
             $compile(element)($rootScope);
-            $templateCache.put('/partials/directiveTemplates/profile-image-upload.jade', '<div></div>');
             $rootScope.$apply();
             scope = element.isolateScope();
         }));
@@ -54,6 +55,20 @@ describe('TruckMuncherApp', function () {
             var match = scope.displayImage.match(re);
 
             expect(match.length).toEqual(1);
+        });
+
+        it('should hide the image when it\'s loading', function () {
+            scope.imageLoading = true;
+            scope.$apply();
+            var i = element.find('.image-cssSlideRight');
+            expect(i.eq(0)).toHaveClass('ng-hide');
+        });
+
+        it('should hide progress bar when image is not loading', function () {
+            scope.imageLoading = false;
+            scope.$apply();
+            var p = element.find('.progress-cssSlideUp');
+            expect(p.eq(0)).toHaveClass('ng-hide');
         });
     });
 });

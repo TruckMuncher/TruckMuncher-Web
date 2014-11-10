@@ -51,7 +51,7 @@ describe('TruckMuncherApp', function () {
         }));
 
         it('should get the trucks for vendor when the controller loads', function () {
-            spyOn(TruckServiceMock, 'getTrucksForVendor').andCallThrough();
+            spyOn(TruckServiceMock, 'getTrucksForVendor').and.callThrough();
             createCtrlFn();
             expect(TruckServiceMock.getTrucksForVendor).toHaveBeenCalled();
         });
@@ -73,7 +73,7 @@ describe('TruckMuncherApp', function () {
                 {text: 'def'},
                 {text: 'ghi'}
             ];
-            spyOn(TruckServiceMock, 'modifyTruckProfile').andCallThrough();
+            spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
             expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', 'c', 'b', ['abc', 'def', 'ghi']);
@@ -87,7 +87,7 @@ describe('TruckMuncherApp', function () {
                 {id: '3', name: 'name'}
             ];
             modifyTruckResponse = {id: '2', name: 'newName'};
-            spyOn(TruckServiceMock, 'modifyTruckProfile').andCallThrough();
+            spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
 
             $scope.saveTruck();
             $scope.$apply();
