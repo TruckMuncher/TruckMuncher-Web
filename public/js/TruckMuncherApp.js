@@ -822,7 +822,6 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         });
 
         $scope.$watch('selectedTruck', function () {
-            $scope.$broadcast('selectedTruckChanged', $scope.selectedTruck);
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
                 $scope.selectedTruck.newName = $scope.selectedTruck.name;

@@ -61,6 +61,13 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             }
         });
 
+        $scope.$watch('selectedTruck', function () {
+            convertKeywordsToTags();
+            if ($scope.selectedTruck) {
+                $scope.selectedTruck.newName = $scope.selectedTruck.name;
+            }
+        });
+
         function convertKeywordsToTags() {
             $scope.tags = _.map($scope.selectedTruck.keywords, function (keyword) {
                 return {text: keyword};
