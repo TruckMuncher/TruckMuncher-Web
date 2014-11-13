@@ -1,5 +1,11 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
+@import "animations";
+
+.fixed-height-palette {
+  height: 150px;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -18,11 +24,11 @@ td.pack-column {
 }
 
 td.merge-with-right {
-  border-right: 0px !important;
+  border-right: 0 !important;
 }
 
 td.merge-with-left {
-  border-left: 0px !important;
+  border-left: 0 !important;
 }
 
 /* 
@@ -40,51 +46,50 @@ td.merge-with-left {
   width: auto;
 }
 
-
 #logo {
   margin-top: 0px;
 }
 
 #facebookBtn {
-  width:35%;
+  width: 35%;
   margin-right: 5px;
   padding: 10px;
   background-color: #3B5998;
 }
 
 #twitterBtn {
-  width:35%;
+  width: 35%;
   margin-left: 5px;
   padding: 10px;
   background-color: #55ACEE;
 }
 
 .center-span {
-  display:block;
-  text-align:center;
-  vertical-align:middle;
+  display: block;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .center-logo {
-  height:25%;
-  width:10%;
+  height: 25%;
+  width: 10%;
 }
 
 .center-header {
-  width:100%;
-  text-align:center;
-  font-size:64px;
+  width: 100%;
+  text-align: center;
+  font-size: 64px;
   padding-bottom: 5%;
 }
 
 .panel-heading {
   padding: 2px;
-  background-color:#009688;
+  background-color: #009688;
   color: #ffffff;
 }
 
 .panel {
-  border-color:#009688;
+  border-color: #009688;
 }
 
 .panel-body {
@@ -95,10 +100,27 @@ h2 {
   margin: 0;
 }
 
+.color-blob {
+  display: inline-block;
+  margin: 3px 3px 3px 3px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  font-size: 10px;
+  line-height: 50px;
+  text-align: center;
+}
 
+.light-text {
+  color: white;
+}
+
+.progress-bar.indeterminate {
+  width: 100%;
+}
 
 .navbar-brand {
-  padding-top: 0px;
+  padding-top: 0;
 }
 
 .growl {
@@ -108,18 +130,6 @@ h2 {
 
 .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
   background: url(chosen-sprite.png) -42px 2px no-repeat;
-}
-
-@media screen and (max-width: 767px) {
-  .table-responsive > .table > tbody > tr > td,
-  .table-responsive > .table > tbody > tr > th,
-  .table-responsive > .table > tfoot > tr > td,
-  .table-responsive > .table > tfoot > tr > th,
-  .table-responsive > .table > thead > tr > td,
-  .table-responsive > .table > thead > tr > th {
-    overflow-x: auto;
-    max-width: 300px;
-  }
 }
 
 /************ style **************/

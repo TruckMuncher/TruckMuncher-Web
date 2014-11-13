@@ -29,7 +29,10 @@ module.exports = function (grunt) {
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-growl/build/angular-growl.js',
         'bower_components/angular-animate/angular-animate.js',
-        'bower_components/ng-tags-input/ng-tags-input.js'
+        'bower_components/ng-tags-input/ng-tags-input.js',
+        'bower_components/angular-file-upload/angular-file-upload.js',
+        'bower_components/es5-shim/es5-shim.js',
+        'bower_components/color-thief/src/color-thief.js'
     ];
 
     var globalConfig = {
@@ -133,7 +136,7 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint'],
             less: {
-                files: ['<%= globalConfig.smartAdmin %>/LESS_FILES/custom.less', '<%= globalConfig.smartAdmin %>/LESS_FILES/overrides.less'],
+                files: ['<%= globalConfig.smartAdmin %>/LESS_FILES/**/*.less'],
                 tasks: ['less', 'cssmin']
             },
             app: {
@@ -153,17 +156,26 @@ module.exports = function (grunt) {
         'karma': {
             //shared config
             options: {
+                preprocessors: {
+                    '**/*.jade': ['ng-jade2js']
+                },
                 logLevel: 'INFO',
                 colors: true,
                 port: 9876,
                 files: [
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
+                    'bower_components/sinonjs/sinon.js',
                     'app/app.js',
                     'app/**/*.js',
-                    'test/jasmine/**/*.js'
+                    'test/jasmine/**/*.js',
+                    'views/**/*.jade'
                 ],
-                frameworks: ['jasmine'],
+                ngJade2JsPreprocessor:{
+                    stripPrefix: 'views',
+                    templateExtension: 'jade'
+                },
+                frameworks: ['jasmine-jquery', 'jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
             },

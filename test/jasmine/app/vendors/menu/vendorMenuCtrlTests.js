@@ -68,7 +68,7 @@ describe('TruckMuncherApp', function () {
 
         it('should make a delete category request to the API when the user confirms deletion', function () {
             modalDialogShouldResolve = true;
-            spyOn(mockMenuService, 'deleteCategory').andCallThrough();
+            spyOn(mockMenuService, 'deleteCategory').and.callThrough();
             $scope.deleteCategory();
             $scope.$apply();
             expect(mockMenuService.deleteCategory).toHaveBeenCalled();
@@ -84,7 +84,7 @@ describe('TruckMuncherApp', function () {
 
         it('should make a delete item request to the API when the user confirms deletion', function () {
             modalDialogShouldResolve = true;
-            spyOn(mockMenuService, 'deleteItem').andCallThrough();
+            spyOn(mockMenuService, 'deleteItem').and.callThrough();
             $scope.deleteItem();
             $scope.$apply();
             expect(mockMenuService.deleteItem).toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should request the menu for the truck when the selectedTruck changes', function () {
-            spyOn(mockMenuService, 'getMenu').andCallThrough();
+            spyOn(mockMenuService, 'getMenu').and.callThrough();
             $scope.selectedTruck = 'abcd';
             $scope.$apply();
             expect(mockMenuService.getMenu).toHaveBeenCalled();
@@ -118,7 +118,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should call the api to update the item ordering for moveItemUp', function () {
-            spyOn(mockMenuService, 'addOrUpdateItems').andCallThrough();
+            spyOn(mockMenuService, 'addOrUpdateItems').and.callThrough();
             $scope.selectedTruck = 'truck';
             $scope.menu = {};
             $scope.menu.categories = [
@@ -151,7 +151,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should call the api to update the category ordering for moveCategoryDown', function () {
-            spyOn(mockMenuService, 'addOrUpdateCategories').andCallThrough();
+            spyOn(mockMenuService, 'addOrUpdateCategories').and.callThrough();
             $scope.selectedTruck = 'truck';
             $scope.menu = {};
             $scope.menu.categories = [

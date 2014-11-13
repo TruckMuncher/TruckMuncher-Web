@@ -4,19 +4,12 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.selectedTruck = {};
         $scope.tags = [];
 
-        $scope.createTruck = function () {
-            $scope.requestInProgress = true;
-            TruckService.modifyTruckProfile(null, 'New Truck', null, []).then(function (response) {
-                $scope.requestInProgress = false;
-                growl.addSuccessMessage('Profile Updated Successfully');
-                $scope.trucks.push(response);
-                refreshTruck(response);
-            }, function () {
-                $scope.requestInProgress = false;
-            });
+        $scope.resetTruck = function () {
+            $scope.selectedTruck.newName = $scope.selectedTruck.name;
+            convertKeywordsToTags();
         };
 
-        $scope.submit = function () {
+        $scope.saveTruck = function () {
             var keywords = _.map($scope.tags, function (tag) {
                 return tag.text;
             });
@@ -33,6 +26,22 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 }, function () {
                     $scope.requestInProgress = false;
                 });
+        };
+
+        $scope.createTruck = function () {
+            $scope.requestInProgress = true;
+            TruckService.modifyTruckProfile(null, 'New Truck', null, []).then(function (response) {
+                $scope.requestInProgress = false;
+                growl.addSuccessMessage('Truck Created Successfully');
+                $scope.trucks.push(response);
+                refreshTruck(response);
+            }, function () {
+                $scope.requestInProgress = false;
+            });
+        };
+
+        $scope.submit = function () {
+            $scope.saveTruck();
         };
 
         function refreshTruck(truck) {
@@ -52,9 +61,9 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             }
         });
 
-        $scope.$watch('selectedTruck', function () {
+        function convertKeywordsToTags() {
             $scope.tags = _.map($scope.selectedTruck.keywords, function (keyword) {
                 return {text: keyword};
             });
-        });
+        }
     }]);

@@ -20,7 +20,7 @@ describe('TruckMuncherApp', function () {
             $scope = $rootScope.$new();
             $state = _$state_;
             $state.current.data = {templateUrl: '', controller: ''};
-            spyOn($modal, 'open').andReturn(fakeModal);
+            spyOn($modal, 'open').and.returnValue(fakeModal);
             $controller('menuActionModalCtrl', {$scope: $scope, $modal: $modal, $state: $state});
         }));
 

@@ -1,25 +1,43 @@
 .row
-    article.col-xs-12.col-sm-6.col-md-3.col-md-offset-3
+    article.col-xs-12.col-sm-6.col-md-3.col-md-offset-1
         div.form-group
             label(for='truckList') Profile for Truck:
             select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
         div.form-group
             a.btn.bg-color-blueLight.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
-.row
-    .col-xs-12.col-md-6.col-md-offset-3
-        .well.no-padding
-            form.smart-form(data-ng-submit='submit()')
-                fieldset
-                    section
-                        label.control-label(for='truckName') Truck Name
-                        .input
-                            input(id='truckName', data-ng-model='selectedTruck.name')
-                    section
-                        label.control-label(for='image') Image Url
-                        .input
-                            input(id='image', data-ng-model='selectedTruck.imageUrl')
-                    section
-                        label.control-label(for='keywords') Keywords
-                        tags-input(id='keywords', data-ng-model='tags')
-                footer
-                    button.btn.btn-primary(data-ng-disabled='requestInProgress') Submit
+.row(data-ng-show='selectedTruck !== null')
+    .col-xs-12.col-md-6.col-md-offset-1
+        article
+            .jarviswidget.jarviswidget-color-blueDark
+                header
+                    h2 Main Profile
+                form.smart-form(data-ng-submit='submit()')
+                    .col-sm-3
+                        div(data-profile-image-upload='', data-truck='selectedTruck')
+                    .col-sm-9
+                        fieldset
+                            section
+                                label.control-label(for='truckName') Truck Name
+                                .input
+                                    input(id='truckName', data-ng-model='selectedTruck.newName')
+                            section
+                                label.control-label(for='keywords') Keywords
+                                tags-input(id='keywords', data-ng-model='tags')
+                    footer
+                        button.btn.btn-primary(data-ng-disabled='requestInProgress', type='submit') Submit
+                        button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
+    .col-xs-12.col-md-4
+        article
+            .jarviswidget.jarviswidget-color-blueDark
+                header
+                    h2 Color Customization
+                div
+                    .widget-body
+                        div(data-ng-if='selectedTruck')
+                            h3 Select A Color From Profile Image
+                            div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
+                                .alert.alert-info
+                                    span You have not uploaded a profile image yet
+                            div(remote-image-analyzer='', data-image-url='selectedTruck.imageUrl')
+                        div
+                            h3 Analyze Another Image
