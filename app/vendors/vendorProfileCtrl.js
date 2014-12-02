@@ -4,11 +4,6 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.selectedTruck = {};
         $scope.tags = [];
 
-        $scope.resetTruck = function () {
-            $scope.selectedTruck.newName = $scope.selectedTruck.name;
-            convertKeywordsToTags();
-        };
-
         $scope.saveTruck = function () {
             var keywords = _.map($scope.tags, function (tag) {
                 return tag.text;
@@ -62,11 +57,24 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         });
 
         $scope.$watch('selectedTruck', function () {
+           $scope.setFormValuesFromSelectedTruck();
+        });
+
+        $scope.resetTruck = function () {
+            $scope.setFormValuesFromSelectedTruck();
+        };
+
+        $scope.setFormValuesFromSelectedTruck = function() {
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
-                $scope.selectedTruck.newName = $scope.selectedTruck.name;
+                $scope.newName = $scope.selectedTruck.name;
+                $scope.newColor = $scope.selectedTruck.color;
             }
-        });
+        };
+
+        $scope.selectColor = function(theColor){
+            $scope.newColor = theColor;
+        };
 
         function convertKeywordsToTags() {
             $scope.tags = _.map($scope.selectedTruck.keywords, function (keyword) {

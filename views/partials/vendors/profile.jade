@@ -19,7 +19,7 @@
                             section
                                 label.control-label(for='truckName') Truck Name
                                 .input
-                                    input(id='truckName', data-ng-model='selectedTruck.newName')
+                                    input(id='truckName', data-ng-model='newName')
                             section
                                 label.control-label(for='keywords') Keywords
                                 tags-input(id='keywords', data-ng-model='tags')
@@ -38,6 +38,5 @@
                             div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
                                 .alert.alert-info
                                     span You have not uploaded a profile image yet
-                            div(remote-image-analyzer='', data-image-url='selectedTruck.imageUrl')
-                        div
-                            h3 Analyze Another Image
+                            div(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')
+                            spectrum-colorpicker(data-ng-model="newColor")

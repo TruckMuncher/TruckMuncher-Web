@@ -25,7 +25,6 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
                 img.src = imageData;
             }
 
-
             img.onload = function () {
                 var rgbPalette = colorThief.getPalette(img, 8);
                 var dominant = colorThief.getColor(img);
@@ -36,13 +35,17 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
                     scope.dominantColor = colorService.RGBsToHexWithDarkIndicator([dominant])[0];
                 });
             };
+
+            scope.colorClicked = function (color) {
+                scope.colorClickCallback({theColor: color});
+            }
         };
 
         return {
             restrict: 'A',
             link: link,
             replace: true,
-            scope: {imageUrl: '='},
+            scope: {imageUrl: '=', colorClickCallback: '&'},
             templateUrl: '/partials/directiveTemplates/remote-image-analyzer.jade'
         };
     }]);
