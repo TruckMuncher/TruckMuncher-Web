@@ -97,15 +97,15 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should change back to the original name when reset', function () {
-            $scope.selectedTruck = {name: 'somethingOld'};
+            $scope.selectedTruck = {newName:'asdf', name: 'somethingOld'};
             $scope.resetTruck();
-            expect($scope.newName).toEqual('somethingOld');
+            expect($scope.selectedTruck.newName).toEqual('somethingOld');
         });
 
         it('should change back to the original color when reset', function(){
             $scope.selectedTruck = {color: '#f1234'};
             $scope.resetTruck();
-            expect($scope.newColor).toEqual('#f1234');
+            expect($scope.selectedTruck.newColor).toEqual('#f1234');
         });
 
         it('should change back to the original tags when the truck is reset', function () {

@@ -67,13 +67,13 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.setFormValuesFromSelectedTruck = function() {
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
-                $scope.newName = $scope.selectedTruck.name;
-                $scope.newColor = $scope.selectedTruck.color;
+                $scope.selectedTruck.newName = $scope.selectedTruck.name;
+                $scope.selectedTruck.newColor = $scope.selectedTruck.color;
             }
         };
 
         $scope.selectColor = function(theColor){
-            $scope.newColor = theColor;
+            $scope.selectedTruck.newColor = theColor;
         };
 
         function convertKeywordsToTags() {
