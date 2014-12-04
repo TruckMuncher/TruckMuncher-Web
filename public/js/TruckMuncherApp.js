@@ -6,7 +6,7 @@ var app = angular.module('TruckMuncherApp',
         'angular-growl',
         'ngAnimate',
         'ngTagsInput',
-        'angularFileUpload'
+        'angularFileUpload',
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -25,6 +25,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state('map', {
             url: "/map",
             templateUrl: "partials/map.jade",
+            controller: "mapCtrl",
             authenticate: false
         })
         .state('menu', {
@@ -90,6 +91,14 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.globalTimeToLive(3000);
     growlProvider.onlyUniqueMessages(false);
 }]);
+
+//app.config(function(uiGmapGoogleMapApiProvider) {
+//    uiGmapGoogleMapApiProvider.configure({
+//        //    key: 'your api key',
+//        v: '3.17',
+//        libraries: 'weather,geometry,visualization'
+//    });
+//});
 
 app.run(function ($rootScope, $state, TokenService) {
 
@@ -380,7 +389,14 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             httpHelperService.setApiUrl(url);
         };
     }
-]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
+]);;/**
+ * Created by maconsuckow on 12/3/14.
+ */
+angular.module('TruckMuncherApp').controller('mapCtrl',
+    function ($scope) {
+        $scope.map = {center: {latitude: 43.038, longitude: -87.906 }, zoom: 14 };
+        $scope.options = {scrollwheel: false};
+    });;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
     function ($scope, $rootScope, TokenService) {
         $scope.loggedIn = function () {
             return !_.isNull(TokenService.getToken());
