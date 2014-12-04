@@ -78,7 +78,7 @@ describe('TruckMuncherApp', function () {
             expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, undefined, ['abc', 'def', 'ghi']);
         });
 
-        it('should save the truck with the selectedTruck id', function() {
+        it('should save the truck with the selectedTruck id', function () {
             $scope.selectedTruck = {id: 'a'};
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
@@ -86,8 +86,8 @@ describe('TruckMuncherApp', function () {
             expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', undefined, undefined, []);
         });
 
-        it('should save the truck with the new name', function() {
-           $scope.newName = 'newName';
+        it('should save the truck with the new name', function () {
+            $scope.newName = 'newName';
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
@@ -112,12 +112,12 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should change back to the original name when reset', function () {
-            $scope.selectedTruck = { name: 'somethingOld'};
+            $scope.selectedTruck = {name: 'somethingOld'};
             $scope.resetTruck();
             expect($scope.newName).toEqual('somethingOld');
         });
 
-        it('should change back to the original  colors when reset', function(){
+        it('should change back to the original  colors when reset', function () {
             $scope.selectedTruck = {primaryColor: '#f1234', secondaryColor: '#ccc'};
             $scope.resetTruck();
             expect($scope.newColorSelection.primaryColor).toEqual('#f1234');
@@ -130,7 +130,56 @@ describe('TruckMuncherApp', function () {
 
             $scope.resetTruck();
 
-            expect($scope.tags).toEqual([{ text : 'old1' }, { text : 'old2' }, { text : 'old3' }]);
+            expect($scope.tags).toEqual([{text: 'old1'}, {text: 'old2'}, {text: 'old3'}]);
+        });
+
+        it('should set the colorPicker to the correct color when changing which color is being selected', function () {
+            $scope.selectingColor = "primary";
+            $scope.$apply();
+            $scope.newColorSelection.primaryColor = "#ccc";
+            $scope.newColorSelection.secondaryColor = "#fff";
+
+            $scope.selectingColor = "secondary";
+            $scope.$apply();
+            expect($scope.colorPicker.color).toEqual("#fff");
+
+            $scope.selectingColor = "primary";
+            $scope.$apply();
+            expect($scope.colorPicker.color).toEqual("#ccc");
+        });
+
+        it('should set the correct new color selection when a color is selected', function () {
+            $scope.selectingColor = "primary";
+            $scope.selectColor('#abc');
+            expect($scope.newColorSelection.primaryColor).toEqual('#abc');
+
+            $scope.selectingColor = "secondary";
+            $scope.selectColor('#ccc');
+            expect($scope.newColorSelection.secondaryColor).toEqual('#ccc');
+        });
+
+        it('should set the colorPickers color when a color is selected', function () {
+            $scope.selectColor('#ccc');
+            expect($scope.colorPicker.color).toEqual('#ccc');
+        });
+
+        it('should set the selectingColor to primary when resetting the truck', function () {
+            $scope.selectingColor = "secondary";
+
+            $scope.resetTruck();
+
+            expect($scope.selectingColor).toEqual("primary");
+        });
+
+        it('should set the new color selections to be the truck\'s original colors when resetting the truck', function () {
+            $scope.selectedTruck = {primaryColor: '#abc', secondaryColor: '#def'};
+            $scope.$apply();
+
+            $scope.newColorSelection = {};
+            $scope.resetTruck();
+
+            expect($scope.newColorSelection.primaryColor).toEqual('#abc');
+            expect($scope.newColorSelection.secondaryColor).toEqual('#def');
         });
 
     });
