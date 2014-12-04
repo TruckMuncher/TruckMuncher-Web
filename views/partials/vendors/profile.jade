@@ -19,7 +19,7 @@
                             section
                                 label.control-label(for='truckName') Truck Name
                                 .input
-                                    input(id='truckName', data-ng-model='selectedTruck.newName')
+                                    input(id='truckName', data-ng-model='newName')
                             section
                                 label.control-label(for='keywords') Keywords
                                 tags-input(id='keywords', data-ng-model='tags')
@@ -32,11 +32,23 @@
                 header
                     h2 Color Customization
                 div
+                    div.form-group
+                        .smart-form
+                            label Color Selection For:
+                            .inline-group
+                                label.radio
+                                    input(type="radio" value="primary" name="whichColor" data-ng-model="selectingColor")
+                                    i
+                                    = 'Primary'
+                                label.radio
+                                    input(type="radio" value="secondary" name="whichColor" data-ng-model="selectingColor")
+                                    i
+                                    = 'Secondary'
+                    spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)")
                     .widget-body
                         div(data-ng-if='selectedTruck')
-                            h3 Select A Color From Profile Image
+                            h3 Colors From Profile Image
                             div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
                                 .alert.alert-info
                                     span You have not uploaded a profile image yet
                             div(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')
-                            spectrum-colorpicker(data-ng-model="selectedTruck.newColor" on-change="myOnChange(color)")

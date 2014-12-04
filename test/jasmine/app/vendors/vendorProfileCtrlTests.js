@@ -67,7 +67,6 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should convert the tags to keywords when submitting', function () {
-            $scope.selectedTruck = {id: 'a', imageUrl: 'b', name: 'c'};
             $scope.tags = [
                 {text: 'abc'},
                 {text: 'def'},
@@ -76,7 +75,23 @@ describe('TruckMuncherApp', function () {
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', 'c', 'b', ['abc', 'def', 'ghi']);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, undefined, ['abc', 'def', 'ghi']);
+        });
+
+        it('should save the truck with the selectedTruck id', function() {
+            $scope.selectedTruck = {id: 'a'};
+            spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
+            $scope.saveTruck();
+            $scope.$apply();
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', undefined, undefined, []);
+        });
+
+        it('should save the truck with the new name', function() {
+           $scope.newName = 'newName';
+            spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
+            $scope.saveTruck();
+            $scope.$apply();
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, 'newName', undefined, []);
         });
 
         it('should update the correct truck in the trucks Array when saving the profile is successful and set selectedTruck', function () {
@@ -97,15 +112,16 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should change back to the original name when reset', function () {
-            $scope.selectedTruck = {newName:'asdf', name: 'somethingOld'};
+            $scope.selectedTruck = { name: 'somethingOld'};
             $scope.resetTruck();
-            expect($scope.selectedTruck.newName).toEqual('somethingOld');
+            expect($scope.newName).toEqual('somethingOld');
         });
 
-        it('should change back to the original color when reset', function(){
-            $scope.selectedTruck = {color: '#f1234'};
+        it('should change back to the original  colors when reset', function(){
+            $scope.selectedTruck = {primaryColor: '#f1234', secondaryColor: '#ccc'};
             $scope.resetTruck();
-            expect($scope.selectedTruck.newColor).toEqual('#f1234');
+            expect($scope.newColorSelection.primaryColor).toEqual('#f1234');
+            expect($scope.newColorSelection.secondaryColor).toEqual('#ccc');
         });
 
         it('should change back to the original tags when the truck is reset', function () {

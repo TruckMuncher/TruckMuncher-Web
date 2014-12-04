@@ -38,7 +38,7 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
 
             scope.colorClicked = function (color) {
                 scope.colorClickCallback({theColor: color});
-            }
+            };
         };
 
         return {
