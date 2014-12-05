@@ -6,8 +6,9 @@ var app = angular.module('TruckMuncherApp',
         'angular-growl',
         'ngAnimate',
         'ngTagsInput',
-        'angularFileUpload',
-        'uiGmapgoogle-maps'
+        'angularFileUpload'
+//        ,
+//        'uiGmapgoogle-maps'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -93,13 +94,13 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.onlyUniqueMessages(false);
 }]);
 
-app.config('uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyAsprcR_hsWLGU75sVypG9nU23q4fmwFn4',
-        v: '3.17',
-        libraries: 'weather,geometry,visualization'
-    });
-});
+//app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
+//    uiGmapGoogleMapApiProvider.configure({
+//        key: 'AIzaSyAsprcR_hsWLGU75sVypG9nU23q4fmwFn4',
+//        v: '3.17',
+//        libraries: 'weather,geometry,visualization'
+//    });
+//}]);
 
 app.run(function ($rootScope, $state, TokenService) {
 
@@ -393,15 +394,26 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['uiGmapGoogleMapApi',
-    function ($scope, GoogleMapApi) {
-        GoogleMapApi.then(function(maps) {
-            $scope.map = {center: {latitude: 43.038, longitude: -87.906 }, zoom: 14 };
-            $scope.options = {scrollwheel: false};
-        });
+angular.module('TruckMuncherApp').controller('mapCtrl',
+    function($scope) {
+        var mapOptions = {
+            zoom: 4,
+            center: new google.maps.LatLng(40.0000, -98.0000),
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        };
 
-    }
-]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
+        $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    });
+//    function ($scope, GoogleMapApi) {
+//        GoogleMapApi.then(function(maps) {
+//            $scope.map = {center: {latitude: 43.038, longitude: -87.906 }, zoom: 14 };
+//            $scope.options = {scrollwheel: false};
+//
+//
+//        });
+//
+//    }
+;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
     function ($scope, $rootScope, TokenService) {
         $scope.loggedIn = function () {
             return !_.isNull(TokenService.getToken());
