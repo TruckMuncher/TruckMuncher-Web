@@ -6,9 +6,8 @@ var app = angular.module('TruckMuncherApp',
         'angular-growl',
         'ngAnimate',
         'ngTagsInput',
-        'angularFileUpload'
-//        ,
-//        'uiGmapgoogle-maps'
+        'angularFileUpload',
+        'uiGmapgoogle-maps'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -94,13 +93,13 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.onlyUniqueMessages(false);
 }]);
 
-//app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
-//    uiGmapGoogleMapApiProvider.configure({
-//        key: 'AIzaSyAsprcR_hsWLGU75sVypG9nU23q4fmwFn4',
-//        v: '3.17',
-//        libraries: 'weather,geometry,visualization'
-//    });
-//}]);
+app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyDRhwlG46TWsBLMs-2aL5ge0k3m6ywGl-I',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization'
+    });
+}]);
 
 app.run(function ($rootScope, $state, TokenService) {
 
