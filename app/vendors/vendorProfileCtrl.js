@@ -17,7 +17,10 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 $scope.selectedTruck.id,
                 $scope.newName,
                 $scope.selectedTruck.imageUrl,
-                keywords).then(function (response) {
+                keywords,
+                $scope.newColorSelection.primaryColor,
+                $scope.newColorSelection.secondaryColor
+            ).then(function (response) {
                     $scope.requestInProgress = false;
                     growl.addSuccessMessage('Profile Updated Successfully');
                     refreshTruck(response);

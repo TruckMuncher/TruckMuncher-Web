@@ -75,7 +75,7 @@ describe('TruckMuncherApp', function () {
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, undefined, ['abc', 'def', 'ghi']);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, undefined, ['abc', 'def', 'ghi'], undefined, undefined);
         });
 
         it('should save the truck with the selectedTruck id', function () {
@@ -83,7 +83,7 @@ describe('TruckMuncherApp', function () {
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', undefined, undefined, []);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', undefined, undefined, [], undefined, undefined);
         });
 
         it('should save the truck with the new name', function () {
@@ -91,7 +91,17 @@ describe('TruckMuncherApp', function () {
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, 'newName', undefined, []);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, 'newName', undefined, [], undefined, undefined);
+        });
+
+        it('should save the truck color selections', function () {
+            $scope.newColorSelection.primaryColor = "#fff";
+            $scope.newColorSelection.secondaryColor = "#000";
+
+            spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
+            $scope.saveTruck();
+            $scope.$apply();
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, undefined, [], "#fff", "#000");
         });
 
         it('should update the correct truck in the trucks Array when saving the profile is successful and set selectedTruck', function () {
