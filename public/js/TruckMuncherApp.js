@@ -393,8 +393,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'MapsService', 'uiGmapGoogleMapApi',
-    function ($scope, MapsService, uiGmapGoogleMapApi) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi',
+    function ($scope, TruckService, uiGmapGoogleMapApi) {
 
         var lat;
         var lon;
@@ -418,9 +418,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'MapsService'
         });
 
         function getMarkers() {
-            MapsService.getAllLocations(lat, lon).then(function (response) {
+            TruckService.getActiveTrucks(lat, lon).then(function (response) {
 
-                trucks = response.trucks;
+                trucks = response;
 
                 var markers = [];
 
@@ -479,18 +479,6 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'MapsService'
             },
             getApiUrl: function () {
                 return apiUrl;
-            }
-        };
-    }]);;/**
- * Created by maconsuckow on 12/7/14.
- */
-angular.module('TruckMuncherApp')
-    .factory('MapsService', ['httpHelperService', function (httpHelperService) {
-        return {
-            getAllLocations: function (latitude, longitude) {
-                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getActiveTrucks';
-                var data = {'latitude': latitude, 'longitude': longitude};
-                return httpHelperService.post(url, data);
             }
         };
     }]);;angular.module('TruckMuncherApp')
@@ -580,7 +568,7 @@ angular.module('TruckMuncherApp')
         }
     };
 });;angular.module('TruckMuncherApp')
-    .factory('TruckService', ['httpHelperService', function (httpHelperService) {
+    .factory('TruckService', ['httpHelperService', '$q', function (httpHelperService, $q) {
         return {
             getTrucksForVendor: function () {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
@@ -590,8 +578,22 @@ angular.module('TruckMuncherApp')
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
                 return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
             },
-            getImageUploadUrl: function(truckId){
+            getImageUploadUrl: function (truckId) {
                 return httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
+            },
+            getActiveTrucks: function (latitude, longitude) {
+                //var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getActiveTrucks';
+                //var data = {'latitude': latitude, 'longitude': longitude};
+                //return httpHelperService.post(url, data, 'trucks');
+
+                var deferred = $q.defer();
+                deferred.resolve([
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea7", latitude: 43.05, longitude: -87.95},
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea6", latitude: 43.046978, longitude: -87.904087},
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea5", latitude: 43.044093, longitude: -87.902027},
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea4", latitude: 43.045849, longitude: -87.899795}
+                ]);
+                return deferred.promise;
             }
         };
     }]);

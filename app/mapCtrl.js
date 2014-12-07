@@ -1,8 +1,8 @@
 /**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'MapsService', 'uiGmapGoogleMapApi',
-    function ($scope, MapsService, uiGmapGoogleMapApi) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi',
+    function ($scope, TruckService, uiGmapGoogleMapApi) {
 
         var lat;
         var lon;
@@ -26,9 +26,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'MapsService'
         });
 
         function getMarkers() {
-            MapsService.getAllLocations(lat, lon).then(function (response) {
+            TruckService.getActiveTrucks(lat, lon).then(function (response) {
 
-                trucks = response.trucks;
+                trucks = response;
 
                 var markers = [];
 
