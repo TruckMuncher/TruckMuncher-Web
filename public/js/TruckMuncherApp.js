@@ -393,11 +393,56 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'uiGmapGoogleMapApi',
-    function ($scope, uiGmapGoogleMapApi) {
-        $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-        //uiGmapGoogleMapApi.then(function (maps) {
-        //});
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'MapsService', 'uiGmapGoogleMapApi',
+    function ($scope, MapsService, uiGmapGoogleMapApi) {
+
+        var lat;
+        var lon;
+
+        $scope.map = { center: { latitude: 43.05, longitude: -87.95 }, zoom: 12, markers: [] };
+
+        navigator.geolocation.getCurrentPosition(function(pos) {
+
+            lat = pos.coords.latitude;
+            lon = pos.coords.longitude;
+
+            var myLatLng = new google.maps.LatLng(lat, lon);
+
+            $scope.map.center = { latitude: lat, longitude: lon};
+
+            getMarkers();
+
+            $scope.$apply();
+        }, function(error) {
+            alert('Unable to get location: ' + error.message);
+        });
+
+        function getMarkers() {
+            MapsService.getAllLocations(lat, lon).then(function (response) {
+
+                trucks = response.trucks;
+
+                var markers = [];
+
+                for (var i = 0; i < trucks.length; i++) {
+                    var newMarker = {
+                        latitude: trucks[i].latitude,
+                        longitude: trucks[i].longitude,
+                        id: i,
+//                        title: 'Test test',
+                        options: {title: 'Test test'}
+                    };
+
+                    markers.push(newMarker);
+                    console.log(newMarker);
+
+                    $scope.map.markers = markers;
+
+                }
+
+            });
+        }
+
     }]);
 ;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
     function ($scope, $rootScope, TokenService) {
@@ -434,6 +479,18 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'uiGmapGoogle
             },
             getApiUrl: function () {
                 return apiUrl;
+            }
+        };
+    }]);;/**
+ * Created by maconsuckow on 12/7/14.
+ */
+angular.module('TruckMuncherApp')
+    .factory('MapsService', ['httpHelperService', function (httpHelperService) {
+        return {
+            getAllLocations: function (latitude, longitude) {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getActiveTrucks';
+                var data = {'latitude': latitude, 'longitude': longitude};
+                return httpHelperService.post(url, data);
             }
         };
     }]);;angular.module('TruckMuncherApp')

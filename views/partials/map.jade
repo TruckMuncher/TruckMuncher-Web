@@ -1,3 +1,4 @@
 .row
     article
-        ui-gmap-google-map(center="map.center" zoom="map.zoom" draggable="true" options="options")
+        ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options")
+            ui-gmap-markers(models="map.markers", coords="'self'", icon="'icon'", options="map.markers.options")
