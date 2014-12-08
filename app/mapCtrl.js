@@ -7,7 +7,12 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
         var lat;
         var lon;
 
-        $scope.map = { center: { latitude: 43.05, longitude: -87.95 }, zoom: 12, markers: [] };
+        $scope.map = {
+            center: {
+                latitude: 43.05, longitude: -87.95 },
+            zoom: 12
+        };
+        $scope.randomMarkers = [];
 
         navigator.geolocation.getCurrentPosition(function(pos) {
 
@@ -33,22 +38,43 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 var markers = [];
 
                 for (var i = 0; i < trucks.length; i++) {
-                    var newMarker = {
-                        latitude: trucks[i].latitude,
-                        longitude: trucks[i].longitude,
-                        id: i,
-//                        title: 'Test test',
-                        options: {title: 'Test test'}
-                    };
 
-                    markers.push(newMarker);
-                    console.log(newMarker);
+                    var temp = populateMarker(trucks[i]);
 
-                    $scope.map.markers = markers;
-
+                    markers.push(temp);
                 }
+
+                $scope.randomMarkers = markers;
 
             });
         }
+
+        function populateMarker(truck) {
+            var newMarker = {
+                id: truck.id,
+                latitude: truck.latitude,
+                longitude: truck.longitude,
+                title: truck.id,
+                show: false
+            };
+
+            newMarker.onClick = function() {
+                console.log("Clicked");
+                newMarker.show = !newMarker.show;
+            };
+
+            return newMarker;
+        }
+
+        $scope.windowOptions = {
+            visible: true
+        };
+
+        $scope.closeClick = function() {
+            console.log("closeClick");
+            $scope.windowOptions.visible = false;
+        };
+
+        $scope.title = "Window Title!";
 
     }]);
