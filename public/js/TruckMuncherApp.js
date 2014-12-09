@@ -7,7 +7,8 @@ var app = angular.module('TruckMuncherApp',
         'ngAnimate',
         'ngTagsInput',
         'angularFileUpload',
-        'uiGmapgoogle-maps'
+        'uiGmapgoogle-maps',
+        'ngCookies'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -393,8 +394,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi',
-    function ($scope, TruckService) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', '$cookieStore', '$q',
+    function ($scope, TruckService, $cookieStore, $q) {
 
         //Latitude and Longitude varaibles
         var lat;
@@ -413,20 +414,20 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
         $scope.randomMarkers = [];
 
         //The navigator function that allows the gps coordinates to be gathered by the browser
-        navigator.geolocation.getCurrentPosition(function(pos) {
+        navigator.geolocation.getCurrentPosition(function (pos) {
 
             //Sets current latitude and longitude to the variables
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
 
             //Resets the maps center
-            $scope.map.center = { latitude: lat, longitude: lon};
+            $scope.map.center = {latitude: lat, longitude: lon};
 
             getMarkers();
 
             //Apply the changes to the scope parameter
             $scope.$apply();
-        }, function(error) {
+        }, function (error) {
             alert('Unable to get location: ' + error.message);
         });
 
@@ -461,13 +462,40 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 show: false,
                 options: {
                     content: "<b>A Food Truck</b>" +
-                        "<p>Chinese Cuisine</p>" +
-                        "<p style='min-width: 150px'>Hours: 11am - 6pm</p>",
+                    "<p>Chinese Cuisine</p>" +
+                    "<p style='min-width: 150px'>Hours: 11am - 6pm</p>",
                     maxWidth: 150
                 }
             };
 
             return newMarker;
+        }
+
+        function getTruckProfile(truckId) {
+            var profiles = getTruckProfilesFromCookie();
+            var match = _.find(profiles, function (x) {
+                return x.truckId == truckId;
+            });
+            if (_.isNullOrUndefined(match)) {
+                getTruckProfilesFromApi(1, 1).then(function (response) {
+                    console.log(match);
+                });
+            } else {
+                console.log(match);
+            }
+        }
+
+        function getTruckProfilesFromCookie() {
+            return $cookieStore.get('truckProfiles');
+        }
+
+        function getTruckProfilesFromApi(latitude, longitude) {
+            var deferred = $q.defer();
+            TruckService.getTruckProfiles(latitude, longitude).then(function (response) {
+                $cookieStore.put('truckProfiles', response);
+                deferred.resolve(response);
+            });
+            return deferred.promise;
         }
     }]);
 ;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
@@ -620,6 +648,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                     {id: "2d1dada3-80f1-4c0e-b878-a02626aafea4", latitude: 43.045849, longitude: -87.899795}
                 ]);
                 return deferred.promise;
+            },
+            getTruckProfiles: function (latitude, longitude) {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
+                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks')
             }
         };
     }]);

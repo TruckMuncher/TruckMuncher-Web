@@ -25,6 +25,10 @@ angular.module('TruckMuncherApp')
                     {id: "2d1dada3-80f1-4c0e-b878-a02626aafea4", latitude: 43.045849, longitude: -87.899795}
                 ]);
                 return deferred.promise;
+            },
+            getTruckProfiles: function (latitude, longitude) {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
+                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks')
             }
         };
     }]);
