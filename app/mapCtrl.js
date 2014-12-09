@@ -1,8 +1,8 @@
 /**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', '$cookieStore', '$q', 'growl',
-    function ($scope, TruckService, uiGmapGoogleMapApi, $cookieStore, $q, growl) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl) {
         var lat;
         var lon;
 
@@ -44,7 +44,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
         function populateMarker(truck) {
             var deferred = $q.defer();
-            getTruckProfile(truck.id).then(function (truckProfileResponse) {
+            TruckProfileService.getTruckProfile(truck.id, lat, lon).then(function (truckProfileResponse) {
                 var newMarker = {
                     id: truck.id,
                     latitude: truck.latitude,
@@ -60,44 +60,6 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 deferred.resolve(newMarker);
             });
 
-            return deferred.promise;
-        }
-
-        function getTruckProfile(truckId) {
-            var deferred = $q.defer();
-            var profiles = getTruckProfilesFromCookie();
-            var match = _.find(profiles, function (x) {
-                return x.id === truckId;
-            });
-
-            if (_.isNull(match) || _.isUndefined(match)) {
-                getTruckProfilesFromApi().then(function (response) {
-                    var match = _.find(response, function (x) {
-                        return x.id === truckId;
-                    });
-                    if (_.isNull(match) || _.isUndefined(match)) {
-                        deferred.reject('Not Found');
-                    } else {
-                        deferred.resolve(match);
-                    }
-                });
-            } else {
-                deferred.resolve(match);
-            }
-
-            return deferred.promise;
-        }
-
-        function getTruckProfilesFromCookie() {
-            return $cookieStore.get('truckProfiles');
-        }
-
-        function getTruckProfilesFromApi() {
-            var deferred = $q.defer();
-            TruckService.getTruckProfiles(lat, lon).then(function (response) {
-                $cookieStore.put('truckProfiles', response);
-                deferred.resolve(response);
-            });
             return deferred.promise;
         }
     }]);
