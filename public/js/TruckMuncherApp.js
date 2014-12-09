@@ -394,8 +394,8 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl',
-    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$q',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $q) {
         var lat;
         var lon;
 
@@ -581,7 +581,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
     };
 });;angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
     function (TruckService, $q, $cookieStore) {
-
+        var millisecondsInADay = 86400000;
         return {
             getTruckProfile: function (truckId, latitude, longitude) {
                 var deferred = $q.defer();
@@ -611,7 +611,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
         function getTruckProfilesFromCookie() {
             var lastUpdated = $cookieStore.get('truckProfilesLastUpdatedDate');
-            //if last updated over 1 day ago, remove the both cookies and return nothing so that it gets updated
+            if (_.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay) {
+                $cookieStore.remove('truckProfilesLastUpdatedDate');
+                $cookieStore.remove('truckProfiles');
+            }
 
             return $cookieStore.get('truckProfiles');
         }
@@ -620,10 +623,14 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             var deferred = $q.defer();
             TruckService.getTruckProfiles(latitude, longitude).then(function (response) {
                 $cookieStore.put('truckProfiles', response);
-                $cookieStore.put('truckProfilesLastUpdatedDate', Date.now());
+                updateLastUpdatedCookie();
                 deferred.resolve(response);
             });
             return deferred.promise;
+        }
+
+        function updateLastUpdatedCookie() {
+            $cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
         }
     }]);;angular.module('TruckMuncherApp')
     .factory('TruckService', ['httpHelperService', '$q', function (httpHelperService, $q) {

@@ -1,8 +1,8 @@
 /**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl',
-    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$q',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $q) {
         var lat;
         var lon;
 
