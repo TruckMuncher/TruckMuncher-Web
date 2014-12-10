@@ -33,33 +33,44 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
         function getMarkers() {
             TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
                 $scope.randomMarkers = [];
-
-                for (var i = 0; i < trucksResponse.length; i++) {
-                    populateMarker(trucksResponse[i]).then(function (markerResponse) {
-                        $scope.randomMarkers.push(markerResponse);
-                    });
+                if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
+                    for (var i = 0; i < trucksResponse.length; i++) {
+                        populateMarker(trucksResponse[i]).then(function (markerResponse) {
+                            $scope.randomMarkers.push(markerResponse);
+                        });
+                    }
+                } else {
+                    TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
+                        for (var i = 0; i < trucksResponse.length; i++) {
+                            var marker = populateMarker(trucksResponse[i]);
+                            $scope.randomMarkers.push(marker);
+                        }
+                    })
                 }
+
+
             });
         }
 
         function populateMarker(truck) {
-            var deferred = $q.defer();
-            TruckProfileService.getTruckProfile(truck.id, lat, lon).then(function (truckProfileResponse) {
-                var newMarker = {
-                    id: truck.id,
-                    latitude: truck.latitude,
-                    longitude: truck.longitude,
-                    show: false,
-                    options: {
-                        content: "<b>" + truckProfileResponse.name + "</b>" +
-                        "<p>" + truckProfileResponse.keywords + "</p>",
-                        maxWidth: 150
-                    }
-                };
+            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
+            var marker = {
+                id: truck.id,
+                latitude: truck.latitude,
+                longitude: truck.longitude,
+                show: false,
+                options: {
+                    maxWidth: 150
+                }
+            };
 
-                deferred.resolve(newMarker);
-            });
+            if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
+                marker.options.content = "<b>" + truckProfile.name + "</b>" +
+                "<p>" + truckProfile.keywords + "</p>"
+            } else {
+                marker.options.content = "Could not find truck profile";
+            }
 
-            return deferred.promise;
+            return marker;
         }
     }]);
