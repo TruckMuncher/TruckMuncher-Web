@@ -428,9 +428,8 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 $scope.randomMarkers = [];
                 if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
                     for (var i = 0; i < trucksResponse.length; i++) {
-                        populateMarker(trucksResponse[i]).then(function (markerResponse) {
-                            $scope.randomMarkers.push(markerResponse);
-                        });
+                        var marker = populateMarker(trucksResponse[i]);
+                        $scope.randomMarkers.push(marker);
                     }
                 } else {
                     TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
@@ -440,7 +439,6 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                         }
                     })
                 }
-
 
             });
         }
