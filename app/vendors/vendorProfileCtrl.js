@@ -16,7 +16,6 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             TruckService.modifyTruckProfile(
                 $scope.selectedTruck.id,
                 $scope.newName,
-                $scope.selectedTruck.imageUrl,
                 keywords,
                 $scope.newColorSelection.primaryColor,
                 $scope.newColorSelection.secondaryColor
