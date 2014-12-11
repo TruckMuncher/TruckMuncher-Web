@@ -6,7 +6,8 @@ var app = angular.module('TruckMuncherApp',
         'angular-growl',
         'ngAnimate',
         'ngTagsInput',
-        'angularFileUpload'
+        'angularFileUpload',
+        'angularSpectrumColorpicker'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {

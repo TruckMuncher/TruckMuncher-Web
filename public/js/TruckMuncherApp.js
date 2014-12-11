@@ -6,7 +6,8 @@ var app = angular.module('TruckMuncherApp',
         'angular-growl',
         'ngAnimate',
         'ngTagsInput',
-        'angularFileUpload'
+        'angularFileUpload',
+        'angularSpectrumColorpicker'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -317,7 +318,6 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
                 img.src = imageData;
             }
 
-
             img.onload = function () {
                 var rgbPalette = colorThief.getPalette(img, 8);
                 var dominant = colorThief.getColor(img);
@@ -328,13 +328,17 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
                     scope.dominantColor = colorService.RGBsToHexWithDarkIndicator([dominant])[0];
                 });
             };
+
+            scope.colorClicked = function (color) {
+                scope.colorClickCallback({theColor: color});
+            };
         };
 
         return {
             restrict: 'A',
             link: link,
             replace: true,
-            scope: {imageUrl: '='},
+            scope: {imageUrl: '=', colorClickCallback: '&'},
             templateUrl: '/partials/directiveTemplates/remote-image-analyzer.jade'
         };
     }]);;var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{1,2})?$/;
@@ -763,11 +767,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
-
-        $scope.resetTruck = function () {
-            $scope.selectedTruck.newName = $scope.selectedTruck.name;
-            convertKeywordsToTags();
-        };
+        $scope.newColorSelection = {};
+        $scope.selectingColor = null;
+        $scope.colorPicker = {};
 
         $scope.saveTruck = function () {
             var keywords = _.map($scope.tags, function (tag) {
@@ -777,7 +779,7 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(
                 $scope.selectedTruck.id,
-                $scope.selectedTruck.name,
+                $scope.newName,
                 $scope.selectedTruck.imageUrl,
                 keywords).then(function (response) {
                     $scope.requestInProgress = false;
@@ -822,10 +824,38 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
         });
 
         $scope.$watch('selectedTruck', function () {
+            $scope.setFormValuesFromSelectedTruck();
+        });
+
+        $scope.resetTruck = function () {
+            $scope.setFormValuesFromSelectedTruck();
+        };
+
+        $scope.setFormValuesFromSelectedTruck = function () {
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
-                $scope.selectedTruck.newName = $scope.selectedTruck.name;
+                $scope.newName = $scope.selectedTruck.name;
+                $scope.newColorSelection.primaryColor = $scope.selectedTruck.primaryColor;
+                $scope.newColorSelection.secondaryColor = $scope.selectedTruck.secondaryColor;
             }
+            $scope.selectingColor = "primary";
+            $scope.selectColor($scope.newColorSelection.primaryColor);
+        };
+
+        $scope.selectColor = function (theColor) {
+            if (theColor !== $scope.colorPicker.color)
+                $scope.colorPicker.color = theColor;
+            if ($scope.selectingColor === "primary")
+                $scope.newColorSelection.primaryColor = theColor;
+            else if ($scope.selectingColor === "secondary")
+                $scope.newColorSelection.secondaryColor = theColor;
+        };
+
+        $scope.$watch('selectingColor', function () {
+            if ($scope.selectingColor === "primary")
+                $scope.colorPicker.color = $scope.newColorSelection.primaryColor;
+            else if ($scope.selectingColor === "secondary")
+                $scope.colorPicker.color = $scope.newColorSelection.secondaryColor;
         });
 
         function convertKeywordsToTags() {
