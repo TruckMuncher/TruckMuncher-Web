@@ -7,7 +7,8 @@ var app = angular.module('TruckMuncherApp',
         'ngAnimate',
         'ngTagsInput',
         'angularFileUpload',
-        'uiGmapgoogle-maps'
+        'uiGmapgoogle-maps',
+        'ngCookies'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {

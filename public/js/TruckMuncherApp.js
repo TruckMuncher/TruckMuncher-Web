@@ -7,7 +7,8 @@ var app = angular.module('TruckMuncherApp',
         'ngAnimate',
         'ngTagsInput',
         'angularFileUpload',
-        'uiGmapgoogle-maps'
+        'uiGmapgoogle-maps',
+        'ngCookies'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -393,14 +394,11 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi',
-    function ($scope, TruckService) {
-
-        //Latitude and Longitude varaibles
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$q',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $q) {
         var lat;
         var lon;
 
-        //Initialization of the map with a point to load first
         $scope.map = {
             center: {
                 latitude: 43.05,
@@ -409,65 +407,62 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             zoom: 12
         };
 
-        //Create markers array
         $scope.randomMarkers = [];
 
-        //The navigator function that allows the gps coordinates to be gathered by the browser
-        navigator.geolocation.getCurrentPosition(function(pos) {
+        navigator.geolocation.getCurrentPosition(function (pos) {
 
-            //Sets current latitude and longitude to the variables
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
 
-            //Resets the maps center
-            $scope.map.center = { latitude: lat, longitude: lon};
+            $scope.map.center = {latitude: lat, longitude: lon};
 
             getMarkers();
 
-            //Apply the changes to the scope parameter
             $scope.$apply();
-        }, function(error) {
-            alert('Unable to get location: ' + error.message);
+        }, function (error) {
+            growl.addErrorMessage('Unable to get location: ' + error.message);
         });
 
-        //Function that gets back the currently active trucks and creates google map markers from them
         function getMarkers() {
-            TruckService.getActiveTrucks(lat, lon).then(function (response) {
-
-                trucks = response;
-                var markers = [];
-
-                for (var i = 0; i < trucks.length; i++) {
-                    var temp = populateMarker(trucks[i]);
-                    markers.push(temp);
+            TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
+                $scope.randomMarkers = [];
+                if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
+                    for (var i = 0; i < trucksResponse.length; i++) {
+                        var marker = populateMarker(trucksResponse[i]);
+                        $scope.randomMarkers.push(marker);
+                    }
+                } else {
+                    TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
+                        for (var i = 0; i < trucksResponse.length; i++) {
+                            var marker = populateMarker(trucksResponse[i]);
+                            $scope.randomMarkers.push(marker);
+                        }
+                    })
                 }
-
-                $scope.randomMarkers = markers;
 
             });
         }
 
-        //Function that receives a truck and strips the necessary information and returns a new marker
-        //id: needed for the info windows
-        //latitude: Latitude of the marker
-        //longitude: Longitude of the marker
-        //show: display of the info window when marker is created
-        //options: Info window options. Contains content and a max-width
         function populateMarker(truck) {
-            var newMarker = {
+            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
+            var marker = {
                 id: truck.id,
                 latitude: truck.latitude,
                 longitude: truck.longitude,
                 show: false,
                 options: {
-                    content: "<b>A Food Truck</b>" +
-                        "<p>Chinese Cuisine</p>" +
-                        "<p style='min-width: 150px'>Hours: 11am - 6pm</p>",
                     maxWidth: 150
                 }
             };
 
-            return newMarker;
+            if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
+                marker.options.content = "<b>" + truckProfile.name + "</b>" +
+                "<p>" + truckProfile.keywords + "</p>"
+            } else {
+                marker.options.content = "Could not find truck profile";
+            }
+
+            return marker;
         }
     }]);
 ;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
@@ -593,7 +588,48 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             });
         }
     };
-});;angular.module('TruckMuncherApp')
+});;angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
+    function (TruckService, $q, $cookieStore) {
+        var millisecondsInADay = 86400000;
+
+        return {
+            updateTruckProfiles: function (latitude, longitude) {
+                var deferred = $q.defer();
+                TruckService.getTruckProfiles(latitude, longitude).then(function (response) {
+                    $cookieStore.put('truckProfiles', response);
+                    $cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
+                    deferred.resolve(response);
+                });
+                return deferred.promise;
+            },
+            cookieNeedsUpdate: function () {
+                var lastUpdated = $cookieStore.get('truckProfilesLastUpdatedDate');
+                return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay
+            },
+            allTrucksInStoredProfiles: function (trucks) {
+                var storedTrucks = $cookieStore.get('truckProfiles');
+                if (_.isNull(storedTrucks) || _.isUndefined(storedTrucks) || _.isNull(trucks) || _.isUndefined(trucks))
+                    return false;
+
+                for (var i = 0; i < trucks.length; i++) {
+                    if (!_.some(storedTrucks, {'id': trucks[i].id}))
+                        return false;
+                }
+
+                return true;
+            },
+            getTruckProfile: function (truckId) {
+                var profiles = getTruckProfilesFromCookie();
+                return _.find(profiles, function (x) {
+                    return x.id === truckId;
+                });
+            }
+        };
+        function getTruckProfilesFromCookie() {
+            return $cookieStore.get('truckProfiles');
+        }
+
+    }]);;angular.module('TruckMuncherApp')
     .factory('TruckService', ['httpHelperService', '$q', function (httpHelperService, $q) {
         return {
             getTrucksForVendor: function () {
@@ -620,6 +656,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                     {id: "2d1dada3-80f1-4c0e-b878-a02626aafea4", latitude: 43.045849, longitude: -87.899795}
                 ]);
                 return deferred.promise;
+            },
+            getTruckProfiles: function (latitude, longitude) {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
+                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks')
             }
         };
     }]);
