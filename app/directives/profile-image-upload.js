@@ -24,8 +24,8 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
                 };
 
                 scope.uploader.onSuccessItem = function (fileItem, response) {
-                    scope.truck.imageUrl = response.url;
-                    scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
+                    scope.truck.imageUrl = response.url + '?' + new Date().getTime();
+                    scope.displayImage = scope.truck.imageUrl;
                     scope.progress = null;
                 };
 
