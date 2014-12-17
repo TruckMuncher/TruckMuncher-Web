@@ -7,6 +7,8 @@ var app = angular.module('TruckMuncherApp',
         'ngAnimate',
         'ngTagsInput',
         'angularFileUpload',
+        'uiGmapgoogle-maps',
+        'ngCookies',
         'angularSpectrumColorpicker'
     ]);
 
@@ -390,7 +392,82 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             httpHelperService.setApiUrl(url);
         };
     }
-]);;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
+]);;/**
+ * Created by maconsuckow on 12/3/14.
+ */
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$q',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $q) {
+        var lat;
+        var lon;
+
+        $scope.map = {
+            center: {
+                latitude: 43.05,
+                longitude: -87.95
+            },
+            zoom: 12
+        };
+
+        $scope.randomMarkers = [];
+
+        navigator.geolocation.getCurrentPosition(function (pos) {
+
+            lat = pos.coords.latitude;
+            lon = pos.coords.longitude;
+
+            $scope.map.center = {latitude: lat, longitude: lon};
+
+            getMarkers();
+
+            $scope.$apply();
+        }, function (error) {
+            growl.addErrorMessage('Unable to get location: ' + error.message);
+        });
+
+        function getMarkers() {
+            TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
+                $scope.randomMarkers = [];
+                if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
+                    for (var i = 0; i < trucksResponse.length; i++) {
+                        var marker = populateMarker(trucksResponse[i]);
+                        $scope.randomMarkers.push(marker);
+                    }
+                } else {
+                    TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
+                        for (var i = 0; i < trucksResponse.length; i++) {
+                            var marker = populateMarker(trucksResponse[i]);
+                            $scope.randomMarkers.push(marker);
+                        }
+                    });
+                }
+
+            });
+        }
+
+        function populateMarker(truck) {
+            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
+            var marker = {
+                id: truck.id,
+                icon: 'img/SingleTruckAnnotationIcon.png',
+                latitude: truck.latitude,
+                longitude: truck.longitude,
+                show: false,
+                options: {
+                    maxWidth: 150
+                }
+            };
+
+            if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
+                marker.options.content = "<b>" + truckProfile.name + "</b>" +
+                "<p>" + truckProfile.keywords + "</p>";
+            } else {
+                marker.options.content = "Could not find truck profile";
+            }
+
+            return marker;
+        }
+    }]);
+;angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
     function ($scope, $rootScope, TokenService) {
         $scope.loggedIn = function () {
             return !_.isNull(TokenService.getToken());
@@ -513,8 +590,49 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             });
         }
     };
-});;angular.module('TruckMuncherApp')
-    .factory('TruckService', ['httpHelperService', function (httpHelperService) {
+});;angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
+    function (TruckService, $q, $cookieStore) {
+        var millisecondsInADay = 86400000;
+
+        return {
+            updateTruckProfiles: function (latitude, longitude) {
+                var deferred = $q.defer();
+                TruckService.getTruckProfiles(latitude, longitude).then(function (response) {
+                    $cookieStore.put('truckProfiles', response);
+                    $cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
+                    deferred.resolve(response);
+                });
+                return deferred.promise;
+            },
+            cookieNeedsUpdate: function () {
+                var lastUpdated = $cookieStore.get('truckProfilesLastUpdatedDate');
+                return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay;
+            },
+            allTrucksInStoredProfiles: function (trucks) {
+                var storedTrucks = $cookieStore.get('truckProfiles');
+                if (_.isNull(storedTrucks) || _.isUndefined(storedTrucks) || _.isNull(trucks) || _.isUndefined(trucks))
+                    return false;
+
+                for (var i = 0; i < trucks.length; i++) {
+                    if (!_.some(storedTrucks, {'id': trucks[i].id}))
+                        return false;
+                }
+
+                return true;
+            },
+            getTruckProfile: function (truckId) {
+                var profiles = getTruckProfilesFromCookie();
+                return _.find(profiles, function (x) {
+                    return x.id === truckId;
+                });
+            }
+        };
+        function getTruckProfilesFromCookie() {
+            return $cookieStore.get('truckProfiles');
+        }
+
+    }]);;angular.module('TruckMuncherApp')
+    .factory('TruckService', ['httpHelperService', '$q', function (httpHelperService, $q) {
         return {
             getTrucksForVendor: function () {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
@@ -534,6 +652,24 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
             },
             getImageUploadUrl: function (truckId) {
                 return httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
+            },
+            getActiveTrucks: function (latitude, longitude) {
+                //var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getActiveTrucks';
+                //var data = {'latitude': latitude, 'longitude': longitude};
+                //return httpHelperService.post(url, data, 'trucks');
+
+                var deferred = $q.defer();
+                deferred.resolve([
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea7", latitude: 43.05, longitude: -87.95},
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea6", latitude: 43.046978, longitude: -87.904087},
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea5", latitude: 43.044093, longitude: -87.902027},
+                    {id: "2d1dada3-80f1-4c0e-b878-a02626aafea4", latitude: 43.045849, longitude: -87.899795}
+                ]);
+                return deferred.promise;
+            },
+            getTruckProfiles: function (latitude, longitude) {
+                var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
+                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks');
             }
         };
     }]);

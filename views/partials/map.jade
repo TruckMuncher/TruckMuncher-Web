@@ -1,1 +1,6 @@
-span The map would go here
+.row
+    article
+        //div(id="map_canvas", ng-controller="mapCtrl")
+        ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options")
+            ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
+                ui-gmap-windows(show="'show'", ng-cloak, options="'options'")
