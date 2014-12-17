@@ -44,7 +44,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                             var marker = populateMarker(trucksResponse[i]);
                             $scope.randomMarkers.push(marker);
                         }
-                    })
+                    });
                 }
 
             });
@@ -54,6 +54,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
             var marker = {
                 id: truck.id,
+                icon: 'img/SingleTruckAnnotationIcon.png',
                 latitude: truck.latitude,
                 longitude: truck.longitude,
                 show: false,
@@ -64,7 +65,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
                 marker.options.content = "<b>" + truckProfile.name + "</b>" +
-                "<p>" + truckProfile.keywords + "</p>"
+                "<p>" + truckProfile.keywords + "</p>";
             } else {
                 marker.options.content = "Could not find truck profile";
             }

@@ -14,7 +14,7 @@ angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService'
             },
             cookieNeedsUpdate: function () {
                 var lastUpdated = $cookieStore.get('truckProfilesLastUpdatedDate');
-                return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay
+                return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay;
             },
             allTrucksInStoredProfiles: function (trucks) {
                 var storedTrucks = $cookieStore.get('truckProfiles');

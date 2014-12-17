@@ -437,7 +437,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                             var marker = populateMarker(trucksResponse[i]);
                             $scope.randomMarkers.push(marker);
                         }
-                    })
+                    });
                 }
 
             });
@@ -447,6 +447,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
             var marker = {
                 id: truck.id,
+                icon: 'img/SingleTruckAnnotationIcon.png',
                 latitude: truck.latitude,
                 longitude: truck.longitude,
                 show: false,
@@ -457,7 +458,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
                 marker.options.content = "<b>" + truckProfile.name + "</b>" +
-                "<p>" + truckProfile.keywords + "</p>"
+                "<p>" + truckProfile.keywords + "</p>";
             } else {
                 marker.options.content = "Could not find truck profile";
             }
@@ -604,7 +605,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             },
             cookieNeedsUpdate: function () {
                 var lastUpdated = $cookieStore.get('truckProfilesLastUpdatedDate');
-                return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay
+                return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > millisecondsInADay;
             },
             allTrucksInStoredProfiles: function (trucks) {
                 var storedTrucks = $cookieStore.get('truckProfiles');
@@ -659,7 +660,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             },
             getTruckProfiles: function (latitude, longitude) {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
-                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks')
+                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks');
             }
         };
     }]);

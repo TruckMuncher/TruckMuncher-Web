@@ -28,7 +28,7 @@ angular.module('TruckMuncherApp')
             },
             getTruckProfiles: function (latitude, longitude) {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
-                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks')
+                return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks');
             }
         };
     }]);
