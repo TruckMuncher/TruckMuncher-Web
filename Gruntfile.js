@@ -34,7 +34,9 @@ module.exports = function (grunt) {
         'bower_components/es5-shim/es5-shim.js',
         'bower_components/color-thief/src/color-thief.js',
         'bower_components/angular-google-maps/dist/angular-google-maps.js',
-        'bower_components/angular-cookies/angular-cookies.js'
+        'bower_components/angular-cookies/angular-cookies.js',
+        'bower_components/spectrum/spectrum.js',
+        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js'
     ];
 
     var globalConfig = {
@@ -109,7 +111,8 @@ module.exports = function (grunt) {
                             'bower_components/chosen/chosen-sprite@2x.png',
                             'bower_components/angular-growl/build/angular-growl.min.css',
                             'bower_components/ng-tags-input/ng-tags-input.css',
-                            'bower_components/ng-tags-input/ng-tags-input.bootstrap.css'
+                            'bower_components/ng-tags-input/ng-tags-input.bootstrap.css',
+                            'bower_components/spectrum/spectrum.css'
                             ],
                         dest: '<%= globalConfig.cssDest %>',
                         flatten: true
@@ -147,14 +150,9 @@ module.exports = function (grunt) {
             },
             vendorFiles: {
                 files: ['Gruntfile.js'],
-                tasks: ['concat:vendorScripts']
-            },
-            bower: {
-                files: ['bower.json'],
-                tasks: ['bower:install']
+                tasks: ['concat:vendorScripts', 'copy:bower']
             }
         },
-
         'karma': {
             //shared config
             options: {

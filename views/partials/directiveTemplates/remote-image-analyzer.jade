@@ -1,10 +1,12 @@
-div
+div(style="height:120px")
     div(data-ng-if='processing')
         .progress
             .progress.progress-striped.active
                 .progress-bar.indeterminate.bg-color-darken(role='progressbar') Analyzing
     div(data-ng-if='dominantColor', class='yoyo-in-animation')
-        span.color-blob(data-ng-style='{"background-color": dominantColor.hexColor}', data-ng-class='{"light-text": dominantColor.isDark}') {{dominantColor.hexColor}}
-        |Dominant Color
+        span.color-blob(data-ng-style='{"background-color": dominantColor.hexColor}',
+        data-ng-class='{"light-text": dominantColor.isDark}', data-ng-click='colorClicked(dominantColor.hexColor)') {{dominantColor.hexColor}}
+        | Dominant Color
     div(data-ng-if='palette && palette.length > 0', class='yoyo-in-animation')
-        .color-blob(data-ng-style='{"background-color": color.hexColor}', data-ng-class='{"light-text": color.isDark}', data-ng-repeat='color in palette') {{color.hexColor}}
+        .color-blob(data-ng-style='{"background-color": color.hexColor}', data-ng-class='{"light-text": color.isDark}',
+        data-ng-repeat='color in palette', data-ng-click='colorClicked(color.hexColor)') {{color.hexColor}}

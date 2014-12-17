@@ -33,11 +33,17 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
                     scope.uploader.url = TruckService.getImageUploadUrl(scope.truck.id);
 
                     if (scope.truck && scope.truck.imageUrl) {
-                        scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
+                        if (stripUIDFromImageUrl(scope.displayImage) !== scope.truck.imageUrl)
+                            scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
                     } else {
                         scope.displayImage = blankImageUri;
                     }
                 });
+
+                function stripUIDFromImageUrl(imageUrl) {
+                    if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
+                    else return "";
+                }
 
             }
         };

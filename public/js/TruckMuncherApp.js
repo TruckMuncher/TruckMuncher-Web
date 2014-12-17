@@ -8,7 +8,8 @@ var app = angular.module('TruckMuncherApp',
         'ngTagsInput',
         'angularFileUpload',
         'uiGmapgoogle-maps',
-        'ngCookies'
+        'ngCookies',
+        'angularSpectrumColorpicker'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -27,7 +28,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state('map', {
             url: "/map",
             templateUrl: "partials/map.jade",
-            controller: "mapCtrl",
             authenticate: false
         })
         .state('menu', {
@@ -92,14 +92,6 @@ app.config(['$httpProvider', function ($httpProvider) {
 app.config(['growlProvider', function (growlProvider) {
     growlProvider.globalTimeToLive(3000);
     growlProvider.onlyUniqueMessages(false);
-}]);
-
-app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyDRhwlG46TWsBLMs-2aL5ge0k3m6ywGl-I',
-        v: '3.17',
-        libraries: 'weather,geometry,visualization'
-    });
 }]);
 
 app.run(function ($rootScope, $state, TokenService) {
@@ -284,11 +276,17 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
                     scope.uploader.url = TruckService.getImageUploadUrl(scope.truck.id);
 
                     if (scope.truck && scope.truck.imageUrl) {
-                        scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
+                        if (stripUIDFromImageUrl(scope.displayImage) !== scope.truck.imageUrl)
+                            scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
                     } else {
                         scope.displayImage = blankImageUri;
                     }
                 });
+
+                function stripUIDFromImageUrl(imageUrl) {
+                    if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
+                    else return "";
+                }
 
             }
         };
@@ -328,7 +326,6 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
                 img.src = imageData;
             }
 
-
             img.onload = function () {
                 var rgbPalette = colorThief.getPalette(img, 8);
                 var dominant = colorThief.getColor(img);
@@ -339,13 +336,17 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
                     scope.dominantColor = colorService.RGBsToHexWithDarkIndicator([dominant])[0];
                 });
             };
+
+            scope.colorClicked = function (color) {
+                scope.colorClickCallback({theColor: color});
+            };
         };
 
         return {
             restrict: 'A',
             link: link,
             replace: true,
-            scope: {imageUrl: '='},
+            scope: {imageUrl: '=', colorClickCallback: '&'},
             templateUrl: '/partials/directiveTemplates/remote-image-analyzer.jade'
         };
     }]);;var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d{1,2})?$/;
@@ -637,9 +638,17 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
                 return httpHelperService.post(url, {}, 'trucks');
             },
-            modifyTruckProfile: function (truckId, name, imageUrl, keywords) {
+            modifyTruckProfile: function (truckId, name, keywords, primaryColor, secondaryColor) {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
-                return httpHelperService.post(url, {id: truckId, name: name, imageUrl: imageUrl, keywords: keywords});
+                return httpHelperService.post(url,
+                    {
+                        id: truckId,
+                        name: name,
+                        keywords: keywords,
+                        primaryColor: primaryColor,
+                        secondaryColor: secondaryColor
+                    }
+                );
             },
             getImageUploadUrl: function (truckId) {
                 return httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
@@ -908,11 +917,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
-
-        $scope.resetTruck = function () {
-            $scope.selectedTruck.newName = $scope.selectedTruck.name;
-            convertKeywordsToTags();
-        };
+        $scope.newColorSelection = {};
+        $scope.selectingColor = null;
+        $scope.colorPicker = {};
 
         $scope.saveTruck = function () {
             var keywords = _.map($scope.tags, function (tag) {
@@ -922,9 +929,11 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(
                 $scope.selectedTruck.id,
-                $scope.selectedTruck.name,
-                $scope.selectedTruck.imageUrl,
-                keywords).then(function (response) {
+                $scope.newName,
+                keywords,
+                $scope.newColorSelection.primaryColor,
+                $scope.newColorSelection.secondaryColor
+            ).then(function (response) {
                     $scope.requestInProgress = false;
                     growl.addSuccessMessage('Profile Updated Successfully');
                     refreshTruck(response);
@@ -967,10 +976,38 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
         });
 
         $scope.$watch('selectedTruck', function () {
+            $scope.setFormValuesFromSelectedTruck();
+        });
+
+        $scope.resetTruck = function () {
+            $scope.setFormValuesFromSelectedTruck();
+        };
+
+        $scope.setFormValuesFromSelectedTruck = function () {
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
-                $scope.selectedTruck.newName = $scope.selectedTruck.name;
+                $scope.newName = $scope.selectedTruck.name;
+                $scope.newColorSelection.primaryColor = $scope.selectedTruck.primaryColor;
+                $scope.newColorSelection.secondaryColor = $scope.selectedTruck.secondaryColor;
             }
+            $scope.selectingColor = "primary";
+            $scope.selectColor($scope.newColorSelection.primaryColor);
+        };
+
+        $scope.selectColor = function (theColor) {
+            if (theColor !== $scope.colorPicker.color)
+                $scope.colorPicker.color = theColor;
+            if ($scope.selectingColor === "primary")
+                $scope.newColorSelection.primaryColor = theColor;
+            else if ($scope.selectingColor === "secondary")
+                $scope.newColorSelection.secondaryColor = theColor;
+        };
+
+        $scope.$watch('selectingColor', function () {
+            if ($scope.selectingColor === "primary")
+                $scope.colorPicker.color = $scope.newColorSelection.primaryColor;
+            else if ($scope.selectingColor === "secondary")
+                $scope.colorPicker.color = $scope.newColorSelection.secondaryColor;
         });
 
         function convertKeywordsToTags() {

@@ -8,7 +8,8 @@ var app = angular.module('TruckMuncherApp',
         'ngTagsInput',
         'angularFileUpload',
         'uiGmapgoogle-maps',
-        'ngCookies'
+        'ngCookies',
+        'angularSpectrumColorpicker'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -27,7 +28,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state('map', {
             url: "/map",
             templateUrl: "partials/map.jade",
-            controller: "mapCtrl",
             authenticate: false
         })
         .state('menu', {
@@ -92,14 +92,6 @@ app.config(['$httpProvider', function ($httpProvider) {
 app.config(['growlProvider', function (growlProvider) {
     growlProvider.globalTimeToLive(3000);
     growlProvider.onlyUniqueMessages(false);
-}]);
-
-app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyDRhwlG46TWsBLMs-2aL5ge0k3m6ywGl-I',
-        v: '3.17',
-        libraries: 'weather,geometry,visualization'
-    });
 }]);
 
 app.run(function ($rootScope, $state, TokenService) {
