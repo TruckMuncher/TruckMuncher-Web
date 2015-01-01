@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                 dest: 'public/js/<%= pkg.name %>.js'
             },
             vendorScripts: {
-                src: [ jsVendorSourceFiles],
+                src: [jsVendorSourceFiles],
                 dest: 'public/js/vendorScripts.js'
             }
         },
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
                             'bower_components/ng-tags-input/ng-tags-input.css',
                             'bower_components/ng-tags-input/ng-tags-input.bootstrap.css',
                             'bower_components/spectrum/spectrum.css'
-                            ],
+                        ],
                         dest: '<%= globalConfig.cssDest %>',
                         flatten: true
                     }
@@ -167,6 +167,13 @@ module.exports = function (grunt) {
                 logLevel: 'INFO',
                 colors: true,
                 port: 9876,
+                plugins: [
+                    'karma-jasmine-jquery',
+                    'karma-junit-reporter',
+                    'karma-ng-jade2js-preprocessor',
+                    'karma-phantomjs-launcher',
+                    'karma-jasmine'
+                ],
                 files: [
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
@@ -176,7 +183,7 @@ module.exports = function (grunt) {
                     'test/jasmine/**/*.js',
                     'views/**/*.jade'
                 ],
-                ngJade2JsPreprocessor:{
+                ngJade2JsPreprocessor: {
                     stripPrefix: 'views',
                     templateExtension: 'jade'
                 },
