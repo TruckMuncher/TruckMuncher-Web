@@ -67,10 +67,15 @@ module.exports = function (grunt) {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
+            dev: {
+                files: {
+                    'public/js/vendorScripts.js': ['<%= concat.vendorScripts.dest %>']
+                }
+            },
             prod: {
                 files: {
                     'public/js/<%= pkg.name %>.js': ['<%= concat.app.dest %>'],
-                    'public/js/<%= vendorScripts %>.js': ['<%= concat.vendorScripts.dest %>']
+                    'public/js/vendorScripts.js': ['<%= concat.vendorScripts.dest %>']
                 }
             }
         },
@@ -150,7 +155,7 @@ module.exports = function (grunt) {
             },
             vendorFiles: {
                 files: ['Gruntfile.js'],
-                tasks: ['concat:vendorScripts', 'copy:bower']
+                tasks: ['concat:vendorScripts', 'copy:bower', 'uglify:dev']
             }
         },
         'karma': {
@@ -214,7 +219,7 @@ module.exports = function (grunt) {
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
-    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts']);
+    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:dev']);
     grunt.registerTask('dev', ['concurrent:target']);
     grunt.registerTask('build-prod', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:prod']);
     grunt.registerTask('update-bower-css', ['copy:bower']);
