@@ -16,8 +16,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
     $urlRouterProvider.otherwise("home");
 
     $stateProvider
-        .state('root', {
-            templateUrl: "partials/root.jade"
+        .state('home', {
+            url: "/home",
+            authenticate: false
         })
         .state('login', {
             url: "/login",

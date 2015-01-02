@@ -168,7 +168,6 @@ module.exports = function (grunt) {
                 colors: true,
                 port: 9876,
                 plugins: [
-                    'karma-jasmine-jquery',
                     'karma-junit-reporter',
                     'karma-ng-jade2js-preprocessor',
                     'karma-phantomjs-launcher',
@@ -188,7 +187,7 @@ module.exports = function (grunt) {
                     stripPrefix: 'views',
                     templateExtension: 'jade'
                 },
-                frameworks: ['jasmine-jquery', 'jasmine'],
+                frameworks: [ 'jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
             },
