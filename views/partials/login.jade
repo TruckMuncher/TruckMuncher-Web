@@ -1,20 +1,15 @@
-.container-fluid
-    span.center-span
-        img.center-logo(src='img/logo4.png', alt='TruckMuncher')
-    .center-header
-        | Welcome to TruckMuncher!
-
-
-.col-md-4.col-sm-12.col-xs-12.col-md-offset-4
-    .panel
-        .panel-heading.text-center
-            h2 Please sign in:
-        .panel-body.text-center
-            .row
-                div
-                    a.btn.btn-primary(id="facebookBtn", href='/auth/facebook')
-                        i.fa.fa-facebook= '  Facebook'
-                    a.btn.btn-primary(id="twitterBtn", href='/auth/twitter')
-                        i.fa.fa-twitter= '  Twitter'
-
-
+//#panel-left
+#tm-main
+    #content.container-fluid
+        .col-md-4.col-sm-12.col-xs-12.col-md-offset-4(style="margin-top:200px")
+            .panel#login-panel
+                .panel-heading.text-center
+                    h4 welcome to
+                    h1#login-logo-font.logo-font TruckMuncher
+                .panel-body.text-center
+                    .row
+                        div
+                            a.btn.btn-primary(id="facebookBtn", href='/auth/facebook')
+                                i.fa.fa-facebook= '  Facebook'
+                            a.btn.btn-primary(id="twitterBtn", href='/auth/twitter')
+                                i.fa.fa-twitter= '  Twitter'

@@ -1,63 +1,69 @@
-.row(data-ng-cloak='')
-    article.col-lg-3.col-md-6.col-sm-9.col-lg-offset-2
-        div.form-group
-            label(for='truckList') Menu for Truck:
-            select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
-        div.form-group(data-ng-show='selectedTruck')
-            a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Category
-.row(data-ng-cloak='')
-    article.col-xs-12.col-lg-8.col-lg-offset-2(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
-        .jarviswidget.jarviswidget-color-blueDark
-            header
-                h2 {{category.name}}
-                .jarviswidget-ctrls
-                    a.button-icon.jarviswidget-toggle-btn(data-ui-sref='menu', data-ng-click='deleteCategory(category.id)', title="Delete Category")
-                        i.fa.fa-trash.fa-lg
-                .jarviswidget-ctrls
-                    a.button-icon.jarviswidget-toggle-btn(data-ui-sref='.editCategory({truckId: selectedTruck, categoryId: category.id})', title='Edit Category')
-                        i.fa.fa-edit.fa-lg
-                .jarviswidget-ctrls(data-ng-hide='$first', data-ng-click='moveCategoryUp($index)')
-                    .button-icon.jarvis-widget-toggle-btn.pointer.text-center
-                        .fa.fa-sort-up.fa-lg
-                .jarviswidget-ctrls(data-ng-hide='$last', data-ng-click='moveCategoryDown($index)')
-                    .button-icon.jarvis-widget-toggle-btn.pointer.text-center
-                        .fa.fa-sort-desc.fa-lg
-            div
-                .widget-body
-                    p {{category.notes}}
-                    .table-responsive
-                        table.table.table-bordered.table-hover
-                            thead
-                                tr
-                                    th
-                                        span Item
-                                    th
-                                        span Price
-                                    th
-                                        span Available
-                                    th(colspan='2')
-                            tbody
-                                tr(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
-                                    td
-                                        span
-                                            i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
-                                            i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')
-                                            = '  '
-                                            b {{item.name}}:
-                                            =  ' {{item.notes}}'
-                                    td
-                                        span {{item.price | currency:"$":2}}
-                                    td.text-center
-                                        i.fa.fa-check.pointer(data-ng-if='item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
-                                        i.fa.fa-close.pointer(data-ng-if='!item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
-                                    td.pack-column.merge-with-right
-                                        a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
-                                            i.fa.fa-edit.fa-lg
-                                    td.pack-column.merge-with-left
-                                        a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
-                                            i.fa.fa-trash.fa-lg
-                                tr.pointer(data-ng-click='addItem(selectedTruck, category.id)', )
-                                    td.borderit.text-center(colspan='5')
-                                        span Add Item
+#panel-left
+    div(style="margin-top:70px")
+    .container-fluid
+        <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
+#tm-main-with-left-panel
+    #content.container-fluid
+        .row(data-ng-cloak='')
+            article.col-lg-3.col-md-6.col-sm-9.col-lg-offset-2
+                div.form-group
+                    label(for='truckList') Menu for Truck:
+                    select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
+                div.form-group(data-ng-show='selectedTruck')
+                    a.btn.bg-color-blueLight.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Category
+        .row(data-ng-cloak='')
+            article.col-xs-12.col-lg-8.col-lg-offset-2(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
+                .jarviswidget.jarviswidget-color-blueDark
+                    header
+                        h2 {{category.name}}
+                        .jarviswidget-ctrls
+                            a.button-icon.jarviswidget-toggle-btn(data-ui-sref='menu', data-ng-click='deleteCategory(category.id)', title="Delete Category")
+                                i.fa.fa-trash.fa-lg
+                        .jarviswidget-ctrls
+                            a.button-icon.jarviswidget-toggle-btn(data-ui-sref='.editCategory({truckId: selectedTruck, categoryId: category.id})', title='Edit Category')
+                                i.fa.fa-edit.fa-lg
+                        .jarviswidget-ctrls(data-ng-hide='$first', data-ng-click='moveCategoryUp($index)')
+                            .button-icon.jarvis-widget-toggle-btn.pointer.text-center
+                                .fa.fa-sort-up.fa-lg
+                        .jarviswidget-ctrls(data-ng-hide='$last', data-ng-click='moveCategoryDown($index)')
+                            .button-icon.jarvis-widget-toggle-btn.pointer.text-center
+                                .fa.fa-sort-desc.fa-lg
+                    div
+                        .widget-body
+                            p {{category.notes}}
+                            .table-responsive
+                                table.table.table-bordered.table-hover
+                                    thead
+                                        tr
+                                            th
+                                                span Item
+                                            th
+                                                span Price
+                                            th
+                                                span Available
+                                            th(colspan='2')
+                                    tbody
+                                        tr(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
+                                            td
+                                                span
+                                                    i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
+                                                    i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')
+                                                    = '  '
+                                                    b {{item.name}}:
+                                                    =  ' {{item.notes}}'
+                                            td
+                                                span {{item.price | currency:"$":2}}
+                                            td.text-center
+                                                i.fa.fa-check.pointer(data-ng-if='item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
+                                                i.fa.fa-close.pointer(data-ng-if='!item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
+                                            td.pack-column.merge-with-right
+                                                a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
+                                                    i.fa.fa-edit.fa-lg
+                                            td.pack-column.merge-with-left
+                                                a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
+                                                    i.fa.fa-trash.fa-lg
+                                        tr.pointer(data-ng-click='addItem(selectedTruck, category.id)', )
+                                            td.borderit.text-center(colspan='5')
+                                                span Add Item
 
-<div data-ui-view></div>
+        <div data-ui-view></div>

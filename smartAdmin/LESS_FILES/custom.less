@@ -7,6 +7,20 @@
   height: 150px;
 }
 
+@font-face {
+  font-family: "DimitriSwank";
+  src: url("/fonts/dimis.ttf") /* TTF file for CSS3 browsers */
+}
+
+.logo-font {
+  font-family: "DimitriSwank", sans-serif;
+}
+
+#login-logo-font{
+  color:black;
+  font-size: 5em;
+}
+
 #panel-left {
   width: 220px;
   display: block;
@@ -23,16 +37,19 @@
 }
 
 #tm-main {
+  background: none;
+}
+
+#tm-main-with-left-panel{
   margin-left: 220px;
   background:none;
 }
+
 #background {
-  position:absolute;
-  left:220px;
+  position: absolute;
   top: @topPanelHeight;
-  width:100%;
-  min-height:100%;
-  z-index:0;
+  min-height: 100%;
+  z-index: 0;
   background-image: url("/img/MkeBackground.jpg");
 }
 
@@ -116,14 +133,12 @@ td.merge-with-left {
   padding-bottom: 5%;
 }
 
-.panel-heading {
+#login-panel {
+  display: block;
+  position: relative;
   padding: 2px;
-  background-color: #009688;
-  color: #ffffff;
-}
-
-.panel {
-  border-color: #009688;
+  color: white;
+  background: rgba(0, 150, 136, .5)
 }
 
 .panel-body {
