@@ -25,10 +25,16 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             });
             if (truck) {
                 $scope.customMenuColors = {};
-                $scope.customMenuColors.primaryContrast = colorService.getContrastingHexColor(truck.primaryColor);
-                $scope.customMenuColors.secondaryContrast = colorService.getContrastingHexColor(truck.secondaryColor);
-                $scope.customMenuColors.primary = truck.primaryColor;
-                $scope.customMenuColors.secondary = truck.secondaryColor;
+                if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
+                    $scope.customMenuColors.primary = '#000000';
+                else
+                    $scope.customMenuColors.primary = truck.primaryColor;
+                if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
+                    $scope.customMenuColors.secondary = truck.secondaryColor;
+                else
+                    $scope.customMenuColors.secondary = '#000000';
+                $scope.customMenuColors.primaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.primaryColor);
+                $scope.customMenuColors.secondaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.secondaryColor);
             }
         };
 
