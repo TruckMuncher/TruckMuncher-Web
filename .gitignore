@@ -40,4 +40,4 @@ smartAdmin/UNMINIFIED_CSS/*
 
 .DS_Store
 
-bower_components/*
+#bower_components/*

@@ -199,7 +199,7 @@ module.exports = function (grunt) {
             //run on CI
             continuous: {
                 singleRun: true,
-                reporters: ['junit']
+                reporters: ['dots', 'junit']
             }
         },
         'concurrent': {
