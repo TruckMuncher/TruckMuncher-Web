@@ -1,6 +1,7 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
 @import "../custom/animations";
+@import "../custom/form-fields.less";
 
 @topPanelHeight: 75px;
 .fixed-height-palette {
@@ -222,18 +223,27 @@ h2 {
   background: url(chosen-sprite.png) -42px 2px no-repeat;
 }
 
-/************ style **************/
-@truckMuncherGreenBase : #009688;
-@truckMuncherPinkBase : #c2185b;
-
-#panel-left {
-  background-color: @truckMuncherGreenBase
+.big-cell {
+  width: 100%;
 }
 
-.bg-color-pink {
-  background: @truckMuncherPinkBase
+/************ style **************/
+@truckMuncherMoldBase : #009688;
+@truckMuncherPinkBase : #e91e63;
+
+.bg-color-mold {
+  background-color: @truckMuncherMoldBase !important;
 }
 
 .txt-color-black {
   color: black;
 }
+
+.background-white-transparent {
+  background: rgba(255, 255, 255, 0.85)
+}
+
+.background-transparent {
+  background: rgba(255, 255, 255, 0);
+}
+

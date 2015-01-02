@@ -146,7 +146,7 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint'],
             less: {
-                files: ['<%= globalConfig.smartAdmin %>/LESS_FILES/**/*.less'],
+                files: ['<%= globalConfig.smartAdmin %>/**/*.less'],
                 tasks: ['less', 'cssmin']
             },
             app: {
