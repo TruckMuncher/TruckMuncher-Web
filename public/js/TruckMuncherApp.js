@@ -200,7 +200,7 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
         link: link,
         scope: {menu: '=', primaryColor: '=', secondaryColor: '='},
         templateUrl: '/partials/directiveTemplates/customer-menu.jade'
-    }
+    };
 }]);;angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
     var link = function (scope, elem) {
         elem.on('submit', function () {
@@ -850,14 +850,14 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
-                $scope.setCustomMenuColors($scope.selectedTruck);
+                setCustomMenuColors($scope.selectedTruck);
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response;
                 });
             }
         });
 
-        $scope.setCustomMenuColors = function (truckId) {
+        function setCustomMenuColors(truckId) {
             var truck = _.find($scope.trucks, function (truck) {
                 return truck.id === truckId;
             });
@@ -868,13 +868,13 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 else
                     $scope.customMenuColors.primary = truck.primaryColor;
                 if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
-                    $scope.customMenuColors.secondary = truck.secondaryColor;
-                else
                     $scope.customMenuColors.secondary = '#000000';
-                $scope.customMenuColors.primaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.primaryColor);
-                $scope.customMenuColors.secondaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.secondaryColor);
+                else
+                    $scope.customMenuColors.secondary = truck.secondaryColor;
+                $scope.customMenuColors.primaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.primary);
+                $scope.customMenuColors.secondaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.secondary);
             }
-        };
+        }
 
         $scope.toggleItemAvailability = function (item, categoryId) {
             var itemClone = _.clone(item);

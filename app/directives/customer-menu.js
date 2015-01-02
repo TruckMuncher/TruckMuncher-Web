@@ -11,5 +11,5 @@ angular.module('TruckMuncherApp').directive('customerMenu', [function () {
         link: link,
         scope: {menu: '=', primaryColor: '=', secondaryColor: '='},
         templateUrl: '/partials/directiveTemplates/customer-menu.jade'
-    }
+    };
 }]);
