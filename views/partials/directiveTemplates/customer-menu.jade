@@ -1,0 +1,26 @@
+div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
+    .jarviswidget
+        header(data-ng-style='{"background-color": "{{secondaryColor}}"}')
+            h2 {{category.name}} {{myStyle}}
+        //div(data-ng-attr-style="{{backgroundImportant(primaryColor)}}")
+        div
+            .widget-body
+                p {{category.notes}}
+                .table-responsive
+                    table.table.table-bordered
+                        thead
+                            tr
+                                th
+                                    span Item
+                                th
+                                    span Price
+                                th
+                                    span Description
+                        tbody
+                            tr(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id")
+                                td(data-ng-class='{unavailable: !item.isAvailable}')
+                                    span {{item.name}}
+                                td(data-ng-class='{unavailable: !item.isAvailable}')
+                                    span {{item.price | currency:"$":2}}
+                                td(data-ng-class='{unavailable: !item.isAvailable}')
+                                    span {{item.notes}}

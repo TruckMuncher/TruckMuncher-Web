@@ -8,6 +8,15 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
     function isDark(r, g, b) {
         var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
         return (yiq < 128);
@@ -27,6 +36,25 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
             return _.map(pairs, function (pair) {
                 return {'hexColor': pair[0], 'isDark': pair[1]};
             });
+        },
+        hexColorIsDark: function (hex) {
+            var rgb = hexToRgb(hex);
+            if (rgb) {
+                return isDark(rgb.r, rgb.g, rgb.b);
+            } else {
+                return false;
+            }
+        },
+        getContrastingHexColor: function (hex) {
+            var light = '#FFFFFF';
+            var dark = '#000000';
+            var rgb = hexToRgb(hex);
+            if (rgb) {
+                return isDark(rgb.r, rgb.g, rgb.b) ? light : dark;
+            } else {
+                return light;
+            }
+
         }
     };
 });

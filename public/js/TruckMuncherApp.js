@@ -187,7 +187,21 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
 
 
 
-;angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
+;angular.module('TruckMuncherApp').directive('customerMenu', [function () {
+    var link = function (scope) {
+        scope.backgroundImportant = function(color) {
+            return  'background-color: ' + color + '!important';
+        };
+    };
+
+
+    return {
+        restrict: 'A',
+        link: link,
+        scope: {menu: '=', primaryColor: '=', secondaryColor: '='},
+        templateUrl: '/partials/directiveTemplates/customer-menu.jade'
+    }
+}]);;angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
     var link = function (scope, elem) {
         elem.on('submit', function () {
             var invalidElements = elem.find('.ng-invalid');
@@ -470,7 +484,66 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             return !_.isNull(TokenService.getToken());
         };
     }]);
-;angular.module('TruckMuncherApp')
+;angular.module('TruckMuncherApp').factory('colorService', function () {
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    function isDark(r, g, b) {
+        var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq < 128);
+    }
+
+    return {
+        RGBsToHexWithDarkIndicator: function (rgbArray) {
+            var hexArray = _.map(rgbArray, function (val) {
+                return rgbToHex(val[0], val[1], val[2]);
+            });
+            var isDarkArray = _.map(rgbArray, function (val) {
+                return isDark(val[0], val[1], val[2]);
+            });
+
+            var pairs = _.zip(hexArray, isDarkArray);
+
+            return _.map(pairs, function (pair) {
+                return {'hexColor': pair[0], 'isDark': pair[1]};
+            });
+        },
+        hexColorIsDark: function (hex) {
+            var rgb = hexToRgb(hex);
+            if (rgb) {
+                return isDark(rgb.r, rgb.g, rgb.b);
+            } else {
+                return false;
+            }
+        },
+        getContrastingHexColor: function (hex) {
+            var light = '#FFFFFF';
+            var dark = '#000000';
+            var rgb = hexToRgb(hex);
+            if (rgb) {
+                return isDark(rgb.r, rgb.g, rgb.b) ? light : dark;
+            } else {
+                return light;
+            }
+
+        }
+    };
+});;angular.module('TruckMuncherApp')
     .factory('httpHelperService', ['$http', '$q', 'growl', function ($http, $q, growl) {
         var apiUrl = 'https://api.truckmuncher.com:8443';
         return {
@@ -556,38 +629,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 return httpHelperService.post(url, data, 'tags');
             }
         };
-    }]);;angular.module('TruckMuncherApp').factory('colorService', function () {
-    function componentToHex(c) {
-        var hex = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
-    }
-
-    function rgbToHex(r, g, b) {
-        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-    }
-
-    function isDark(r, g, b) {
-        var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        return (yiq < 128);
-    }
-
-    return {
-        RGBsToHexWithDarkIndicator: function (rgbArray) {
-            var hexArray = _.map(rgbArray, function (val) {
-                return rgbToHex(val[0], val[1], val[2]);
-            });
-            var isDarkArray = _.map(rgbArray, function (val) {
-                return isDark(val[0], val[1], val[2]);
-            });
-
-            var pairs = _.zip(hexArray, isDarkArray);
-
-            return _.map(pairs, function (pair) {
-                return {'hexColor': pair[0], 'isDark': pair[1]};
-            });
-        }
-    };
-});;angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
+    }]);;angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
     function (TruckService, $q, $cookieStore) {
         var millisecondsInADay = 86400000;
 
@@ -794,8 +836,8 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
     }
 
 ]);
-;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService',
-    function ($scope, MenuService, TruckService, $state, confirmDialog) {
+;angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService', 'colorService',
+    function ($scope, MenuService, TruckService, $state, confirmDialog, colorService) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
@@ -808,13 +850,27 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
+                $scope.setCustomMenuColors($scope.selectedTruck);
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response;
                 });
             }
         });
 
-        $scope.toggleItemAvailability = function(item, categoryId){
+        $scope.setCustomMenuColors = function (truckId) {
+            var truck = _.find($scope.trucks, function (truck) {
+                return truck.id === truckId;
+            });
+            if (truck) {
+                $scope.customMenuColors = {};
+                $scope.customMenuColors.primaryContrast = colorService.getContrastingHexColor(truck.primaryColor);
+                $scope.customMenuColors.secondaryContrast = colorService.getContrastingHexColor(truck.secondaryColor);
+                $scope.customMenuColors.primary = truck.primaryColor;
+                $scope.customMenuColors.secondary = truck.secondaryColor;
+            }
+        };
+
+        $scope.toggleItemAvailability = function (item, categoryId) {
             var itemClone = _.clone(item);
             itemClone.isAvailable = !item.isAvailable;
             MenuService.addOrUpdateItem(
@@ -858,7 +914,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             var category = _.find($scope.menu.categories, function (c) {
                 return c.id === categoryId;
             });
-            return  _.sortBy(category.menuItems, function (i) {
+            return _.sortBy(category.menuItems, function (i) {
                 return i.orderInCategory;
             });
         }
