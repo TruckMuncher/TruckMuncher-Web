@@ -69,6 +69,6 @@ describe('TruckMuncherApp', function () {
             scope.$apply();
             var p = element.find('.progress-cssSlideUp');
             expect(p.eq(0)).toHaveClass('ng-hide');
-        });
+        })
     });
 });
