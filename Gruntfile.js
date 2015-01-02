@@ -172,8 +172,7 @@ module.exports = function (grunt) {
                     'karma-ng-jade2js-preprocessor',
                     'karma-phantomjs-launcher',
                     'karma-jasmine',
-                    'karma-growl-reporter',
-                    'karma-jasmine-jquery'
+                    'karma-growl-reporter'
                 ],
                 files: [
                     'public/js/vendorScripts.js',
@@ -188,7 +187,7 @@ module.exports = function (grunt) {
                     stripPrefix: 'views',
                     templateExtension: 'jade'
                 },
-                frameworks: ['jasmine-jquery','jasmine'],
+                frameworks: ['jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
             },
