@@ -2,12 +2,6 @@
 #nav-top(data-ng-controller='navCtrl')
     .container-fluid(style="float:right")
         div
-            span.text-center(ui-sref-active="active")
-                a(data-ui-sref='map')
-                    i.fa.fa-lg.fa-fw.fa-map-marker
-                    span.menu-item-parent Map
-
-
             span.btn-header(data-ng-show='loggedIn()')
                 span
                     a(href="/logout", title='Sign Out')
