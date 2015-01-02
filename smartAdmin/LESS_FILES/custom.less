@@ -2,8 +2,38 @@
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
 @import "../custom/animations";
 
+@topPanelHeight: 75px;
 .fixed-height-palette {
   height: 150px;
+}
+
+#panel-left {
+  width: 220px;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  top: @topPanelHeight;
+  left: 0;
+  z-index: 904;
+  min-height: 100%;
+}
+
+#nav-top {
+  height: @topPanelHeight;
+}
+
+#tm-main {
+  margin-left: 220px;
+  background:none;
+}
+#background {
+  position:absolute;
+  left:220px;
+  top: @topPanelHeight;
+  width:100%;
+  min-height:100%;
+  z-index:0;
+  background-image: url("/img/MkeBackground.jpg");
 }
 
 .pointer {
@@ -40,13 +70,17 @@ td.merge-with-left {
   display: none !important;
 }
 
-@logoHeight: 49px;
-#logo img {
+@logoHeight: 120px;
+#tm-logo img {
+  position: absolute;
   height: @logoHeight;
   width: auto;
+  z-index: 999999;
+  top: 15px;
+  left: 30px;
 }
 
-#logo {
+#tm-logo {
   margin-top: 0px;
 }
 
@@ -111,7 +145,6 @@ td.merge-with-left {
   max-width: none;
 }
 
-
 h2 {
   margin: 0;
 }
@@ -152,6 +185,10 @@ h2 {
 /************ style **************/
 @truckMuncherGreenBase : #009688;
 @truckMuncherPinkBase : #c2185b;
+
+#panel-left {
+  background-color: @truckMuncherGreenBase
+}
 
 .smart-style-truckmuncher #header {
   background-color: @truckMuncherGreenBase;
