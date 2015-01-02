@@ -52,10 +52,10 @@
                                                 i.fa.fa-close.pointer(data-ng-if='!item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
                                             td.pack-column.merge-with-right
                                                 a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
-                                                    i.fa.fa-edit.fa-lg
+                                                    i.fa.fa-edit.fa-lg.txt-color-mold
                                             td.pack-column.merge-with-left
                                                 a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
-                                                    i.fa.fa-trash.fa-lg
+                                                    i.fa.fa-trash.fa-lg.txt-color-mold
                             div.form-group.pull-right(data-ng-show='selectedTruck')
                                 button.btn.bg-color-mold.txt-color-white(data-ng-click='addItem(selectedTruck, category.id)') Add Menu Item
 
