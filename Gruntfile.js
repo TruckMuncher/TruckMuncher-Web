@@ -172,7 +172,8 @@ module.exports = function (grunt) {
                     'karma-junit-reporter',
                     'karma-ng-jade2js-preprocessor',
                     'karma-phantomjs-launcher',
-                    'karma-jasmine'
+                    'karma-jasmine',
+                    'karma-growl-reporter'
                 ],
                 files: [
                     'public/js/vendorScripts.js',
