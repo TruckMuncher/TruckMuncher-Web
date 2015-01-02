@@ -1,6 +1,10 @@
 describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function(){return false;});
+    }));
+
     describe('vendorMenuCtrl', function () {
         var $scope, $q, modalDialogShouldResolve;
 

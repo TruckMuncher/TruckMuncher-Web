@@ -13,13 +13,9 @@ var app = angular.module('TruckMuncherApp',
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("home");
+    $urlRouterProvider.otherwise("map");
 
     $stateProvider
-        .state('home', {
-            url: "/home",
-            authenticate: false
-        })
         .state('login', {
             url: "/login",
             templateUrl: "partials/login.jade",

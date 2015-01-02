@@ -3,6 +3,10 @@ describe('authHelpers', function () {
         $httpProvider.interceptors.push('httpInterceptor');
     }));
 
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function(){return false;});
+    }));
+
     describe('TimestampAndNonceService', function () {
         var service;
 
