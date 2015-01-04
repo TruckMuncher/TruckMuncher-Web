@@ -6,7 +6,7 @@ div(data-ng-controller='navCtrl')
     .tm-main.make-space-for-logo(data-ng-class="{'with-left-panel': loggedIn()}")
         #content.container-fluid
             .row
-                article
-                    ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options")
+                article(data-ng-style="{'height': '{{mapHeight}}'}")
+                    ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
                             ui-gmap-windows(show="'show'", ng-cloak, options="'options'")

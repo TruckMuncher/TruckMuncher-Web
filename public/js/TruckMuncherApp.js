@@ -406,8 +406,9 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$q',
-    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $q) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl) {
+        $scope.mapHeight = screen.height / 1.7 + 'px';
         var lat;
         var lon;
 
