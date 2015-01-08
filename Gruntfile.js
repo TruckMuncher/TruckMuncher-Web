@@ -146,7 +146,7 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint'],
             less: {
-                files: ['<%= globalConfig.smartAdmin %>/LESS_FILES/**/*.less'],
+                files: ['<%= globalConfig.smartAdmin %>/**/*.less'],
                 tasks: ['less', 'cssmin']
             },
             app: {
@@ -187,7 +187,7 @@ module.exports = function (grunt) {
                     stripPrefix: 'views',
                     templateExtension: 'jade'
                 },
-                frameworks: ['jasmine'],
+                frameworks: [ 'jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
             },

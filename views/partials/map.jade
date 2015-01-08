@@ -1,6 +1,12 @@
-.row
-    article
-        //div(id="map_canvas", ng-controller="mapCtrl")
-        ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options")
-            ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
-                ui-gmap-windows(show="'show'", ng-cloak, options="'options'")
+div(data-ng-controller='navCtrl')
+    #panel-left.bg-color-mold(data-ng-show="loggedIn()")
+        div(style="margin-top:70px")
+        .container-fluid
+            <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
+    .tm-main.make-space-for-logo(data-ng-class="{'with-left-panel': loggedIn()}")
+        #content.container-fluid
+            .row
+                article(data-ng-style="{'height': '{{mapHeight}}'}")
+                    ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
+                        ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
+                            ui-gmap-windows(show="'show'", ng-cloak, options="'options'")

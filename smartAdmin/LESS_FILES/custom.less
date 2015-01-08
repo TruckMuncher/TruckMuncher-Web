@@ -1,9 +1,105 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
 @import "../custom/animations";
+@import "../custom/form-fields.less";
 
+@topPanelHeight: 75px;
 .fixed-height-palette {
   height: 150px;
+}
+
+@font-face {
+  font-family: "DimitriSwank";
+  src: url("/fonts/dimis.ttf") /* TTF file for CSS3 browsers */
+}
+
+.logo-font {
+  font-family: "DimitriSwank", sans-serif;
+}
+
+#login-logo-font {
+  color: black;
+  font-size: 4em;
+}
+
+#panel-left {
+  width: 220px;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  top: @topPanelHeight;
+  left: 0;
+  z-index: 904;
+  min-height: 100%;
+  color: white;
+}
+
+#nav-top {
+  height: @topPanelHeight;
+}
+
+.tm-main {
+  background: none;
+}
+
+.tm-main.with-left-panel {
+  margin-left: 220px;
+  background: none;
+}
+
+.left-menu {
+  margin: 10px;
+  padding-left: 20px;
+  height: 30px;
+  font-size: 1.5em;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background: white;
+  color: black;
+}
+
+.nav-bar-sign {
+  text-align: center;
+  border: solid;
+  border-width: 1px;
+  padding: 3px 20px;
+  height: 40px;
+  font-size: 1.75em;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background: white;
+  color: black;
+}
+
+.create-truck {
+  border: solid;
+  border-width: 1px;
+  font-size: 1em;
+  -moz-border-radius: 10px;
+  border-radius: 10px !important;
+  background: @truckMuncherPinkBase;
+  color: white;
+}
+
+.left-menu > a {
+  color: black;
+}
+
+.menu-active > a {
+  color: white;
+}
+
+.menu-active {
+  background: black;
+  color: white;
+}
+
+#background {
+  position: absolute;
+  top: @topPanelHeight;
+  min-height: 100%;
+  z-index: 0;
+  background-image: url("/img/MkeBackground.jpg");
 }
 
 .pointer {
@@ -40,13 +136,17 @@ td.merge-with-left {
   display: none !important;
 }
 
-@logoHeight: 49px;
-#logo img {
+@logoHeight: 120px;
+#tm-logo img {
+  position: absolute;
   height: @logoHeight;
   width: auto;
+  z-index: 999999;
+  top: 15px;
+  left: 30px;
 }
 
-#logo {
+#tm-logo {
   margin-top: 0px;
 }
 
@@ -82,14 +182,12 @@ td.merge-with-left {
   padding-bottom: 5%;
 }
 
-.panel-heading {
+#login-panel {
+  display: block;
+  position: relative;
   padding: 2px;
-  background-color: #009688;
-  color: #ffffff;
-}
-
-.panel {
-  border-color: #009688;
+  color: white;
+  background: rgba(0, 150, 136, .5)
 }
 
 .panel-body {
@@ -101,16 +199,19 @@ td.merge-with-left {
   max-width: none;
 }
 
-.angular-google-map-container {
+.angular-google-map-container, .angular-google-map {
   width: 100%;
-  height: 600px;
+  height: 100%;
+}
+
+.sign-out {
+  font-weight: normal;
 }
 
 /* fix for Twitter Bootstrap handling of responsive images */
 .angular-google-map img {
   max-width: none;
 }
-
 
 h2 {
   margin: 0;
@@ -149,80 +250,35 @@ h2 {
   background: url(chosen-sprite.png) -42px 2px no-repeat;
 }
 
+.big-cell {
+  width: 100%;
+}
+
+.make-space-for-logo{
+  margin-top: 70px;
+}
+
 /************ style **************/
-@truckMuncherGreenBase : #009688;
-@truckMuncherPinkBase : #c2185b;
+@truckMuncherMoldBase : #009688;
+@truckMuncherPinkBase : #e91e63;
 
-.smart-style-truckmuncher #header {
-  background-color: @truckMuncherGreenBase;
-  background-image: -moz-linear-gradient(top, @truckMuncherGreenBase #006e63);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@truckMuncherGreenBase , to(#006e63)));
-  background-image: -webkit-linear-gradient(top, @truckMuncherGreenBase, #006e63);
-  background-image: -o-linear-gradient(top, @truckMuncherGreenBase, #006e63);
-  background-image: linear-gradient(to bottom, @truckMuncherGreenBase, #006e63);
+.bg-color-mold {
+  background-color: @truckMuncherMoldBase !important;
 }
 
-.smart-style-truckmuncher aside {
-  background: @truckMuncherGreenBase;
-  border-right: 2px solid @truckMuncherGreenBase;
+.txt-color-mold{
+  color: @truckMuncherMoldBase !important;
 }
 
-/*
- * Truckmuncher Top Menu
- */
-
-.smart-style-truckmuncher.menu-on-top aside {
-  background: @truckMuncherPinkBase;
-  border-right: 2px solid @truckMuncherPinkBase
+.txt-color-black {
+  color: black;
 }
 
-.smart-style-truckmuncher.menu-on-top aside#left-panel {
-  -webkit-box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
-  box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
-  border-bottom: 1px solid @truckMuncherPinkBase;
-  border-top: 1px solid @truckMuncherPinkBase;
+.background-white-transparent {
+  background: rgba(255, 255, 255, 0.85)
 }
 
-/* Hover state */
-.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover {
-  background: #fff; /* Old browsers */
-  background: -moz-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@truckMuncherGreenBase), color-stop(66%, #2E3E57)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* IE10+ */
-  background: linear-gradient(to bottom,@truckMuncherGreenBase, #2E3E57 66%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#04070C', endColorstr='#2E3E57', GradientType=0); /* IE6-9 */
+.background-transparent {
+  background: rgba(255, 255, 255, 0);
 }
 
-.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover > a {
-  color: #F1F1F1 !important;
-  border-left: 1px solid @truckMuncherGreenBase;
-  border-right: 1px solid @truckMuncherGreenBase;
-  padding-left: 8px !important;
-  padding-right: 8px !important;
-}
-
-.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li > ul {
-  background: @truckMuncherGreenBase;
-}
-
-.smart-style-truckmuncher.menu-on-top nav ul ul li a,
-.smart-style-truckmuncher.menu-on-top nav ul ul ul li a {
-  color: @truckMuncherGreenBase;
-}
-
-.smart-style-truckmuncher.menu-on-top nav ul ul li a:hover,
-.smart-style-truckmuncher.menu-on-top nav ul ul ul li a:hover {
-  color: @truckMuncherPinkBase;
-  background-color: @truckMuncherGreenBase !important;
-}
-
-.smart-style-truckmuncher.menu-on-top nav ul ul li:hover > a {
-  color: @truckMuncherPinkBase;
-  background-color: @truckMuncherGreenBase;
-}
-
-.smart-style-truckmuncher.menu-on-top nav > ul ul ul {
-  border-top: 1px solid @truckMuncherGreenBase !important;
-}

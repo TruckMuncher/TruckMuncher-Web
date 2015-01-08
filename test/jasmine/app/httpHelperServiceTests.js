@@ -3,6 +3,10 @@ describe('httpHelperService', function () {
 
     beforeEach(module('TruckMuncherApp'));
 
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function(){return false;});
+    }));
+
 
     beforeEach(inject(function (_$httpBackend_, _$http_, httpInterceptor, _$state_, TokenService, _growl_, httpHelperService) {
         $httpBackend = _$httpBackend_;

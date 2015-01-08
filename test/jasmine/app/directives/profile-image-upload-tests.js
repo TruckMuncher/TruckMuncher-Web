@@ -1,4 +1,10 @@
 describe('TruckMuncherApp', function () {
+
+    beforeEach(module('TruckMuncherApp'));
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function(){return false;});
+    }));
+
     var mockTruckService = {
         getImageUploadUrl: function (id) {
             return 'someUrl/' + id;
