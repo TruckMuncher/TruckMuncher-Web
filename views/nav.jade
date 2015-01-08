@@ -2,11 +2,13 @@
 #nav-top(data-ng-controller='navCtrl')
     .container-fluid(style="float:right")
         div
-            span.btn-header(data-ng-show='loggedIn()')
+            span(data-ng-show='loggedIn()')
                 span
-                    a(href="/logout", title='Sign Out')
+                    a.nav-bar-sign(href="/logout")
                         i.fa.fa-sign-out
-            span.btn-header(data-ng-hide='loggedIn()')
+                        |  Sign out
+            span(data-ng-hide='loggedIn()')
                 span
-                    a(href="/logout", title='Sign In')
+                    a.nav-bar-sign(href="/logout")
                         i.fa.fa-sign-in
+                        |  Sign in
