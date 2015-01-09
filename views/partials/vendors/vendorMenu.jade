@@ -7,7 +7,7 @@
                     label(for='truckList') Menu for Truck:
                     select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
                 div.form-group.pull-right(data-ng-show='selectedTruck')
-                    a.btn.bg-color-pink.txt-color-black(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
+                    a.btn.create-truck(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
 .tm-main.with-left-panel
     #content.container-fluid
         .row(data-ng-cloak='')

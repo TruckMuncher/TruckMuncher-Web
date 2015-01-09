@@ -2,7 +2,7 @@
     .container-fluid.make-space-for-logo
         <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
         .row
-            article.col-xs-12
+            article.col-xs-12.col-sm-12
                 div.form-group
                     label(for='truckList') Profile for Truck:
                     select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
