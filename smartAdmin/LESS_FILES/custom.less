@@ -34,8 +34,13 @@
   color: white;
 }
 
-#nav-top {
+#top-nav-wrapper {
+  z-index: 1001;
   height: @topPanelHeight;
+  overflow-y: auto;
+  background: #DBDBDB;
+  padding-left: 0px;
+  position: relative;
 }
 
 .tm-main {
@@ -96,7 +101,7 @@
 
 #background {
   position: absolute;
-  top: @topPanelHeight;
+//  top: @topPanelHeight;
   min-height: 100%;
   z-index: 0;
   background-image: url("/img/MkeBackground.jpg");
@@ -139,11 +144,11 @@ td.merge-with-left {
 @logoHeight: 120px;
 #tm-logo img {
   position: absolute;
-  height: @logoHeight;
+  height: 60px;
   width: auto;
   z-index: 999999;
-  top: 15px;
-  left: 30px;
+  top: 10px;
+  left: 50px;
 }
 
 #tm-logo {
@@ -285,7 +290,17 @@ h2 {
 
 
 
+.show-panel {
+  float: left;
+  visibility: visible;
+  font-size: 2em;
+  padding-top: 20px;
+}
 
+.login-out {
+  float: right;
+  padding: 20px;
+}
 
 #wrapper {
   padding-left: 0;
@@ -330,6 +345,20 @@ h2 {
 }
 
 @media(min-width:768px) {
+  .show-panel {
+    float: left;
+    visibility: hidden;
+  }
+
+  #tm-logo img {
+    position: absolute;
+    height: 120px;
+    width: auto;
+    z-index: 999999;
+    top: 15px;
+    left: 40px;
+  }
+
   #wrapper {
     padding-left: 250px;
   }

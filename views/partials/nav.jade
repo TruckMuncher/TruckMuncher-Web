@@ -1,6 +1,10 @@
 //nav#nav-top.navbar.navbar-default(data-ng-cloak='ng-cloak', data-ng-controller='navCtrl')
 #nav-top(data-ng-controller='navCtrl')
-    .container-fluid(style="float:right")
+
+    a#menu-toggle.container-fluid.show-panel(href="#menu-toggle")
+        i.fa.fa-align-justify
+
+    .container-fluid.login-out
         div
             span(data-ng-show='loggedIn()')
                 span
@@ -13,3 +17,18 @@
                         i.fa.fa-sign-in
                         |  Sign in
 
+    script.
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+
+//        var button = document.getElementById('menu-toggle');
+//        button.addEventListener('click', function (e) {
+//            e.preventDefault();
+//
+//            document.getElementById('wrapper').
+//
+//
+//        });
