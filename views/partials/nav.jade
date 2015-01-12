@@ -1,7 +1,7 @@
 //nav#nav-top.navbar.navbar-default(data-ng-cloak='ng-cloak', data-ng-controller='navCtrl')
 #nav-top(data-ng-controller='navCtrl')
 
-    a#menu-toggle.container-fluid.show-panel(href="#menu-toggle")
+    a#menu-toggle.container-fluid.show-panel(href="#menu-toggle", data-ng-show="loggedIn()")
         i.fa.fa-align-justify
 
     .container-fluid.login-out
@@ -22,13 +22,3 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
-
-
-//        var button = document.getElementById('menu-toggle');
-//        button.addEventListener('click', function (e) {
-//            e.preventDefault();
-//
-//            document.getElementById('wrapper').
-//
-//
-//        });
