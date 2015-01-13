@@ -3,20 +3,14 @@
 
 div(data-ng-controller='navCtrl')
     .tm-main(data-ng-class="{'with-left-panel': loggedIn()}")
-        #sidebar-wrapper.bg-color-mold(data-ng-show="loggedIn()")
-            div(style="margin-top:70px")
-            .container-fluid
-                <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
-        #content.container-fluid
-            .row(style="padding-top: 50px")
-                article(data-ng-style="{'height': '{{mapHeight}}'}")
-                    ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
-                        ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
-                            ui-gmap-windows(show="'show'", ng-cloak, options="'options'")
-
-
-
-
-
-
-    <!-- Can't get the browser to redirect when the user is on the map page, this includes the panel button-->
+        #wrapper
+            #sidebar-wrapper.bg-color-mold(data-ng-show="loggedIn()")
+                div(style="margin-top:70px")
+                .container-fluid
+                    <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
+            #content.container-fluid
+                .row(style="padding-top: 50px")
+                    article(data-ng-style="{'height': '{{mapHeight}}'}")
+                        ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
+                            ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
+                                ui-gmap-windows(show="'show'", ng-cloak, options="'options'")
