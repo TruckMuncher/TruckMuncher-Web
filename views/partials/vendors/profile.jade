@@ -1,62 +1,66 @@
-#panel-left.bg-color-mold
-    .container-fluid.make-space-for-logo
-        <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
-        .row
-            article.col-xs-12.col-sm-12
-                div.form-group
-                    label(for='truckList') Profile for Truck:
-                    select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
-                div.form-group.pull-right
-                    a.btn.create-truck(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
-.tm-main.with-left-panel
-    #content.container-fluid
-        .row(data-ng-show='selectedTruck !== null')
-            .col-xs-12.col-md-6.col-md-offset-1
-                article
-                    .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
-                        header
-                            h2 Main Profile
-                        form(data-ng-submit='submit()').background-transparent
-                            .col-sm-3
-                                div(data-profile-image-upload='', data-truck='selectedTruck')
-                            .col-sm-9
-                                fieldset(class="form-group")
-                                    section
-                                        label.control-label(for='truckName') Truck Name
-                                        input.form-control(id='truckName', data-ng-model='newName')
-                                    section
-                                        label.control-label(for='keywords') Keywords
-                                        tags-input(id='keywords', data-ng-model='tags')
-                                div(style="float:right")
-                                    button.btn.btn-primary(data-ng-disabled='requestInProgress', type='submit') Submit
-                                    button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
-            .col-xs-12.col-md-4
-                article
-                    .jarviswidget.jarviswidget-color-blueDark
-                        header
-                            h2 Color Customization
-                        section
-                            div.container-fluid.background-white-transparent
-                                div
-                                    div.form-group
-                                        label
-                                            b Color Selection For:
-                                        .smart-form
-                                            .inline-group
-                                                label.radio
-                                                    input(type="radio" value="primary" name="whichColor" data-ng-model="selectingColor")
-                                                    i
-                                                    = 'Primary'
-                                                label.radio
-                                                    input(type="radio" value="secondary" name="whichColor" data-ng-model="selectingColor")
-                                                    i
-                                                    = 'Secondary'
-                                    spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)")
-                                    .widget-body
-                                        div(data-ng-if='selectedTruck')
+#top-nav-wrapper
+    <div data-ng-include="'/partials/nav.jade'"></div>
+
+#wrapper
+    #sidebar-wrapper.bg-color-mold
+        .container-fluid.make-space-for-logo
+            <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
+            .row
+                article.col-xs-12.col-sm-12
+                    div.form-group
+                        label(for='truckList') Profile for Truck:
+                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
+                    div.form-group.pull-right
+                        a.btn.create-truck(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
+    #page-content-wrapper.tm-main
+        #content.container-fluid
+            .row(data-ng-show='selectedTruck !== null')
+                .col-xs-12.col-md-6.col-md-offset-1
+                    article
+                        .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                            header
+                                h2 Main Profile
+                            form(data-ng-submit='submit()').background-transparent
+                                .col-sm-3
+                                    div(data-profile-image-upload='', data-truck='selectedTruck')
+                                .col-sm-9
+                                    fieldset(class="form-group")
+                                        section
+                                            label.control-label(for='truckName') Truck Name
+                                            input.form-control(id='truckName', data-ng-model='newName')
+                                        section
+                                            label.control-label(for='keywords') Keywords
+                                            tags-input(id='keywords', data-ng-model='tags')
+                                    div(style="float:right")
+                                        button.btn.btn-primary(data-ng-disabled='requestInProgress', type='submit') Submit
+                                        button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
+                .col-xs-12.col-md-4
+                    article
+                        .jarviswidget.jarviswidget-color-blueDark
+                            header
+                                h2 Color Customization
+                            section
+                                div.container-fluid.background-white-transparent
+                                    div
+                                        div.form-group
                                             label
-                                                b Colors From Profile Image
-                                            div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
-                                                .alert.alert-info
-                                                    span You have not uploaded a profile image yet
-                                            div(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')
+                                                b Color Selection For:
+                                            .smart-form
+                                                .inline-group
+                                                    label.radio
+                                                        input(type="radio" value="primary" name="whichColor" data-ng-model="selectingColor")
+                                                        i
+                                                        = 'Primary'
+                                                    label.radio
+                                                        input(type="radio" value="secondary" name="whichColor" data-ng-model="selectingColor")
+                                                        i
+                                                        = 'Secondary'
+                                        spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)")
+                                        .widget-body
+                                            div(data-ng-if='selectedTruck')
+                                                label
+                                                    b Colors From Profile Image
+                                                div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
+                                                    .alert.alert-info
+                                                        span You have not uploaded a profile image yet
+                                                div(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')
