@@ -226,7 +226,7 @@ module.exports = function (grunt) {
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
-    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:dev']);
+    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:dev', 'copy:bower', 'less', 'cssmin']);
     grunt.registerTask('dev', ['concurrent:target']);
     grunt.registerTask('build-prod', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:prod']);
     grunt.registerTask('update-bower-css', ['copy:bower']);
