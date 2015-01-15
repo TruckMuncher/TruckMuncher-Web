@@ -1,4 +1,4 @@
-describe "uiGmapMarker", ->
+describe "directives.api.Marker", ->
   beforeEach ->
     module "uiGmapgoogle-maps.mocks"
 
@@ -46,7 +46,7 @@ describe "uiGmapMarker", ->
     it 'gMarkerManager exists', ->
       @subject.link(@mocks.scope, @mocks.element, @mocks.attrs, @mocks.ctrl)
       @$rootScope.$apply()
-      expect(@mocks.scope.control.getGMarkers()).toBeDefined()
+      expect(@subject.gMarkerManager).toBeDefined()
 
     it 'slaps control functions when a control is available', ->
       @subject.link(@mocks.scope, @mocks.element, @mocks.attrs, @mocks.ctrl)

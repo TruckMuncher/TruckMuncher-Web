@@ -6,9 +6,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
   });
 }])
 
-.controller('mainCtrl', function ($scope, $timeout, uiGmapLogger) {
-  var $log = uiGmapLogger;
-  $log.currentLevel = $log.LEVELS.debug;
+.controller('mainCtrl', function ($scope) {
   $scope.map = {center: {latitude: 40.1451, longitude: -99.6680 }, zoom: 4, bounds: {}};
   $scope.options = {scrollwheel: false};
   $scope.showPinkMarkers = true;
@@ -37,27 +35,21 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
     ret.show= true;
     return ret;
   };
-  $scope.randomMarkers = [];
+  $scope.truckMarkers = [];
   $scope.pinkRandomMarkers = [];
-
-  var createMarkers = function(){
-    var markers = [];
-    var pinkRandomMarkers = [];
-    for (var i = 0; i < 250; i++) {
-      markers.push(createRandomMarker(i, $scope.map.bounds, null, 'http://www.ozmorris.com/images/owl5.png'));
-      pinkRandomMarkers.push(createRandomMarker(i + 100, $scope.map.bounds, null, 'http://www.ozmorris.com/images/owl16.png'));
-    }
-    $scope.randomMarkers = markers;
-    $scope.pinkRandomMarkers = pinkRandomMarkers;
-  };
   // Get the bounds from the map once it's loaded
   $scope.$watch(function () {
     return $scope.map.bounds;
   }, function (nv, ov) {
     if (!ov.southwest && nv.southwest) {
-      createMarkers();
+      var markers = [];
+      var pinkRandomMarkers = [];
+      for (var i = 0; i < 250; i++) {
+        markers.push(createRandomMarker(i, $scope.map.bounds, null, 'http://www.ozmorris.com/images/owl5.png'));
+        pinkRandomMarkers.push(createRandomMarker(i + 100, $scope.map.bounds, null, 'http://www.ozmorris.com/images/owl16.png'));
+      }
+      $scope.truckMarkers = markers;
+      $scope.pinkRandomMarkers = pinkRandomMarkers;
     }
   }, true);
-
-//  $timeout(createMarkers,1000);
 });

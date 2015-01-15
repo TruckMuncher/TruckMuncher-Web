@@ -1,6 +1,14 @@
+###
+	- interface for all markers to derrive from
+ 	- to enforce a minimum set of requirements
+ 		- attributes
+ 			- coords
+ 			- icon
+		- implementation needed on watches
+###
 angular.module('uiGmapgoogle-maps.directives.api')
-.factory 'uiGmapIMarker', [ 'uiGmapBaseObject', 'uiGmapCtrlHandle',
- (BaseObject, CtrlHandle)->
+.factory 'uiGmapIMarker', [ 'uiGmapLogger', 'uiGmapBaseObject', 'uiGmapCtrlHandle',
+ (Logger, BaseObject, CtrlHandle)->
     class IMarker extends BaseObject
 
       IMarker.scopeKeys =
@@ -17,10 +25,11 @@ angular.module('uiGmapgoogle-maps.directives.api')
 
       @extend CtrlHandle
       constructor: ->
+        @$log = Logger
         @restrict = 'EMA'
         @require = '^' + 'uiGmapGoogleMap'
         @priority = -1
         @transclude = true
         @replace = true
-        @scope = _.extend @scope or {}, IMarker.scopeKeys
+        @scope = IMarker.scopeKeys
 ]

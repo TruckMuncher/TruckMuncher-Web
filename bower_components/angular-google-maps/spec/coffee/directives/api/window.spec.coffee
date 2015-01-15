@@ -10,8 +10,6 @@ describe "directives.api.Window", ->
                 $watch:()->
                 $on:()->
                 control: {}
-                $evalAsync: (fn) ->
-                  fn()
             element:
                 html: ->
                     "<p>test html</p>"

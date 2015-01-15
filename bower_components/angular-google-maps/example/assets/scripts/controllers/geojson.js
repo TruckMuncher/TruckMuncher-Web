@@ -31,7 +31,7 @@ function ExampleController($scope, $timeout, $log, $http, uiGmapLogger) {
       markers.push(createRandomMarker(i, scope.map.bounds));
     }
 
-    scope.map.randomMarkers = markers;
+    scope.map.truckMarkers = markers;
   };
 
   var createRandomMarker = function (i, bounds, idKey) {
@@ -173,7 +173,7 @@ function ExampleController($scope, $timeout, $log, $http, uiGmapLogger) {
         }
       ],
       dynamicMarkers: [],
-      randomMarkers: [],
+      truckMarkers: [],
       doClusterRandomMarkers: true,
       doUgly: true, //great name :)
       clusterOptions: {title: 'Hi I am a Cluster!', gridSize: 60, ignoreHidden: true, minimumClusterSize: 2,
@@ -393,7 +393,7 @@ function ExampleController($scope, $timeout, $log, $http, uiGmapLogger) {
     $scope.map.markers = [];
     $scope.map.markers2 = [];
     $scope.map.dynamicMarkers = [];
-    $scope.map.randomMarkers = [];
+    $scope.map.truckMarkers = [];
     $scope.map.mexiMarkers = [];
     $scope.map.polylines = [];
     $scope.map.clickedMarker = null;

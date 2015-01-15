@@ -6,7 +6,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
     zoom: 4,
     bounds: {}
   };
-  $scope.options = {scrollwheel: false, draggable: true};
+  $scope.options = {scrollwheel: false};
   var createRandomMarker = function (i, bounds, idKey) {
     var lat_min = bounds.southwest.latitude,
     lat_range = bounds.northeast.latitude - lat_min,
@@ -37,7 +37,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
     ret[idKey] = i;
     return ret;
   };
-  $scope.randomMarkers = [];
+  $scope.truckMarkers = [];
   // Get the bounds from the map once it's loaded
   $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
     // Only need to regenerate once
@@ -46,22 +46,14 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
       for (var i = 0; i < 10; i++) {
         markers.push(createRandomMarker(i, $scope.map.bounds))
       }
-      $scope.randomMarkers = markers;
+      $scope.truckMarkers = markers;
     }
   }, true);
 
   $scope.markersEvents = {
     mouseover: function (gMarker, eventName, model) {
-      console.debug('mouseover');
       model.show = true;
-//      $scope.$apply();
+      $scope.$apply();
     }
   };
-
-  $scope.shownMarkers = function(){
-    return _.filter($scope.randomMarkers, function(m){
-      return m.show;
-    }).length;
-  };
-
 });

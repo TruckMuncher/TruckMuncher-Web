@@ -1,30 +1,5 @@
 angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
 .factory('GoogleApiMock', ->
-  class MapObject
-    getMap: =>
-      @map
-    setMap: (m) =>
-      @map = m
-    setOptions: (o)=>
-      @opts = o
-
-  class DraggableObject extends MapObject
-    setDraggable: (bool)=>
-      @draggable = bool
-    getDraggable: =>
-      @draggable
-
-  class VisibleObject extends MapObject
-    setVisible: (bool) =>
-      @visible = bool
-    getVisible: =>
-      @visible
-
-  class PositionObject extends MapObject
-    setPosition:(position) =>
-      @position
-    getPosition: =>
-      @position
 
   class MockInfoWindow
     constructor: ->
@@ -44,63 +19,18 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
       else
         @_isOpen = val
 
-  getLatLng = ->
-    class LatLng
-      constructor: (@y,@x, nowrap) ->
-      lat: =>
-        @y
-      lng: =>
-        @x
-
   getMarker = ->
-    class Marker extends MapObject
-      _.extend @::, PositionObject::, DraggableObject::, VisibleObject::
-      @instances = 0
-      @resetInstances = =>
-        @instances = 0
-      @creationSubscribe = (obj, cb) ->
-        window.google.maps.event.addListener(obj, 'creation', cb)
-      @creationUnSubscribe = (listener) ->
-        window.google.maps.event.removeListener listener
-
-      constructor: (opts) ->
-        super()
-        if opts?
-          ['draggable', 'editable',
-          'map','visible', 'position'].forEach (o) =>
-            @[o] = opts[o]
-        Marker.instances += 1
-        if window?.google?.maps?.event?
-          window.google.maps.event.fireAllListeners 'creation', @
-
-      setOptions: (o)=>
-        super(o)
-        if o?.position?
-          @position = o.position
-      setAnimation:(obj) =>
-        @animation = obj
-      getAnimation: =>
-        @animation
-      setIcon: (icon) =>
-        @icon
-      getIcon: =>
-        @icon
-      setClickable: (bool) =>
-        @clickable = bool
-      getClickable: =>
-        @clickable
-      setZIndex:(z) =>
-        @zIndex = z
-      getZIndex: =>
-        @zIndex
-      setTitle: (str) =>
-        @title = str
-      getTitle: =>
-        @title
-      setOpacity: (num) =>
-        @opacity = num
-      getOpacity: =>
-        @opacity
+    map = undefined
+    Marker = (opts) -> return
+    Marker::.setMap = (_map) ->
+      map = _map
+    Marker::.getMap =  ->
+      map
+    Marker::.setPosition = (position) ->
+    Marker::.setIcon = (icon) ->
+    Marker::setVisible = (isVisible) ->
+    Marker::setOptions = (options) ->
+    return Marker
 
   getMap = ->
     Map = (opts) -> return
@@ -128,90 +58,7 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
     Map::setZoom = -> return
     Map::setCenter = -> return
     Map::getCoords = -> return {latitude: 47, longitude: -27} unless Map.getCoords?
-    Map::getBounds = ->
-      unless Map.getBounds?
-        getNorthEast: ->
-          google.maps.LatLng(47,27)
-        getSouthWest: ->
-          google.maps.LatLng(89,100)
     return Map
-
-
-  getMarkerWithLabel: ->
-    class MarkerWithLabel extends getMarker()
-      @instances = 0
-      @resetInstances = =>
-        @instances = 0
-      constructor: (opts) ->
-        if opts?
-          ['draggable', 'editable', 'map','path', 'visible'].forEach (o) =>
-            @[o] = opts[o]
-        @drawn = false
-        MarkerWithLabel.instances += 1
-
-      setAnchor: (anchor) =>
-        @anchor = @anchor
-      getAnchor: =>
-        @anchor
-      setMandatoryStyles: (obj) =>
-        @mandatoryStyles = obj
-      getMandatoryStyles: =>
-        @mandatoryStyles
-      setStyles:(obj) =>
-        @styles = obj
-      getStyles: =>
-        @styles
-      setContent:(content) =>
-        @content = content
-      getContent: =>
-        @content
-      draw: =>
-        @drawn = true
-      onRemove: =>
-      onAdd: =>
-
-  getPolyline = ->
-    class Polyline extends DraggableObject
-      @instances = 0
-      @resetInstances = =>
-        @instances = 0
-      constructor: (opts) ->
-        if opts?
-          ['draggable', 'editable', 'map','path', 'visible'].forEach (o) =>
-            @[o] = opts[o]
-        Polyline.instances += 1
-
-      getEditable: =>
-        @editable
-      getPath: =>
-        @path
-      setEditable: (bool)=>
-        @editable = bool
-      setPath: (array)=>
-        @path = array
-
-  getMVCArray = ->
-    class MVCArray extends Array
-      @instances = 0
-      @resetInstances = =>
-        @instances = 0
-      constructor: ->
-        MVCArray.instances += 1
-        super()
-      clear: ->
-        @length = 0
-      getArray: =>
-        @
-      getAt:(i) =>
-        @[i]
-      getLength: =>
-        @length
-      insertAt:(i, elem) =>
-        @splice(i, 0, elem)
-      removeAt:(i) ->
-        @splice(i,1)
-      setAt:(i, elem) ->
-        @[i] = elem
 
   class GoogleApiMock
     constructor: ->
@@ -230,7 +77,6 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
         @mockMVCArray
         @mockPoint
         @mockPolygon
-        @mockPolyline
         @mockMap
         @mockPlaces
         @mockSearchBox
@@ -254,7 +100,6 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
       window.google.maps.MVCArray = unmocked('MVCArray')
       window.google.maps.Point = unmocked('Point')
       window.google.maps.LatLngBounds = unmocked('LatLngBounds')
-      window.google.maps.Polyline = unmocked('Polyline')
 
     mockPlaces: ->
       window.google.maps.places = {}
@@ -262,8 +107,13 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
     mockSearchBox: (SearchBox = () -> return) ->
       window.google.maps.places.SearchBox = SearchBox
 
-    mockLatLng: (yours) ->
-      window.google.maps.LatLng = unless yours then getLatLng() else yours
+    #http://gis.stackexchange.com/questions/11626/does-y-mean-latitude-and-x-mean-longitude-in-every-gis-software
+    mockLatLng: (LatLng = (y, x) ->
+      lat: () ->
+        y
+      lng: () ->
+        x) ->
+      window.google.maps.LatLng = LatLng
 
     mockLatLngBounds: (LatLngBounds = () -> return) ->
       if not (LatLngBounds.extend?)
@@ -271,6 +121,13 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
 
       window.google.maps.LatLngBounds = LatLngBounds
 
+    # mockMap:(Map = () -> return) ->
+    #   @mockMapTypeId()
+    #   @mockLatLng()
+    #   @mockOverlayView()
+    #   @mockEvent()
+    #   Map.getCoords = -> return {latitude: 47, longitude: -27} unless Map.getCoords?
+    #   window.google.maps.Map = Map
     mockMap: =>
       @mockMapTypeId()
       @mockLatLng()
@@ -337,26 +194,11 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
             listeners.splice(index)
 
       unless event.fireListener
-        event.fireListener = (thing, eventName) ->
+        event.fireListener = (thing, eventName) =>
           found = _.find listeners, (obj)->
             obj.obj == thing
-          found.events[eventName](found.obj) if found? and found?.events[eventName]?
+          found.events[eventName](found.obj) if found?
 
-      unless event.normalizedEvents
-        event.normalizedEvents = ->
-          ret = _ listeners.map (obj) ->
-            _.keys(obj.events)
-          .chain()
-          .flatten()
-          .uniq()
-          .value()
-          ret
-
-      unless event.fireAllListeners
-        event.fireAllListeners = (eventName, state) ->
-          listeners.forEach (obj)->
-            if obj.events[eventName]?
-              obj.events[eventName](state)
 
       window.google.maps.event = event
       return listeners
@@ -367,14 +209,23 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
     mockMarker: (Marker = getMarker()) ->
       window.google.maps.Marker = Marker
 
-    mockMVCArray: (impl = getMVCArray()) ->
-      window.google.maps.MVCArray = impl
+    mockMVCArray: () ->
+      MVCArray = () ->
+        this.values = []
+        return
+
+      if not (MVCArray.getLength?)
+        MVCArray.prototype.getLength = () ->
+          return this.values.length
+
+      if not (MVCArray.push?)
+        MVCArray.prototype.push = (value) ->
+          this.values.push(value)
+
+      window.google.maps.MVCArray = MVCArray
 
     mockPoint: (Point = (x, y) -> return {x: x, y: y}) ->
       window.google.maps.Point = Point
-
-    mockPolyline: (impl = getPolyline()) ->
-      return window.google.maps.Polyline = impl
 
     mockPolygon: (polygon) ->
       return window.google.maps.Polygon = polygon if polygon?
@@ -419,8 +270,5 @@ angular.module('uiGmapgoogle-maps.mocks', ['uiGmapgoogle-maps'])
 
     getMarker: getMarker
     getMap: getMap
-    getPolyline: getPolyline
-    getMVCArray: getMVCArray
-    getLatLng: getLatLng
   GoogleApiMock
 )

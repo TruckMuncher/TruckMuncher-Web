@@ -28,7 +28,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
       ret.show= true;
       return ret;
     };
-    $scope.randomMarkers = [];
+    $scope.truckMarkers = [];
     $scope.pinkRandomMarkers = [];
     // Get the bounds from the map once it's loaded
     $scope.$watch(function () {
@@ -41,7 +41,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
           markers.push(createRandomMarker(i, $scope.map.bounds, null, 'http://www.ozmorris.com/images/owl5.png'));
           pinkRandomMarkers.push(createRandomMarker(i + 100, $scope.map.bounds, null, 'http://www.ozmorris.com/images/owl16.png'));
         }
-        $scope.randomMarkers = markers;
+        $scope.truckMarkers = markers;
         $scope.pinkRandomMarkers = pinkRandomMarkers;
       }
     }, true);

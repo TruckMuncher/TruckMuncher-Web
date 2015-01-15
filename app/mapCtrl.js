@@ -12,10 +12,16 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 latitude: 43.05,
                 longitude: -87.95
             },
-            zoom: 12
+            zoom: 12,
+            clusterOptions: {
+                "title": "Click to zoom",
+                "gridSize": 60,
+                "ignoreHidden": true,
+                "minimumClusterSize": 2
+            }
         };
 
-        $scope.randomMarkers = [];
+        $scope.truckMarkers = [];
 
         navigator.geolocation.getCurrentPosition(function (pos) {
 
@@ -33,17 +39,17 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
         function getMarkers() {
             TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
-                $scope.randomMarkers = [];
+                $scope.truckMarkers = [];
                 if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
                     for (var i = 0; i < trucksResponse.length; i++) {
                         var marker = populateMarker(trucksResponse[i]);
-                        $scope.randomMarkers.push(marker);
+                        $scope.truckMarkers.push(marker);
                     }
                 } else {
                     TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
                         for (var i = 0; i < trucksResponse.length; i++) {
                             var marker = populateMarker(trucksResponse[i]);
-                            $scope.randomMarkers.push(marker);
+                            $scope.truckMarkers.push(marker);
                         }
                     });
                 }
@@ -73,4 +79,5 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
 
             return marker;
         }
-    }]);
+    }])
+;

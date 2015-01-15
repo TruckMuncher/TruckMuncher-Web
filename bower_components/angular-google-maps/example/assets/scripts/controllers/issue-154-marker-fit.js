@@ -106,7 +106,7 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps']).value("rndA
     $scope.map.markers.length = 0;
     $scope.map.markers2.length = 0;
     $scope.map.dynamicMarkers.length = 0;
-    $scope.map.randomMarkers.length = 0;
+    $scope.map.truckMarkers.length = 0;
     $scope.map.mexiMarkers.length = 0;
     $scope.map.polylines.length = 0;
     $scope.map.clickedMarker = null;

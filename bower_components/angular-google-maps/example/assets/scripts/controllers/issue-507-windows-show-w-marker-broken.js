@@ -28,7 +28,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
             ret[idKey] = i;
             return ret;
         };
-        $scope.randomMarkers = [];
+        $scope.truckMarkers = [];
         // Get the bounds from the map once it's loaded
         $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
             // Only need to regenerate once
@@ -37,7 +37,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
                 for (var i = 0; i < 50; i++) {
                     markers.push(createRandomMarker(i, $scope.map.bounds))
                 }
-                $scope.randomMarkers = markers;
+                $scope.truckMarkers = markers;
             }
         }, true);
     });

@@ -1,7 +1,7 @@
 angular.module('uiGmapgoogle-maps.directives.api')
 .factory 'uiGmapIWindow', [
-  'uiGmapBaseObject', 'uiGmapChildEvents', 'uiGmapCtrlHandle',
-  (BaseObject, ChildEvents, CtrlHandle) ->
+  'uiGmapBaseObject', 'uiGmapChildEvents', 'uiGmapLogger', 'uiGmapCtrlHandle',
+  (BaseObject, ChildEvents, Logger, CtrlHandle) ->
     class IWindow extends BaseObject
       @include ChildEvents
       @extend CtrlHandle
@@ -12,7 +12,7 @@ angular.module('uiGmapgoogle-maps.directives.api')
         @priority = -100
         @require = '^' + 'uiGmapGoogleMap'
         @replace = true
-        @scope =
+        @scope = {
           coords: '=coords',
           template: '=template',
           templateUrl: '=templateurl',
@@ -22,4 +22,6 @@ angular.module('uiGmapgoogle-maps.directives.api')
           options: '=options'
           control: '=control'
           show: '=show'
+        }
+        @$log = Logger
 ]

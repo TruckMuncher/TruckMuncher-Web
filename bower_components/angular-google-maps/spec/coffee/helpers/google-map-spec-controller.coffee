@@ -1,4 +1,4 @@
-do ->
+(->
     module = angular.module("angular-google-maps-specs", ['uiGmapgoogle-maps'])
         .controller('GoogleMapSpecController', ($scope, $timeout, $log) ->
             self = @
@@ -19,3 +19,4 @@ do ->
                             self.hasRun = true
             )
     )
+)()

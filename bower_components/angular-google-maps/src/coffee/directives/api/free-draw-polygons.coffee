@@ -30,9 +30,9 @@ angular.module('uiGmapgoogle-maps.directives.api')
               #we are done drawing, now watch for changes on polygons, on post draw
               firstTime = true
               listener =
-                scope.$watchCollection 'polygons', (newValue, oldValue) ->
+                scope.$watch 'polygons', (newValue, oldValue) ->
                   #preven infinite loop on watching
-                  if firstTime or newValue == oldValue
+                  if firstTime
                     firstTime = false
                     return
                   removals = uiGmapLodash.differenceObjects oldValue, newValue

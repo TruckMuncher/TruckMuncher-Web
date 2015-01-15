@@ -9,15 +9,6 @@ angular.module('uiGmapgoogle-maps.directives.api.models.parent')
                 @$log.error 'template attribute for the search-box directive is mandatory. Places Search Box creation aborted!!'
                 return
 
-            if angular.isUndefined @scope.options
-                @scope.options = {}
-                @scope.options.visible = true
-
-            if angular.isUndefined @scope.options.visible
-                @scope.options.visible = true
-
-            @visible = scope.options.visible
-
             controlDiv = angular.element '<div></div>'
             controlDiv.append @template
             @input = controlDiv.find('input')[0]
@@ -26,15 +17,6 @@ angular.module('uiGmapgoogle-maps.directives.api.models.parent')
 
         init: () =>
             @createSearchBox()
-
-            @scope.$watch('options', (newValue, oldValue) =>
-                if angular.isObject newValue
-                    if newValue.bounds?
-                        @setBounds(newValue.bounds)
-                    if newValue.visible?
-                        if @visible != newValue.visible
-                            @setVisibility(newValue.visible)
-            , true)
 
             if @attrs.parentdiv?
                 @addToParentDiv()
@@ -46,6 +28,12 @@ angular.module('uiGmapgoogle-maps.directives.api.models.parent')
 
             @listeners = @setEvents @searchBox, @scope, @scope
             @$log.info @
+
+            @scope.$watch('options', (newValue, oldValue) =>
+                if angular.isObject newValue
+                    if newValue.bounds?
+                        @setBounds(newValue.bounds)
+            , true)
 
             @scope.$on '$destroy', =>
                 @searchBox = null
@@ -71,14 +59,6 @@ angular.module('uiGmapgoogle-maps.directives.api.models.parent')
 
         getBounds: () =>
             @searchBox.getBounds()
-
-        setVisibility: (val) =>
-            if @attrs.parentdiv?
-                if val == false then @parentDiv.addClass "ng-hide" else @parentDiv.removeClass "ng-hide"
-            else
-                if val == false then @gMap.controls[google.maps.ControlPosition[@ctrlPosition]].clear() else @gMap.controls[google.maps.ControlPosition[@ctrlPosition]].push(@input)
-            @visible = val
-
 
 
     SearchBoxParentModel

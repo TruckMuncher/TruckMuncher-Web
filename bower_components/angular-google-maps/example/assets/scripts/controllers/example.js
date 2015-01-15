@@ -28,8 +28,7 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps'])
 
 .controller("ExampleController",['$scope', '$timeout', 'uiGmapLogger', '$http', 'rndAddToLatLon','uiGmapGoogleMapApi'
     , function ($scope, $timeout, $log, $http, rndAddToLatLon,GoogleMapApi) {
-  $log.doLog = true;
-//  $log.currentLevel = $log.LEVELS.debug;
+  $log.doLog = true
 
   GoogleMapApi.then(function(maps) {
     $scope.googleVersion = maps.version;
@@ -151,7 +150,7 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps'])
     for (var i = 0; i < numberOfMarkers; i++) {
       markers.push(createRandomMarker(i, scope.map.bounds))
     }
-    scope.map.randomMarkers = markers;
+    scope.map.truckMarkers = markers;
   };
 
   var createRandomMarker = function (i, bounds, idKey) {
@@ -285,17 +284,25 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps'])
           mid: 1,
           latitude: 29.302567,
           longitude: -106.248779,
+          onClicked: function(gMarker,eventName, model){
 
+          }
         },
         {
           mid: 2,
           latitude: 30.369913,
           longitude: -109.434814,
+          onClicked: function(gMarker,eventName, model){
+
+          }
         },
         {
           mid: 3,
           latitude: 26.739478,
           longitude: -108.61084,
+          onClicked: function(gMarker,eventName, model){
+
+          }
         }
       ],
       clickMarkers: [
@@ -306,7 +313,7 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps'])
         {id: 3, "latitude": 50.9175, "longitude": 6.943611}
       ],
       dynamicMarkers: [],
-      randomMarkers: [],
+      truckMarkers: [],
       doClusterRandomMarkers: true,
       doUgly: false, //great name :)
       clusterOptions: {title: 'Hi I am a Cluster!', gridSize: 60, ignoreHidden: true, minimumClusterSize: 2,
@@ -317,9 +324,6 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps'])
         }
       },
       events: {
-//This turns of events and hits against scope from gMap events this does speed things up
-// adding a blacklist for watching your controller scope should even be better
-//        blacklist: ['drag', 'dragend','dragstart','zoom_changed', 'center_changed'],
         tilesloaded: function (map, eventName, originalEventArgs) {
         },
         click: function (mapModel, eventName, originalEventArgs) {
@@ -546,7 +550,7 @@ angular.module("angular-google-maps-example", ['uiGmapgoogle-maps'])
     $scope.map.markers = [];
     $scope.map.markers2 = [];
     $scope.map.dynamicMarkers = [];
-    $scope.map.randomMarkers = [];
+    $scope.map.truckMarkers = [];
     $scope.map.mexiMarkers = [];
     $scope.map.clickMarkers = [];
     $scope.map.polylines = [];
