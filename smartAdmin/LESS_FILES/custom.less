@@ -40,9 +40,9 @@
 
 #top-nav-wrapper {
   z-index: 1001;
-  height: @topPanelHeight;
+//  height: @topPanelHeight;
   overflow-y: auto;
-  background: #DBDBDB;
+//  background: #DBDBDB;
   padding-left: 0px;
   position: relative;
 }
@@ -57,14 +57,21 @@
 }
 
 .left-menu {
-  margin: 10px;
   padding-left: 20px;
   height: 30px;
   font-size: 1.5em;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  background: white;
-  color: black;
+//  -moz-border-radius: 10px;
+//  border-radius: 10px;
+//  background: white;
+//  color: black;
+  color: white;
+  border-bottom-color: #ffffff;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.left-menu > a{
+  color: #ffffff;
 }
 
 .nav-bar-sign {
@@ -85,17 +92,22 @@
   border-width: 1px;
   font-size: 1em;
   -moz-border-radius: 10px;
-  border-radius: 10px !important;
+//  border-radius: 10px !important;
   background: @truckMuncherPinkBase;
   color: white;
 }
 
-.left-menu > a {
-  color: black;
+.add-space-sidelabel {
+  padding: 20px 10px 0px 10px;
+}
+
+.ignore-padding-right {
+  padding-right: 0px;
 }
 
 .menu-active > a {
   color: white;
+  padding-left: 30px;
 }
 
 .menu-active {
@@ -320,6 +332,7 @@ h2 {
   width: 0;
   height: 100%;
   margin-left: -250px;
+  margin-right: 0px;
   overflow-y: auto;
   background: #000;
   -webkit-transition: all 0.5s ease;
