@@ -52,7 +52,7 @@ var sess = {
     genid: function (req) {
         return guid.gen(); // use UUIDs for session IDs
     },
-    secret: process.env.sessionSecret || 'MunchyTruckMunch3r',
+    secret: process.env.SESSION_SECRET || 'MunchyTruckMunch3r',
     resave: false,
     saveUninitialized: true,
     cookie: {}
