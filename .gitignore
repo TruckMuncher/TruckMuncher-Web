@@ -27,6 +27,9 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
+public/js/vendorScripts.js
+public/js/TruckMuncherApp.js
+
 # Intellij
 .idea/*
 *.iml
