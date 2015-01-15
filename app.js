@@ -48,19 +48,24 @@ var app = express();
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var sess = {
-// 	genid: function(req) {
-//     return genuuid(); // use UUIDs for session IDs
-// },
-    secret: 'MunchyTruckMunch3r',
-    resave: true,
+    genid: function (req) {
+        return genuuid(); // use UUIDs for session IDs
+    },
+    secret: process.env.sessionSecret || 'MunchyTruckMunch3r',
+    resave: false,
     saveUninitialized: true,
     cookie: {}
 };
 
+function genuuid() {
+    return "";
+}
+
+
 //use secure cookies on bluemix
 if (host !== 'localhost') {
-   app.set('trust proxy', 1); // trust first proxy
-   sess.cookie.secure = true; // serve secure cookies
+    app.set('trust proxy', 1); // trust first proxy
+    sess.cookie.secure = true; // serve secure cookies
 }
 
 app.use(express.cookieParser());
