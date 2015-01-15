@@ -7,7 +7,6 @@ var app = angular.module('TruckMuncherApp',
         'ngAnimate',
         'ngTagsInput',
         'angularFileUpload',
-        'uiGmapgoogle-maps',
         'ngCookies',
         'angularSpectrumColorpicker'
     ]);
@@ -406,34 +405,28 @@ angular.module('TruckMuncherApp').directive('smartPrice', function() {
 ]);;/**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl',
-    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'TruckProfileService', 'growl',
+    function ($scope, TruckService, TruckProfileService, growl) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
-        var lat;
-        var lon;
+        var lat, lon, infoWindow;
 
-        $scope.map = {
-            center: {
-                latitude: 43.05,
-                longitude: -87.95
-            },
-            zoom: 12,
-            clusterOptions: {
-                "title": "Click to zoom",
-                "gridSize": 60,
-                "ignoreHidden": true,
-                "minimumClusterSize": 2
-            }
+        var mapOptions = {
+            zoom: 13,
+            center: new google.maps.LatLng(43.0500, -87.95)
         };
+
+        $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
         $scope.truckMarkers = [];
 
-        navigator.geolocation.getCurrentPosition(function (pos) {
+        var mcOptions = {gridSize: 50, maxZoom: 15};
+        var mc = new MarkerClusterer($scope.map, $scope.truckMarkers, mcOptions);
 
+        navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
 
-            $scope.map.center = {latitude: lat, longitude: lon};
+            $scope.map.panTo(new google.maps.LatLng(lat, lon));
 
             getMarkers();
 
@@ -458,31 +451,43 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                         }
                     });
                 }
-
             });
         }
 
-        function populateMarker(truck) {
-            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
-            var marker = {
-                id: truck.id,
-                icon: 'img/SingleTruckAnnotationIcon.png',
-                latitude: truck.latitude,
-                longitude: truck.longitude,
-                show: false,
-                options: {
-                    maxWidth: 150
-                }
-            };
+        $scope.$watch('truckMarkers', function () {
+            mc.clearMarkers();
+            mc.addMarkers($scope.truckMarkers);
+        });
 
+
+        function populateMarker(truck) {
+            var truckProfile = TruckProfileService.getTruckProfile(truck.id);
+            var marker = new google.maps.Marker({
+                map: $scope.map,
+                position: new google.maps.LatLng(truck.latitude, truck.longitude),
+                icon: 'img/SingleTruckAnnotationIcon.png'
+            });
+            var content = "Could not find truck profile";
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-                marker.options.content = "<b>" + truckProfile.name + "</b>" +
+                content = "<b>" + truckProfile.name + "</b>" +
                 "<p>" + truckProfile.keywords + "</p>";
-            } else {
-                marker.options.content = "Could not find truck profile";
             }
+            addInfoWindowToMarker(marker, content);
 
             return marker;
+        }
+
+        function addInfoWindowToMarker(marker, content) {
+            google.maps.event.addListener(marker, 'click', function () {
+                if (!_.isUndefined(infoWindow)) {
+                    infoWindow.close();
+                }
+                var infoWindowOptions = {
+                    content: content
+                };
+                infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+                infoWindow.open($scope.map, marker);
+            });
         }
     }])
 ;
