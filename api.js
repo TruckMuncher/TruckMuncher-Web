@@ -41,8 +41,7 @@ function makeRequest(url, method, header) {
         url: url,
         method: method,
         body: JSON.stringify({}),
-        //TODO: DON'T DO THIS
-        strictSSL: false,
+        strictSSL: true,
         headers: header
     };
 
