@@ -10,6 +10,4 @@ div(data-ng-controller='navCtrl')
             #content.container-fluid
                 .row(style="padding-top: 50px")
                     article(data-ng-style="{'height': '{{mapHeight}}'}")
-                        ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
-                            ui-gmap-markers(models="randomMarkers", icon="'icon'", coords="'self'")
-                                ui-gmap-windows(show="'show'", ng-cloak, options="'options'")
+                        #map
