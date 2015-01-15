@@ -1,0 +1,79 @@
+//- body.jade
+//- This file provides the HTML body part.
+body.menu-on-top(data-ng-controller='cssCtrl', data-ng-class='{"hidden-menu": showMenu}')
+    .container-fluid
+        .row
+            div.logo-container
+                img(src='img/logo4.png', alt='SmartAdmin', class="img-responsive")
+        .text-center.col-xs-12
+            h2.featurette-title TruckMuncher is coming to Milwaukee!
+        .col-xs-12.text-center
+            p.lead TruckMuncher is launching in time for the 2015 season.
+        .col-md-10.col-sm-12.col-xs-12.col-md-offset-1
+            .panel.panel-primary.col-md-4.col-sm-4.col-xs-12.col-md-offset-1.col-sm-offset-1.text-center(style="font-size:24px; font-style:italic; padding: 0; border-color:#009688; ")
+                .panel-heading(style="background-color:#009688")
+                    | Looking for lunch?
+                .panel-body
+                    | Use TruckMuncher to discover food trucks nearby and view their menus!
+            .panel.panel-primary.col-md-4.col-sm-4.col-xs-12.col-md-offset-2.col-sm-offset-2.text-center(style="font-size:24px; font-style:italic; padding: 0; border-color:#009688;")
+                .panel-heading(style="background-color:#009688")
+                    | Do you run a truck?
+                .panel-body
+                    | Use TruckMuncher to engage your customers and report your location.
+        .panel.panel-primary.col-md-4.col-sm-4.col-xs-12.col-md-offset-4.col-sm-offset-4(style="font-style:italic; border-color:#009688;")
+            .panel-body.text-center
+                div(style="font-size:24px;")
+                    | Sign up for updates today!
+                    form(id='signup')
+                        .input-group
+                            input.form-control(id="emailInput", type="email", placeholder="Enter email")
+                            span.input-group-btn
+                                button.btn(style="background-color:#009688; color:#ffffff", type='submit') Submit
+                .alert.alert-danger.alert-dismissible(id="emailError", role="alert", style="display:none")
+                    button.close(type="button", data-dismiss="alert")
+                        span(aria-hidden=true) &times;
+                    h4 Please enter a valid email
+                .alert.alert-danger.alert-dismissible(id="emailNetworkError", role="alert", style="display:none")
+                    button.close(type="button", data-dismiss="alert")
+                        span(aria-hidden=true) &times;
+                    h4 There has been an issue submitting your email
+                .alert.alert-success.alert-dismissible(id="emailSuccess", role="alert", style="display:none")
+                    button.close(type="button", data-dismiss="alert")
+                        span(aria-hidden=true) &times;
+                    h4 Your email has been submitted!
+                div(style="font-size:18px;")
+                    | Want to get started early? Send us an email: </br>
+                    a(href="mailto:support@truckmuncher.com?subject=TruckMuncher Beta Access") support@truckmuncher.com
+        .col-md-12.col-sm-12.col-xs-12.text-center(style="font-size:18px; margin: 10px;")
+            | Copyright 2014  TruckMuncher, LLC
+script(src='/jquery/jquery.js')
+script(src='/bootstrap/bootstrap.js')
+script.
+    $('#signup').submit(function (event) {
+        var emailError = $('#emailError');
+        var emailSuccess = $('#emailSuccess');
+        var emailNetworkError = $('#emailNetworkError');
+        emailError.hide();
+        emailSuccess.hide();
+        event.preventDefault();
+        var email = document.getElementById('emailInput').value;
+        if (email.indexOf('@') >= 1) {
+            document.getElementById('emailInput').value = "";
+            var data = {"email": email};
+            $.ajax({
+                type: "POST",
+                url: "https://api.truckmuncher.com:8443/com.truckmuncher.api.subscription.SubscriptionService/subscribe",
+                data: JSON.stringify(data),
+                accept: "application/json",
+                contentType: "application/json",
+                success: function (data) {
+                    emailSuccess.show();
+                },
+                error: function (jqhxr, status) {
+                    emailNetworkError.show();
+                }
+            });
+        } else {
+            emailError.show();
+        }
+    });
