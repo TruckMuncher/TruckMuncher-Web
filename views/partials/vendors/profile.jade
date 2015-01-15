@@ -1,7 +1,5 @@
-#top-nav-wrapper
-    <div data-ng-include="'/partials/nav.jade'"></div>
-
 #wrapper
+
     #sidebar-wrapper.bg-color-mold
         .container-fluid.make-space-for-logo.ignore-padding-right
             <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
@@ -12,6 +10,10 @@
                         select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
                     div.form-group.pull-right
                         a.btn.create-truck(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
+
+    #top-nav-wrapper
+        <div data-ng-include="'/partials/nav.jade'"></div>
+
     #page-content-wrapper.tm-main
         #content.container-fluid
             .row(data-ng-show='selectedTruck !== null')
