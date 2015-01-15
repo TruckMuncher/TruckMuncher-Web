@@ -1,12 +1,13 @@
-#top-nav-wrapper
-    <div data-ng-include="'/partials/nav.jade'"></div>
-
 div(data-ng-controller='navCtrl')
     .tm-main(data-ng-class="{'with-left-panel': loggedIn()}")
         #wrapper
             #sidebar-wrapper.bg-color-mold(data-ng-show="loggedIn()")
                 .container-fluid.make-space-for-logo.ignore-padding-right
                     <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
+
+            #top-nav-wrapper
+                <div data-ng-include="'/partials/nav.jade'"></div>
+
             #content.container-fluid
                 .row(style="padding-top: 50px")
                     article(data-ng-style="{'height': '{{mapHeight}}'}")
