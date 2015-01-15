@@ -2,7 +2,7 @@
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 // The port on the DEA for communication with the application:
 var port = (process.env.VCAP_APP_PORT || 3000);
-var url = JSON.parse(process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0];
+var url = JSON.parse(process.env.SITE_URL || process.env.VCAP_APPLICATION || '{"uris":["' + host + ':' + port + '"]}').uris[0];
 //var url = process.env.VCAP_APPLICATION ? 'DevTruckMuncher.mybluemix.net' : host + ':' + port;
 
 var protocol = host === 'localhost' ? 'http://' : 'https://';
