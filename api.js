@@ -2,7 +2,7 @@ var request = require('request'),
     q = require('q'),
     guid = require('./guid');
 
-var apiUrl = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.auth.AuthService/';
+var apiUrl = process.env.API_URL + '/com.truckmuncher.api.auth.AuthService/';
 
 var nonceAndTimestampHelper = {
     getTimestamp: function () {
