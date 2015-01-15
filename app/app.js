@@ -8,6 +8,7 @@ var app = angular.module('TruckMuncherApp',
         'ngTagsInput',
         'angularFileUpload',
         'ngCookies',
+        'uiGmapgoogle-maps',
         'angularSpectrumColorpicker'
     ]);
 

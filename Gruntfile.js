@@ -36,7 +36,7 @@ module.exports = function (grunt) {
         'bower_components/angular-cookies/angular-cookies.js',
         'bower_components/spectrum/spectrum.js',
         'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
-        'public/js/markerCluster.js'
+        'public/js/angular-google-maps.js'
     ];
 
     var globalConfig = {
