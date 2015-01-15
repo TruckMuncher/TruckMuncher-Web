@@ -2,7 +2,7 @@ div(data-ng-controller='navCtrl')
     .tm-main(data-ng-class="{'with-left-panel': loggedIn()}")
         #wrapper
             #sidebar-wrapper.bg-color-mold(data-ng-show="loggedIn()")
-                .container-fluid.make-space-for-logo.ignore-padding-right
+                .container-fluid.make-space-for-logo.ignore-padding-right.more-padding-left
                     <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
 
             #top-nav-wrapper
