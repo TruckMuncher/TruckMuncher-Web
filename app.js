@@ -12,6 +12,7 @@ var express = require('express'),
     api = require('./api'),
     routes = require('./routes'),
     config = require('./oauth'),
+    guid = require('./guid'),
     passport = require('passport'),
     favicon = require('serve-favicon'),
     q = require('q'),
@@ -49,18 +50,13 @@ app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var sess = {
     genid: function (req) {
-        return genuuid(); // use UUIDs for session IDs
+        return guid.gen(); // use UUIDs for session IDs
     },
     secret: process.env.sessionSecret || 'MunchyTruckMunch3r',
     resave: false,
     saveUninitialized: true,
     cookie: {}
 };
-
-function genuuid() {
-    return "";
-}
-
 
 //use secure cookies on bluemix
 if (host !== 'localhost') {
