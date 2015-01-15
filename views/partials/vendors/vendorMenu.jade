@@ -3,9 +3,9 @@
 
 #wrapper
     #sidebar-wrapper.bg-color-mold
-        .container-fluid.make-space-for-logo
+        .container-fluid.make-space-for-logo.ignore-padding-right
             <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
-            .row(data-ng-cloak='')
+            .row.add-space-sidelabel(data-ng-cloak='')
                 article.col-xs-12
                     div.form-group
                         label(for='truckList') Menu for Truck:

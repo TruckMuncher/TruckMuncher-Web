@@ -3,9 +3,9 @@
 
 #wrapper
     #sidebar-wrapper.bg-color-mold
-        .container-fluid.make-space-for-logo
+        .container-fluid.make-space-for-logo.ignore-padding-right
             <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
-            .row
+            .row.add-space-sidelabel
                 article.col-xs-12.col-sm-12
                     div.form-group
                         label(for='truckList') Profile for Truck:
@@ -32,7 +32,7 @@
                                             label.control-label(for='keywords') Keywords
                                             tags-input(id='keywords', data-ng-model='tags')
                                     div(style="float:right")
-                                        button.btn.btn-primary(data-ng-disabled='requestInProgress', type='submit') Submit
+                                        button.btn.bg-color-mold.txt-color-white(data-ng-disabled='requestInProgress', type='submit') Submit
                                         button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
                 .col-xs-12.col-md-4
                     article
