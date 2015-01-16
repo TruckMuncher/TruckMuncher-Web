@@ -22,9 +22,9 @@
                             header
                                 h2 Main Profile
                             form(data-ng-submit='submit()').background-transparent
-                                .col-sm-3
+                                .col-lg-8.col-md-12.col-sm-12
                                     div(data-profile-image-upload='', data-truck='selectedTruck')
-                                .col-sm-9
+                                .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
                                     fieldset(class="form-group")
                                         section
                                             label.control-label(for='truckName') Truck Name
@@ -33,8 +33,8 @@
                                             label.control-label(for='keywords') Keywords
                                             tags-input(id='keywords', data-ng-model='tags')
                                     div(style="float:right")
-                                        button.btn.bg-color-mold.txt-color-white(data-ng-disabled='requestInProgress', type='submit') Submit
-                                        button.btn.btn-default(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
+                                        button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-disabled='requestInProgress', type='submit') Submit
+                                        button.btn.btn-default.submit-button(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
                 .col-xs-12.col-md-4
                     article
                         .jarviswidget.jarviswidget-color-blueDark
@@ -64,4 +64,4 @@
                                                 div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
                                                     .alert.alert-info
                                                         span You have not uploaded a profile image yet
-                                                div(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')
+                                                div.ignore-height(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')
