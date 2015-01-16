@@ -4,7 +4,7 @@
             <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
             .row.add-space-sidelabel
                 article.col-xs-12.col-sm-12
-                    div.form-group
+                    div.form-group.txt-color-white
                         label(for='truckList') Profile for Truck:
                         select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
                     div.form-group.pull-right
@@ -33,8 +33,8 @@
                                             label.control-label(for='keywords') Keywords
                                             tags-input(id='keywords', data-ng-model='tags')
                                     div(style="float:right")
-                                        button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-disabled='requestInProgress', type='submit') Submit
-                                        button.btn.btn-default.submit-button(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
+                                        button.btn.bg-color-mold.txt-color-white.submit-button.more-padding-left.more-padding-right(data-ng-disabled='requestInProgress', type='submit') Submit
+                                        //button.btn.btn-default.submit-button(data-ng-disabled='requestInProgress', data-ng-click='resetTruck(selectedTruck)', type='button') Reset
                 .col-xs-12.col-md-4
                     article
                         .jarviswidget.jarviswidget-color-blueDark
