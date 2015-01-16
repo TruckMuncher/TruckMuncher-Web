@@ -12,17 +12,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 latitude: 43.05,
                 longitude: -87.95
             },
-            zoom: 12,
-            clusterOptions: {
-                "title": "Click to zoom",
-                "gridSize": 60,
-                "ignoreHidden": true,
-                "minimumClusterSize": 2
-            }
+            zoom: 12
         };
 
         $scope.truckMarkers = [];
-        $scope.truckWindows = [];
 
         navigator.geolocation.getCurrentPosition(function (pos) {
 
@@ -74,15 +67,15 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 marker.truckName = truckProfile.name;
                 marker.truckKeywords = truckProfile.keywords;
             } else {
-                marker.name = "Could not find profile for truck";
+                marker.truckName = "Could not find profile for truck";
             }
 
             return marker;
         }
 
         $scope.showMarkerWindow = function (id) {
-            _.forEach($scope.truckMarkers, function (m) {
-                m.show = false;
+            _.forEach($scope.truckMarkers, function (marker) {
+                marker.show = false;
             });
             var marker = _.find($scope.truckMarkers, function (marker) {
                 return marker.id === id;
@@ -91,39 +84,32 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             marker.show = true;
         };
 
-        $scope.testFn = function (truckId) {
+        $scope.showMenuModal = function (truckId) {
+            var truck = TruckProfileService.getTruckProfile(truckId);
+            var customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
+            MenuService.getMenu(truckId).then(function (response) {
+                launchModal(response, customMenuColors);
+            });
+        };
+
+        function launchModal(menu, customMenuColors) {
             var modalCtrl = ['$scope', 'menu', 'customMenuColors', function ($scope, menu, customMenuColors) {
                 $scope.menu = menu;
                 $scope.customMenuColors = customMenuColors;
             }];
-            var truck = TruckProfileService.getTruckProfile(truckId);
-            var customMenuColors = {};
-            if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
-                customMenuColors.primary = '#000000';
-            else
-                customMenuColors.primary = truck.primaryColor;
-            if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
-                customMenuColors.secondary = '#000000';
-            else
-                customMenuColors.secondary = truck.secondaryColor;
-            customMenuColors.primaryContrast = colorService.getContrastingHexColor(customMenuColors.primary);
-            customMenuColors.secondaryContrast = colorService.getContrastingHexColor(customMenuColors.secondary);
-            MenuService.getMenu(truckId).then(function (response) {
-                $scope.modalInstance = $modal.open({
-                    templateUrl: "/partials/customer-menu.jade",
-                    controller: modalCtrl,
-                    resolve: {
-                        menu: function () {
-                            return response
-                        },
-                        customMenuColors: function () {
-                            return customMenuColors
-                        }
-                    }
 
-                });
+            $scope.modalInstance = $modal.open({
+                templateUrl: "/partials/customer-menu.jade",
+                controller: modalCtrl,
+                resolve: {
+                    menu: function () {
+                        return menu;
+                    },
+                    customMenuColors: function () {
+                        return customMenuColors;
+                    }
+                }
             });
         }
-
     }]);
 
