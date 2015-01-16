@@ -93,13 +93,17 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
         };
 
         function launchModal(menu, customMenuColors) {
-            var modalCtrl = ['$scope', 'menu', 'customMenuColors', function ($scope, menu, customMenuColors) {
+            var modalCtrl = ['$scope', 'menu', 'customMenuColors', '$modalInstance', function ($scope, menu, customMenuColors, $modalInstance) {
                 $scope.menu = menu;
                 $scope.customMenuColors = customMenuColors;
+
+                $scope.close = function () {
+                    $modalInstance.close({});
+                };
             }];
 
             $scope.modalInstance = $modal.open({
-                templateUrl: "/partials/customer-menu.jade",
+                templateUrl: "/partials/map/customer-menu.jade",
                 controller: modalCtrl,
                 resolve: {
                     menu: function () {

@@ -23,7 +23,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('map', {
             url: "/map",
-            templateUrl: "partials/map.jade",
+            templateUrl: "partials/map/map.jade",
             controller: 'mapCtrl',
             authenticate: false
         })
