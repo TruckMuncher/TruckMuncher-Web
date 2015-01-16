@@ -1,28 +1,28 @@
 /**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'TruckProfileService', 'growl',
-    function ($scope, TruckService, TruckProfileService, growl) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$modal', 'MenuService', 'colorService',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $modal, MenuService, colorService) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
-        var lat, lon, infoWindow;
+        var lat;
+        var lon;
 
-        var mapOptions = {
-            zoom: 13,
-            center: new google.maps.LatLng(43.0500, -87.95)
+        $scope.map = {
+            center: {
+                latitude: 43.05,
+                longitude: -87.95
+            },
+            zoom: 12
         };
-
-        $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
         $scope.truckMarkers = [];
 
-        var mcOptions = {gridSize: 50, maxZoom: 15};
-        var mc = new MarkerClusterer($scope.map, $scope.truckMarkers, mcOptions);
-
         navigator.geolocation.getCurrentPosition(function (pos) {
+
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
 
-            $scope.map.panTo(new google.maps.LatLng(lat, lon));
+            $scope.map.center = {latitude: lat, longitude: lon};
 
             getMarkers();
 
@@ -47,43 +47,73 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                         }
                     });
                 }
+
             });
         }
 
-        $scope.$watch('truckMarkers', function () {
-            mc.clearMarkers();
-            mc.addMarkers($scope.truckMarkers);
-        });
-
-
         function populateMarker(truck) {
-            var truckProfile = TruckProfileService.getTruckProfile(truck.id);
-            var marker = new google.maps.Marker({
-                map: $scope.map,
-                position: new google.maps.LatLng(truck.latitude, truck.longitude),
-                icon: 'img/SingleTruckAnnotationIcon.png'
-            });
-            var content = "Could not find truck profile";
+            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
+            var marker = {
+                id: truck.id,
+                icon: 'img/SingleTruckAnnotationIcon.png',
+                coords: {
+                    latitude: truck.latitude,
+                    longitude: truck.longitude
+                },
+                show: false
+            };
+
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-                content = "<b>" + truckProfile.name + "</b>" +
-                "<p>" + truckProfile.keywords + "</p>";
+                marker.truckName = truckProfile.name;
+                marker.truckKeywords = truckProfile.keywords;
+            } else {
+                marker.truckName = "Could not find profile for truck";
             }
-            addInfoWindowToMarker(marker, content);
 
             return marker;
         }
 
-        function addInfoWindowToMarker(marker, content) {
-            google.maps.event.addListener(marker, 'click', function () {
-                if (!_.isUndefined(infoWindow)) {
-                    infoWindow.close();
-                }
-                var infoWindowOptions = {
-                    content: content
+        $scope.showMarkerWindow = function (id) {
+            _.forEach($scope.truckMarkers, function (marker) {
+                marker.show = false;
+            });
+            var marker = _.find($scope.truckMarkers, function (marker) {
+                return marker.id === id;
+            });
+
+            marker.show = true;
+        };
+
+        $scope.showMenuModal = function (truckId) {
+            var truck = TruckProfileService.getTruckProfile(truckId);
+            var customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
+            MenuService.getMenu(truckId).then(function (response) {
+                launchModal(response, customMenuColors);
+            });
+        };
+
+        function launchModal(menu, customMenuColors) {
+            var modalCtrl = ['$scope', 'menu', 'customMenuColors', '$modalInstance', function ($scope, menu, customMenuColors, $modalInstance) {
+                $scope.menu = menu;
+                $scope.customMenuColors = customMenuColors;
+
+                $scope.close = function () {
+                    $modalInstance.close({});
                 };
-                infoWindow = new google.maps.InfoWindow(infoWindowOptions);
-                infoWindow.open($scope.map, marker);
+            }];
+
+            $scope.modalInstance = $modal.open({
+                templateUrl: "/partials/map/customer-menu.jade",
+                controller: modalCtrl,
+                resolve: {
+                    menu: function () {
+                        return menu;
+                    },
+                    customMenuColors: function () {
+                        return customMenuColors;
+                    }
+                }
             });
         }
-    }])
-;
+    }]);
+

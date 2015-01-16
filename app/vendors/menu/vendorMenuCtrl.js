@@ -24,17 +24,7 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
                 return truck.id === truckId;
             });
             if (truck) {
-                $scope.customMenuColors = {};
-                if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
-                    $scope.customMenuColors.primary = '#000000';
-                else
-                    $scope.customMenuColors.primary = truck.primaryColor;
-                if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
-                    $scope.customMenuColors.secondary = '#000000';
-                else
-                    $scope.customMenuColors.secondary = truck.secondaryColor;
-                $scope.customMenuColors.primaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.primary);
-                $scope.customMenuColors.secondaryContrast = colorService.getContrastingHexColor($scope.customMenuColors.secondary);
+                $scope.customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
             }
         }
 

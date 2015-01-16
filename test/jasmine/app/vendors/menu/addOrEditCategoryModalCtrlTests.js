@@ -30,7 +30,7 @@ describe('TruckMuncherApp', function () {
         }));
 
         it('should dismiss the modal when the state changes', function () {
-            $httpBackend.expect('GET', 'partials/map.jade', undefined).respond(200, '');
+            $httpBackend.expect('GET', 'partials/map/map.jade', undefined).respond(200, '');
             $state.go('map');
             rootScope.$apply();
             $httpBackend.flush();

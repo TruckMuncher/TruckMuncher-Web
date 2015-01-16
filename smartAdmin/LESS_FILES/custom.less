@@ -64,7 +64,7 @@
 }
 
 #top-nav-wrapper {
-  z-index: 1001;
+//  z-index: 1001;
 //  height: @topPanelHeight;
   overflow-y: auto;
 //  background: #DBDBDB;
@@ -297,7 +297,7 @@ h2 {
 }
 
 .make-space-for-logo{
-  margin-top: 70px;
+  margin-top: 40px;
 }
 
 /************ style **************/
@@ -335,11 +335,14 @@ h2 {
   visibility: visible;
   font-size: 2em;
   padding-top: 20px;
+  z-index: 1001;
+  position: relative;
 }
 
 .login-out {
   float: right;
   padding: 20px;
+  z-index: 0;
 }
 
 #wrapper {
@@ -425,6 +428,12 @@ h2 {
 
   .make-space-for-logo{
     margin-top: 70px;
+  }
+
+  #top-nav-wrapper {
+    overflow-y: auto;
+    padding-left: 0px;
+    position: relative;
   }
 
 }
