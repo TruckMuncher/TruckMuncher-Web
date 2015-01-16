@@ -1,6 +1,6 @@
 div(style="height:80px; width:200px; overflow-y:auto;" )
     div
-        b {{parameter.truckName}}
-    div {{parameter.truckKeywords}}
-    div {{parameter.id}}
-    <div data-ui-view></div>
+        b {{parameter.marker.truckName}}
+    div {{parameter.marker.truckKeywords}}
+    div
+        button(data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu

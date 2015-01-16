@@ -1,8 +1,8 @@
 /**
  * Created by maconsuckow on 12/3/14.
  */
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl',
-    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$modal', 'MenuService', 'colorService',
+    function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $modal, MenuService, colorService) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
         var lat;
         var lon;
@@ -89,6 +89,41 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             });
 
             marker.show = true;
+        };
+
+        $scope.testFn = function (truckId) {
+            var modalCtrl = ['$scope', 'menu', 'customMenuColors', function ($scope, menu, customMenuColors) {
+                $scope.menu = menu;
+                $scope.customMenuColors = customMenuColors;
+            }];
+            var truck = TruckProfileService.getTruckProfile(truckId);
+            var customMenuColors = {};
+            if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
+                customMenuColors.primary = '#000000';
+            else
+                customMenuColors.primary = truck.primaryColor;
+            if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
+                customMenuColors.secondary = '#000000';
+            else
+                customMenuColors.secondary = truck.secondaryColor;
+            customMenuColors.primaryContrast = colorService.getContrastingHexColor(customMenuColors.primary);
+            customMenuColors.secondaryContrast = colorService.getContrastingHexColor(customMenuColors.secondary);
+            MenuService.getMenu(truckId).then(function (response) {
+                $scope.modalInstance = $modal.open({
+                    templateUrl: "/partials/customer-menu.jade",
+                    controller: modalCtrl,
+                    resolve: {
+                        menu: function () {
+                            return response
+                        },
+                        customMenuColors: function () {
+                            return customMenuColors
+                        }
+                    }
+
+                });
+            });
         }
 
     }]);
+
