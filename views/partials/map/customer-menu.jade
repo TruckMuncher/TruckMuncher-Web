@@ -1,0 +1,28 @@
+.col-xs-12.background-white-transparent.container-fluid
+    .row
+        i.fa.fa-close.fa-2x.pull-right.pointer(data-ng-click="close()")
+    .row
+        div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
+            .jarviswidget
+                header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
+                    h2 {{category.name}}
+                section
+                    .widget-body.col-xs-12
+                        p {{category.notes}}
+                        .table-responsive
+                            table.table.table-bordered.bg-color-white
+                                tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
+                                    tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
+                                        td
+                                            span
+                                                b= ' ' + '{{item.name}}'
+                                        td.text-center Price
+                                        td.text-center Available
+
+                                    tr
+                                        td.big-cell {{item.notes}}
+                                        td.text-center
+                                            span {{item.price | currency:"$":2}}
+                                        td.text-center
+                                            i.fa.fa-check(data-ng-if='item.isAvailable')
+                                            i.fa.fa-close(data-ng-if='!item.isAvailable')

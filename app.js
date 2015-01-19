@@ -2,9 +2,6 @@
 
 var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
-if (host !== 'localhost') {
-    require('loganalysis');
-}
 
 var express = require('express'),
     session = require('express-session'),
@@ -58,7 +55,7 @@ var sess = {
     cookie: {}
 };
 
-//use secure cookies on bluemix
+//use secure cookies on non localhost
 if (host !== 'localhost') {
     app.set('trust proxy', 1); // trust first proxy
     sess.cookie.secure = true; // serve secure cookies
@@ -80,7 +77,7 @@ app.use(function (req, res, next) {
     res.locals.apiUrl = process.env.API_URL;
 
     //force https on everything but localhost
-    var schema = req.headers['x-forwarded-proto'];
+    var schema = req.protocol;
     if (schema === 'https' || host === 'localhost') {
         next();
     }
@@ -158,17 +155,6 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
-
-
-// There are many useful environment variables available in process.env.
-// VCAP_APPLICATION contains useful information about a deployed application.
-var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
-// TODO: Get application information and use it in your app.
-
-// VCAP_SERVICES contains all the credentials of services bound to
-// this application. For details of its content, please refer to
-// the document or sample of each service.
-var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
 // Start server
 app.listen(port, host);

@@ -22,6 +22,17 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
         return (yiq < 128);
     }
 
+    function contrastingHexColor(hex) {
+        var light = '#FFFFFF';
+        var dark = '#000000';
+        var rgb = hexToRgb(hex);
+        if (rgb) {
+            return isDark(rgb.r, rgb.g, rgb.b) ? light : dark;
+        } else {
+            return light;
+        }
+    }
+
     return {
         RGBsToHexWithDarkIndicator: function (rgbArray) {
             var hexArray = _.map(rgbArray, function (val) {
@@ -46,15 +57,21 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
             }
         },
         getContrastingHexColor: function (hex) {
-            var light = '#FFFFFF';
-            var dark = '#000000';
-            var rgb = hexToRgb(hex);
-            if (rgb) {
-                return isDark(rgb.r, rgb.g, rgb.b) ? light : dark;
-            } else {
-                return light;
-            }
-
+            return contrastingHexColor(hex);
+        },
+        getCustomMenuColorsForTruck: function (truck) {
+            var customMenuColors = {};
+            if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
+                customMenuColors.primary = '#000000';
+            else
+                customMenuColors.primary = truck.primaryColor;
+            if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
+                customMenuColors.secondary = '#000000';
+            else
+                customMenuColors.secondary = truck.secondaryColor;
+            customMenuColors.primaryContrast = contrastingHexColor(customMenuColors.primary);
+            customMenuColors.secondaryContrast = contrastingHexColor(customMenuColors.secondary);
+            return customMenuColors;
         }
     };
 });

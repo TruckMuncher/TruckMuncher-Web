@@ -1,6 +1,6 @@
 .modal-header Category Details
 .modal-body.smart-form
-    form(id='categoryForm', name='categoryForm', data-ng-submit='categoryForm.$valid && submit()')
+    form(id='categoryForm', name='categoryForm')
         section
             label.label(for='categoryName') Category Name
             label.input
@@ -13,5 +13,5 @@
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        button.btn.bg-color-mold.txt-color-white(type='submit',  form='categoryForm', data-ng-disabled='requestInProgress') Submit
+        button.btn.bg-color-mold.txt-color-white(data-ng-click='categoryForm.$valid && submit()', data-ng-disabled='requestInProgress') Submit
             i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
