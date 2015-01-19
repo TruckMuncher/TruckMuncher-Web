@@ -6,11 +6,8 @@ Downloading and Running the Project Locally
 2. Install all node dependencies:
 
         npm install
-3. Install nodemon. This package will monitor your file system and restart the node server whenever changes are made:
-
-        npm install -g nodemon
         
-4. Set the environment variables for OAuth:
+3. Set the environment variables for OAuth:
 
         export FACEBOOK_CLIENT_ID=[key]
         export FACEBOOK_CLIENT_SECRET=[key]
@@ -22,10 +19,11 @@ Downloading and Running the Project Locally
 	* ~/.profile
 	* ~/.bash_profile
 	* /etc/profile
+	* ~/.bashrc
 	
-	You may also need to start a new terminal session after this step.
+	You will need to also run `source ~/.bash_profile` or start a new terminal session after this step.
 
-5. Start the server
+4. Start the server
 
         nodemon app.js
         
