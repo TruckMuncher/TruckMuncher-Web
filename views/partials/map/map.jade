@@ -3,10 +3,13 @@
         .container-fluid.make-space-for-logo.ignore-padding-right
             <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
             div.col-xs-12
-                .input-group
+                .input-group.form-group
                     input.form-control
                     span.input-group-btn
-                        button.btn.bg-color-pink.txt-color-white(type='button') Search
+                        button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading') Search
+                .progress(data-ng-show='loading')
+                    .progress.progress-striped.active
+                        .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
                 div.overflow-auto.container-fluid(data-ng-repeat='marker in truckMarkers')
                     .row.pointer(data-ng-click="showMarkerWindow(marker.id)")
                         .col-xs-3
@@ -23,7 +26,7 @@
 
     #page-content-wrapper.tm-main
         #content
-            .row(style="padding-top: 50px")
+            .row.col-md-10.col-md-offset-1(style="padding-top: 50px")
                 article(data-ng-style="{'height': '{{mapHeight}}'}")
                     ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-marker(data-ng-repeat='marker in truckMarkers', idKey='marker.id', coords="marker.coords", icon="marker.icon", data-click='showMarkerWindow(marker.id)' )

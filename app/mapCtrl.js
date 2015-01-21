@@ -4,6 +4,7 @@
 angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$modal', 'MenuService', 'colorService',
     function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $modal, MenuService, colorService) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
+        $scope.loading = true;
         var lat;
         var lon;
 
@@ -47,7 +48,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                         }
                     });
                 }
-
+                $scope.loading = false;
             });
         }
 
