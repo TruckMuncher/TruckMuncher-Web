@@ -96,10 +96,11 @@ app.set('views', __dirname + '/views'); //optional since express defaults to CWD
 app.use(express.static(path.join(__dirname, '/lib')));
 
 app.get('/', routes.index);
+app.get('/beta', routes.beta);
 
 app.get('/partials/*', routes.partials);
 
-app.get('/logout', routes.logout);
+app.get('*/logout', routes.logout);
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', function (req, res, next) {
@@ -108,7 +109,7 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.redirect('/');
+            return res.redirect('/beta/');
         }
         req.logIn(user, function (err) {
             if (err) {
@@ -116,7 +117,7 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             }
             api.login(info.token, info.tokenSecret, null).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/vendors/menu');
+                return res.redirect('/beta#/vendors/menu');
             }, function () {
                 //TODO: handle error
                 return next();
@@ -132,7 +133,7 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.redirect('/');
+            return res.redirect('/beta/');
         }
         req.logIn(user, function (err) {
             if (err) {
@@ -140,7 +141,7 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             }
             api.login(null, null, info.accessToken).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/vendors/menu');
+                return res.redirect('/beta#/vendors/menu');
             }, function () {
                 //TODO: handle error
                 return next;
