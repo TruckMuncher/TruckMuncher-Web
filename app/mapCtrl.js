@@ -80,6 +80,8 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
                 return marker.id === id;
             });
 
+            $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
+
             marker.show = true;
         };
 
