@@ -7,12 +7,16 @@
                     h4 welcome to
                     h1#login-logo-font.logo-font TruckMuncher
                 .panel-body.text-center
-                    .row.form-group
-                        div
-                            a.btn.btn-primary(id="facebookBtn", href='/auth/facebook')
-                                i.fa.fa-facebook= '  Facebook'
-                            a.btn.btn-primary(id="twitterBtn", href='/auth/twitter')
-                                i.fa.fa-twitter= '  Twitter'
+                    .row
+                        a.btn.btn-primary.loginBtn.facebook.hidden-sm.hidden-xs(href='/auth/facebook')
+                            i.fa.fa-facebook= '  Sign In with Facebook'
+                        a.btn.btn-primary.loginBtn.facebook.hidden-lg.hidden-md(href='/auth/facebook')
+                            i.fa.fa-facebook= '  Facebook'
+                    .row
+                        a.btn.btn-primary.loginBtn.twitter.hidden-sm.hidden-xs(href='/auth/twitter')
+                            i.fa.fa-twitter= '  Sign In with Twitter'
+                        a.btn.btn-primary.loginBtn.twitter.hidden-lg.hidden-md(href='/auth/twitter')
+                            i.fa.fa-twitter= '  Twitter'
                     .row
                         a.btn.bg-color-pink.txt-color-white(data-ui-sref='map')
                             i.fa.fa-lg.fa-fw.fa-map-marker
