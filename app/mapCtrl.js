@@ -64,10 +64,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'TruckService
             };
 
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-                marker.truckName = truckProfile.name;
-                marker.truckKeywords = truckProfile.keywords;
+                marker.truckProfile = truckProfile;
             } else {
-                marker.truckName = "Could not find profile for truck";
+                marker.truckProfile = {name: "Could not find profile for truck"};
             }
 
             return marker;

@@ -9,8 +9,16 @@ div(data-ng-controller='navCtrl')
                             input.form-control
                             span.input-group-btn
                                 button.btn.bg-color-pink.txt-color-white(type='button') Search
-                        div(data-ng-repeat='marker in truckMarkers')
-
+                        div.overflow-auto.container-fluid(data-ng-repeat='marker in truckMarkers')
+                            .row
+                                .col-xs-3
+                                    img(data-ng-src='{{marker.truckProfile.imageUrl}}' style='width:50px; height:50px;')
+                                .col-xs-9
+                                    div.pointer
+                                        b {{marker.truckProfile.name}}
+                                    div {{marker.truckProfile.keywords | json}}
+                            .row
+                                hr
 
             #top-nav-wrapper
                 <div data-ng-include="'/partials/nav.jade'"></div>
