@@ -48,7 +48,7 @@
 
 #login-logo-font {
   color: black;
-  font-size: 4em;
+  font-size: 3.5em;
 }
 
 #panel-left {
@@ -102,8 +102,6 @@
   padding: 3px 20px;
   height: 40px;
   font-size: 1.75em;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
   background: white;
   color: black;
 }
@@ -124,6 +122,18 @@
 
 .ignore-padding-right {
   padding-right: 0px;
+}
+
+.ignore-height {
+  height:auto !important;
+}
+
+.more-padding-left {
+  padding-left: 30px;
+}
+
+.more-padding-right {
+  padding-right: 30px;
 }
 
 .menu-active > a {
@@ -192,17 +202,25 @@ td.merge-with-left {
   margin-top: 0px;
 }
 
-#facebookBtn {
-  width: 35%;
-  margin-right: 5px;
+.submit-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.loginBtn {
+  font-size: 1.5em;
+  width: 65%;
   padding: 10px;
+  background-color: #ffffff;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.facebook:hover {
   background-color: #3B5998;
 }
 
-#twitterBtn {
-  width: 35%;
-  margin-left: 5px;
-  padding: 10px;
+.twitter:hover {
   background-color: #55ACEE;
 }
 
@@ -434,6 +452,11 @@ h2 {
     overflow-y: auto;
     padding-left: 0px;
     position: relative;
+  }
+
+  #login-logo-font {
+    color: black;
+    font-size: 4em;
   }
 
 }
