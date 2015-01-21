@@ -1,9 +1,16 @@
 div(data-ng-controller='navCtrl')
-    .tm-main(data-ng-class="{'with-left-panel': loggedIn()}")
+    .tm-main
         #wrapper
-            #sidebar-wrapper.bg-color-mold(data-ng-show="loggedIn()")
-                .container-fluid.make-space-for-logo.ignore-padding-right.more-padding-left
-                    <div data-ng-include="'/partials/vendors/panelLeftMenu.jade'"></div>
+            #sidebar-wrapper.bg-color-mold
+                .container-fluid.make-space-for-logo.ignore-padding-right
+                    <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+                    div.col-xs-12
+                        .input-group
+                            input.form-control
+                            span.input-group-btn
+                                button.btn.bg-color-pink.txt-color-white(type='button') Search
+                        div(data-ng-repeat='marker in truckMarkers')
+
 
             #top-nav-wrapper
                 <div data-ng-include="'/partials/nav.jade'"></div>
