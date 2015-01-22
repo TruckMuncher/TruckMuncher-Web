@@ -1,6 +1,6 @@
 angular.module('TruckMuncherApp').controller('mapCtrl',
-    ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$modal', 'MenuService', 'colorService', 'SearchService',
-        function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $modal, MenuService, colorService, SearchService) {
+    ['$scope', 'uiGmapGoogleMapApi', 'growl', '$modal', 'MenuService', 'colorService', 'SearchService', 'MarkerService',
+        function ($scope, uiGmapGoogleMapApi, growl, $modal, MenuService, colorService, SearchService, MarkerService) {
             $scope.mapHeight = screen.height / 1.7 + 'px';
             $scope.loading = true;
             $scope.searchQuery = "";
@@ -12,9 +12,8 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                 show: false,
                 templateUrl: "/partials/map/infoWindow.jade",
                 options: {
-                    pixelOffset: {height: -20, width:0}
-                },
-                templateParameter: {marker: null, showMenuCallback: $scope.showMenuModal}
+                    pixelOffset: {height: -20, width: 0}
+                }
             };
 
             $scope.map = {
@@ -27,9 +26,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
 
             $scope.currentPositionMarker = {};
 
-
             navigator.geolocation.getCurrentPosition(function (pos) {
-
                 lat = pos.coords.latitude;
                 lon = pos.coords.longitude;
                 $scope.currentPositionMarker = {
@@ -50,49 +47,18 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             });
 
             function getMarkers() {
-                TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
-                    allActiveTruckMarkers = [];
-                    if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
-                        for (var i = 0; i < trucksResponse.length; i++) {
-                            var marker = populateMarker(trucksResponse[i]);
-                            allActiveTruckMarkers.push(marker);
-                        }
-                    } else {
-                        TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
-                            for (var i = 0; i < trucksResponse.length; i++) {
-                                var marker = populateMarker(trucksResponse[i]);
-                                allActiveTruckMarkers.push(marker);
-                            }
-                        });
-                    }
-                    $scope.displayedMarkers = allActiveTruckMarkers;
+                $scope.loading = true;
+                allActiveTruckMarkers = [];
+                MarkerService.getMarkers(lat, lon).then(function (markers) {
+                    allActiveTruckMarkers = markers;
                     $scope.loading = false;
+                    $scope.displayedMarkers = allActiveTruckMarkers;
                 });
             }
 
             $scope.closeInfoWindow = function () {
                 $scope.infoWindow.show = false;
             };
-
-            function populateMarker(truck) {
-                var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
-                var marker = {
-                    id: truck.id,
-                    icon: 'img/SingleTruckAnnotationIcon.png',
-                    coords: {
-                        latitude: truck.latitude,
-                        longitude: truck.longitude
-                    }
-                };
-
-                if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-                    marker.truckProfile = truckProfile;
-                } else {
-                    marker.truckProfile = {name: "Could not find profile for truck"};
-                }
-
-                return marker;
-            }
 
             $scope.onMarkerClicked = function (clickEvent) {
                 $scope.showMarkerWindow(clickEvent.model.id);
@@ -108,12 +74,13 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
 
                 $scope.infoWindow.coords = marker.coords;
                 $scope.infoWindow.show = true;
-                $scope.infoWindow.templateParameter.marker = marker;
-
+                $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal}
             };
 
             $scope.showMenuModal = function (truckId) {
-                var truck = TruckProfileService.getTruckProfile(truckId);
+                var truck = _.find(allActiveTruckMarkers, function (marker) {
+                    return marker.truckProfile.id === truckId;
+                });
                 var customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
                 MenuService.getMenu(truckId).then(function (response) {
                     launchModal(response, customMenuColors);
