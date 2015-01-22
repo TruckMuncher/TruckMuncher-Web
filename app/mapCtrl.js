@@ -1,6 +1,3 @@
-/**
- * Created by maconsuckow on 12/3/14.
- */
 angular.module('TruckMuncherApp').controller('mapCtrl',
     ['$scope', 'TruckService', 'uiGmapGoogleMapApi', 'TruckProfileService', 'growl', '$modal', 'MenuService', 'colorService', 'SearchService',
         function ($scope, TruckService, uiGmapGoogleMapApi, TruckProfileService, growl, $modal, MenuService, colorService, SearchService) {
@@ -20,11 +17,22 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                 zoom: 12
             };
 
+            $scope.currentPositionMarker = {};
+
 
             navigator.geolocation.getCurrentPosition(function (pos) {
 
                 lat = pos.coords.latitude;
                 lon = pos.coords.longitude;
+                $scope.currentPositionMarker = {
+                    id: 1,
+                    icon: 'img/map_marker_green.png',
+                    coords: {
+                        latitude: lat,
+                        longitude: lon
+                    },
+                    show: false
+                };
 
                 $scope.map.center = {latitude: lat, longitude: lon};
 
@@ -47,13 +55,11 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                         TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
                             for (var i = 0; i < trucksResponse.length; i++) {
                                 var marker = populateMarker(trucksResponse[i]);
-                                $scope.truckMarkers.push(marker);
+                                allActiveTruckMarkers.push(marker);
                             }
                         });
                     }
-                    $scope.displayedMarkers = _.filter(allActiveTruckMarkers, function (t) {
-                        return true;
-                    });
+                    $scope.displayedMarkers = allActiveTruckMarkers;
                     $scope.loading = false;
                 });
             }

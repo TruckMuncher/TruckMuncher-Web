@@ -4,7 +4,7 @@
             <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
             div.col-xs-12
                 .input-group.form-group
-                    input.form-control(data-ng-model='searchQuery' ng-keyup="$event.keyCode == 13 && simpleSearch(searchQuery)")
+                    input.form-control(data-ng-model='searchQuery' data-ng-keyup="$event.keyCode == 13 && simpleSearch(searchQuery)")
                     span.input-group-btn
                         button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
                 .progress(data-ng-show='loading')
@@ -31,3 +31,4 @@
                     ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-marker(data-ng-repeat='marker in displayedMarkers', idKey='marker.id', coords="marker.coords", icon="marker.icon", data-click='showMarkerWindow(marker.id)' )
                             ui-gmap-window(data-show='marker.show', templateUrl='"/partials/map/infoWindow.jade"', templateParameter='{marker: marker, showMenuCallback: showMenuModal}')
+                        ui-gmap-marker(data-ng-if='currentPositionMarker.id', idKey='currentPositionMarker.id', coords='currentPositionMarker.coords', icon='currentPositionMarker.icon', options='{"cursor": "grab"}')
