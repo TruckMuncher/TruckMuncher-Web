@@ -8,6 +8,14 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             var lon;
             var allActiveTruckMarkers = [];
             $scope.displayedMarkers = [];
+            $scope.infoWindow = {
+                show: false,
+                templateUrl: "/partials/map/infoWindow.jade",
+                options: {
+                    pixelOffset: {height: -20, width:0}
+                },
+                templateParameter: {marker: null, showMenuCallback: $scope.showMenuModal}
+            };
 
             $scope.map = {
                 center: {
@@ -37,8 +45,6 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                 $scope.map.center = {latitude: lat, longitude: lon};
 
                 getMarkers();
-
-                $scope.$apply();
             }, function (error) {
                 growl.addErrorMessage('Unable to get location: ' + error.message);
             });
@@ -64,6 +70,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                 });
             }
 
+            $scope.closeInfoWindow = function () {
+                $scope.infoWindow.show = false;
+            };
+
             function populateMarker(truck) {
                 var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
                 var marker = {
@@ -72,8 +82,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                     coords: {
                         latitude: truck.latitude,
                         longitude: truck.longitude
-                    },
-                    show: false
+                    }
                 };
 
                 if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
@@ -85,17 +94,22 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                 return marker;
             }
 
+            $scope.onMarkerClicked = function (clickEvent) {
+                $scope.showMarkerWindow(clickEvent.model.id);
+            };
+
             $scope.showMarkerWindow = function (id) {
-                _.forEach(allActiveTruckMarkers, function (marker) {
-                    marker.show = false;
-                });
+                $scope.closeInfoWindow();
                 var marker = _.find(allActiveTruckMarkers, function (marker) {
                     return marker.id === id;
                 });
 
                 $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
 
-                marker.show = true;
+                $scope.infoWindow.coords = marker.coords;
+                $scope.infoWindow.show = true;
+                $scope.infoWindow.templateParameter.marker = marker;
+
             };
 
             $scope.showMenuModal = function (truckId) {
@@ -148,6 +162,6 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                     });
                     $scope.loading = false;
                 });
-            }
+            };
         }]);
 

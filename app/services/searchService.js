@@ -5,5 +5,5 @@ angular.module('TruckMuncherApp')
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.search.SearchService/simpleSearch';
                 return httpHelperService.post(url, {query: query, limit: limit, offset: offset}, 'searchResponse');
             }
-        }
+        };
     }]);
