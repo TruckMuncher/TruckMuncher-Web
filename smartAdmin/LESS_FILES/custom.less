@@ -1,9 +1,156 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
 @import "../custom/animations";
+@import "../custom/form-fields.less";
 
+.logo-container {
+  max-width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.featurette-title {
+  font-size: 30px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+@media (min-width: 768px) {
+  .featurette-title {
+    font-size: 40px;
+  }
+
+  .logo-container {
+    max-width: 20%;
+  }
+}
+
+#map {
+  height: 100%;
+}
+
+@topPanelHeight: 75px;
 .fixed-height-palette {
   height: 150px;
+}
+
+@font-face {
+  font-family: "DimitriSwank";
+  src: url("/fonts/dimis.ttf") /* TTF file for CSS3 browsers */
+}
+
+.logo-font {
+  font-family: "DimitriSwank", sans-serif;
+}
+
+#login-logo-font {
+  color: black;
+  font-size: 3.5em;
+}
+
+.overflow-auto {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+#panel-left {
+  width: 0px;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  top: @topPanelHeight;
+  left: 0;
+  z-index: 904;
+  min-height: 100%;
+  color: white;
+}
+
+#top-nav-wrapper {
+  //  z-index: 1001;
+  //  height: @topPanelHeight;
+  overflow-y: auto;
+  //  background: #DBDBDB;
+  padding-left: 0px;
+  position: relative;
+}
+
+.tm-main {
+  background: none;
+}
+
+.left-menu {
+  padding-left: 20px;
+  height: 30px;
+  font-size: 1.5em;
+  color: white;
+  border-bottom-color: #ffffff;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.left-menu > a {
+  color: #ffffff;
+}
+
+.nav-bar-sign {
+  text-align: center;
+  border: solid;
+  border-width: 1px;
+  padding: 3px 20px;
+  height: 40px;
+  font-size: 1.75em;
+  background: white;
+  color: black;
+}
+
+.btn-pink {
+  border: solid;
+  border-width: 1px;
+  font-size: 1em;
+  -moz-border-radius: 10px;
+  //  border-radius: 10px !important;
+  background: @truckMuncherPinkBase;
+  color: white;
+}
+
+.add-space-sidelabel {
+  padding: 20px 10px 0px 10px;
+}
+
+.ignore-padding-right {
+  padding-right: 0px;
+}
+
+.ignore-height {
+  height: auto !important;
+}
+
+.more-padding-left {
+  padding-left: 30px;
+}
+
+.more-padding-right {
+  padding-right: 30px;
+}
+
+.menu-active > a {
+  color: white;
+  padding-left: 30px;
+}
+
+.menu-active {
+  background: black;
+  color: white;
+}
+
+#background {
+  position: fixed;
+  //  top: @topPanelHeight;
+  min-height: 100%;
+  z-index: 0;
+  background-image: url("/img/MkeBackground.jpg");
 }
 
 .pointer {
@@ -40,27 +187,39 @@ td.merge-with-left {
   display: none !important;
 }
 
-@logoHeight: 49px;
-#logo img {
-  height: @logoHeight;
+@logoHeight: 120px;
+#tm-logo img {
+  position: absolute;
+  height: 60px;
   width: auto;
+  z-index: 999999;
+  top: 10px;
+  left: 50px;
 }
 
-#logo {
+#tm-logo {
   margin-top: 0px;
 }
 
-#facebookBtn {
-  width: 35%;
-  margin-right: 5px;
+.submit-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.loginBtn {
+  font-size: 1.5em;
+  width: 65%;
   padding: 10px;
+  background-color: #ffffff;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.facebook:hover {
   background-color: #3B5998;
 }
 
-#twitterBtn {
-  width: 35%;
-  margin-left: 5px;
-  padding: 10px;
+.twitter:hover {
   background-color: #55ACEE;
 }
 
@@ -82,14 +241,12 @@ td.merge-with-left {
   padding-bottom: 5%;
 }
 
-.panel-heading {
+#login-panel {
+  display: block;
+  position: relative;
   padding: 2px;
-  background-color: #009688;
-  color: #ffffff;
-}
-
-.panel {
-  border-color: #009688;
+  color: white;
+  background: rgba(0, 150, 136, .5)
 }
 
 .panel-body {
@@ -101,16 +258,19 @@ td.merge-with-left {
   max-width: none;
 }
 
-.angular-google-map-container {
+.angular-google-map-container, .angular-google-map {
   width: 100%;
-  height: 600px;
+  height: 100%;
+}
+
+.sign-out {
+  font-weight: normal;
 }
 
 /* fix for Twitter Bootstrap handling of responsive images */
 .angular-google-map img {
   max-width: none;
 }
-
 
 h2 {
   margin: 0;
@@ -149,80 +309,147 @@ h2 {
   background: url(chosen-sprite.png) -42px 2px no-repeat;
 }
 
+.big-cell {
+  width: 100%;
+}
+
+.make-space-for-logo {
+  margin-top: 40px;
+}
+
 /************ style **************/
-@truckMuncherGreenBase : #009688;
-@truckMuncherPinkBase : #c2185b;
+@truckMuncherMoldBase : #009688;
+@truckMuncherPinkBase : #e91e63;
 
-.smart-style-truckmuncher #header {
-  background-color: @truckMuncherGreenBase;
-  background-image: -moz-linear-gradient(top, @truckMuncherGreenBase #006e63);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@truckMuncherGreenBase , to(#006e63)));
-  background-image: -webkit-linear-gradient(top, @truckMuncherGreenBase, #006e63);
-  background-image: -o-linear-gradient(top, @truckMuncherGreenBase, #006e63);
-  background-image: linear-gradient(to bottom, @truckMuncherGreenBase, #006e63);
+.bg-color-mold {
+  background-color: @truckMuncherMoldBase !important;
 }
 
-.smart-style-truckmuncher aside {
-  background: @truckMuncherGreenBase;
-  border-right: 2px solid @truckMuncherGreenBase;
+.txt-color-mold {
+  color: @truckMuncherMoldBase !important;
 }
 
-/*
- * Truckmuncher Top Menu
- */
-
-.smart-style-truckmuncher.menu-on-top aside {
-  background: @truckMuncherPinkBase;
-  border-right: 2px solid @truckMuncherPinkBase
+.txt-color-black {
+  color: black;
 }
 
-.smart-style-truckmuncher.menu-on-top aside#left-panel {
-  -webkit-box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
-  box-shadow: 0 2px 4px 0 @truckMuncherPinkBase;
-  border-bottom: 1px solid @truckMuncherPinkBase;
-  border-top: 1px solid @truckMuncherPinkBase;
+.background-white-transparent {
+  background: rgba(255, 255, 255, 0.85)
 }
 
-/* Hover state */
-.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover {
-  background: #fff; /* Old browsers */
-  background: -moz-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@truckMuncherGreenBase), color-stop(66%, #2E3E57)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  @truckMuncherGreenBase 0%, #2E3E57 66%); /* IE10+ */
-  background: linear-gradient(to bottom,@truckMuncherGreenBase, #2E3E57 66%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#04070C', endColorstr='#2E3E57', GradientType=0); /* IE6-9 */
+.background-transparent {
+  background: rgba(255, 255, 255, 0);
 }
 
-.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li:hover > a {
-  color: #F1F1F1 !important;
-  border-left: 1px solid @truckMuncherGreenBase;
-  border-right: 1px solid @truckMuncherGreenBase;
-  padding-left: 8px !important;
-  padding-right: 8px !important;
+.padding-left-50 {
+  padding-left: 50px;
 }
 
-.smart-style-truckmuncher.menu-on-top aside#left-panel nav > ul > li > ul {
-  background: @truckMuncherGreenBase;
+.show-panel {
+  float: left;
+  visibility: visible;
+  font-size: 2em;
+  padding-top: 20px;
+  z-index: 1001;
+  position: relative;
 }
 
-.smart-style-truckmuncher.menu-on-top nav ul ul li a,
-.smart-style-truckmuncher.menu-on-top nav ul ul ul li a {
-  color: @truckMuncherGreenBase;
+.login-out {
+  float: right;
+  padding: 20px;
+  z-index: 0;
 }
 
-.smart-style-truckmuncher.menu-on-top nav ul ul li a:hover,
-.smart-style-truckmuncher.menu-on-top nav ul ul ul li a:hover {
-  color: @truckMuncherPinkBase;
-  background-color: @truckMuncherGreenBase !important;
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
-.smart-style-truckmuncher.menu-on-top nav ul ul li:hover > a {
-  color: @truckMuncherPinkBase;
-  background-color: @truckMuncherGreenBase;
+#sidebar-wrapper {
+  z-index: 1000;
+  position: absolute;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  margin-right: 0px;
+  overflow-y: auto;
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  max-height: 100%;
 }
 
-.smart-style-truckmuncher.menu-on-top nav > ul ul ul {
-  border-top: 1px solid @truckMuncherGreenBase !important;
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+}
+
+@media (min-width: 768px) {
+  .show-panel {
+    float: left;
+    visibility: hidden;
+  }
+
+  #tm-logo img {
+    position: absolute;
+    height: 120px;
+    width: auto;
+    z-index: 999999;
+    top: 15px;
+    left: 40px;
+  }
+
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: 250px;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+
+  #page-content-wrapper {
+    padding: 20px 0px 0px 250px;
+    position: relative;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+
+  .make-space-for-logo {
+    margin-top: 70px;
+  }
+
+  #top-nav-wrapper {
+    overflow-y: auto;
+    padding-left: 0px;
+    position: relative;
+  }
+
+  #login-logo-font {
+    color: black;
+    font-size: 4em;
+  }
+
 }

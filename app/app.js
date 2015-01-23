@@ -7,19 +7,15 @@ var app = angular.module('TruckMuncherApp',
         'ngAnimate',
         'ngTagsInput',
         'angularFileUpload',
-        'uiGmapgoogle-maps',
         'ngCookies',
+        'uiGmapgoogle-maps',
         'angularSpectrumColorpicker'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("home");
+    $urlRouterProvider.otherwise("map");
 
     $stateProvider
-        .state('home', {
-            url: "/home",
-            authenticate: false
-        })
         .state('login', {
             url: "/login",
             templateUrl: "partials/login.jade",
@@ -27,7 +23,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('map', {
             url: "/map",
-            templateUrl: "partials/map.jade",
+
+            templateUrl: "partials/map/map.jade",
             controller: 'mapCtrl',
             authenticate: false
         })

@@ -2,9 +2,6 @@
 
 var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
-if (host !== 'localhost') {
-    require('loganalysis');
-}
 
 var express = require('express'),
     session = require('express-session'),
@@ -12,6 +9,7 @@ var express = require('express'),
     api = require('./api'),
     routes = require('./routes'),
     config = require('./oauth'),
+    guid = require('./guid'),
     passport = require('passport'),
     favicon = require('serve-favicon'),
     q = require('q'),
@@ -48,19 +46,19 @@ var app = express();
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var sess = {
-// 	genid: function(req) {
-//     return genuuid(); // use UUIDs for session IDs
-// },
-    secret: 'MunchyTruckMunch3r',
-    resave: true,
+    genid: function (req) {
+        return guid.gen(); // use UUIDs for session IDs
+    },
+    secret: process.env.SESSION_SECRET || 'MunchyTruckMunch3r',
+    resave: false,
     saveUninitialized: true,
     cookie: {}
 };
 
-//use secure cookies on bluemix
+//use secure cookies on non localhost
 if (host !== 'localhost') {
-   app.set('trust proxy', 1); // trust first proxy
-   sess.cookie.secure = true; // serve secure cookies
+    app.set('trust proxy', 1); // trust first proxy
+    sess.cookie.secure = true; // serve secure cookies
 }
 
 app.use(express.cookieParser());
@@ -79,7 +77,7 @@ app.use(function (req, res, next) {
     res.locals.apiUrl = process.env.API_URL;
 
     //force https on everything but localhost
-    var schema = req.headers['x-forwarded-proto'];
+    var schema = req.protocol;
     if (schema === 'https' || host === 'localhost') {
         next();
     }
@@ -98,10 +96,11 @@ app.set('views', __dirname + '/views'); //optional since express defaults to CWD
 app.use(express.static(path.join(__dirname, '/lib')));
 
 app.get('/', routes.index);
+app.get('/beta', routes.beta);
 
 app.get('/partials/*', routes.partials);
 
-app.get('/logout', routes.logout);
+app.get('*/logout', routes.logout);
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', function (req, res, next) {
@@ -110,7 +109,7 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.redirect('/');
+            return res.redirect('/beta/');
         }
         req.logIn(user, function (err) {
             if (err) {
@@ -118,7 +117,7 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             }
             api.login(info.token, info.tokenSecret, null).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/vendors/menu');
+                return res.redirect('/beta#/vendors/menu');
             }, function () {
                 //TODO: handle error
                 return next();
@@ -134,7 +133,7 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.redirect('/');
+            return res.redirect('/beta/');
         }
         req.logIn(user, function (err) {
             if (err) {
@@ -142,7 +141,7 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             }
             api.login(null, null, info.accessToken).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/vendors/menu');
+                return res.redirect('/beta#/vendors/menu');
             }, function () {
                 //TODO: handle error
                 return next;
@@ -157,17 +156,6 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
-
-
-// There are many useful environment variables available in process.env.
-// VCAP_APPLICATION contains useful information about a deployed application.
-var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
-// TODO: Get application information and use it in your app.
-
-// VCAP_SERVICES contains all the credentials of services bound to
-// this application. For details of its content, please refer to
-// the document or sample of each service.
-var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
 // Start server
 app.listen(port, host);

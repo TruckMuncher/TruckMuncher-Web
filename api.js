@@ -1,7 +1,8 @@
 var request = require('request'),
-    q = require('q');
+    q = require('q'),
+    guid = require('./guid');
 
-var apiUrl = 'https://api.truckmuncher.com:8443/com.truckmuncher.api.auth.AuthService/';
+var apiUrl = process.env.API_URL + '/com.truckmuncher.api.auth.AuthService/';
 
 var nonceAndTimestampHelper = {
     getTimestamp: function () {
@@ -18,19 +19,7 @@ var nonceAndTimestampHelper = {
             twoDigitNumber(d.getUTCSeconds()) + 'Z';
     },
     getNonce: function () {
-        var guid = (function () {
-            function s4() {
-                return Math.floor((1 + Math.random()) * 0x10000)
-                    .toString(16)
-                    .substring(1);
-            }
-
-            return function () {
-                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                    s4() + '-' + s4() + s4() + s4();
-            };
-        })();
-        var uuid = guid();
+        var uuid = guid.gen();
         var _32randomChars = uuid.replace(/-/gi, '');
         return (new Buffer(_32randomChars).toString('base64'));
     }
@@ -41,8 +30,7 @@ function makeRequest(url, method, header) {
         url: url,
         method: method,
         body: JSON.stringify({}),
-        //TODO: DON'T DO THIS
-        strictSSL: false,
+        strictSSL: true,
         headers: header
     };
 

@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService',
-    function ($scope, MenuService, TruckService, $state, confirmDialog) {
+angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService', 'colorService',
+    function ($scope, MenuService, TruckService, $state, confirmDialog, colorService) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
@@ -12,13 +12,23 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
 
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
+                setCustomMenuColors($scope.selectedTruck);
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response;
                 });
             }
         });
 
-        $scope.toggleItemAvailability = function(item, categoryId){
+        function setCustomMenuColors(truckId) {
+            var truck = _.find($scope.trucks, function (truck) {
+                return truck.id === truckId;
+            });
+            if (truck) {
+                $scope.customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
+            }
+        }
+
+        $scope.toggleItemAvailability = function (item, categoryId) {
             var itemClone = _.clone(item);
             itemClone.isAvailable = !item.isAvailable;
             MenuService.addOrUpdateItem(
@@ -62,7 +72,7 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             var category = _.find($scope.menu.categories, function (c) {
                 return c.id === categoryId;
             });
-            return  _.sortBy(category.menuItems, function (i) {
+            return _.sortBy(category.menuItems, function (i) {
                 return i.orderInCategory;
             });
         }

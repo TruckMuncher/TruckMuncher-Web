@@ -1,0 +1,34 @@
+#wrapper
+    #sidebar-wrapper.bg-color-mold
+        .container-fluid.make-space-for-logo.ignore-padding-right
+            <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+            div.col-xs-12
+                .input-group.form-group
+                    input.form-control(data-ng-model='searchQuery' data-ng-keyup="$event.keyCode == 13 && simpleSearch(searchQuery)")
+                    span.input-group-btn
+                        button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
+                .progress(data-ng-show='loading')
+                    .progress.progress-striped.active
+                        .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
+                div.overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers')
+                    .row.pointer(data-ng-click="showMarkerWindow(marker.id)")
+                        .col-xs-3
+                            img(data-ng-src='{{marker.truckProfile.imageUrl}}' style='width:50px; height:50px;')
+                        .col-xs-9
+                            div
+                                b {{marker.truckProfile.name}}
+                            div {{marker.truckProfile.keywords | json}}
+                    .row
+                        hr
+
+    #top-nav-wrapper
+        <div data-ng-include="'/partials/nav.jade'"></div>
+
+    #page-content-wrapper.tm-main
+        #content
+            .row.col-md-10.col-md-offset-1(style="padding-top: 50px")
+                article(data-ng-style="{'height': '{{mapHeight}}'}")
+                    ui-gmap-google-map(center="map.center", zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
+                        ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', icon='"icon"', click='onMarkerClicked')
+                        ui-gmap-window(coords='infoWindow.coords', show='infoWindow.show', templateUrl='infoWindow.templateUrl', templateParameter='infoWindow.templateParameter', closeClick='closeInfoWindow', options='infoWindow.options')
+                        ui-gmap-marker(data-ng-if='currentPositionMarker.id', idKey='currentPositionMarker.id', coords='currentPositionMarker.coords', icon='currentPositionMarker.icon', options='{"cursor": "grab"}')

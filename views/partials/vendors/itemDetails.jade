@@ -1,6 +1,6 @@
 .modal-header Item Details
 .modal-body.smart-form
-    form(name='itemForm', id='itemForm', focus-invalid-form='', data-ng-submit='itemForm.$valid && submit()')
+    form(name='itemForm', id='itemForm', focus-invalid-form='')
         section(data-ng-class="{ 'has-error' : itemForm.itemName.$invalid}")
             label.label(for='itemName') Item Name
             .input
@@ -30,5 +30,5 @@
 .modal-footer
     .form-group.row
         a.btn.btn-default(data-ui-sref='menu', title="Cancel") Cancel
-        button.btn.btn-primary(type='submit',  form='itemForm', data-ng-disabled='requestInProgress') Submit
+        button.btn.bg-color-mold.txt-color-white(data-ng-click='itemForm.$valid && submit()', data-ng-disabled='requestInProgress') Submit
             i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')

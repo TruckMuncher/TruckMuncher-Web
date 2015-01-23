@@ -1,6 +1,10 @@
 describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function(){return false;});
+    }));
+
     describe('vendorProfileCtrl', function () {
         var $scope, $q;
         var rejectRequests;

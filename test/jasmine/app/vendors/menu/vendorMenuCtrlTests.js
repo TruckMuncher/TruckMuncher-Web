@@ -1,6 +1,12 @@
 describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function () {
+            return false;
+        });
+    }));
+
     describe('vendorMenuCtrl', function () {
         var $scope, $q, modalDialogShouldResolve;
 
@@ -55,7 +61,12 @@ describe('TruckMuncherApp', function () {
         beforeEach(inject(function ($rootScope, $controller, _$q_) {
             $scope = $rootScope.$new();
             $q = _$q_;
-            $controller('vendorMenuCtrl', {$scope: $scope, MenuService: mockMenuService, TruckService: mockTruckService, confirmDialogService: mockModalDialog});
+            $controller('vendorMenuCtrl', {
+                $scope: $scope,
+                MenuService: mockMenuService,
+                TruckService: mockTruckService,
+                confirmDialogService: mockModalDialog
+            });
         }));
 
         it('should not make a delete category request to the API when the user does not confirm deletion', function () {
@@ -122,17 +133,19 @@ describe('TruckMuncherApp', function () {
             $scope.selectedTruck = 'truck';
             $scope.menu = {};
             $scope.menu.categories = [
-                {id: '1', orderInCategory: 0, menuItems: [
+                {
+                    id: '1', orderInCategory: 0, menuItems: [
                     {id: '2', orderInCategory: 0},
-                    {id: '3', orderInCategory: 1 }
-                ]}
+                    {id: '3', orderInCategory: 1}
+                ]
+                }
             ];
 
             $scope.moveItemUp('1', 1);
 
             expect(mockMenuService.addOrUpdateItems).toHaveBeenCalledWith([
-                { id: '3', orderInCategory: 0 },
-                { id: '2', orderInCategory: 1 }
+                {id: '3', orderInCategory: 0},
+                {id: '2', orderInCategory: 1}
             ], 'truck', '1');
         });
 
@@ -140,10 +153,12 @@ describe('TruckMuncherApp', function () {
             $scope.selectedTruck = 'truck';
             $scope.menu = {};
             $scope.menu.categories = [
-                {id: '1', orderInCategory: 0, menuItems: [
+                {
+                    id: '1', orderInCategory: 0, menuItems: [
                     {id: '2', orderInCategory: 0},
-                    {id: '3', orderInCategory: 1 }
-                ]}
+                    {id: '3', orderInCategory: 1}
+                ]
+                }
             ];
 
             $scope.moveItemUp('1', 1);
@@ -162,8 +177,8 @@ describe('TruckMuncherApp', function () {
             $scope.moveCategoryDown(0);
 
             expect(mockMenuService.addOrUpdateCategories).toHaveBeenCalledWith([
-                { id: '1', orderInMenu: 1 },
-                { id: '2', orderInMenu: 0 }
+                {id: '1', orderInMenu: 1},
+                {id: '2', orderInMenu: 0}
             ], 'truck');
 
         });
@@ -178,6 +193,28 @@ describe('TruckMuncherApp', function () {
 
             $scope.moveCategoryDown(0);
             expect($scope.menu.categories[0]).toEqual({id: '1', orderInMenu: 0});
+        });
+
+        it('should set the custom menu colors when the selected truck changes', function () {
+            $scope.$apply();
+            $scope.trucks = [{id: '1', primaryColor: '#000000', secondaryColor: '#FFFFFF'}];
+            $scope.selectedTruck = '1';
+            $scope.$apply();
+            expect($scope.customMenuColors.primary).toEqual('#000000');
+            expect($scope.customMenuColors.primaryContrast).toEqual('#FFFFFF');
+            expect($scope.customMenuColors.secondary).toEqual('#FFFFFF');
+            expect($scope.customMenuColors.secondaryContrast).toEqual('#000000');
+        });
+
+        it('should set the custom menu colors correctly when the selected truck changes and has no colors defined', function () {
+            $scope.$apply();
+            $scope.trucks = [{id: '1', primaryColor: null, secondaryColor: null}];
+            $scope.selectedTruck = '1';
+            $scope.$apply();
+            expect($scope.customMenuColors.primary).toEqual('#000000');
+            expect($scope.customMenuColors.primaryContrast).toEqual('#FFFFFF');
+            expect($scope.customMenuColors.secondary).toEqual('#000000');
+            expect($scope.customMenuColors.secondaryContrast).toEqual('#FFFFFF');
         });
     });
 

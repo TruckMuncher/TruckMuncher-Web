@@ -1,6 +1,10 @@
 describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
+    beforeEach(module(function ($urlRouterProvider) {
+        $urlRouterProvider.otherwise(function(){return false;});
+    }));
+
     describe('addOrEditCategoryModalCtrlTests', function () {
         var $scope, $state, rootScope, $httpBackend;
         var createControllerFn;
@@ -26,9 +30,10 @@ describe('TruckMuncherApp', function () {
         }));
 
         it('should dismiss the modal when the state changes', function () {
-            $httpBackend.expect('GET', 'partials/map.jade', undefined).respond(200, '');
+            $httpBackend.expect('GET', 'partials/map/map.jade', undefined).respond(200, '');
             $state.go('map');
             rootScope.$apply();
+            $httpBackend.flush();
             expect(modalInstance.dismiss).toHaveBeenCalled();
         });
 

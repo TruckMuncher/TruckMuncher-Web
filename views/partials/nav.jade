@@ -1,0 +1,23 @@
+#nav-top(data-ng-controller='navCtrl')
+
+    a#menu-toggle.container-fluid.show-panel(href="#menu-toggle")
+        i.fa.fa-align-justify
+
+    .container-fluid.login-out
+        div
+            span(data-ng-show='loggedIn()')
+                span
+                    a.nav-bar-sign(href="/beta/logout")
+                        i.fa.fa-sign-out
+                        |  Sign out
+            span(data-ng-hide='loggedIn()')
+                span
+                    a.nav-bar-sign(href="/beta/logout")
+                        i.fa.fa-sign-in
+                        |  Sign in
+
+    script.
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });

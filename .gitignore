@@ -27,6 +27,9 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
+public/js/vendorScripts.js
+public/js/TruckMuncherApp.js
+
 # Intellij
 .idea/*
 *.iml
@@ -36,8 +39,7 @@ node_modules
 smartAdmin/LESS_FILES/*
 smartAdmin/UNMINIFIED_CSS/*
 !smartAdmin/LESS_FILES/custom.less
-!smartAdmin/LESS_FILES/overrides.less
 
 .DS_Store
 
-bower_components/*
+#bower_components/*

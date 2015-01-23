@@ -33,10 +33,10 @@ module.exports = function (grunt) {
         'bower_components/angular-file-upload/angular-file-upload.js',
         'bower_components/es5-shim/es5-shim.js',
         'bower_components/color-thief/src/color-thief.js',
-        'bower_components/angular-google-maps/dist/angular-google-maps.js',
         'bower_components/angular-cookies/angular-cookies.js',
         'bower_components/spectrum/spectrum.js',
-        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js'
+        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
+        'public/js/angular-google-maps.js'
     ];
 
     var globalConfig = {
@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                 dest: 'public/js/<%= pkg.name %>.js'
             },
             vendorScripts: {
-                src: [ jsVendorSourceFiles],
+                src: [jsVendorSourceFiles],
                 dest: 'public/js/vendorScripts.js'
             }
         },
@@ -67,10 +67,15 @@ module.exports = function (grunt) {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
+            dev: {
+                files: {
+                    'public/js/vendorScripts.js': ['<%= concat.vendorScripts.dest %>']
+                }
+            },
             prod: {
                 files: {
                     'public/js/<%= pkg.name %>.js': ['<%= concat.app.dest %>'],
-                    'public/js/<%= vendorScripts %>.js': ['<%= concat.vendorScripts.dest %>']
+                    'public/js/vendorScripts.js': ['<%= concat.vendorScripts.dest %>']
                 }
             }
         },
@@ -113,7 +118,7 @@ module.exports = function (grunt) {
                             'bower_components/ng-tags-input/ng-tags-input.css',
                             'bower_components/ng-tags-input/ng-tags-input.bootstrap.css',
                             'bower_components/spectrum/spectrum.css'
-                            ],
+                        ],
                         dest: '<%= globalConfig.cssDest %>',
                         flatten: true
                     }
@@ -141,7 +146,7 @@ module.exports = function (grunt) {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint'],
             less: {
-                files: ['<%= globalConfig.smartAdmin %>/LESS_FILES/**/*.less'],
+                files: ['<%= globalConfig.smartAdmin %>/**/*.less'],
                 tasks: ['less', 'cssmin']
             },
             app: {
@@ -150,7 +155,7 @@ module.exports = function (grunt) {
             },
             vendorFiles: {
                 files: ['Gruntfile.js'],
-                tasks: ['concat:vendorScripts', 'copy:bower']
+                tasks: ['concat:vendorScripts', 'copy:bower', 'uglify:dev']
             }
         },
         'karma': {
@@ -162,6 +167,13 @@ module.exports = function (grunt) {
                 logLevel: 'INFO',
                 colors: true,
                 port: 9876,
+                plugins: [
+                    'karma-junit-reporter',
+                    'karma-ng-jade2js-preprocessor',
+                    'karma-phantomjs-launcher',
+                    'karma-jasmine',
+                    'karma-growl-reporter'
+                ],
                 files: [
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
@@ -171,11 +183,11 @@ module.exports = function (grunt) {
                     'test/jasmine/**/*.js',
                     'views/**/*.jade'
                 ],
-                ngJade2JsPreprocessor:{
+                ngJade2JsPreprocessor: {
                     stripPrefix: 'views',
                     templateExtension: 'jade'
                 },
-                frameworks: ['jasmine-jquery', 'jasmine'],
+                frameworks: [ 'jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: ''
             },
@@ -186,7 +198,7 @@ module.exports = function (grunt) {
             //run on CI
             continuous: {
                 singleRun: true,
-                reporters: ['junit']
+                reporters: ['dots', 'junit']
             }
         },
         'concurrent': {
@@ -214,7 +226,7 @@ module.exports = function (grunt) {
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
-    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts']);
+    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:dev', 'copy:bower', 'less', 'cssmin']);
     grunt.registerTask('dev', ['concurrent:target']);
     grunt.registerTask('build-prod', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:prod']);
     grunt.registerTask('update-bower-css', ['copy:bower']);
