@@ -1,6 +1,6 @@
 angular.module('TruckMuncherApp').controller('mapCtrl',
-    ['$scope', 'uiGmapGoogleMapApi', 'growl', '$modal', 'MenuService', 'colorService', 'SearchService', 'MarkerService',
-        function ($scope, uiGmapGoogleMapApi, growl, $modal, MenuService, colorService, SearchService, MarkerService) {
+    ['$scope', 'uiGmapGoogleMapApi', 'growl', '$modal', 'MenuService', 'colorService', 'SearchService', 'MarkerService', '$timeout',
+        function ($scope, uiGmapGoogleMapApi, growl, $modal, MenuService, colorService, SearchService, MarkerService, $timeout) {
             $scope.mapHeight = screen.height / 1.7 + 'px';
             $scope.loading = true;
             $scope.searchQuery = "";
@@ -65,16 +65,18 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             };
 
             $scope.showMarkerWindow = function (id) {
-                $scope.closeInfoWindow();
-                var marker = _.find(allActiveTruckMarkers, function (marker) {
-                    return marker.id === id;
+                $scope.infoWindow.show = false;
+                $timeout(function(){
+                    var marker = _.find(allActiveTruckMarkers, function (marker) {
+                        return marker.id === id;
+                    });
+
+                    $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
+
+                    $scope.infoWindow.coords = marker.coords;
+                    $scope.infoWindow.show = true;
+                    $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal};
                 });
-
-                $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
-
-                $scope.infoWindow.coords = marker.coords;
-                $scope.infoWindow.show = true;
-                $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal}
             };
 
             $scope.showMenuModal = function (truckId) {
