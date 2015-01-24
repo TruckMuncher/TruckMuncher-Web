@@ -80,10 +80,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             };
 
             $scope.showMenuModal = function (truckId) {
-                var truck = _.find(allActiveTruckMarkers, function (marker) {
+                var marker = _.find(allActiveTruckMarkers, function (marker) {
                     return marker.truckProfile.id === truckId;
                 });
-                var customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
+                var customMenuColors = colorService.getCustomMenuColorsForTruck(marker.truckProfile);
                 MenuService.getMenu(truckId).then(function (response) {
                     launchModal(response, customMenuColors);
                 });

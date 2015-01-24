@@ -17,9 +17,9 @@
  */
 module.exports = function (grunt) {
     var jsVendorSourceFiles = [
-        'bower_components/jquery/jquery.js',
+        'bower_components/jquery/dist/jquery.js',
         'bower_components/angular/angular.js',
-        'bower_components/lodash/dist/lodash.compat.js',
+        'bower_components/lodash/lodash.js',
         'bower_components/angular-ui-router/release/angular-ui-router.js',
         'bower_components/base-64/base64.js',
         'bower_components/ng-resource/dist/ng-resource.js',
