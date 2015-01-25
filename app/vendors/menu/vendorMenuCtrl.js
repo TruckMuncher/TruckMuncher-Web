@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService', 'colorService',
-    function ($scope, MenuService, TruckService, $state, confirmDialog, colorService) {
+angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuService', 'TruckService', '$state', 'confirmDialogService', 'colorService', '$analytics',
+    function ($scope, MenuService, TruckService, $state, confirmDialog, colorService, $analytics) {
         $scope.selectedTruck = null;
         $scope.menu = {};
 
@@ -37,6 +37,7 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
                 categoryId).then(function (response) {
                     $scope.menu = response;
                 });
+            $analytics.eventTrack('ItemAvailabilityToggle', {category: 'VendorMenu'});
         };
 
         $scope.deleteItem = function (itemId) {
@@ -45,6 +46,8 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
                 MenuService.deleteItem($scope.selectedTruck, itemId).then(function (response) {
                     $scope.menu = response;
                 });
+
+                $analytics.eventTrack('ItemDeleted', {category: 'VendorMenu'});
             });
         };
 
@@ -66,6 +69,8 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             MenuService.addOrUpdateItems([theItem, otherItem], $scope.selectedTruck, categoryId).then(function (response) {
                 $scope.menu = response;
             });
+
+            $analytics.eventTrack('ItemReordered', {category: 'VendorMenu'});
         }
 
         function getSortedItems(categoryId) {
@@ -97,6 +102,8 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function (response) {
                 $scope.menu = response;
             });
+
+            $analytics.eventTrack('CategoryReordered', {category: 'VendorMenu'});
         }
 
         function getSortedCategories() {
@@ -111,6 +118,8 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
                 MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function (response) {
                     $scope.menu = response;
                 });
+
+                $analytics.eventTrack('CategoryDeleted', {category: 'VendorMenu'});
             });
         };
 

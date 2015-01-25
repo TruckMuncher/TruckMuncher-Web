@@ -9,7 +9,9 @@ var app = angular.module('TruckMuncherApp',
         'angularFileUpload',
         'ngCookies',
         'uiGmapgoogle-maps',
-        'angularSpectrumColorpicker'
+        'angularSpectrumColorpicker',
+        'angulartics',
+        'angulartics.google.analytics'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {

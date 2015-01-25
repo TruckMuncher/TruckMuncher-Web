@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService',
-    function ($scope, $modalInstance, $stateParams, $state, MenuService) {
+angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService', '$analytics',
+    function ($scope, $modalInstance, $stateParams, $state, MenuService, $analytics) {
         $scope.category = {};
         $scope.requestInProgress = false;
 
@@ -22,6 +22,8 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
                 }, function () {
                     $scope.requestInProgress = false;
                 });
+
+                $analytics.eventTrack('Submit', {category: 'EditCategory'});
             }
         };
 

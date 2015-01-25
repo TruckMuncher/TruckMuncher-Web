@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl',
-    function ($scope, TruckService, growl) {
+angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics',
+    function ($scope, TruckService, growl, $analytics) {
         $scope.trucks = [];
         $scope.selectedTruck = {};
         $scope.tags = [];
@@ -26,6 +26,8 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 }, function () {
                     $scope.requestInProgress = false;
                 });
+
+            $analytics.eventTrack('TruckUpdated', {category: 'VendorProfile', label: $scope.newName});
         };
 
         $scope.createTruck = function () {
@@ -38,6 +40,8 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             }, function () {
                 $scope.requestInProgress = false;
             });
+
+            $analytics.eventTrack('TruckCreated', {category: 'VendorProfile'});
         };
 
         $scope.submit = function () {
