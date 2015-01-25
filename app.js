@@ -1,20 +1,21 @@
 /*jshint node:true*/
 
-var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 var express = require('express'),
     session = require('express-session'),
     path = require('path'),
-    api = require('./api'),
-    routes = require('./routes'),
-    config = require('./oauth'),
-    guid = require('./guid'),
+    api = require('./server/api'),
+    routes = require('./server/routes'),
+    config = require('./server/oauth'),
+    guid = require('./server/guid'),
     passport = require('passport'),
     favicon = require('serve-favicon'),
     q = require('q'),
     FacebookStrategy = require('passport-facebook').Strategy,
-    TwitterStrategy = require('passport-twitter').Strategy;
+    TwitterStrategy = require('passport-twitter').Strategy,
+    servers = require('./server/serverConfig');
+
 
 passport.use(new FacebookStrategy({
         clientID: config.facebook.clientID,
@@ -157,6 +158,5 @@ passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
 
-// Start server
-app.listen(port, host);
-console.log('App started on port ' + port);
+servers.getHttpServer(app);
+servers.getHttpsServer(app);
