@@ -56,3 +56,11 @@
 .progress-cssSlideUp.ng-hide {
   height: 0;
 }
+
+@media (max-width: 767px) {
+  .hidden-xs-animated {
+    visibility: hidden !important;
+    opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+  }
+}
