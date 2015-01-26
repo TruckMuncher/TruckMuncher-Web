@@ -1,6 +1,8 @@
 div(style="height:80px; width:200px; overflow-y:auto;" )
     div
         b {{parameter.marker.truckProfile.name}}
-    div {{parameter.marker.truckProfile.keywords}}
+    span(data-ng-repeat="keywords in parameter.marker.truckProfile.keywords")
+        span(data-ng-if="$first") {{keywords}}
+        span(data-ng-if="$index > $first") , {{keywords}}
     div
         button(data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu
