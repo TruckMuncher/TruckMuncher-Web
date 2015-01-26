@@ -1,6 +1,6 @@
 angular.module('TruckMuncherApp').controller('mapCtrl',
-    ['$scope', 'uiGmapGoogleMapApi', 'growl', '$modal', 'MenuService', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics',
-        function ($scope, uiGmapGoogleMapApi, growl, $modal, MenuService, colorService, SearchService, MarkerService, $timeout, $analytics) {
+    ['$scope', 'uiGmapGoogleMapApi', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService',
+        function ($scope, uiGmapGoogleMapApi, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService) {
             $scope.mapHeight = screen.height / 1.7 + 'px';
             $scope.loading = true;
             $scope.searchQuery = "";
@@ -89,36 +89,10 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                     return marker.truckProfile.id === truckId;
                 });
                 var customMenuColors = colorService.getCustomMenuColorsForTruck(marker.truckProfile);
-                MenuService.getMenu(truckId).then(function (response) {
-                    launchModal(response, customMenuColors);
-                });
+                ModalMenuService.launch(truckId, customMenuColors);
 
                 $analytics.eventTrack('ViewMenu', {category: 'Map', label: marker.truckProfile.name});
             };
-
-            function launchModal(menu, customMenuColors) {
-                var modalCtrl = ['$scope', 'menu', 'customMenuColors', '$modalInstance', function ($scope, menu, customMenuColors, $modalInstance) {
-                    $scope.menu = menu;
-                    $scope.customMenuColors = customMenuColors;
-
-                    $scope.close = function () {
-                        $modalInstance.close({});
-                    };
-                }];
-
-                $scope.modalInstance = $modal.open({
-                    templateUrl: "/partials/map/customer-menu.jade",
-                    controller: modalCtrl,
-                    resolve: {
-                        menu: function () {
-                            return menu;
-                        },
-                        customMenuColors: function () {
-                            return customMenuColors;
-                        }
-                    }
-                });
-            }
 
             $scope.$watch('searchQuery', function () {
                 if ($scope.searchQuery.length === 0 && $scope.displayedMarkers.length < allActiveTruckMarkers.length) {
