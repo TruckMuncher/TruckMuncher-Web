@@ -4,7 +4,7 @@
             <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
             div.col-xs-12
                 .input-group.form-group
-                    input.form-control(data-ng-model='searchQuery' data-ng-keyup="$event.keyCode == 13 && simpleSearch(searchQuery)")
+                    input.form-control(data-ng-model='searchQuery' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
                     span.input-group-btn
                         button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
                 .progress(data-ng-show='loading')
