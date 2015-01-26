@@ -347,8 +347,6 @@ h2 {
 
 .show-panel {
   float: left;
-  visibility: visible;
-  font-size: 2em;
   padding-top: 20px;
   z-index: 1001;
   position: relative;
@@ -375,7 +373,7 @@ h2 {
   width: 0;
   height: 100%;
   margin-left: -250px;
-  margin-right: 0px;
+  margin-right: 0;
   overflow-y: auto;
   background: #000;
   -webkit-transition: all 0.5s ease;
@@ -385,7 +383,7 @@ h2 {
   max-height: 100%;
 }
 
-#wrapper.toggled #sidebar-wrapper {
+#sidebar-wrapper {
   width: 250px;
 }
 
@@ -395,17 +393,7 @@ h2 {
   padding: 15px;
 }
 
-#wrapper.toggled #page-content-wrapper {
-  position: absolute;
-  margin-right: -250px;
-}
-
 @media (min-width: 768px) {
-  .show-panel {
-    float: left;
-    visibility: hidden;
-  }
-
   #tm-logo img {
     position: absolute;
     height: 120px;
@@ -415,26 +403,9 @@ h2 {
     left: 40px;
   }
 
-  #wrapper.toggled {
-    padding-left: 0;
-  }
-
-  #sidebar-wrapper {
-    width: 250px;
-  }
-
-  #wrapper.toggled #sidebar-wrapper {
-    width: 0;
-  }
-
   #page-content-wrapper {
-    padding: 20px 0px 0px 250px;
+    padding: 20px 0 0 250px;
     position: relative;
-  }
-
-  #wrapper.toggled #page-content-wrapper {
-    position: relative;
-    margin-right: 0;
   }
 
   .make-space-for-logo {
@@ -443,12 +414,11 @@ h2 {
 
   #top-nav-wrapper {
     overflow-y: auto;
-    padding-left: 0px;
+    padding-left: 0;
     position: relative;
   }
 
   #login-logo-font {
     font-size: 5.5em;
   }
-
 }
