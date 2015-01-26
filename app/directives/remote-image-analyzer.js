@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope', 'colorThief', '$timeout', 'colorService',
-    function ($rootScope, colorThief, $timeout, colorService) {
+angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope', 'colorThief', '$timeout', 'colorService', '$analytics',
+    function ($rootScope, colorThief, $timeout, colorService, $analytics) {
         var link = function (scope) {
             var img = document.createElement('img');
             var crossOriginImage = document.createElement('img');
@@ -38,6 +38,8 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
 
             scope.colorClicked = function (color) {
                 scope.colorClickCallback({theColor: color});
+
+                $analytics.eventTrack('ColorThief', {category: 'Profile'});
             };
         };
 

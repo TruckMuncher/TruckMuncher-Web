@@ -1,6 +1,6 @@
 #nav-top(data-ng-controller='navCtrl')
 
-    a#menu-toggle.container-fluid.show-panel(href="#menu-toggle")
+    a#menu-toggle.container-fluid.show-panel.fa-2x.visible-xs-block(href="#menu-toggle")
         i.fa.fa-align-justify
 
     .container-fluid.login-out
@@ -19,5 +19,5 @@
     script.
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
+            $("#sidebar-wrapper").toggleClass("hidden-xs-animated")
         });

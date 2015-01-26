@@ -9,7 +9,9 @@ var app = angular.module('TruckMuncherApp',
         'angularFileUpload',
         'ngCookies',
         'uiGmapgoogle-maps',
-        'angularSpectrumColorpicker'
+        'angularSpectrumColorpicker',
+        'angulartics',
+        'angulartics.google.analytics'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -91,6 +93,11 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.globalTimeToLive(3000);
     growlProvider.onlyUniqueMessages(false);
 }]);
+
+app.config(function ($analyticsProvider) {
+    $analyticsProvider.firstPageview(true); /* Records pages that don't use $state or $route */
+    $analyticsProvider.withAutoBase(true);  /* Records full path */
+});
 
 app.run(function ($rootScope, $state, TokenService) {
 
