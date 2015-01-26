@@ -27,5 +27,5 @@ angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal', functio
                 }
             });
         }
-    }
+    };
 }]);
