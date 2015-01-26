@@ -72,14 +72,15 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             };
 
             function showMarkerWindow(marker) {
-                $scope.infoWindow.show = false;
                 $timeout(function () {
+                    $scope.infoWindow.show = false;
+                    $timeout(function () {
+                        $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
 
-                    $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
-
-                    $scope.infoWindow.coords = marker.coords;
-                    $scope.infoWindow.show = true;
-                    $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal};
+                        $scope.infoWindow.coords = marker.coords;
+                        $scope.infoWindow.show = true;
+                        $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal};
+                    });
                 });
             }
 
