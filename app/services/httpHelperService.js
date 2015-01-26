@@ -1,9 +1,10 @@
 angular.module('TruckMuncherApp')
-    .factory('httpHelperService', ['$http', '$q', 'growl', function ($http, $q, growl) {
+    .factory('httpHelperService', ['$http', '$q', 'growl', '$analytics', function ($http, $q, growl, $analytics) {
         var apiUrl = 'https://api.truckmuncher.com:8443';
         return {
             post: function (url, data, responseDataName) {
                 var deferred = $q.defer();
+                $analytics.eventTrack('Request', {category: 'HttpHelperService', label: url});
                 $http({
                     method: 'POST',
                     url: url,
