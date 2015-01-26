@@ -19,7 +19,7 @@ var httpsServer, httpServer;
 var servers = {
     getHttpsServer: function (app) {
         if (host !== 'localhost') {
-            if (!httpsServer) httpsServer = http.createServer(credentials, app).listen(port);
+            if (!httpsServer) httpsServer = https.createServer(credentials, app).listen(port);
             return httpsServer;
         } else {
             return null;
