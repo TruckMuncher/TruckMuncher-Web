@@ -62,12 +62,12 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
 
             $scope.onMarkerClicked = function (clickEvent) {
                 showMarkerWindow(clickEvent.model);
-
                 $analytics.eventTrack('MarkerClicked', {category: 'Map', label: clickEvent.model.truckProfile.name});
             };
 
             $scope.onProfileClicked = function (marker) {
                 showMarkerWindow(marker);
+
                 $analytics.eventTrack('ProfileClicked', {category: 'Map', label: marker.truckProfile.name});
             };
 
@@ -76,7 +76,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                     $scope.infoWindow.show = false;
                     $timeout(function () {
                         $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
-
+                        $scope.map.zoom = 14;
                         $scope.infoWindow.coords = marker.coords;
                         $scope.infoWindow.show = true;
                         $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal};
