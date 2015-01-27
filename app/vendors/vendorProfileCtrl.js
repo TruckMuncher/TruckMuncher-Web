@@ -32,7 +32,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
 
         $scope.createTruck = function () {
             $scope.requestInProgress = true;
-            TruckService.modifyTruckProfile(null, 'New Truck', null, []).then(function (response) {
+            TruckService.modifyTruckProfile(null, 'New Truck', null, null, null).then(function (response) {
                 $scope.requestInProgress = false;
                 growl.addSuccessMessage('Truck Created Successfully');
                 $scope.trucks.push(response);
