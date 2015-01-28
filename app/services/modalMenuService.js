@@ -13,6 +13,7 @@ angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal', functio
                 $scope.close = function () {
                     $modalInstance.close({});
                 };
+                
             }];
 
             $modal.open({

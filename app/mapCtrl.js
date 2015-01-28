@@ -119,6 +119,6 @@ function mapCtrl($scope, growl, colorService, SearchService, MarkerService, $tim
     };
 
 }
-mapCtrl.$inject = ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService']
+mapCtrl.$inject = ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService'];
 angular.module('TruckMuncherApp').controller('mapCtrl', mapCtrl);
 

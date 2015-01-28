@@ -56,7 +56,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             app: {
-                src: ['app/**/*.js'],
+                src: ['build/**/*.js'],
                 dest: 'public/js/<%= pkg.name %>.js'
             },
             vendorScripts: {
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
         },
 
         'jshint': {
-            files: ['Gruntfile.js', 'app/**/*.js', 'test/**/*.js'],
+            files: ['Gruntfile.js', 'build/**/*.js', 'test/**/*.js'],
             options: {
                 // options here to override JSHint defaults
                 globals: {
@@ -142,11 +142,11 @@ module.exports = function (grunt) {
             'flow': {
                 command: [
                     'cd app',
-                    'flow check --lib flow'
+                    'flow check --lib flowInterfaces'
                 ].join('&&')
             },
             'transpile': {
-                command: 'jsx --strip-types --harmony -x ts app build',
+                command: 'jsx --strip-types --harmony -x js app build',
                 stdout: true,
                 failOnError: true
             }
@@ -158,8 +158,12 @@ module.exports = function (grunt) {
                 files: ['<%= globalConfig.smartAdmin %>/**/*.less'],
                 tasks: ['less', 'cssmin']
             },
-            app: {
+            flow:{
                 files: ['app/**/*.js'],
+                tasks: ['shell']
+            },
+            app: {
+                files: ['build/**/*.js'],
                 tasks: ['concat:app']
             },
             vendorFiles: {
@@ -187,8 +191,8 @@ module.exports = function (grunt) {
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
                     'bower_components/sinonjs/sinon.js',
-                    'app/app.js',
-                    'app/**/*.js',
+                    'build/app.js',
+                    'build/**/*.js',
                     'test/jasmine/**/*.js',
                     'views/**/*.jade'
                 ],
