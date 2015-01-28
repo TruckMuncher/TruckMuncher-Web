@@ -1,6 +1,11 @@
+/* @flow */
 angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
     function (TruckService, $q, $cookieStore) {
         var millisecondsInADay = 86400000;
+
+        function getTruckProfilesFromCookie() {
+            return $cookieStore.get('truckProfiles');
+        }
 
         return {
             updateTruckProfiles: function (latitude, longitude) {
@@ -35,8 +40,5 @@ angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService'
                 });
             }
         };
-        function getTruckProfilesFromCookie() {
-            return $cookieStore.get('truckProfiles');
-        }
 
     }]);

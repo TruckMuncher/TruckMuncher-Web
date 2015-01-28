@@ -1,14 +1,16 @@
+/* @flow */
 angular.module('TruckMuncherApp')
     .factory('MarkerService', ['TruckService', 'TruckProfileService', '$q', function (TruckService, TruckProfileService, $q) {
-        function populateMarker(truck, lat, lon) {
-            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
+        function populateMarker(truck) {
+            var truckProfile = TruckProfileService.getTruckProfile(truck.id);
             var marker = {
                 id: truck.id,
                 icon: 'img/SingleTruckAnnotationIcon.png',
                 coords: {
                     latitude: truck.latitude,
                     longitude: truck.longitude
-                }
+                },
+                truckProfile: {}
             };
 
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {

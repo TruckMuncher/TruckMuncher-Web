@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
     var link = function (scope, elem) {
         elem.on('submit', function () {

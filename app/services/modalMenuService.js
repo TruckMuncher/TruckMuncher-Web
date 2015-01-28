@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal', function ($modal) {
     return {
         launch: function (truckId, customMenuColors) {

@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').directive('imageLoader', ['$timeout', function ($timeout) {
     var link = function (scope, elem) {
         elem.on('load', function () {

@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope', 'colorThief', '$timeout', 'colorService', '$analytics',
     function ($rootScope, colorThief, $timeout, colorService, $analytics) {
         var link = function (scope) {

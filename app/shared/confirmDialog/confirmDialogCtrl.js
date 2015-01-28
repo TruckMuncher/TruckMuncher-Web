@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
     $scope.dialogInfo = dialogInfo;
 

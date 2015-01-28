@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp')
     .factory('MenuService', ['httpHelperService', function (httpHelperService) {
         return {

@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
     function ($scope, TokenService, httpHelperService) {
         $scope.initializeToken = function (sessionToken) {

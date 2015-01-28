@@ -1,4 +1,4 @@
-/** Requires base64.js from base-64 package*/
+/* @flow */
 angular.module('TruckMuncherApp').factory('TokenService', function () {
     var session_token = null;
     return {
@@ -10,8 +10,7 @@ angular.module('TruckMuncherApp').factory('TokenService', function () {
         }
     };
 });
-
-app.factory('TimestampAndNonceService', function () {
+angular.module('TruckMuncherApp').factory('TimestampAndNonceService', function () {
     function twoDigitNumber(n) {
         return n < 10 ? '0' + n : '' + n;
     }
@@ -48,7 +47,7 @@ app.factory('TimestampAndNonceService', function () {
 });
 
 
-app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
+angular.module('TruckMuncherApp').factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
     function (TokenService, TimestampAndNonceService, $location, $q) {
         return{
             request: function (config) {

@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', '$analytics',
     function ($scope, MenuService, $modalInstance, $stateParams, $state, $analytics) {
         $scope.item = {};

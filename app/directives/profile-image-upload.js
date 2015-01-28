@@ -1,5 +1,6 @@
-angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', '$timeout', '$analytics',
-    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService, $analytics) {
+/* @flow */
+angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', '$timeout', 
+    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService) {
         var blankImageUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
         var link = {
             pre: function preLink(scope) {
@@ -27,7 +28,6 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
                     scope.truck.imageUrl = response.url + '?' + new Date().getTime();
                     scope.displayImage = scope.truck.imageUrl;
                     scope.progress = null;
-                    $analytics.eventTrack('Success', {category: 'ImageUpload'});
                 };
 
                 scope.$watch('truck', function () {

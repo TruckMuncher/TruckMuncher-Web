@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').controller('menuActionModalCtrl', ['$scope', '$stateParams', '$modal', '$state',
     function ($scope, $stateParams, $modal, $state) {
 

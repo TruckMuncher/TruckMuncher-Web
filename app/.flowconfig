@@ -1,0 +1,8 @@
+[ignore]
+.*/directives/remote-image-analyzer.js
+
+[include]
+
+[libs]
+
+[options]

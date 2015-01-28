@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp')
     .factory('httpHelperService', ['$http', '$q', 'growl', '$analytics', function ($http, $q, growl, $analytics) {
         var apiUrl = 'https://api.truckmuncher.com:8443';

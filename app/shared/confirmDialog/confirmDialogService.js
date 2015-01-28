@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', '$q', function ($modal, $q) {
     return{
         launch: function (size, title, body, acceptText, rejectText) {

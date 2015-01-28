@@ -1,3 +1,4 @@
+/* @flow */
 angular.module('TruckMuncherApp').factory('colorService', function () {
     function componentToHex(c) {
         var hex = c.toString(16);
@@ -60,14 +61,15 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
             return contrastingHexColor(hex);
         },
         getCustomMenuColorsForTruck: function (truck) {
-            var customMenuColors = {};
-            if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
+            var customMenuColors = {
+                primary: "#000000",
+                secondary: "#000000",
+                primaryContrast: "#000000",
+                secondaryContrast: "#000000"
+            };
+            if (!_.isNull(truck.primaryColor) && !_.isUndefined(truck.primaryColor))
                 customMenuColors.primary = '#000000';
-            else
-                customMenuColors.primary = truck.primaryColor;
-            if (_.isNull(truck.secondaryColor) || _.isUndefined(truck.secondaryColor))
-                customMenuColors.secondary = '#000000';
-            else
+            if (!_.isNull(truck.secondaryColor) && !_.isUndefined(truck.secondaryColor))
                 customMenuColors.secondary = truck.secondaryColor;
             customMenuColors.primaryContrast = contrastingHexColor(customMenuColors.primary);
             customMenuColors.secondaryContrast = contrastingHexColor(customMenuColors.secondary);

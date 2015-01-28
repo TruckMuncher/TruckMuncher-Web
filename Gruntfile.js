@@ -138,10 +138,17 @@ module.exports = function (grunt) {
                 ext: '.min.css'
             }
         },
-        'nodemon': {
-            dev: {
-                ignore: ['bower_components/**/*', 'app/**/*', 'public/js/**/*'],
-                script: 'app.js'
+        shell: {
+            'flow': {
+                command: [
+                    'cd app',
+                    'flow check --lib flow'
+                ].join('&&')
+            },
+            'transpile': {
+                command: 'jsx --strip-types --harmony -x ts app build',
+                stdout: true,
+                failOnError: true
             }
         },
         'watch': {
@@ -222,8 +229,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-shell');
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);

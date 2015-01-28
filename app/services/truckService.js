@@ -1,6 +1,9 @@
+/* @flow */
+
+
 angular.module('TruckMuncherApp')
-    .factory('TruckService', ['httpHelperService', '$q', function (httpHelperService, $q) {
-        return {
+    .factory('TruckService', ['httpHelperService', function (httpHelperService) {
+        var service:ITruckService = {
             getTrucksForVendor: function () {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
                 return httpHelperService.post(url, {}, 'trucks');
@@ -30,4 +33,6 @@ angular.module('TruckMuncherApp')
                 return httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks');
             }
         };
+
+        return service;
     }]);
