@@ -73,7 +73,7 @@ function mapCtrl($scope, growl, colorService: IColorService, SearchService: ISea
         });
     };
 
-    $scope.onProfileClicked = function(marker) {
+    $scope.onProfileClicked = function(marker: ITruckMarker) {
         showMarkerWindow(marker);
         $analytics.eventTrack('ProfileClicked', {
             category: 'Map',
@@ -81,7 +81,7 @@ function mapCtrl($scope, growl, colorService: IColorService, SearchService: ISea
         });
     };
 
-    function showMarkerWindow(marker) {
+    function showMarkerWindow(marker: ITruckMarker) {
         $timeout(function() {
             $scope.infoWindow.show = false;
             $timeout(function() {
@@ -100,7 +100,7 @@ function mapCtrl($scope, growl, colorService: IColorService, SearchService: ISea
         });
     }
 
-    $scope.showMenuModal = function(truckId) {
+    $scope.showMenuModal = function(truckId: string) {
         var marker = _.find(allActiveTruckMarkers, function(marker) {
             return marker.truckProfile.id === truckId;
         });
@@ -123,7 +123,7 @@ function mapCtrl($scope, growl, colorService: IColorService, SearchService: ISea
         }
     });
 
-    $scope.simpleSearch = function(query) {
+    $scope.simpleSearch = function(query: string) {
         $scope.displayedMarkers = [];
         $scope.loading = true;
         SearchService.simpleSearch(query, 20, 0).then(function(results) {

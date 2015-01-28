@@ -1,3 +1,3 @@
 declare class IModalMenuService {
-	launch(truckId: number, colors: CustomMenuColors): void;
+	launch(truckId: string, colors: CustomMenuColors): void;
 }
