@@ -1,24 +1,20 @@
 /* @flow */
 angular.module('TruckMuncherApp')
     .factory('MarkerService', ['TruckService', 'TruckProfileService', '$q', function(TruckService: ITruckService, TruckProfileService: ITruckProfileService, $q) {
-        function populateMarker(truck) {
-            var truckProfile = TruckProfileService.getTruckProfile(truck.id);
-            var marker = {
+        function populateMarker(truck): ITruckMarker {
+            var truckProfile: ITruckProfile = TruckProfileService.getTruckProfile(truck.id);
+            var marker: ITruckMarker = {
                 id: truck.id,
                 icon: 'img/SingleTruckAnnotationIcon.png',
                 coords: {
                     latitude: truck.latitude,
                     longitude: truck.longitude
                 },
-                truckProfile: {}
+                truckProfile: truckProfile
             };
 
-            if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-                marker.truckProfile = truckProfile;
-            } else {
-                marker.truckProfile = {
-                    name: "Could not find profile for truck"
-                };
+            if (_.isNull(truckProfile) && _.isUndefined(truckProfile)) {
+                marker.truckProfile.name =  "Could not find profile for truck";
             }
 
             return marker;
@@ -27,7 +23,7 @@ angular.module('TruckMuncherApp')
         var service: IMarkerService = {
             getMarkers: function(lat, lon) {
                 var deferred = $q.defer();
-                var markers = [];
+                var markers: Array<ITruckMarker> = [];
                 TruckService.getActiveTrucks(lat, lon).then(function(trucksResponse) {
                     if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
                         for (var i = 0; i < trucksResponse.length; i++) {

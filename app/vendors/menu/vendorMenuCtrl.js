@@ -3,10 +3,10 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
     $scope.selectedTruck = null;
     $scope.menu = {};
 
-    TruckService.getTrucksForVendor().then(function(response) {
+    TruckService.getTrucksForVendor().then(function(response: Array<ITruckProfile>) {
         $scope.trucks = response;
-        if ($scope.trucks.length > 0) {
-            $scope.selectedTruck = $scope.trucks[0].id;
+        if (response.length > 0) {
+            $scope.selectedTruck = response[0].id;
         }
     });
 
@@ -19,7 +19,7 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         }
     });
 
-    function setCustomMenuColors(truckId) {
+    function setCustomMenuColors(truckId: string) {
         var truck = _.find($scope.trucks, function(truck) {
             return truck.id === truckId;
         });
@@ -28,7 +28,7 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         }
     }
 
-    $scope.toggleItemAvailability = function(item, categoryId) {
+    $scope.toggleItemAvailability = function(item: IMenuItem, categoryId: string) {
         var itemClone = _.clone(item);
         itemClone.isAvailable = !item.isAvailable;
         MenuService.addOrUpdateItem(
@@ -42,10 +42,10 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         });
     };
 
-    $scope.deleteItem = function(itemId) {
+    $scope.deleteItem = function(itemId: string) {
         var body = 'Are you sure you want to delete this item?';
         confirmDialog.launch(null, 'Delete Item', body, 'Yes', 'No').then(function() {
-            MenuService.deleteItem($scope.selectedTruck, itemId).then(function(response) {
+            MenuService.deleteItem($scope.selectedTruck, itemId).then(function(response: IMenu) {
                 $scope.menu = response;
             });
 
@@ -55,15 +55,15 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         });
     };
 
-    $scope.moveItemDown = function(categoryId, index) {
+    $scope.moveItemDown = function(categoryId: string, index: number) {
         moveItem(categoryId, index, 1);
     };
 
-    $scope.moveItemUp = function(categoryId, index) {
+    $scope.moveItemUp = function(categoryId: string, index: number) {
         moveItem(categoryId, index, -1);
     };
 
-    function moveItem(categoryId, indexOfItem, swapLocationFromIndex) {
+    function moveItem(categoryId: string, indexOfItem: number, swapLocationFromIndex: number) {
         var sortedItems = getSortedItems(categoryId);
         var theItem = _.clone(sortedItems[indexOfItem]);
         var otherItem = _.clone(sortedItems[indexOfItem + swapLocationFromIndex]);
@@ -79,7 +79,7 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         });
     }
 
-    function getSortedItems(categoryId): Array < MenuItem > {
+    function getSortedItems(categoryId: string): Array < IMenuItem > {
         var category = _.find($scope.menu.categories, function(c) {
             return c.id === categoryId;
         });
@@ -88,15 +88,15 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         });
     }
 
-    $scope.moveCategoryUp = function(index) {
+    $scope.moveCategoryUp = function(index: number) {
         moveCategory(index, -1);
     };
 
-    $scope.moveCategoryDown = function(index) {
+    $scope.moveCategoryDown = function(index: number) {
         moveCategory(index, 1);
     };
 
-    function moveCategory(indexOfCategory, swapLocationFromIndex) {
+    function moveCategory(indexOfCategory: number, swapLocationFromIndex: number) {
         var sorted = getSortedCategories();
         var theCategory = _.clone(sorted[indexOfCategory]);
         var otherCategory = _.clone(sorted[indexOfCategory + swapLocationFromIndex]);
@@ -105,7 +105,7 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
 
         delete theCategory.menuItems;
         delete otherCategory.menuItems;
-        MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function(response) {
+        MenuService.addOrUpdateCategories([theCategory, otherCategory], $scope.selectedTruck).then(function(response: IMenu) {
             $scope.menu = response;
         });
 
@@ -114,16 +114,16 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         });
     }
 
-    function getSortedCategories(): Array < Category > {
+    function getSortedCategories(): Array < ICategory > {
         return _.sortBy($scope.menu.categories, function(c) {
             return c.orderInMenu;
         });
     }
 
-    $scope.deleteCategory = function(categoryId) {
+    $scope.deleteCategory = function(categoryId: string) {
         var body = 'Are you sure you want to delete this category? All items in the category will also be deleted.';
         confirmDialog.launch(null, 'Delete Category', body, 'Yes', 'No').then(function() {
-            MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function(response) {
+            MenuService.deleteCategory($scope.selectedTruck, categoryId).then(function(response: IMenu) {
                 $scope.menu = response;
             });
 
@@ -138,7 +138,7 @@ function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckS
         $scope.selectedTruck = $scope.menu.truckId;
     });
 
-    $scope.addItem = function(truckId, categoryId) {
+    $scope.addItem = function(truckId:string, categoryId:string) {
         $state.go('.addItem', {
             truckId: truckId,
             categoryId: categoryId

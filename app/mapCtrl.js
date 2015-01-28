@@ -1,12 +1,10 @@
 /* @flow weak */
 
-function mapCtrl($scope, growl, colorService: IColorService, SearchService:ISearchService, MarkerService: IMarkerService, $timeout, $analytics, ModalMenuService: IModalMenuService) {
+function mapCtrl($scope, growl, colorService: IColorService, SearchService: ISearchService, MarkerService: IMarkerService, $timeout, $analytics, ModalMenuService: IModalMenuService) {
     $scope.mapHeight = screen.height / 1.7 + 'px';
     $scope.loading = true;
     $scope.searchQuery = "";
-    var lat;
-    var lon;
-    var allActiveTruckMarkers = [];
+    var allActiveTruckMarkers: Array < ITruckMarker > = [];
     $scope.displayedMarkers = [];
     $scope.infoWindow = {
         show: false,
@@ -30,8 +28,8 @@ function mapCtrl($scope, growl, colorService: IColorService, SearchService:ISear
     $scope.currentPositionMarker = {};
 
     navigator.geolocation.getCurrentPosition(function(pos) {
-        lat = pos.coords.latitude;
-        lon = pos.coords.longitude;
+        var lat: number = pos.coords.latitude;
+        var lon: number = pos.coords.longitude;
         $scope.currentPositionMarker = {
             id: 1,
             icon: 'img/map_marker_green.png',
@@ -47,15 +45,15 @@ function mapCtrl($scope, growl, colorService: IColorService, SearchService:ISear
             longitude: lon
         };
 
-        getMarkers();
+        getMarkers(lat, lon);
     }, function(error) {
         growl.addErrorMessage('Unable to get location: ' + error.message);
     });
 
-    function getMarkers() {
+    function getMarkers(lat: number, lon: number) {
         $scope.loading = true;
         allActiveTruckMarkers = [];
-        MarkerService.getMarkers(lat, lon).then(function(markers) {
+        MarkerService.getMarkers(lat, lon).then(function(markers: Array < ITruckMarker > ) {
             allActiveTruckMarkers = markers;
             $scope.loading = false;
             $scope.displayedMarkers = allActiveTruckMarkers;

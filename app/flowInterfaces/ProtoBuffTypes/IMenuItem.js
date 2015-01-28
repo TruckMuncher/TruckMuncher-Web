@@ -1,4 +1,4 @@
-declare class MenuItem{
+declare class IMenuItem{
     orderInCategory: number;
     id:string;
     name:string;

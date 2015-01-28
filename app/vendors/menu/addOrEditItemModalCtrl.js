@@ -6,13 +6,13 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
 
         (function () {
             $scope.item.isAvailable = true;
-            MenuService.getTags().then(function (response) {
+            MenuService.getTags().then(function (response: Array<string>) {
                 $scope.allTags = response;
                 $scope.item.tags = [];
             });
 
             if ($state.current.name === 'menu.editItem') {
-                MenuService.getItem($stateParams.itemId).then(function (response) {
+                MenuService.getItem($stateParams.itemId).then(function (response: IMenuItem) {
                     $scope.item = response;
                 });
             }
@@ -25,7 +25,7 @@ angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope'
                 MenuService.addOrUpdateItem(
                     $scope.item,
                     $stateParams.truckId,
-                    $stateParams.categoryId).then(function (response) {
+                    $stateParams.categoryId).then(function (response: IMenu) {
                         $modalInstance.close(response);
                     }, function () {
                         $scope.requestInProgress = false;

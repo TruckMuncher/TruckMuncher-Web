@@ -21,7 +21,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 keywords,
                 $scope.newColorSelection.primaryColor,
                 $scope.newColorSelection.secondaryColor
-            ).then(function(response) {
+            ).then(function(response: ITruckProfile) {
                 $scope.requestInProgress = false;
                 growl.addSuccessMessage('Profile Updated Successfully');
                 refreshTruck(response);
@@ -55,7 +55,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $scope.saveTruck();
         };
 
-        function refreshTruck(truck) {
+        function refreshTruck(truck: ITruckProfile) {
             var index = _.findIndex($scope.trucks, function(t) {
                 return t.id === truck.id;
             });
@@ -65,8 +65,10 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             }
         }
 
-        TruckService.getTrucksForVendor().then(function(response) {
-            $scope.trucks = response;
+        TruckService.getTrucksForVendor().then(function(response: Array<ITruckProfile>) {
+            $scope.trucks = _.sortBy(response, function(t){
+                return t.name;
+            });
             if ($scope.trucks.length > 0) {
                 $scope.selectedTruck = $scope.trucks[0];
             }
@@ -91,7 +93,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $scope.selectColor($scope.newColorSelection.primaryColor);
         };
 
-        $scope.selectColor = function(theColor) {
+        $scope.selectColor = function(theColor: string) {
             if (theColor !== $scope.colorPicker.color)
                 $scope.colorPicker.color = theColor;
             if ($scope.selectingColor === "primary")

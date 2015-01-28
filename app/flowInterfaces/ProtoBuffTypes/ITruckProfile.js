@@ -1,4 +1,4 @@
-declare class TruckProfile {
+declare class ITruckProfile {
 	id:string;
 	name:string;
 	imageUrl:string;

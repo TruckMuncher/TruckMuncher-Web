@@ -1,8 +1,8 @@
-declare class Category {
+declare class ICategory {
     id:string;
     name:string;
     notes:string;
     orderInMenu:number;
-    menuItems:Array<MenuItem>;
+    menuItems:Array<IMenuItem>;
 }
 
