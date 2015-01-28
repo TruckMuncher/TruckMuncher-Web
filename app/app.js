@@ -25,7 +25,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('map', {
             url: "/map",
-
             templateUrl: "partials/map/map.jade",
             controller: 'mapCtrl',
             authenticate: false
@@ -77,6 +76,30 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             templateUrl: "/partials/vendors/profile.jade",
             controller: 'vendorProfileCtrl',
             authenticate: true
+        })
+        .state('privacyPolicy', {
+            url: "/privacyPolicy",
+            controller: ['$scope', function ($scope) {
+                $scope.pages = [
+                    {name: 'advertising', title: 'Advertising'},
+                    {name: 'analytics', title: 'Analytics'},
+                    {name: 'control', title: 'Control'},
+                    {name: 'data-collection', title: 'Data Collection'},
+                    {name: 'direct-marketing', title: 'Direct Marketing'},
+                    {name: 'location-services', title: 'Location Services'},
+                    {name: 'payments', title: 'Payments'},
+                    {name: 'security', title: 'Security'},
+                    {name: 'social-networking', title: 'Social Networking'}
+                ];
+            }],
+            templateUrl: "/partials/privacyPolicy/privacyIndex.jade",
+            authenticate: false
+        })
+        .state('privacyPolicy.detail', {
+            url: '/{name}',
+            templateUrl: function ($stateParams) {
+                return '/partials/privacyPolicy/' + $stateParams.name + '.jade';
+            }
         });
 }]);
 
@@ -95,8 +118,10 @@ app.config(['growlProvider', function (growlProvider) {
 }]);
 
 app.config(function ($analyticsProvider) {
-    $analyticsProvider.firstPageview(true); /* Records pages that don't use $state or $route */
-    $analyticsProvider.withAutoBase(true);  /* Records full path */
+    $analyticsProvider.firstPageview(true);
+    /* Records pages that don't use $state or $route */
+    $analyticsProvider.withAutoBase(true);
+    /* Records full path */
 });
 
 app.run(function ($rootScope, $state, TokenService) {

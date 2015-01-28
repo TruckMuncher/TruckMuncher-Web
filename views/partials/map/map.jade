@@ -10,7 +10,7 @@
                 .progress(data-ng-show='loading')
                     .progress.progress-striped.active
                         .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
-                div.overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers')
+                .overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers')
                     .row.pointer(data-ng-click="onProfileClicked(marker)")
                         .col-xs-3
                             img(data-ng-src='{{marker.truckProfile.imageUrl}}' style='width:50px; height:50px;')
