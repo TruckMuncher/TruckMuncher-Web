@@ -1,7 +1,7 @@
 /* @flow */
 angular.module('TruckMuncherApp')
-    .factory('MenuService', ['httpHelperService', function (httpHelperService) {
-        return {
+    .factory('MenuService', ['httpHelperService', function (httpHelperService: IHttpHelperService) {
+        var service:IMenuService = {
             getFullMenus: function (latitude, longitude, includeAvailability) {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.menu.MenuService/getFullMenus';
                 var data = {'latitude': latitude, 'longitude': longitude, 'includeAvailability': includeAvailability};
@@ -54,4 +54,6 @@ angular.module('TruckMuncherApp')
                 return httpHelperService.post(url, data, 'tags');
             }
         };
+
+        return service;
     }]);

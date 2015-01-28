@@ -1,6 +1,6 @@
 /* @flow */
 angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', '$analytics',
-    function ($scope, MenuService, $modalInstance, $stateParams, $state, $analytics) {
+    function ($scope, MenuService: IMenuService, $modalInstance, $stateParams, $state, $analytics) {
         $scope.item = {};
         $scope.requestInProgress = false;
 

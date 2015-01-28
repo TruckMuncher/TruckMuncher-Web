@@ -1,6 +1,6 @@
 /* @flow */
 angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService', '$analytics',
-    function ($scope, $modalInstance, $stateParams, $state, MenuService, $analytics) {
+    function ($scope, $modalInstance, $stateParams, $state, MenuService:IMenuService, $analytics) {
         $scope.category = {};
         $scope.requestInProgress = false;
 

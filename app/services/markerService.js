@@ -1,6 +1,6 @@
 /* @flow */
 angular.module('TruckMuncherApp')
-    .factory('MarkerService', ['TruckService', 'TruckProfileService', '$q', function (TruckService, TruckProfileService, $q) {
+    .factory('MarkerService', ['TruckService', 'TruckProfileService', '$q', function(TruckService: ITruckService, TruckProfileService: ITruckProfileService, $q) {
         function populateMarker(truck) {
             var truckProfile = TruckProfileService.getTruckProfile(truck.id);
             var marker = {
@@ -16,24 +16,26 @@ angular.module('TruckMuncherApp')
             if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
                 marker.truckProfile = truckProfile;
             } else {
-                marker.truckProfile = {name: "Could not find profile for truck"};
+                marker.truckProfile = {
+                    name: "Could not find profile for truck"
+                };
             }
 
             return marker;
         }
 
-        return {
-            getMarkers: function (lat, lon) {
+        var service: IMarkerService = {
+            getMarkers: function(lat, lon) {
                 var deferred = $q.defer();
                 var markers = [];
-                TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
+                TruckService.getActiveTrucks(lat, lon).then(function(trucksResponse) {
                     if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
                         for (var i = 0; i < trucksResponse.length; i++) {
                             var marker = populateMarker(trucksResponse[i]);
                             markers.push(marker);
                         }
                     } else {
-                        TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
+                        TruckProfileService.updateTruckProfiles(lat, lon).then(function() {
                             for (var i = 0; i < trucksResponse.length; i++) {
                                 var marker = populateMarker(trucksResponse[i]);
                                 markers.push(marker);
@@ -45,5 +47,7 @@ angular.module('TruckMuncherApp')
                 return deferred.promise;
             }
         };
+
+        return service;
 
     }]);

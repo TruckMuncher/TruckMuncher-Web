@@ -1,5 +1,5 @@
 /* @flow */
-function vendorMenuCtrl($scope, MenuService, TruckService: ITruckService, $state, confirmDialog, colorService, $analytics) {
+function vendorMenuCtrl($scope, MenuService: IMenuService, TruckService: ITruckService, $state, confirmDialog, colorService: IColorService, $analytics) {
     $scope.selectedTruck = null;
     $scope.menu = {};
 

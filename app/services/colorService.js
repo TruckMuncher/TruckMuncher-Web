@@ -34,7 +34,7 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
         }
     }
 
-    return {
+    var service: IColorService = {
         RGBsToHexWithDarkIndicator: function (rgbArray) {
             var hexArray = _.map(rgbArray, function (val) {
                 return rgbToHex(val[0], val[1], val[2]);
@@ -61,7 +61,7 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
             return contrastingHexColor(hex);
         },
         getCustomMenuColorsForTruck: function (truck) {
-            var customMenuColors = {
+            var customMenuColors: CustomMenuColors = {
                 primary: "#000000",
                 secondary: "#000000",
                 primaryContrast: "#000000",
@@ -76,4 +76,6 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
             return customMenuColors;
         }
     };
+
+    return service;
 });

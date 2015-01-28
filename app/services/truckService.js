@@ -1,8 +1,6 @@
 /* @flow */
-
-
 angular.module('TruckMuncherApp')
-    .factory('TruckService', ['httpHelperService', function(httpHelperService) {
+    .factory('TruckService', ['httpHelperService', function(httpHelperService: IHttpHelperService) {
         var service: ITruckService = {
             getTrucksForVendor: function() {
                 var url = httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';

@@ -1,6 +1,6 @@
 /* @flow weak */
 
-function mapCtrl($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService) {
+function mapCtrl($scope, growl, colorService: IColorService, SearchService:ISearchService, MarkerService: IMarkerService, $timeout, $analytics, ModalMenuService: IModalMenuService) {
     $scope.mapHeight = screen.height / 1.7 + 'px';
     $scope.loading = true;
     $scope.searchQuery = "";
@@ -12,7 +12,10 @@ function mapCtrl($scope, growl, colorService, SearchService, MarkerService, $tim
         show: false,
         templateUrl: "/partials/map/infoWindow.jade",
         options: {
-            pixelOffset: {height: -20, width: 0}
+            pixelOffset: {
+                height: -20,
+                width: 0
+            }
         }
     };
 
@@ -26,7 +29,7 @@ function mapCtrl($scope, growl, colorService, SearchService, MarkerService, $tim
 
     $scope.currentPositionMarker = {};
 
-    navigator.geolocation.getCurrentPosition(function (pos) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
         lat = pos.coords.latitude;
         lon = pos.coords.longitude;
         $scope.currentPositionMarker = {
@@ -39,86 +42,108 @@ function mapCtrl($scope, growl, colorService, SearchService, MarkerService, $tim
             show: false
         };
 
-        $scope.map.center = {latitude: lat, longitude: lon};
+        $scope.map.center = {
+            latitude: lat,
+            longitude: lon
+        };
 
         getMarkers();
-    }, function (error) {
+    }, function(error) {
         growl.addErrorMessage('Unable to get location: ' + error.message);
     });
 
     function getMarkers() {
         $scope.loading = true;
         allActiveTruckMarkers = [];
-        MarkerService.getMarkers(lat, lon).then(function (markers) {
+        MarkerService.getMarkers(lat, lon).then(function(markers) {
             allActiveTruckMarkers = markers;
             $scope.loading = false;
             $scope.displayedMarkers = allActiveTruckMarkers;
         });
     }
 
-    $scope.closeInfoWindow = function () {
+    $scope.closeInfoWindow = function() {
         $scope.infoWindow.show = false;
     };
 
-    $scope.onMarkerClicked = function (clickEvent) {
+    $scope.onMarkerClicked = function(clickEvent) {
         showMarkerWindow(clickEvent.model);
 
-        $analytics.eventTrack('MarkerClicked', {category: 'Map', label: clickEvent.model.truckProfile.name});
+        $analytics.eventTrack('MarkerClicked', {
+            category: 'Map',
+            label: clickEvent.model.truckProfile.name
+        });
     };
 
-    $scope.onProfileClicked = function (marker) {
+    $scope.onProfileClicked = function(marker) {
         showMarkerWindow(marker);
-        $analytics.eventTrack('ProfileClicked', {category: 'Map', label: marker.truckProfile.name});
+        $analytics.eventTrack('ProfileClicked', {
+            category: 'Map',
+            label: marker.truckProfile.name
+        });
     };
 
     function showMarkerWindow(marker) {
-        $timeout(function () {
+        $timeout(function() {
             $scope.infoWindow.show = false;
-            $timeout(function () {
-                $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
+            $timeout(function() {
+                $scope.map.center = {
+                    latitude: marker.coords.latitude,
+                    longitude: marker.coords.longitude
+                };
 
                 $scope.infoWindow.coords = marker.coords;
                 $scope.infoWindow.show = true;
-                $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal};
+                $scope.infoWindow.templateParameter = {
+                    marker: marker,
+                    showMenuCallback: $scope.showMenuModal
+                };
             });
         });
     }
 
-    $scope.showMenuModal = function (truckId) {
-        var marker = _.find(allActiveTruckMarkers, function (marker) {
+    $scope.showMenuModal = function(truckId) {
+        var marker = _.find(allActiveTruckMarkers, function(marker) {
             return marker.truckProfile.id === truckId;
         });
         var customMenuColors = colorService.getCustomMenuColorsForTruck(marker.truckProfile);
         ModalMenuService.launch(truckId, customMenuColors);
 
-        $analytics.eventTrack('ViewMenu', {category: 'Map', label: marker.truckProfile.name});
+        $analytics.eventTrack('ViewMenu', {
+            category: 'Map',
+            label: marker.truckProfile.name
+        });
     };
 
-    $scope.$watch('searchQuery', function () {
+    $scope.$watch('searchQuery', function() {
         if ($scope.searchQuery.length === 0 && $scope.displayedMarkers.length < allActiveTruckMarkers.length) {
             $scope.displayedMarkers = allActiveTruckMarkers;
 
-            $analytics.eventTrack('SearchCleared', {category: 'Map'});
+            $analytics.eventTrack('SearchCleared', {
+                category: 'Map'
+            });
         }
     });
 
-    $scope.simpleSearch = function (query) {
+    $scope.simpleSearch = function(query) {
         $scope.displayedMarkers = [];
         $scope.loading = true;
-        SearchService.simpleSearch(query, 20, 0).then(function (results) {
-            var resultTruckIds = _.map(results, function (r) {
+        SearchService.simpleSearch(query, 20, 0).then(function(results) {
+            var resultTruckIds = _.map(results, function(r) {
                 return r.truck.id;
             });
-            $scope.displayedMarkers = _.filter(allActiveTruckMarkers, function (marker) {
+            $scope.displayedMarkers = _.filter(allActiveTruckMarkers, function(marker) {
                 return _.contains(resultTruckIds, marker.truckProfile.id);
             });
             $scope.loading = false;
         });
 
-        $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});
+        $analytics.eventTrack('SimpleSearch', {
+            category: 'Map',
+            label: query
+        });
     };
 
 }
 mapCtrl.$inject = ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService'];
 angular.module('TruckMuncherApp').controller('mapCtrl', mapCtrl);
-
