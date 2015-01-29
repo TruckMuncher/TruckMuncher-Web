@@ -4,7 +4,7 @@
             <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
             .col-xs-12
                 input.form-group.form-control(data-ng-model='search' placeholder='Filter')
-                div(data-ng-repeat='page in pages | filter:search')
+                div.animate-repeat(data-ng-repeat='page in pages | filter:search')
                     div.left-menu.txt-color-white(data-ui-sref-active="menu-active")
                         a(data-ui-sref='.detail({name: page.name})', title="page.title")
                             span.menu-item-parent= ' ' + '{{page.title}}'
@@ -14,4 +14,4 @@
 
     #page-content-wrapper.tm-main
         #content
-            <div data-ui-view></div>
+            .slide(data-ui-view="")

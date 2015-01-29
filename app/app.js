@@ -81,15 +81,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             url: "/privacyPolicy",
             controller: ['$scope', function ($scope) {
                 $scope.pages = [
-                    {name: 'advertising', title: 'Advertising'},
-                    {name: 'analytics', title: 'Analytics'},
-                    {name: 'control', title: 'Control'},
+                    {name: 'main', title: 'Home'},
                     {name: 'data-collection', title: 'Data Collection'},
-                    {name: 'direct-marketing', title: 'Direct Marketing'},
+                    {name: 'analytics', title: 'Analytics'},
                     {name: 'location-services', title: 'Location Services'},
-                    {name: 'payments', title: 'Payments'},
-                    {name: 'security', title: 'Security'},
-                    {name: 'social-networking', title: 'Social Networking'}
+                    {name: 'social-networking', title: 'Social Networking'},
+                    {name: 'security', title: 'Security/Retention'},
+                    {name: 'control', title: 'Control'}
                 ];
             }],
             templateUrl: "/partials/privacyPolicy/privacyIndex.jade",

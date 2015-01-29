@@ -2,12 +2,14 @@ body
     div(data-growl='')
 
     #background.col-xs-12
-    <div data-ui-view></div>
+    div(data-ui-view="")
 
     .page-footer.text-align-right
         a(data-ui-sref='map', title="Map") Map
+        //span= ' | '
+        //a(data-ui-sref='about', title="About") About
         span= ' | '
-        a(data-ui-sref='privacyPolicy', title="Privacy Policy") Privacy Policy
+        a(data-ui-sref='privacyPolicy.detail({name: "main"})', title="Privacy Policy") Privacy Policy
 
     include init.jade
     script(src='//maps.googleapis.com/maps/api/js?sensor=false')
