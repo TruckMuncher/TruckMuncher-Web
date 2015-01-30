@@ -118,21 +118,5 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                 $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});
             };
 
-            $scope.jsonToString = function (json) {
-                $scope.formattedString = "";
-                console.log(json);
-
-                for (var i = 0; i < json.length; i++ ) {
-                    if (i === 0) {
-                        formattedString += json[i];
-                    } else if (i > 0) {
-                        formattedString += ", " + json[1];
-                    }
-                }
-
-                console.log(formattedString);
-                return formattedString;
-
-            };
         }]);
 
