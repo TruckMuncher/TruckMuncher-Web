@@ -1,12 +1,28 @@
-angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService', '$analytics',
-    function ($scope, $modalInstance, $stateParams: ng.ui.IStateParamsService, $state: ng.ui.IStateService, MenuService: IMenuService, $analytics) {
-        $scope.category = {};
-        $scope.requestInProgress = false;
 
-        (function () {
+interface IAddOrEditCategoryModalScope extends ng.IScope {
+    category: ICategory;
+    requestInProgress: boolean;
+    submit();
+}
+
+angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', '$analytics',
+    ($scope, MenuService, $modalInstance, $stateParams, $state, $analytics) => new AddOrEditCategoryModalCtrl($scope, MenuService, $modalInstance, $stateParams, $state, $analytics)]);
+
+
+class AddOrEditCategoryModalCtrl {
+    constructor(private $scope:IAddOrEditCategoryModalScope,
+                private MenuService:IMenuService,
+                private $modalInstance:ng.ui.bootstrap.IModalServiceInstance,
+                private $stateParams:ng.ui.IStateParamsService,
+                private $state:ng.ui.IStateService,
+                private $analytics:IAngularticsService) {
+        $scope.requestInProgress = false;
+        $scope.category = new Category();
+
+        (() => {
             if ($state.current.name === 'menu.editCategory') {
                 MenuService.getCategory($stateParams['categoryId']).then(function (response) {
-                    $scope.category = response;
+                    $scope.category = response.category;
                 });
             }
         })();
@@ -18,7 +34,7 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
                 delete categoryClone.menuItems;
 
                 MenuService.addOrUpdateCategory(categoryClone, $stateParams['truckId']).then(function (response) {
-                    $modalInstance.close(response);
+                    $modalInstance.close(response.menu);
                 }, function () {
                     $scope.requestInProgress = false;
                 });
@@ -30,4 +46,5 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
         $scope.$on('$stateChangeSuccess', function () {
             $modalInstance.dismiss('dismissFromStateChange');
         });
-    }]);
+    }
+}

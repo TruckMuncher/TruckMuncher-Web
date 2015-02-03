@@ -1,6 +1,16 @@
-angular.module('TruckMuncherApp').controller('menuActionModalCtrl', ['$scope', '$stateParams', '$modal', '$state',
-    function ($scope, $stateParams, $modal, $state) {
+interface IMenuActionModalScope extends ng.IScope {
+    openModal();
+    modalInstance;
+}
 
+angular.module('TruckMuncherApp').controller('menuActionModalCtrl', ['$scope', '$stateParams', '$modal', '$state',
+    ($scope, $stateParams, $modal, $state) =>  new MenuActionModalCtrl($scope, $stateParams, $modal, $state)]);
+
+class MenuActionModalCtrl {
+    constructor(private $scope:IMenuActionModalScope,
+                private $stateParams:ng.ui.IStateParamsService,
+                private $modal:ng.ui.bootstrap.IModalService,
+                private $state:ng.ui.IStateService) {
         $scope.openModal = function () {
             $scope.modalInstance = $modal.open({
                 templateUrl: $state.current.data.templateUrl,
@@ -19,5 +29,4 @@ angular.module('TruckMuncherApp').controller('menuActionModalCtrl', ['$scope', '
 
         $scope.openModal();
     }
-
-]);
+}
