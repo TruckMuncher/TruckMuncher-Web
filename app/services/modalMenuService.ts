@@ -1,3 +1,9 @@
+interface IModalCtrlScope extends ng.IScope {
+    menu: IMenu;
+    customMenuColors: CustomMenuColors;
+    close();
+}
+
 interface IModalMenuService {
     launch(truckId:string, colors:CustomMenuColors): void;
 }
@@ -14,7 +20,7 @@ class ModalMenuService implements IModalMenuService {
 
     launch(truckId:string, colors:CustomMenuColors):void {
         var modalCtrl = ['$scope', 'truckId', 'customMenuColors', '$modalInstance', 'MenuService',
-            function ($scope, truckId, customMenuColors, $modalInstance, MenuService: IMenuService) {
+            function ($scope: IModalCtrlScope, truckId, customMenuColors, $modalInstance, MenuService:IMenuService) {
                 $scope.menu = null;
                 $scope.customMenuColors = customMenuColors;
 

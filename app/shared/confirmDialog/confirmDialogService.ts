@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', '$q', function ($modal, $q) {
-    return{
+angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', function ($modal) {
+    return {
         launch: function (size, title, body, acceptText, rejectText) {
 
             var modalInstance = $modal.open({
