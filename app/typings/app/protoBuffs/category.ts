@@ -1,3 +1,6 @@
+interface IGetCategoryResponse{
+    category: ICategory;
+}
 interface ICategory {
     id:string;
     name:string;

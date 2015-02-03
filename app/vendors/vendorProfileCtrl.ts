@@ -1,14 +1,36 @@
-angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics',
-    function ($scope, TruckService, growl, $analytics) {
-        $scope.trucks = [];
-        $scope.selectedTruck = {};
-        $scope.tags = [];
-        $scope.newColorSelection = {};
-        $scope.selectingColor = null;
-        $scope.colorPicker = {};
+interface IVendorProfileScope extends ng.IScope {
+    trucks: Array<ITruckProfile>;
+    selectedTruck: ITruckProfile;
+    tags: Array<{text:string}>;
+    newColorSelection: {primaryColor:string; secondaryColor:string};
+    selectingColor: string;
+    colorPicker: {color:string};
+    requestInProgress: boolean;
+    newName: string;
 
-        $scope.saveTruck = function () {
-            var tempWorkaround: Array<any> = $scope.tags;
+    saveTruck();
+    createTruck();
+    submit();
+    resetTruck();
+    setFormValuesFromSelectedTruck();
+    selectColor(theColor:string);
+}
+
+angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics',
+    ($scope, TruckService, growl, $analytics) => new VendorProfileCtrl($scope, TruckService, growl, $analytics)]);
+
+class VendorProfileCtrl {
+
+    constructor(private $scope:IVendorProfileScope, private TruckService:ITruckService, private growl:IGrowlService, private $analytics:IAngularticsService) {
+        $scope.trucks = [];
+        $scope.selectedTruck = new TruckProfile();
+        $scope.tags = [];
+        $scope.newColorSelection = {primaryColor: undefined, secondaryColor: undefined};
+        $scope.selectingColor = null;
+        $scope.colorPicker = {color: ""};
+
+        $scope.saveTruck = () => {
+            var tempWorkaround:Array<any> = $scope.tags;
             var keywords = _.map(tempWorkaround, function (tag) {
                 return tag.text;
             });
@@ -31,7 +53,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $analytics.eventTrack('TruckUpdated', {category: 'VendorProfile', label: $scope.newName});
         };
 
-        $scope.createTruck = function () {
+        $scope.createTruck = () => {
             $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(null, 'New Truck', null, null, null).then(function (response) {
                 $scope.requestInProgress = false;
@@ -45,12 +67,12 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $analytics.eventTrack('TruckCreated', {category: 'VendorProfile'});
         };
 
-        $scope.submit = function () {
+        $scope.submit = () => {
             $scope.saveTruck();
         };
 
-        function refreshTruck(truck: ITruckProfile) {
-            var tempWorkaround: Array<ITruckProfile> = $scope.trucks;
+        function refreshTruck(truck:ITruckProfile) {
+            var tempWorkaround:Array<ITruckProfile> = $scope.trucks;
             var index = _.findIndex(tempWorkaround, function (t) {
                 return t.id === truck.id;
             });
@@ -61,7 +83,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         }
 
         TruckService.getTrucksForVendor().then(function (response) {
-            $scope.trucks = response;
+            $scope.trucks = response.trucks;
             if ($scope.trucks.length > 0) {
                 $scope.selectedTruck = $scope.trucks[0];
             }
@@ -71,11 +93,11 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $scope.setFormValuesFromSelectedTruck();
         });
 
-        $scope.resetTruck = function () {
+        $scope.resetTruck = () => {
             $scope.setFormValuesFromSelectedTruck();
         };
 
-        $scope.setFormValuesFromSelectedTruck = function () {
+        $scope.setFormValuesFromSelectedTruck = () => {
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
                 $scope.newName = $scope.selectedTruck.name;
@@ -86,7 +108,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $scope.selectColor($scope.newColorSelection.primaryColor);
         };
 
-        $scope.selectColor = function (theColor) {
+        $scope.selectColor = (theColor) => {
             if (theColor !== $scope.colorPicker.color)
                 $scope.colorPicker.color = theColor;
             if ($scope.selectingColor === "primary")
@@ -107,4 +129,5 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                 return {text: keyword};
             });
         }
-    }]);
+    }
+}

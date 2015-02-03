@@ -1,8 +1,6 @@
-/** Requires base64.js from base-64 package*/
-
 
 app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
-    function (TokenService, TimestampAndNonceService, $location, $q) {
+    function (TokenService: ITokenService, TimestampAndNonceService: ITimestampAndNonceService, $location: ng.ILocationService, $q: ng.IQService) {
         return {
             request: function (config) {
                 // oauth headers

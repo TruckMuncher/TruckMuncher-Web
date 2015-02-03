@@ -1,3 +1,7 @@
+interface IGetMenuItemResponse{
+    menuItem: IMenuItem;
+}
+
 interface IMenuItem{
     orderInCategory: number;
     id:string;

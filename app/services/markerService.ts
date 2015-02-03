@@ -1,5 +1,5 @@
 interface IMarkerService {
-    getMarkers(lat:number, lon:number):any;
+    getMarkers(lat:number, lon:number):ng.IPromise<ITruckMarker>;
 }
 
 angular.module('TruckMuncherApp').factory('markerService', ['TruckService', 'TruckProfileService', '$q',
@@ -16,10 +16,10 @@ class MarkerService implements IMarkerService {
         this.$q = $q;
     }
 
-    getMarkers(lat:number, lon:number):any {
+    getMarkers(lat:number, lon:number):ng.IPromise<ITruckMarker> {
         var deferred = this.$q.defer();
         var markers = [];
-        this.TruckService.getActiveTrucks(lat, lon).then((trucksResponse: Array<IActiveTruck>) => {
+        this.TruckService.getActiveTrucks(lat, lon).then((trucksResponse:Array<IActiveTruck>) => {
             if (this.TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !this.TruckProfileService.cookieNeedsUpdate()) {
                 for (var i = 0; i < trucksResponse.length; i++) {
                     var marker = this.populateMarker(trucksResponse[i]);

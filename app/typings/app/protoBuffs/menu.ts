@@ -1,4 +1,12 @@
+interface IMenuResponse{
+    menu: IMenu
+}
+
+interface IGetFullMenusResponse{
+    menus: Array<IMenu>;
+}
+
 interface IMenu{
-    id:string;
+    truckId:string;
     categories: Array<ICategory>;
 }

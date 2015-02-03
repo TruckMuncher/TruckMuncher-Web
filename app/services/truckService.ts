@@ -1,9 +1,9 @@
 interface ITruckService {
-    getTrucksForVendor():any;
-    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string):any;
+    getTrucksForVendor():ng.IPromise<ITrucksResponse>;
+    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string):ng.IPromise<ITruckProfile>;
     getImageUploadUrl(truckId:string):string;
-    getActiveTrucks(latitude:number, longitude:number):any;
-    getTruckProfiles(latitude:number, longitude:number):any;
+    getActiveTrucks(latitude:number, longitude:number):ng.IPromise<IActiveTrucksResponse>;
+    getTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITrucksResponse>;
 }
 
 angular.module('TruckMuncherApp').factory('TruckService', ['httpHelperService',
@@ -16,12 +16,12 @@ class TruckService implements ITruckService {
         this.httpHelperService = httpHelperService;
     }
 
-    getTrucksForVendor():any {
+    getTrucksForVendor():ng.IPromise<ITrucksResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTrucksForVendor';
-        return this.httpHelperService.post(url, {}, 'trucks');
+        return this.httpHelperService.post(url, {});
     }
 
-    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string):any {
+    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string):ng.IPromise<ITruckProfile> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
         return this.httpHelperService.post(url,
             {
@@ -38,15 +38,15 @@ class TruckService implements ITruckService {
         return this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.file.FileService/uploadFile/' + truckId;
     }
 
-    getActiveTrucks(latitude:number, longitude:number):any {
+    getActiveTrucks(latitude:number, longitude:number):ng.IPromise<IActiveTrucksResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getActiveTrucks';
         var data = {'latitude': latitude, 'longitude': longitude};
         return this.httpHelperService.post(url, data, 'trucks');
     }
 
-    getTruckProfiles(latitude:number, longitude:number):any {
+    getTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITrucksResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
-        return this.httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude}, 'trucks');
+        return this.httpHelperService.post(url, {'latitude': latitude, 'longitude': longitude});
     }
 
 }

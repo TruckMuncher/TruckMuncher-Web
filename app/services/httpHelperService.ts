@@ -1,6 +1,6 @@
 interface IHttpHelperService {
     getApiUrl(): string;
-    post(url:string, data:{}, responseDataName ?:string): any;
+    post<TResult>(url:string, data:{}, responseDataName ?:string): ng.IPromise<TResult>;
     setApiUrl(url:string): void;
 }
 
@@ -26,7 +26,7 @@ class HttpHelperService implements IHttpHelperService {
         return this.apiUrl;
     }
 
-    post(url:string, data:{}, responseDataName:string):any {
+    post<TResult>(url:string, data:{}, responseDataName:string):ng.IPromise<TResult> {
         var deferred = this.$q.defer();
         this.$analytics.eventTrack('Request', {category: 'HttpHelperService', label: url});
         this.$http({
