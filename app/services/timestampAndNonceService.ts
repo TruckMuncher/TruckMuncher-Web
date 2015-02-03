@@ -3,11 +3,10 @@ interface ITimestampAndNonceService {
     getNonce(): string;
 }
 
-angular.module('TruckMuncherApp').factory('TimestampAndNonceService', [
-    ()=>new TimestampAndNonceService()]);
+angular.module('TruckMuncherApp').factory('TimestampAndNonceService', [()=>new TimestampAndNonceService()]);
 
 class TimestampAndNonceService implements ITimestampAndNonceService {
-    private twoDigitNumber(n) {
+    private static twoDigitNumber(n) {
         return n < 10 ? '0' + n : '' + n;
     }
 
@@ -27,11 +26,11 @@ class TimestampAndNonceService implements ITimestampAndNonceService {
     getTimestamp():string {
         var d = new Date(new Date().getTime());
         return d.getUTCFullYear() + '-' +
-            this.twoDigitNumber(d.getUTCMonth() + 1) + '-' +
-            this.twoDigitNumber(d.getUTCDate()) + 'T' +
-            this.twoDigitNumber(d.getUTCHours()) + ':' +
-            this.twoDigitNumber(d.getUTCMinutes()) + ':' +
-            this.twoDigitNumber(d.getUTCSeconds()) + 'Z';
+            TimestampAndNonceService.twoDigitNumber(d.getUTCMonth() + 1) + '-' +
+            TimestampAndNonceService.twoDigitNumber(d.getUTCDate()) + 'T' +
+            TimestampAndNonceService.twoDigitNumber(d.getUTCHours()) + ':' +
+            TimestampAndNonceService.twoDigitNumber(d.getUTCMinutes()) + ':' +
+            TimestampAndNonceService.twoDigitNumber(d.getUTCSeconds()) + 'Z';
     }
 
     getNonce():string {

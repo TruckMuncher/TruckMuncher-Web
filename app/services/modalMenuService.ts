@@ -8,8 +8,7 @@ interface IModalMenuService {
     launch(truckId:string, colors:CustomMenuColors): void;
 }
 
-angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal',
-    ($modal) => new ModalMenuService($modal)]);
+angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal', ($modal) => new ModalMenuService($modal)]);
 
 class ModalMenuService implements IModalMenuService {
     $modal:ng.ui.bootstrap.IModalService;
@@ -20,7 +19,7 @@ class ModalMenuService implements IModalMenuService {
 
     launch(truckId:string, colors:CustomMenuColors):void {
         var modalCtrl = ['$scope', 'truckId', 'customMenuColors', '$modalInstance', 'MenuService',
-            function ($scope: IModalCtrlScope, truckId, customMenuColors, $modalInstance, MenuService:IMenuService) {
+            function ($scope:IModalCtrlScope, truckId:string, customMenuColors:CustomMenuColors, $modalInstance:ng.ui.bootstrap.IModalServiceInstance, MenuService:IMenuService) {
                 $scope.menu = null;
                 $scope.customMenuColors = customMenuColors;
 
