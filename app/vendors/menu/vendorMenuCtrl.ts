@@ -33,7 +33,7 @@ class VendorMenuCtrl {
         });
 
         $scope.$watch('selectedTruck', function () {
-            if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
+            if ($scope.selectedTruck && (!$scope.menu || $scope.menu.truckId !== $scope.selectedTruck)) {
                 setCustomMenuColors($scope.selectedTruck);
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response.menu;

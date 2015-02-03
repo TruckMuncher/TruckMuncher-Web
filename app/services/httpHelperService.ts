@@ -1,6 +1,6 @@
 interface IHttpHelperService {
     getApiUrl(): string;
-    post<TResult>(url:string, data:{}, responseDataName ?:string): ng.IPromise<TResult>;
+    post<TResult>(url:string, data:{}): ng.IPromise<TResult>;
     setApiUrl(url:string): void;
 }
 
@@ -26,7 +26,7 @@ class HttpHelperService implements IHttpHelperService {
         return this.apiUrl;
     }
 
-    post<TResult>(url:string, data:{}, responseDataName:string):ng.IPromise<TResult> {
+    post<TResult>(url:string, data:{}):ng.IPromise<TResult> {
         var deferred = this.$q.defer();
         this.$analytics.eventTrack('Request', {category: 'HttpHelperService', label: url});
         this.$http({
@@ -35,8 +35,7 @@ class HttpHelperService implements IHttpHelperService {
             data: data,
             crossDomain: true
         }).then((response) => {
-            if (responseDataName) deferred.resolve(response.data[responseDataName]);
-            else deferred.resolve(response.data);
+            deferred.resolve(response.data);
         }, (error:IApiError) => {
             if (error.data && error.data.userMessage) {
                 this.growl.addErrorMessage('Error: ' + error.data.userMessage);

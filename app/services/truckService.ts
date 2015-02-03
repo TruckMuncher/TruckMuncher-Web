@@ -41,7 +41,7 @@ class TruckService implements ITruckService {
     getActiveTrucks(latitude:number, longitude:number):ng.IPromise<IActiveTrucksResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getActiveTrucks';
         var data = {'latitude': latitude, 'longitude': longitude};
-        return this.httpHelperService.post(url, data, 'trucks');
+        return this.httpHelperService.post(url, data);
     }
 
     getTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITrucksResponse> {

@@ -15,7 +15,7 @@ class SearchService implements ISearchService {
 
     simpleSearch(query:string, limit:number, offset:number):ng.IPromise<ISearchResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.search.SearchService/simpleSearch';
-        return this.httpHelperService.post(url, {query: query, limit: limit, offset: offset}, 'searchResponse');
+        return this.httpHelperService.post(url, {query: query, limit: limit, offset: offset});
     }
 
 }
