@@ -1,31 +1,42 @@
-angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal', function ($modal) {
-    return {
-        launch: function (truckId, customMenuColors) {
-            var modalCtrl = ['$scope', 'truckId', 'customMenuColors', '$modalInstance', 'MenuService', function ($scope, truckId, customMenuColors, $modalInstance, MenuService) {
-                $scope.menu = null;
-                $scope.customMenuColors = customMenuColors;
+interface IModalMenuService {
+    launch(truckId: string, colors: CustomMenuColors): void;
+}
 
-                MenuService.getMenu(truckId).then(function (response) {
-                    $scope.menu = response;
-                });
+angular.module('TruckMuncherApp').factory('ModalMenuService', ['$modal',
+    ($modal) => new ModalMenuService($modal)]);
 
-                $scope.close = function () {
-                    $modalInstance.close({});
-                };
-            }];
+class ModalMenuService implements IModalMenuService{
+    $modal:ng.ui.bootstrap.IModalService;
 
-            $modal.open({
-                templateUrl: "/partials/map/customer-menu.jade",
-                controller: modalCtrl,
-                resolve: {
-                    truckId: function () {
-                        return truckId;
-                    },
-                    customMenuColors: function () {
-                        return customMenuColors;
-                    }
-                }
+    constructor($modal: ng.ui.bootstrap.IModalService ){
+        this.$modal = $modal;
+    }
+
+    launch(truckId:string, colors:CustomMenuColors):void {
+        var modalCtrl = ['$scope', 'truckId', 'customMenuColors', '$modalInstance', 'MenuService', function ($scope, truckId, customMenuColors, $modalInstance, MenuService) {
+            $scope.menu = null;
+            $scope.customMenuColors = customMenuColors;
+
+            MenuService.getMenu(truckId).then(function (response) {
+                $scope.menu = response;
             });
-        }
-    };
-}]);
+
+            $scope.close = function () {
+                $modalInstance.close({});
+            };
+        }];
+
+        this.$modal.open({
+            templateUrl: "/partials/map/customer-menu.jade",
+            controller: modalCtrl,
+            resolve: {
+                truckId: function () {
+                    return truckId;
+                },
+                customMenuColors: function () {
+                    return colors;
+                }
+            }
+        });
+    }
+}
