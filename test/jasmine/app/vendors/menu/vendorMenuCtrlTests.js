@@ -121,7 +121,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should NOT request the menu for the truck when selectedTruck changes but the menu for that truck is being displayed already', function () {
-            $scope.menu.truckId = 'abcd';
+            $scope.menu = {truckId: 'abcd'};
             spyOn(mockMenuService, 'getMenu');
             $scope.selectedTruck = 'abcd';
             $scope.$apply();

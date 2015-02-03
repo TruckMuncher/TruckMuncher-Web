@@ -1,6 +1,14 @@
+interface IInitScope extends ng.IScope {
+    initializeToken(sessionToken:string);
+    initializeApiUrl(url:string);
+}
+
 angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
-    function ($scope, TokenService, httpHelperService) {
-        $scope.initializeToken = function (sessionToken) {
+    ($scope, TokenService, httpHelperService) => new InitCtrl($scope, TokenService, httpHelperService)]);
+
+class InitCtrl {
+    constructor(private $scope:IInitScope, private TokenService:ITokenService, private httpHelperService:IHttpHelperService) {
+        $scope.initializeToken = (sessionToken) => {
             if (sessionToken !== 'undefined' && sessionToken !== 'null') {
                 TokenService.setToken(sessionToken);
             } else {
@@ -8,8 +16,8 @@ angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenServic
             }
         };
 
-        $scope.initializeApiUrl = function (url) {
+        $scope.initializeApiUrl = (url) => {
             httpHelperService.setApiUrl(url);
         };
     }
-]);
+}
