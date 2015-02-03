@@ -32,7 +32,7 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
                 $timeout(function () {
                     scope.processing = false;
                     scope.palette = colorService.RGBsToHexWithDarkIndicator(rgbPalette);
-                    scope.dominantColor = colorService.RGBsToHexWithDarkIndicator([[dominant.r, dominant.g, dominant.b]])[0];
+                    scope.dominantColor = colorService.RGBsToHexWithDarkIndicator([dominant])[0];
                 });
             };
 
