@@ -19,8 +19,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             }
         });
 
-        function setCustomMenuColors(truckId) {
-            var truck = _.find($scope.trucks, function (truck) {
+        function setCustomMenuColors(truckId: string) {
+            var temporaryWorkaround: Array<ITruckProfile> = $scope.trucks;
+            var truck = _.find(temporaryWorkaround, function (truck) {
                 return truck.id === truckId;
             });
             if (truck) {
@@ -73,8 +74,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             $analytics.eventTrack('ItemReordered', {category: 'VendorMenu'});
         }
 
-        function getSortedItems(categoryId) {
-            var category = _.find($scope.menu.categories, function (c) {
+        function getSortedItems(categoryId): Array<IMenuItem> {
+            var tempWorkaround: Array<ICategory> = $scope.menu.categories;
+            var category = _.find(tempWorkaround, function (c) {
                 return c.id === categoryId;
             });
             return _.sortBy(category.menuItems, function (i) {
@@ -106,8 +108,9 @@ angular.module('TruckMuncherApp').controller('vendorMenuCtrl', ['$scope', 'MenuS
             $analytics.eventTrack('CategoryReordered', {category: 'VendorMenu'});
         }
 
-        function getSortedCategories() {
-            return _.sortBy($scope.menu.categories, function (c) {
+        function getSortedCategories(): Array<ICategory> {
+            var tempWorkaround: Array<ICategory> = $scope.menu.categories;
+            return _.sortBy(tempWorkaround, function (c) {
                 return c.orderInMenu;
             });
         }

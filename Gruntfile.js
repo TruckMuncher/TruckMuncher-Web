@@ -55,10 +55,6 @@ module.exports = function (grunt) {
             options: {
                 separator: ';'
             },
-            app: {
-                src: ['app/**/*.js'],
-                dest: 'public/js/<%= pkg.name %>.js'
-            },
             vendorScripts: {
                 src: [jsVendorSourceFiles],
                 dest: 'public/js/vendorScripts.js'
@@ -138,10 +134,33 @@ module.exports = function (grunt) {
                 ext: '.min.css'
             }
         },
-        'nodemon': {
-            dev: {
-                ignore: ['bower_components/**/*', 'app/**/*', 'public/js/**/*'],
-                script: 'app.js'
+        'tsd':{
+            refresh: {
+                options: {
+                    // execute a command
+                    command: 'reinstall',
+
+                    //optional: always get from HEAD
+                    latest: false,
+
+                    // specify config file
+                    config: 'app/tsd.json',
+
+                    // experimental: options to pass to tsd.API
+                    opts: {
+                        // props from tsd.Options
+                    }
+                }
+            }
+        },
+        'ts':{
+            default:{
+                files:{
+                    'public/js/TruckMuncherApp.js': ['app/**/*.ts']
+                },
+                options:{
+                    fast: 'never'
+                }
             }
         },
         'watch': {
@@ -152,8 +171,8 @@ module.exports = function (grunt) {
                 tasks: ['less', 'cssmin']
             },
             app: {
-                files: ['app/**/*.js'],
-                tasks: ['concat:app']
+                files: ['app/**/*.ts'],
+                tasks: ['ts:default']
             },
             vendorFiles: {
                 files: ['Gruntfile.js'],
@@ -180,8 +199,7 @@ module.exports = function (grunt) {
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
                     'bower_components/sinonjs/sinon.js',
-                    'app/app.js',
-                    'app/**/*.js',
+                    'public/js/TruckMuncherApp.js',
                     'test/jasmine/**/*.js',
                     'views/**/*.jade'
                 ],
@@ -222,15 +240,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-tsd');
+    grunt.loadNpmTasks("grunt-ts");
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);
 
-    grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:dev', 'copy:bower', 'less', 'cssmin']);
+    grunt.registerTask('default', ['jshint', 'ts:default', 'concat:vendorScripts', 'uglify:dev', 'copy:bower', 'less', 'cssmin']);
     grunt.registerTask('dev', ['concurrent:target']);
-    grunt.registerTask('build-prod', ['jshint', 'concat:app', 'concat:vendorScripts', 'uglify:prod']);
+    grunt.registerTask('build-prod', ['jshint', 'ts:default', 'concat:vendorScripts', 'uglify:prod']);
     grunt.registerTask('update-bower-css', ['copy:bower']);
 
 };

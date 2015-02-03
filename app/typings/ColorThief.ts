@@ -1,4 +1,4 @@
-declare var ColorThief: IColorThiefService;
+declare var ColorThief;
 
 interface IColorThiefService {
     getPalette(imgElement: any, num: number): Array<string>;

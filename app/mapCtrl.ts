@@ -105,7 +105,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             $scope.simpleSearch = function (query) {
                 $scope.displayedMarkers = [];
                 $scope.loading = true;
-                SearchService.simpleSearch(query, 20, 0).then(function (results) {
+                SearchService.simpleSearch(query, 20, 0).then(function (results: Array<ISearchResponse>) {
                     var resultTruckIds = _.map(results, function (r) {
                         return r.truck.id;
                     });

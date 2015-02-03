@@ -8,7 +8,8 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.colorPicker = {};
 
         $scope.saveTruck = function () {
-            var keywords = _.map($scope.tags, function (tag) {
+            var tempWorkaround: Array<any> = $scope.tags;
+            var keywords = _.map(tempWorkaround, function (tag) {
                 return tag.text;
             });
 
@@ -48,8 +49,9 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $scope.saveTruck();
         };
 
-        function refreshTruck(truck) {
-            var index = _.findIndex($scope.trucks, function (t) {
+        function refreshTruck(truck: ITruckProfile) {
+            var tempWorkaround: Array<ITruckProfile> = $scope.trucks;
+            var index = _.findIndex(tempWorkaround, function (t) {
                 return t.id === truck.id;
             });
             if (index >= 0) {

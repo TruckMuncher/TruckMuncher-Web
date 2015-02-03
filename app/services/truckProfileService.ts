@@ -28,14 +28,15 @@ angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService'
 
                 return true;
             },
-            getTruckProfile: function (truckId) {
+            getTruckProfile: function (truckId: string) {
                 var profiles = getTruckProfilesFromCookie();
                 return _.find(profiles, function (x) {
                     return x.id === truckId;
                 });
             }
         };
-        function getTruckProfilesFromCookie() {
+
+        function getTruckProfilesFromCookie(): Array<ITruckProfile> {
             return $cookieStore.get('truckProfiles');
         }
 
