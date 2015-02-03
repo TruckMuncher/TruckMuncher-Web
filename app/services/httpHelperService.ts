@@ -34,10 +34,10 @@ class HttpHelperService implements IHttpHelperService {
             url: url,
             data: data,
             crossDomain: true
-        }).then(function (response) {
+        }).then((response) => {
             if (responseDataName) deferred.resolve(response.data[responseDataName]);
             else deferred.resolve(response.data);
-        }, function (error:IApiError) {
+        }, (error:IApiError) => {
             if (error.data && error.data.userMessage) {
                 this.growl.addErrorMessage('Error: ' + error.data.userMessage);
             } else {
