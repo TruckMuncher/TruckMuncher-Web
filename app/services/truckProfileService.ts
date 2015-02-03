@@ -9,21 +9,15 @@ angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService'
     (TruckService, $q, $cookieStore) => new TruckProfileService(TruckService, $q, $cookieStore)]);
 
 class TruckProfileService implements ITruckProfileService {
-    TruckService:ITruckService;
-    $q:ng.IQService;
-    $cookieStore:ng.cookies.ICookieStoreService;
     private millisecondsInADay:number = 86400000;
 
-    constructor(TruckService:ITruckService, $q:ng.IQService, $cookieStore:ng.cookies.ICookieStoreService) {
-        this.TruckService = TruckService;
-        this.$q = $q;
-        this.$cookieStore = $cookieStore;
+    constructor(private TruckService:ITruckService, private  $q:ng.IQService, private $cookieStore:ng.cookies.ICookieStoreService) {
     }
 
     updateTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITrucksResponse> {
         var deferred = this.$q.defer();
         this.TruckService.getTruckProfiles(latitude, longitude).then((response)=> {
-            this.$cookieStore.put('truckProfiles', response);
+            this.$cookieStore.put('truckProfiles', response.trucks);
             this.$cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
             deferred.resolve(response);
         });

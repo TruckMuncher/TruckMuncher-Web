@@ -15,8 +15,8 @@ interface IMapScope extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'uiGmapGoogleMapApi', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService',
-    ($scope, TruckService, growl, $analytics) => new VendorProfileCtrl($scope, TruckService, growl, $analytics)]);
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService',
+    ($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService) => new MapCtrl($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService)]);
 
 class MapCtrl {
     constructor(private $scope:IMapScope,

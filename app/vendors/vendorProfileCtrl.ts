@@ -82,12 +82,12 @@ class VendorProfileCtrl {
             }
         }
 
-        TruckService.getTrucksForVendor().then(function (response) {
+        (() => TruckService.getTrucksForVendor().then(function (response) {
             $scope.trucks = response.trucks;
             if ($scope.trucks.length > 0) {
                 $scope.selectedTruck = $scope.trucks[0];
             }
-        });
+        }))();
 
         $scope.$watch('selectedTruck', function () {
             $scope.setFormValuesFromSelectedTruck();

@@ -159,7 +159,8 @@ module.exports = function (grunt) {
                     'public/js/TruckMuncherApp.js': ['app/**/*.ts']
                 },
                 options:{
-                    fast: 'never'
+                    fast: 'never',
+                    sourceMap: false
                 }
             }
         },
