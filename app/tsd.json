@@ -16,9 +16,6 @@
     },
     "angular-ui-bootstrap/angular-ui-bootstrap.d.ts": {
       "commit": "5c59a734fdee76e135fe8eb63299d27244499031"
-    },
-    "angular-file-upload/angular-file-upload.d.ts": {
-      "commit": "5c59a734fdee76e135fe8eb63299d27244499031"
     }
   }
 }

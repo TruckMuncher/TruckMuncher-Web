@@ -14,7 +14,7 @@ var app = angular.module('TruckMuncherApp',
         'angulartics.google.analytics'
     ]);
 
-app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
     $urlRouterProvider.otherwise("map");
 
     $stateProvider
@@ -79,8 +79,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('privacyPolicy', {
             url: "/privacyPolicy",
-            controller: ['$scope', function ($scope) {
-                $scope.pages = [
+            controller: ['$scope', function ($scope: ng.IScope) {
+                $scope['pages'] = [
                     {name: 'main', title: 'Home'},
                     {name: 'data-collection', title: 'Data Collection'},
                     {name: 'analytics', title: 'Analytics'},
@@ -95,8 +95,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('privacyPolicy.detail', {
             url: '/{name}',
-            templateUrl: function ($stateParams) {
-                return '/partials/privacyPolicy/' + $stateParams.name + '.jade';
+            templateUrl: function ($stateParams: ng.ui.IStateParamsService) {
+                return '/partials/privacyPolicy/' + $stateParams['name'] + '.jade';
             }
         });
 }]);
@@ -106,7 +106,7 @@ app.factory('myInterceptor', ['httpInterceptor', function (httpInterceptor) {
     return httpInterceptor;
 }]);
 
-app.config(['$httpProvider', function ($httpProvider) {
+app.config(['$httpProvider', function ($httpProvider: ng.IHttpProvider) {
     $httpProvider.interceptors.push('myInterceptor');
 }]);
 
@@ -115,14 +115,14 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.onlyUniqueMessages(false);
 }]);
 
-app.config(function ($analyticsProvider) {
+app.config(function ($analyticsProvider: IAngularticsProvider) {
     $analyticsProvider.firstPageview(true);
     /* Records pages that don't use $state or $route */
     $analyticsProvider.withAutoBase(true);
     /* Records full path */
 });
 
-app.run(function ($rootScope, $state, TokenService) {
+app.run(function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {

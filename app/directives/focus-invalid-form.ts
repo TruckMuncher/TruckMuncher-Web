@@ -1,5 +1,5 @@
 angular.module('TruckMuncherApp').directive('focusInvalidForm', function () {
-    var link = function (scope, elem) {
+    var link = function (scope: ng.IScope, elem: ng.IRootElementService) {
         elem.on('submit', function () {
             var invalidElements = elem.find('.ng-invalid');
             if (invalidElements && invalidElements.length > 0) {

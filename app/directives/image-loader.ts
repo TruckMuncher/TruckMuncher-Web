@@ -1,21 +1,22 @@
-angular.module('TruckMuncherApp').directive('imageLoader', ['$timeout', function ($timeout) {
-    var link = function (scope, elem) {
-        elem.on('load', function () {
-            $timeout(function () {
-                scope.isLoading = false;
+angular.module('TruckMuncherApp').directive('imageLoader', ['$timeout',
+    function ($timeout:ng.ITimeoutService) {
+        var link = function (scope:ng.IScope, elem) {
+            elem.on('load', function () {
+                $timeout(function () {
+                    scope['isLoading'] = false;
+                });
             });
-        });
 
-        scope.$watch('mysrc', function () {
-            $timeout(function () {
-                scope.isLoading = true;
+            scope.$watch('mysrc', function () {
+                $timeout(function () {
+                    scope['isLoading'] = true;
+                });
             });
-        });
-    };
+        };
 
-    return {
-        restrict: 'A',
-        scope: {mysrc: '=', isLoading: '='},
-        link: link
-    };
-}]);
+        return {
+            restrict: 'A',
+            scope: {mysrc: '=', isLoading: '='},
+            link: link
+        };
+    }]);

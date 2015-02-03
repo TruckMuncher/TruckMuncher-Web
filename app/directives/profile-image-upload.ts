@@ -1,5 +1,5 @@
 angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', '$timeout', '$analytics',
-    function (TruckService, growl, FileUploader, TimestampAndNonceService, TokenService, $analytics) {
+    function (TruckService: ITruckService, growl: IGrowlService, FileUploader, TimestampAndNonceService, TokenService: ITokenService, $analytics: IAngularticsService) {
         var blankImageUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
         var link = {
             pre: function preLink(scope) {

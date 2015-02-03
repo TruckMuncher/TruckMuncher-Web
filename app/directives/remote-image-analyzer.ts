@@ -1,5 +1,5 @@
 angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope', 'colorThief', '$timeout', 'colorService', '$analytics',
-    function ($rootScope, colorThief, $timeout, colorService, $analytics) {
+    function ($rootScope: ng.IRootScopeService, colorThief: IColorThiefService, $timeout: ng.ITimeoutService, colorService: IColorService, $analytics: IAngularticsService) {
         var link = function (scope) {
             var img = document.createElement('img');
             var crossOriginImage = document.createElement('img');
