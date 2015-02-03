@@ -1,6 +1,6 @@
-angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', function ($modal) {
+angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', function ($modal:ng.ui.bootstrap.IModalService) {
     return {
-        launch: function (size, title, body, acceptText, rejectText) {
+        launch: function (size:string, title:string, body:string, acceptText:string, rejectText:string) {
 
             var modalInstance = $modal.open({
                 templateUrl: '/partials/shared/confirmDialog.jade',
