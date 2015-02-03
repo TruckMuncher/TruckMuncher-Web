@@ -1,7 +1,7 @@
 interface ITruckProfileService {
     updateTruckProfiles(latitude:number, longitude:number): ng.IPromise<ITrucksResponse>;
     cookieNeedsUpdate(): boolean;
-    allTrucksInStoredProfiles(trucks:Array < ITruckProfile >): boolean;
+    allTrucksInStoredProfiles(trucks:Array < {id:string} >): boolean;
     getTruckProfile(truckId:string): ITruckProfile;
 }
 
@@ -35,7 +35,7 @@ class TruckProfileService implements ITruckProfileService {
         return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > this.millisecondsInADay;
     }
 
-    allTrucksInStoredProfiles(trucks:Array<ITruckProfile>):boolean {
+    allTrucksInStoredProfiles(trucks:Array<{id:string} >):boolean {
         var storedTrucks = this.$cookieStore.get('truckProfiles');
         if (_.isNull(storedTrucks) || _.isUndefined(storedTrucks) || _.isNull(trucks) || _.isUndefined(trucks))
             return false;

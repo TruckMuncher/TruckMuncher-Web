@@ -1,5 +1,5 @@
 interface IMarkerService {
-    getMarkers(lat:number, lon:number):ng.IPromise<ITruckMarker>;
+    getMarkers(lat:number, lon:number):ng.IPromise<Array<ITruckMarker>>;
 }
 
 angular.module('TruckMuncherApp').factory('markerService', ['TruckService', 'TruckProfileService', '$q',
@@ -16,18 +16,19 @@ class MarkerService implements IMarkerService {
         this.$q = $q;
     }
 
-    getMarkers(lat:number, lon:number):ng.IPromise<ITruckMarker> {
+    getMarkers(lat:number, lon:number):ng.IPromise<Array<ITruckMarker>> {
         var deferred = this.$q.defer();
         var markers = [];
-        this.TruckService.getActiveTrucks(lat, lon).then((trucksResponse:Array<IActiveTruck>) => {
-            if (this.TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !this.TruckProfileService.cookieNeedsUpdate()) {
-                for (var i = 0; i < trucksResponse.length; i++) {
+        this.TruckService.getActiveTrucks(lat, lon).then((trucksResponse) => {
+            var trucks = trucksResponse.trucks;
+            if (this.TruckProfileService.allTrucksInStoredProfiles(trucks) && !this.TruckProfileService.cookieNeedsUpdate()) {
+                for (var i = 0; i < trucks.length; i++) {
                     var marker = this.populateMarker(trucksResponse[i]);
                     markers.push(marker);
                 }
             } else {
                 this.TruckProfileService.updateTruckProfiles(lat, lon).then(() => {
-                    for (var i = 0; i < trucksResponse.length; i++) {
+                    for (var i = 0; i < trucks.length; i++) {
                         var marker = this.populateMarker(trucksResponse[i]);
                         markers.push(marker);
                     }

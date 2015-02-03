@@ -1,5 +1,5 @@
 interface IColorService {
-    RGBsToHexWithDarkIndicator(rgbArray:Array<number>): Array < IHexWithDarkIndicator > ;
+    RGBsToHexWithDarkIndicator(rgbArray:Array<Array<number>>): Array < IHexWithDarkIndicator > ;
     hexColorIsDark(hex:string): boolean;
     getContrastingHexColor(hex:string): string;
     getCustomMenuColorsForTruck(truck:ITruckProfile): CustomMenuColors;
@@ -8,7 +8,7 @@ interface IColorService {
 angular.module('TruckMuncherApp').factory('colorService', [() => new ColorService()]);
 
 class ColorService implements IColorService {
-    RGBsToHexWithDarkIndicator(rgbArray:Array<number>):Array<IHexWithDarkIndicator> {
+    RGBsToHexWithDarkIndicator(rgbArray:Array<Array<number>>):Array<IHexWithDarkIndicator> {
         var hexArray = _.map(rgbArray, function (val) {
             return ColorService.rgbToHex(val[0], val[1], val[2]);
         });
