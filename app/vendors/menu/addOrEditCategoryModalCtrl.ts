@@ -1,11 +1,11 @@
 angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$scope', '$modalInstance', '$stateParams', '$state', 'MenuService', '$analytics',
-    function ($scope, $modalInstance, $stateParams, $state, MenuService, $analytics) {
+    function ($scope, $modalInstance, $stateParams: ng.ui.IStateParamsService, $state: ng.ui.IStateService, MenuService: IMenuService, $analytics) {
         $scope.category = {};
         $scope.requestInProgress = false;
 
         (function () {
             if ($state.current.name === 'menu.editCategory') {
-                MenuService.getCategory($stateParams.categoryId).then(function (response) {
+                MenuService.getCategory($stateParams['categoryId']).then(function (response) {
                     $scope.category = response;
                 });
             }
@@ -17,7 +17,7 @@ angular.module('TruckMuncherApp').controller('addOrEditCategoryModalCtrl', ['$sc
                 var categoryClone = _.clone($scope.category);
                 delete categoryClone.menuItems;
 
-                MenuService.addOrUpdateCategory(categoryClone, $stateParams.truckId).then(function (response) {
+                MenuService.addOrUpdateCategory(categoryClone, $stateParams['truckId']).then(function (response) {
                     $modalInstance.close(response);
                 }, function () {
                     $scope.requestInProgress = false;

@@ -1,10 +1,10 @@
 angular.module('TruckMuncherApp').factory('colorService', function () {
-    function componentToHex(c) {
+    function componentToHex(c: number): string {
         var hex = c.toString(16);
         return hex.length == 1 ? "0" + hex : hex;
     }
 
-    function rgbToHex(r, g, b) {
+    function rgbToHex(r: number, g: number, b: number): string {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
@@ -17,12 +17,12 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
         } : null;
     }
 
-    function isDark(r, g, b) {
+    function isDark(r: number, g: number, b: number): boolean {
         var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
         return (yiq < 128);
     }
 
-    function contrastingHexColor(hex) {
+    function contrastingHexColor(hex: string) {
         var light = '#FFFFFF';
         var dark = '#000000';
         var rgb = hexToRgb(hex);
@@ -34,7 +34,7 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
     }
 
     return {
-        RGBsToHexWithDarkIndicator: function (rgbArray) {
+        RGBsToHexWithDarkIndicator: function (rgbArray: Array<number>) {
             var hexArray = _.map(rgbArray, function (val) {
                 return rgbToHex(val[0], val[1], val[2]);
             });
@@ -48,7 +48,7 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
                 return {'hexColor': pair[0], 'isDark': pair[1]};
             });
         },
-        hexColorIsDark: function (hex) {
+        hexColorIsDark: function (hex: string) {
             var rgb = hexToRgb(hex);
             if (rgb) {
                 return isDark(rgb.r, rgb.g, rgb.b);
@@ -56,11 +56,11 @@ angular.module('TruckMuncherApp').factory('colorService', function () {
                 return false;
             }
         },
-        getContrastingHexColor: function (hex) {
+        getContrastingHexColor: function (hex: string) {
             return contrastingHexColor(hex);
         },
-        getCustomMenuColorsForTruck: function (truck) {
-            var customMenuColors = {};
+        getCustomMenuColorsForTruck: function (truck: ITruckProfile) {
+            var customMenuColors = new CustomMenuColors();
             if (_.isNull(truck.primaryColor) || _.isUndefined(truck.primaryColor))
                 customMenuColors.primary = '#000000';
             else
