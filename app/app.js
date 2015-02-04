@@ -115,14 +115,14 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.onlyUniqueMessages(false);
 }]);
 
-app.config(function ($analyticsProvider) {
+app.config(['$analyticsProvider', function ($analyticsProvider) {
     $analyticsProvider.firstPageview(true);
     /* Records pages that don't use $state or $route */
     $analyticsProvider.withAutoBase(true);
     /* Records full path */
-});
+}]);
 
-app.run(function ($rootScope, $state, TokenService) {
+app.run(['$rootScope', '$state', 'TokenService', function ($rootScope, $state, TokenService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {
@@ -131,5 +131,5 @@ app.run(function ($rootScope, $state, TokenService) {
                 event.preventDefault();
             }
         });
-});
+}]);
 
