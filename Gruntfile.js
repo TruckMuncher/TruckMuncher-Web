@@ -45,6 +45,8 @@ module.exports = function (grunt) {
         smartAdmin: 'smartAdmin',
 
         cssDest: 'public/stylesheets'
+
+
     };
 
     grunt.initConfig({
@@ -72,7 +74,7 @@ module.exports = function (grunt) {
             },
             prod: {
                 files: {
-                    'public/js/<%= pkg.name %>.js': ['<%= concat.app.dest %>'],
+                    'public/js/<%= pkg.name %>.js': ['public/js/<%= pkg.name %>.js'],
                     'public/js/vendorScripts.js': ['<%= concat.vendorScripts.dest %>']
                 }
             }

@@ -116,14 +116,14 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.onlyUniqueMessages(false);
 }]);
 
-app.config(function ($analyticsProvider: IAngularticsProvider) {
+app.config(['$analyticsProvider', function ($analyticsProvider: IAngularticsProvider) {
     $analyticsProvider.firstPageview(true);
     /* Records pages that don't use $state or $route */
     $analyticsProvider.withAutoBase(true);
     /* Records full path */
-});
+}]);
 
-app.run(function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {
+app.run(['$rootScope', '$state', 'TokenService', function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {
@@ -132,5 +132,5 @@ app.run(function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService,
                 event.preventDefault();
             }
         });
-});
+}]);
 
