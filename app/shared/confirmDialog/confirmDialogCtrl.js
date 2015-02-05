@@ -1,4 +1,4 @@
-angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($scope, $modalInstance, dialogInfo) {
+angular.module('TruckMuncherApp').controller('confirmDialogCtrl',['$scope', '$modalInstance', 'dialogInfo', function ($scope, $modalInstance, dialogInfo) {
     $scope.dialogInfo = dialogInfo;
 
     $scope.ok = function () {
@@ -8,4 +8,4 @@ angular.module('TruckMuncherApp').controller('confirmDialogCtrl', function ($sco
     $scope.cancel = function () {
         $modalInstance.dismiss({});
     };
-});
+}]);
