@@ -15,6 +15,12 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
                     pixelOffset: {height: -20, width: 0}
                 }
             };
+            $scope.locationWindow = {
+                show: false,
+                options: {
+                    pixelOffset: {height: -20, width: 0}
+                }
+            };
 
             $scope.map = {
                 center: {
@@ -63,6 +69,11 @@ angular.module('TruckMuncherApp').controller('mapCtrl',
             $scope.onMarkerClicked = function (clickEvent) {
                 showMarkerWindow(clickEvent.model);
                 $analytics.eventTrack('MarkerClicked', {category: 'Map', label: clickEvent.model.truckProfile.name});
+            };
+
+            $scope.locationMarkerClicked = function (clickEvent) {
+                $scope.locationWindow.coords = {latitude: $scope.currentPositionMarker.latitude, longitude: $scope.currentPositionMarker.longitude};
+                $scope.loacationWindow.show = true;
             };
 
             $scope.onProfileClicked = function (marker) {
