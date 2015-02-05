@@ -77,6 +77,12 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             templateUrl: "/partials/vendors/profile.jade",
             controller: 'vendorProfileCtrl',
             authenticate: true
+        })
+        .state('truckProfile', {
+            url: "/truckProfile",
+            templateUrl: "/partials/truckProfile.jade",
+            controller: 'truckProfileCtrl',
+            authenticate: false
         });
 }]);
 
