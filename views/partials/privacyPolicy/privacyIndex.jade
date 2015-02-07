@@ -1,0 +1,17 @@
+#wrapper
+    #sidebar-wrapper.bg-color-mold
+        .container-fluid.make-space-for-logo.ignore-padding-right
+            <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+            .col-xs-12
+                input.form-group.form-control(data-ng-model='search' placeholder='Filter')
+                div.animate-repeat(data-ng-repeat='page in pages | filter:search')
+                    div.left-menu.txt-color-white(data-ui-sref-active="menu-active")
+                        a(data-ui-sref='.detail({name: page.name})', title="page.title")
+                            span.menu-item-parent= ' ' + '{{page.title}}'
+
+    #top-nav-wrapper
+        <div data-ng-include="'/partials/nav.jade'"></div>
+
+    #page-content-wrapper.tm-main
+        #content
+            .slide(data-ui-view="")

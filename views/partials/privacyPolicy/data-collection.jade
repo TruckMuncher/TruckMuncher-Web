@@ -1,0 +1,74 @@
+.jarviswidget.background-white-transparent.jarviswidget-color-blueDark
+    header
+        h2 Data Collection Overview
+    section
+        .widget-body.background-transparent.col-xs-12
+            div.container-fluid
+                h1 User Details
+                ul.fa-ul
+                    li
+                        i.fa-li.fa.fa-check-square-o.fa-lg
+                        b Email address
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Mobile device telephone no.
+                h1 Device Identifier
+                ul.fa-ul
+                    li
+                        i.fa-li.fa.fa-check-square-o.fa-lg
+                        b Device information (UDID)
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | MAC address
+                    li
+                        i.fa-li.fa.fa-check-square-o.fa-lg
+                        b OS version
+                h1 User Files
+                ul.fa-ul
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Photos/videos
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Browser history
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Phone/text log
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Contacts
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Messages
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Installed apps
+                h1 Location
+                ul.fa-ul(data-ng-init='locationDetails = false')
+                    li.pointer(data-ng-click='locationDetails=!locationDetails')
+                        i.fa-li.fa.fa-check-square-o.fa-lg
+                        b Location Data
+                        i.fa.fa-chevron-down.fa-lg(data-ng-if='!locationDetails')
+                        i.fa.fa-chevron-up.fa-lg(data-ng-if='locationDetails')
+                        div(data-collapse='!locationDetails', )
+                            p Location Data shared with:
+                            ul
+                                li Other companies within group
+                                li Other 3rd parties
+                h1 Biometrics
+                ul.fa-ul
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Fingerprint reader
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Voice authentifiction
+                h1 Health, medical or therapy information
+                ul.fa-ul
+                    li
+                        i.fa-li.fa.fa-square-o
+                        | Data
+
+
+
+
