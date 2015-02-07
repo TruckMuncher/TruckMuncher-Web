@@ -1,4 +1,3 @@
-
 var app = angular.module('TruckMuncherApp',
     [
         'ui.router',
