@@ -2,5 +2,6 @@ interface ITruckMarker {
     truckProfile: ITruckProfile;
     id: string;
     icon: string;
-    coords: Coordinates;
+    coords: ICoordinates;
+    metersFromUser: number;
 }

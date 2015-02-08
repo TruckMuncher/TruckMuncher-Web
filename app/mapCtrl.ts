@@ -78,7 +78,8 @@ class MapCtrl {
         function getMarkers() {
             $scope.loading = true;
             allActiveTruckMarkers = [];
-            MarkerService.getMarkers(lat, lon).then(function (markers) {
+            var coords:ICoordinates = {latitude: lat, longitude: lon};
+            MarkerService.getMarkers(coords).then(function (markers) {
                 allActiveTruckMarkers = markers;
                 $scope.loading = false;
                 $scope.displayedMarkers = allActiveTruckMarkers;
