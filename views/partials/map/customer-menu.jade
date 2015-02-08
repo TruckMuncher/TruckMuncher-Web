@@ -13,16 +13,23 @@
                             table.table.table-bordered.bg-color-white
                                 tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
                                     tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
-                                        td
+                                        td(data-ng-if='!item.isAvailable')
+                                            span(style='text-decoration: line-through')
+                                                b= ' ' + '{{item.name}}'
+                                        td(data-ng-if='item.isAvailable')
                                             span
                                                 b= ' ' + '{{item.name}}'
-                                        td.text-center Price
-                                        td.text-center Available
+                                        td(data-ng-if='!item.isAvailable')
+                                            div(style='text-decoration: line-through') Price
+                                        td(data-ng-if='item.isAvailable')
+                                            div Price
 
                                     tr
-                                        td.big-cell {{item.notes}}
-                                        td.text-center
+                                        td.big-cell(data-ng-if='!item.isAvailable')
+                                            span(style='text-decoration: line-through') {{item.notes}}
+                                        td.big-cell(data-ng-if='item.isAvailable')
+                                            span {{item.notes}}
+                                        td(data-ng-if='!item.isAvailable')
+                                            span(style='text-decoration: line-through') {{item.price | currency:"$":2}}
+                                        td(data-ng-if='item.isAvailable')
                                             span {{item.price | currency:"$":2}}
-                                        td.text-center
-                                            i.fa.fa-check(data-ng-if='item.isAvailable')
-                                            i.fa.fa-close(data-ng-if='!item.isAvailable')

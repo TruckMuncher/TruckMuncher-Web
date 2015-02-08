@@ -50,7 +50,7 @@ class MapCtrl {
                 latitude: 43.05,
                 longitude: -87.95
             },
-            zoom: 12
+            zoom: 13
         };
 
         $scope.currentPositionMarker = {};
@@ -78,24 +78,25 @@ class MapCtrl {
         function getMarkers() {
             $scope.loading = true;
             allActiveTruckMarkers = [];
-            MarkerService.getMarkers(lat, lon).then(function (markers) {
+            var coords:ICoordinates = {latitude: lat, longitude: lon};
+            MarkerService.getMarkers(coords).then(function (markers) {
                 allActiveTruckMarkers = markers;
                 $scope.loading = false;
                 $scope.displayedMarkers = allActiveTruckMarkers;
             });
         }
 
-        $scope.closeInfoWindow =  () => {
+        $scope.closeInfoWindow = () => {
             $scope.infoWindow.show = false;
         };
 
-        $scope.onMarkerClicked =  (clickEvent) => {
+        $scope.onMarkerClicked = (clickEvent) => {
             showMarkerWindow(clickEvent.model);
 
             $analytics.eventTrack('MarkerClicked', {category: 'Map', label: clickEvent.model.truckProfile.name});
         };
 
-        $scope.onProfileClicked =  (marker) => {
+        $scope.onProfileClicked = (marker) => {
             showMarkerWindow(marker);
             $analytics.eventTrack('ProfileClicked', {category: 'Map', label: marker.truckProfile.name});
         };
@@ -104,6 +105,7 @@ class MapCtrl {
             $timeout(function () {
                 $scope.infoWindow.show = false;
                 $timeout(function () {
+                    if ($scope.map.zoom < 16) $scope.map.zoom = 16;
                     $scope.map.center = {latitude: marker.coords.latitude, longitude: marker.coords.longitude};
 
                     $scope.infoWindow.coords = marker.coords;
@@ -113,7 +115,7 @@ class MapCtrl {
             });
         }
 
-        $scope.showMenuModal =  (truckId) => {
+        $scope.showMenuModal = (truckId) => {
             var marker = _.find(allActiveTruckMarkers, function (marker) {
                 return marker.truckProfile.id === truckId;
             });
@@ -131,8 +133,7 @@ class MapCtrl {
             }
         });
 
-        $scope.simpleSearch =  (query) => {
-            $scope.displayedMarkers = [];
+        $scope.simpleSearch = (query) => {
             $scope.loading = true;
             SearchService.simpleSearch(query, 20, 0).then(function (results) {
                 var resultTruckIds = _.map(results.searchResponse, function (r) {

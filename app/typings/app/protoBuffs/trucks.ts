@@ -1,4 +1,4 @@
-interface ITrucksResponse{
+interface ITruckProfilesResponse{
     trucks: Array<ITruckProfile>;
 }
 
