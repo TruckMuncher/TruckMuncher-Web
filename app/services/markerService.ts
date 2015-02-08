@@ -13,7 +13,6 @@ class MarkerService implements IMarkerService {
     getMarkers(userPosition:ICoordinates):ng.IPromise<Array<ITruckMarker>> {
         var deferred = this.$q.defer();
         var markers = [];
-        console.log(this.TruckService.getActiveTrucks(1,2));
         this.TruckService.getActiveTrucks(userPosition.latitude, userPosition.longitude).then((trucksResponse) => {
             var trucks = trucksResponse.trucks;
             if (this.TruckProfileService.allTrucksInStoredProfiles(trucks) && !this.TruckProfileService.cookieNeedsUpdate()) {

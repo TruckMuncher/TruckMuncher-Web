@@ -2,21 +2,30 @@
   height: 100%;
 }
 
+@desiredSize: 50px;
 .map-profile-image {
-  width: 50px;
-  height: 50px;
-  text-align:center;
-  overflow:hidden;
+  width: @desiredSize;
+  height: @desiredSize;
+  border-radius: 50%;
+  text-align: center;
+  overflow: hidden;
 }
 
-.map-profile-image > img {
+.circular-image-wide {
+  height: @desiredSize;
   width: auto;
-  max-width: 50px;
+}
+
+.circular-image-tall {
   height: auto;
-  max-height: 50px;
+  width: @desiredSize;
 }
 
 .angular-google-map-container, .angular-google-map {
   width: 100%;
   height: 100%;
+}
+
+.txt-subscript {
+  font-size: 0.7em
 }

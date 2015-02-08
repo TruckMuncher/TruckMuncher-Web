@@ -21,11 +21,11 @@
                     .row.pointer(data-ng-click="onProfileClicked(marker)")
                         .col-xs-3
                             .map-profile-image
-                                img(data-ng-src='{{marker.truckProfile.imageUrl}}')
+                                img(data-ng-src='{{marker.truckProfile.imageUrl}}' circular-image="")
                         .col-xs-9
                             div
                                 b {{marker.truckProfile.name}}
-                            div(style="font-size:0.7em") {{marker.metersFromUser|distance:'miles'|number:2}} mi
+                            .txt-subscript {{marker.metersFromUser|distance:'miles'|number:2}} mi
                             span(data-ng-repeat="keywords in marker.truckProfile.keywords")
                                 span(data-ng-if="$first") {{keywords}}
                                 span(data-ng-if="!$first") , {{keywords}}

@@ -17,8 +17,7 @@ describe('TruckMuncherApp', function () {
             $q = _$q_;
         }));
 
-
-        it('should get active trucks', function () {
+        it('should get active trucks from API with provided coordinates', function () {
             var mock = sinon.mock(mockTruckService);
             var deferred = $q.defer();
 
