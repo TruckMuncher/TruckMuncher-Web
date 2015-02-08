@@ -1,5 +1,5 @@
 interface ITruckProfileService {
-    updateTruckProfiles(latitude:number, longitude:number): ng.IPromise<ITrucksResponse>;
+    updateTruckProfiles(latitude:number, longitude:number): ng.IPromise<ITruckProfilesResponse>;
     cookieNeedsUpdate(): boolean;
     allTrucksInStoredProfiles(trucks:Array < {id:string} >): boolean;
     getTruckProfile(truckId:string): ITruckProfile;
@@ -14,7 +14,7 @@ class TruckProfileService implements ITruckProfileService {
     constructor(private TruckService:ITruckService, private  $q:ng.IQService, private $cookieStore:ng.cookies.ICookieStoreService) {
     }
 
-    updateTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITrucksResponse> {
+    updateTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITruckProfilesResponse> {
         var deferred = this.$q.defer();
         this.TruckService.getTruckProfiles(latitude, longitude).then((response)=> {
             this.$cookieStore.put('truckProfiles', response.trucks);
