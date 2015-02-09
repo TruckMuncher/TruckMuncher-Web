@@ -1,4 +1,4 @@
-interface ITruckProfileView extends ng.IScope {
+interface ITruckProfileScope extends ng.IScope {
 
     allTrucks: Array<ITruckProfile>;
     selectedTruck: ITruckProfile;
@@ -8,8 +8,8 @@ interface ITruckProfileView extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', '$rootScope', 'TokenService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService',
-    function ($scope, growl, $rootScope, TokenService, TruckService, TruckProfileService, SearchService, MenuService) {
+angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl',  'TokenService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService',
+    function ($scope:ITruckProfileScope, growl:IGrowlService,  TokenService: ITokenService, TruckService: ITruckService, TruckProfileService: ITruckProfileService, SearchService: ISearchService, MenuService: IMenuService) {
 
         var allTrucks = [];
         var lat;
