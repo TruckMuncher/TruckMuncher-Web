@@ -1,10 +1,12 @@
-div(style="height:80px; width:200px; overflow-y:auto;" )
+div(style="height:100px; width:200px; overflow-y:auto;" )
     .col-xs-3(style="padding:0px")
-        img(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}' style='width:50px; height:50px;')
+        .map-profile-image
+            img(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}' circular-image="" )
     .col-xs-9
         div(style="font-weight:bold") {{parameter.marker.truckProfile.name}}
+        .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
         span(data-ng-repeat="keywords in parameter.marker.truckProfile.keywords")
             span(data-ng-if="$first") {{keywords}}
-            span(data-ng-if="$index > $first") , {{keywords}}
+            span(data-ng-if="!$first") , {{keywords}}
         div
             button.bg-color-mold.txt-color-white(style="border: none;", data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu

@@ -12,6 +12,7 @@ var express = require('express'),
     passport = require('passport'),
     favicon = require('serve-favicon'),
     q = require('q'),
+    compression = require('compression'),
     FacebookStrategy = require('passport-facebook').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     servers = require('./server/serverConfig');
@@ -43,6 +44,8 @@ passport.use(new TwitterStrategy({
 
 // setup middleware
 var app = express();
+
+app.use(compression());
 
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 

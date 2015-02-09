@@ -4,29 +4,31 @@
             <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
             div.col-xs-12(style="padding-top: 30px;")
                 .input-group.form-group
-                    input.form-control(data-ng-model='searchQuery' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
+                    input.form-control(data-ng-model='searchQuery' data-ng-disabled='loading' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
                     span.input-group-btn
                         button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
                 .progress(data-ng-show='loading')
                     .progress.progress-striped.active
                         .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
-                div.overflow-auto.container-fluid(data-ng-if='displayedMarkers.length == 0')
-                    .row.pointer
+                div.overflow-auto.container-fluid(data-ng-if='displayedMarkers.length == 0 && !loading')
+                    .row
                         .col-xs-12.text-align-center
                             div
                                 b There are no results!
                     .row
                         hr
-                div.overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers')
+                .overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers | orderBy:"metersFromUser"')
                     .row.pointer(data-ng-click="onProfileClicked(marker)")
                         .col-xs-3
-                            img(data-ng-src='{{marker.truckProfile.imageUrl}}' style='width:50px; height:50px;')
+                            .map-profile-image
+                                img(data-ng-src='{{marker.truckProfile.imageUrl}}' circular-image="")
                         .col-xs-9
                             div
                                 b {{marker.truckProfile.name}}
+                            .txt-subscript {{marker.metersFromUser|distance:'miles'|number:2}} mi
                             span(data-ng-repeat="keywords in marker.truckProfile.keywords")
                                 span(data-ng-if="$first") {{keywords}}
-                                span(data-ng-if="$index > $first") , {{keywords}}
+                                span(data-ng-if="!$first") , {{keywords}}
                     .row
                         hr
 
@@ -45,4 +47,4 @@
                         ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', icon='"icon"', click='onMarkerClicked')
                         ui-gmap-window(coords='infoWindow.coords', show='infoWindow.show', templateUrl='infoWindow.templateUrl', templateParameter='infoWindow.templateParameter', closeClick='closeInfoWindow', options='infoWindow.options')
                         ui-gmap-marker(data-ng-if='currentPositionMarker.id', idKey='currentPositionMarker.id', coords='currentPositionMarker.coords', icon='currentPositionMarker.icon')
-                        ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show', options='{"content": "Your Position"}')
+                            ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show', options='{"content": "Your Position"}')

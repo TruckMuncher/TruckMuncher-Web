@@ -33,7 +33,7 @@ describe('TruckMuncherApp', function () {
                 if (rejectRequests) {
                     deferred.reject({});
                 } else {
-                    deferred.resolve({});
+                    deferred.resolve({trucks:[]});
                 }
                 return deferred.promise;
             }
