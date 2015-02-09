@@ -16,8 +16,8 @@ angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'gro
         var lon;
 
         $scope.allTrucks = [];
-        $scope.selectedTruck = {};
-        $scope.menu = {};
+        $scope.selectedTruck = null;
+        $scope.menu = null;
 
         navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
