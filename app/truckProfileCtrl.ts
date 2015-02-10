@@ -7,6 +7,7 @@ interface ITruckProfileScope extends ng.IScope {
     truckProfile:ITruckProfile;
     truck:ITruckProfile;
     customMenuColors:CustomMenuColors;
+    tempTrucks:Array<ITruckProfile>;
 
     populateProfile(truck:IActiveTruck, lat:number, lon: number);
     onProfileClicked(truck);
@@ -35,39 +36,40 @@ class TruckProfileCtrl {
         $scope.menu = null;
         $scope.truck = null;
         $scope.customMenuColors = null;
+        $scope.tempTrucks = null;
+        $scope.loading = true;
 
         navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
 
-            TruckService.getActiveTrucks(lat, lon).then(function (response) {
+            $scope.loading = true;
 
-                $scope.loading = true;
+            TruckService.getTruckProfiles(lat, lon).then(function (results) {
 
-                if (!_.isNull(response) && !_.isUndefined(response)) {
-                    for (var i = 0; i < response.trucks.length; i++) {
-                        if (TruckProfileService.cookieNeedsUpdate()) {
-                            TruckProfileService.updateTruckProfiles(lat, lon).then(function(response) {
+                if (TruckProfileService.allTrucksInStoredProfiles(results.trucks) && !TruckProfileService.cookieNeedsUpdate()) {
+                    for (var i = 0; i < results.trucks.length; i++) {
 
-                                $scope.truck = response.trucks[i];
-                                $scope.allTrucks.push($scope.truck);
-
-                            });
-                        } else {
-                            $scope.truck = TruckProfileService.getTruckProfile(response.trucks[i].id);
-                            $scope.allTrucks.push($scope.truck);
-                        }
+                        $scope.allTrucks.push(results.trucks[i]);
                     }
+
+                    $scope.loading = false;
                 } else {
-                    //Could not find profile for truck
+
+                    TruckProfileService.updateTruckProfiles(lat, lon).then(function(response) {
+
+                        //$scope.allTrucks = response.trucks;
+                        for(var i = 0; i < response.trucks.length; i++){
+                            $scope.allTrucks.push(response.trucks[i]);
+                            console.log("Yes Update: " + response.trucks[i].name);
+                        }
+                        $scope.loading = false;
+
+                    });
+
                 }
 
-                $scope.loading = false;
-
-
             });
-
-            //getTrucks();
 
         }, function (error) {
             growl.addErrorMessage('Unable to get location: ' + error.message);
@@ -82,8 +84,7 @@ class TruckProfileCtrl {
 
         $scope.$watch('selectedTruck', function () {
             if ($scope.selectedTruck !== null) {
-                //setCustomMenuColors($scope.selectedTruck);
-                console.log($scope.selectedTruck);
+
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
                     $scope.menu = response.menu;
                 });

@@ -3,6 +3,7 @@ interface ITruckProfileService {
     cookieNeedsUpdate(): boolean;
     allTrucksInStoredProfiles(trucks:Array < {id:string} >): boolean;
     getTruckProfile(truckId:string): ITruckProfile;
+    allTrucksFromCookie():Array<ITruckProfile>;
 }
 
 angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
@@ -52,6 +53,10 @@ class TruckProfileService implements ITruckProfileService {
     private getTruckProfilesFromCookie():Array<ITruckProfile> {
         return this.$cookieStore.get('truckProfiles');
 
+    }
+
+    allTrucksFromCookie():Array<ITruckProfile> {
+        return this.getTruckProfilesFromCookie();
     }
 
 }
