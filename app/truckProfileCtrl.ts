@@ -2,111 +2,110 @@ interface ITruckProfileScope extends ng.IScope {
 
     allTrucks: Array<ITruckProfile>;
     selectedTruck: ITruckProfile;
-    menu:Array<IMenu>;
+    menu:IMenu;
+    loading:boolean;
+    truckProfile:ITruckProfile;
+    truck:ITruckProfile;
+    customMenuColors:CustomMenuColors;
 
-    populateProfile(truck:TruckProfile, lat:number, lon, number);
+    populateProfile(truck:IActiveTruck, lat:number, lon: number);
+    onProfileClicked(truck);
+    simpleSearch(searchQuery:string);
 }
 
 
-angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl',  'TokenService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService',
-    function ($scope:ITruckProfileScope, growl:IGrowlService,  TokenService: ITokenService, TruckService: ITruckService, TruckProfileService: ITruckProfileService, SearchService: ISearchService, MenuService: IMenuService) {
+angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService',
+    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService)]);
 
-        var allTrucks = [];
+class TruckProfileCtrl {
+    constructor(
+        private $scope:ITruckProfileScope,
+        private growl:IGrowlService,
+        private colorService:IColorService,
+        private TruckService:ITruckService,
+        private TruckProfileService:ITruckProfileService,
+        private SearchService:ISearchService,
+        private MenuService:IMenuService
+    ) {
         var lat;
         var lon;
 
         $scope.allTrucks = [];
         $scope.selectedTruck = null;
         $scope.menu = null;
+        $scope.truck = null;
+        $scope.customMenuColors = null;
 
         navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
 
-            getTrucks();
+            TruckService.getActiveTrucks(lat, lon).then(function (response) {
+
+                $scope.loading = true;
+
+                if (!_.isNull(response) && !_.isUndefined(response)) {
+                    for (var i = 0; i < response.trucks.length; i++) {
+                        if (TruckProfileService.cookieNeedsUpdate()) {
+                            TruckProfileService.updateTruckProfiles(lat, lon).then(function(response) {
+
+                                $scope.truck = response.trucks[i];
+                                $scope.allTrucks.push($scope.truck);
+
+                            });
+                        } else {
+                            $scope.truck = TruckProfileService.getTruckProfile(response.trucks[i].id);
+                            $scope.allTrucks.push($scope.truck);
+                        }
+                    }
+                } else {
+                    //Could not find profile for truck
+                }
+
+                $scope.loading = false;
+
+
+            });
+
+            //getTrucks();
 
         }, function (error) {
             growl.addErrorMessage('Unable to get location: ' + error.message);
         });
 
-        $scope.populateProfile = function(truck, lat, lon) {
-            var truckProfile = TruckProfileService.getTruckProfile(truck.id, lat, lon);
-            var truckObj = {
-                id: truck.id,
-                icon: 'img/SingleTruckAnnotationIcon.png',
-                coords: {
-                    latitude: truck.latitude,
-                    longitude: truck.longitude
-                },
-                truckProfile: new TruckProfile()
-            };
-
-            if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-                truckObj.truckProfile = truckProfile;
-            } else {
-                truck.truckProfile = {name: "Could not find profile for truck"};
-            }
-
-            return truckObj;
-        };
-
         $scope.onProfileClicked = function (truck) {
             $scope.selectedTruck = truck;
-            console.log(truck);
+           $scope.customMenuColors = colorService.getCustomMenuColorsForTruck(truck);
+
 
         };
 
         $scope.$watch('selectedTruck', function () {
-            if ($scope.selectedTruck && $scope.menu.truckId !== $scope.selectedTruck) {
+            if ($scope.selectedTruck !== null) {
                 //setCustomMenuColors($scope.selectedTruck);
-                console.log($scope.selectedTruck.id);
+                console.log($scope.selectedTruck);
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
-                    $scope.menu = response;
+                    $scope.menu = response.menu;
                 });
             }
         });
 
-        function getTrucks() {
+        $scope.simpleSearch = (query) => {
+
+            $scope.allTrucks = [];
+            $scope.$apply();
+
             $scope.loading = true;
-
-            console.log("Got here");
-            TruckService.getActiveTrucks(lat, lon).then(function (trucksResponse) {
-                if (TruckProfileService.allTrucksInStoredProfiles(trucksResponse) && !TruckProfileService.cookieNeedsUpdate()) {
-                    for (var i = 0; i < trucksResponse.length; i++) {
-                        var truck = $scope.populateProfile(trucksResponse[i], lat, lon);
-                        allTrucks.push(truck);
-                    }
-                } else {
-                    TruckProfileService.updateTruckProfiles(lat, lon).then(function () {
-                        for (var i = 0; i < trucksResponse.length; i++) {
-                            var truck = $scope.populateProfile(trucksResponse[i],lat, lon);
-                            allTrucks.push(truck);
-                        }
-                    });
+            SearchService.simpleSearch(query, 20, 0).then(function (results) {
+                for (var i = 0; i < results.searchResponse.length; i++) {
+                    //$scope.truck = TruckProfileService.getTruckProfile(results.searchResponse[i].truck.id);
+                    console.log(results.searchResponse[i].truck);
+                    $scope.allTrucks.push(results.searchResponse[i].truck);
                 }
-                //deferred.resolve(markers);
                 $scope.loading = false;
-                $scope.allTrucks = allTrucks;
             });
-
-        }
-
-        //$scope.searchTrucks = function (query) {
-        //
-        //    $scope.loading = true;
-        //    SearchService.simpleSearch(query, 20, 0).then(function (results) {
-        //
-        //
-        //        var allTrucks = _.map(results, function (r) {
-        //            return r.truck.id;
-        //        });
-        //
-        //
-        //        $scope.loading = false;
-        //    });
-        //};
-
+        };
 
     }
-]);
+}
 

@@ -4,13 +4,13 @@
          <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
          div.col-xs-12(style="padding-top: 30px;")
             .input-group.form-group
-               input.form-control(data-ng-model='searchQuery', data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && searchTrucks(searchQuery)")
+               input.form-control(data-ng-model='searchQuery', data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
                span.input-group-btn
-                  button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='searchTrucks(searchQuery)') Search
+                  button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
             .progress(data-ng-show='loading')
                .progress.progress-striped.active
                   .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
-            div.overflow-auto.container-fluid(data-ng-if='allTrucks.length == 0')
+            div.overflow-auto.container-fluid(data-ng-if='allTrucks.length == 0 && !loading')
                .row.pointer
                   .col-xs-12.text-align-center
                      div
@@ -20,15 +20,19 @@
             div.overflow-auto.container-fluid(data-ng-repeat='truck in allTrucks')
                .row.pointer(data-ng-click="onProfileClicked(truck)")
                   .col-xs-3
-                     img(data-ng-src='{{truck.truckProfile.imageUrl}}' style='width:50px; height:50px;')
+                     img(data-ng-src='{{truck.imageUrl}}', style='width:50px; height:50px;')
                   .col-xs-9
                      div
-                        b {{truck.truckProfile.name}}
-                     span(data-ng-repeat="keywords in truck.truckProfile.keywords")
+                        b {{truck.name}}
+                     span(data-ng-repeat="keywords in truck.keywords")
                         span(data-ng-if="$first") {{keywords}}
                         span(data-ng-if="$index > $first") , {{keywords}}
                .row
                   hr
+
+            div.overflow-auto.container-fluid
+                 .row-pointer(data-ui-sref='map')
+                     button.btn.col-xs-8.col-xs-offset-2.col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.bg-color-pink.txt-color-white View Map
 
    #top-nav-wrapper
       <div data-ng-include="'/partials/nav.jade'"></div>
@@ -37,27 +41,70 @@
       #content
          .row
             .col-xs-12.col-md-4.col-md-offset-1
-               article
-                  .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
-                     header
-                        h2 Main Profile
-                        .col-lg-8.col-md-12.col-sm-12
-                           div(data-profile-image-upload='', data-truck='selectedTruck')
-                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
-                           fieldset(class="form-group")
-                              section
-                                 label.control-label.txt-color-black(for='truckName') {{selectedTruck.truckProfile.name}}
-                              section
-                                 label.control-label.txt-color-black(for='keywords') {{selectedTruck.truckProfile.keywords}}
+                .row
+                    article
+                        .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                            header
+                                h2 Main Profile
+                            section
+                                .col-lg-8.col-md-12.col-sm-12
+                                    img(data-ng-src='{{selectedTruck.imageUrl}}', style='width:315px; height:315px;')
+                                .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
+                                   fieldset(class="form-group")
+                                      section
+                                         label.control-label.txt-color-black(style="font-size: 3em;", for='truckName') {{selectedTruck.name}}
+                                      section
+                                          span(data-ng-repeat="keywords in selectedTruck.keywords")
+                                              span(data-ng-if="$first") {{keywords}}
+                                              span(data-ng-if="$index > $first") , {{keywords}}
+                .row
+                    article
+                        .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                            header
+                                h2 About the Truck
+                            section
+                                .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
+                                    fieldset(class="form-group")
+                                        section
+                                            label.control-label.txt-color-black(for='truckName') {{selectedTruck.description}}
 
-            .col-xs-12.col-md-4.col-md-offset-1
+
+            .col-xs-12.col-md-6
                article
                   .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
                      header
                         h2 Menu
-                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
+                        .col-lg-12.col-md-12.col-sm-9
                            fieldset(class="form-group")
                               section
-                                 label.control-label.txt-color-black(for='truckName') {{menu}}
-                              section
-                                 label.control-label.txt-color-black(for='keywords') {{selectedTruck.truckProfile.keywords}}
+                                  article.col-xs-12.col-lg-12(data-ng-repeat="category in menu.categories")
+                                       .jarviswidget.background-white-transparent
+                                           header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
+                                               h2 {{category.name}}
+                                           section
+                                                .widget-body.col-xs-12
+                                                    p.txt-color-black {{category.notes}}
+                                                    .table-responsive
+                                                        table.table.table-bordered.bg-color-white
+                                                            tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
+                                                                tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
+                                                                    td(data-ng-if='!item.isAvailable')
+                                                                        span(style='text-decoration: line-through')
+                                                                            b= ' ' + '{{item.name}}'
+                                                                    td(data-ng-if='item.isAvailable')
+                                                                        span
+                                                                            b= ' ' + '{{item.name}}'
+                                                                    td(data-ng-if='!item.isAvailable')
+                                                                        div(style='text-decoration: line-through') Price
+                                                                    td(data-ng-if='item.isAvailable')
+                                                                        div Price
+
+                                                                tr.txt-color-black
+                                                                    td.big-cell(data-ng-if='!item.isAvailable')
+                                                                        span(style='text-decoration: line-through') {{item.notes}}
+                                                                    td.big-cell(data-ng-if='item.isAvailable')
+                                                                        span {{item.notes}}
+                                                                    td(data-ng-if='!item.isAvailable')
+                                                                        span(style='text-decoration: line-through') {{item.price | currency:"$":2}}
+                                                                    td(data-ng-if='item.isAvailable')
+                                                                        span {{item.price | currency:"$":2}}
