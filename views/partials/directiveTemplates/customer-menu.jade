@@ -7,25 +7,16 @@ div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false tr
                 p {{category.notes}}
                 .table-responsive
                     table.table.table-bordered.bg-color-white
-                        tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
-                            tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
-                                td(data-ng-if='!item.isAvailable')
-                                    span(style='text-decoration: line-through')
-                                        b= ' ' + '{{item.name}}'
-                                td(data-ng-if='item.isAvailable')
+                        tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id" )
+                            tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}' data-ng-class="{unavailable: !item.isAvailable}")
+                                td
                                     span
                                         b= ' ' + '{{item.name}}'
-                                td(data-ng-if='!item.isAvailable')
-                                    div(style='text-decoration: line-through') Price
-                                td(data-ng-if='item.isAvailable')
+                                td
                                     div Price
 
-                            tr
-                                td.big-cell(data-ng-if='!item.isAvailable')
-                                    span(style='text-decoration: line-through') {{item.notes}}
-                                td.big-cell(data-ng-if='item.isAvailable')
+                            tr(data-ng-class="{unavailable: !item.isAvailable}")
+                                td.big-cell
                                     span {{item.notes}}
-                                td(data-ng-if='!item.isAvailable')
-                                    span(style='text-decoration: line-through') {{item.price | currency:"$":2}}
-                                td(data-ng-if='item.isAvailable')
+                                td
                                     span {{item.price | currency:"$":2}}
