@@ -23,6 +23,7 @@ class ModalMenuService implements IModalMenuService {
                 $scope.menu = null;
                 $scope.customMenuColors = customMenuColors;
 
+
                 MenuService.getMenu(truckId).then(function (response) {
                     $scope.menu = response.menu;
                 });

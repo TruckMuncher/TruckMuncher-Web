@@ -12,6 +12,11 @@ div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false tr
                                 td
                                     span
                                         b= ' ' + '{{item.name}}'
+                                    i.flaticon-vegetable(data-ng-show='item.gluten' title='Gluten Free' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                    i.flaticon-carrot3(data-ng-show='item.vegetarian' title='Vegetarian' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                    i.flaticon-eggs(data-ng-show='item.vegan' title='Vegan' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                    i.flaticon-peanut(data-ng-show='item.peanuts' title='Contains Peanuts' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                    i.flaticon-sushi13(data-ng-show='item.raw' title='Raw' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
                                 td
                                     div Price
 
@@ -20,3 +25,4 @@ div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false tr
                                     span {{item.notes}}
                                 td
                                     span {{item.price | currency:"$":2}}
+
