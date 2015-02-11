@@ -33,7 +33,9 @@ class ModalMenuService implements IModalMenuService {
             }];
 
         this.$modal.open({
-            templateUrl: "/partials/map/customer-menu.jade",
+            template:
+            "<i class='fa fa-close fa-2x pull-right pointer' data-ng-click='close()'></i>" +
+            "<div data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu'></div>",
             controller: modalCtrl,
             resolve: {
                 truckId: function () {

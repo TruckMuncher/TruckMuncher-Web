@@ -1,35 +1,34 @@
-.col-xs-12.background-white-transparent.container-fluid
-    .row
+//.col-xs-12.background-white-transparent.container-fluid
+    //.row
         i.fa.fa-close.fa-2x.pull-right.pointer(data-ng-click="close()")
-    .row
-        div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
-            .jarviswidget
-                header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
-                    h2 {{category.name}}
-                section
-                    .widget-body.col-xs-12
-                        p {{category.notes}}
-                        .table-responsive
-                            table.table.table-bordered.bg-color-white
-                                tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
-                                    tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
-                                        td(data-ng-if='!item.isAvailable')
-                                            span(style='text-decoration: line-through')
-                                                b= ' ' + '{{item.name}}'
-                                        td(data-ng-if='item.isAvailable')
-                                            span
-                                                b= ' ' + '{{item.name}}'
-                                        td(data-ng-if='!item.isAvailable')
-                                            div(style='text-decoration: line-through') Price
-                                        td(data-ng-if='item.isAvailable')
-                                            div Price
+div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
+    .jarviswidget
+        header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
+            h2 {{category.name}}
+        section
+            .widget-body.col-xs-12
+                p {{category.notes}}
+                .table-responsive
+                    table.table.table-bordered.bg-color-white
+                        tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
+                            tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
+                                td(data-ng-if='!item.isAvailable')
+                                    span(style='text-decoration: line-through')
+                                        b= ' ' + '{{item.name}}'
+                                td(data-ng-if='item.isAvailable')
+                                    span
+                                        b= ' ' + '{{item.name}}'
+                                td(data-ng-if='!item.isAvailable')
+                                    div(style='text-decoration: line-through') Price
+                                td(data-ng-if='item.isAvailable')
+                                    div Price
 
-                                    tr
-                                        td.big-cell(data-ng-if='!item.isAvailable')
-                                            span(style='text-decoration: line-through') {{item.notes}}
-                                        td.big-cell(data-ng-if='item.isAvailable')
-                                            span {{item.notes}}
-                                        td(data-ng-if='!item.isAvailable')
-                                            span(style='text-decoration: line-through') {{item.price | currency:"$":2}}
-                                        td(data-ng-if='item.isAvailable')
-                                            span {{item.price | currency:"$":2}}
+                            tr
+                                td.big-cell(data-ng-if='!item.isAvailable')
+                                    span(style='text-decoration: line-through') {{item.notes}}
+                                td.big-cell(data-ng-if='item.isAvailable')
+                                    span {{item.notes}}
+                                td(data-ng-if='!item.isAvailable')
+                                    span(style='text-decoration: line-through') {{item.price | currency:"$":2}}
+                                td(data-ng-if='item.isAvailable')
+                                    span {{item.price | currency:"$":2}}
