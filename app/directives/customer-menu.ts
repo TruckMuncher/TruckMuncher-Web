@@ -4,6 +4,6 @@ angular.module('TruckMuncherApp').directive('customerMenu', [
             restrict: 'A',
             scope: {customMenuColors: '=', menu: '='},
             replace: true,
-            templateUrl: '/partials/map/customer-menu.jade'
+            templateUrl: '/partials/directiveTemplates/customer-menu.jade'
         };
     }]);

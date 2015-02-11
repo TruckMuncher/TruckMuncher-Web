@@ -33,9 +33,11 @@ class ModalMenuService implements IModalMenuService {
             }];
 
         this.$modal.open({
-            template:
-            "<i class='fa fa-close fa-2x pull-right pointer' data-ng-click='close()'></i>" +
-            "<div data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu'></div>",
+            template: "" +
+            "<div class='col-xs-12 background-white-transparent container-fluid'>" +
+            "  <div class='row'><i class='fa fa-close fa-2x pull-right pointer' data-ng-click='close()'></i></div>" +
+            "  <div class='row'><div data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu'></div></div>" +
+            "</div>",
             controller: modalCtrl,
             resolve: {
                 truckId: function () {

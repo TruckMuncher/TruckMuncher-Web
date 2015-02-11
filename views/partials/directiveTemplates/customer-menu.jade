@@ -1,6 +1,3 @@
-//.col-xs-12.background-white-transparent.container-fluid
-    //.row
-        i.fa.fa-close.fa-2x.pull-right.pointer(data-ng-click="close()")
 div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
     .jarviswidget
         header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
