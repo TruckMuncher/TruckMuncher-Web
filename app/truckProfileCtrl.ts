@@ -123,11 +123,6 @@ class TruckProfileCtrl {
                 latitude: $scope.activeTruck.latitude,
                 longitude: $scope.activeTruck.longitude
             }
-
-            console.log($scope.selectedTruck.id);
-            console.log($scope.truckCoords);
-
-
         };
 
         $scope.$watch('selectedTruck', function () {
