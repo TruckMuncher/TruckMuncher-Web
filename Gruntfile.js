@@ -38,7 +38,8 @@ module.exports = function (grunt) {
         'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
         'bower_components/angular-google-maps/dist/angular-google-maps.js',
         'bower_components/angulartics/dist/angulartics.min.js',
-        'bower_components/angulartics/dist/angulartics-ga.min.js'
+        'bower_components/angulartics/dist/angulartics-ga.min.js',
+        'bower_components/ng-img-crop/compile/unminified/ng-img-crop.js'
     ];
 
     var globalConfig = {
@@ -117,7 +118,8 @@ module.exports = function (grunt) {
                             'bower_components/angular-growl/build/angular-growl.min.css',
                             'bower_components/ng-tags-input/ng-tags-input.css',
                             'bower_components/ng-tags-input/ng-tags-input.bootstrap.css',
-                            'bower_components/spectrum/spectrum.css'
+                            'bower_components/spectrum/spectrum.css',
+                            'bower_components/ng-img-crop/compile/minified/ng-img-crop.css'
                         ],
                         dest: '<%= globalConfig.cssDest %>',
                         flatten: true

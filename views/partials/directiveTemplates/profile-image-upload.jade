@@ -1,16 +1,22 @@
-div
-    div(data-ng-show='imageLoading', class='progress-cssSlideUp')
-        .progress
-            .progress.progress-striped.active
-                .progress-bar.indeterminate.bg-color-darken(role='progressbar') Loading Image
-    div(class='image-cssSlideRight', data-ng-hide='imageLoading')
-        img.img-responsive(data-ng-src='{{displayImage}}', alt='Profile Image', image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading')
-    section
-        .input.input-file
-            span.button Change Image
-                input(type='file', data-nv-file-select='', data-uploader='uploader')
-            input(style="visibility: hidden")
-    section
-        .progress(data-ng-show='progress')
-            .progress.progress-striped.active
-                .progress-bar.bg-color-darken(role='progressbar', style="width: {{progress}}%")
+.row
+    .col-sm-12
+        .row(nv-file-drop='', uploader='uploader')
+            .col-md-3
+                h3 Select Image
+                input(type='file', nv-file-select='', uploader='uploader')
+                br
+            .col-md-9(style='margin-bottom: 40px')
+                div(data-ng-repeat='item in uploader.queue')
+                    .cropArea
+                        img-crop(image='item.image', result-image='item.croppedImage')
+                    div(ng-show='uploader.isHTML5', nowrap='') {{ item.file.size/1024/1024|number:2 }} MB
+                    div(ng-show='uploader.isHTML5 && item.progress > 0')
+                        .progress
+                            .progress.progress-striped.active
+                                .progress-bar.bg-color-darken(role='progressbar', style="width: {{item.progress}}%")
+                    button.btn.btn-success.btn-xs(type='button', ng-click='item.upload()', ng-disabled='item.isReady || item.isUploading || item.isSuccess')
+                        i.fa.fa-cloud-upload
+                        |  Upload
+                    button.btn.btn-warning.btn-xs(type='button', ng-click='item.cancel()', ng-disabled='!item.isUploading')
+                        i.fa.fa-times
+                        |  Cancel

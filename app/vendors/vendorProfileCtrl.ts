@@ -16,12 +16,9 @@ interface IVendorProfileScope extends ng.IScope {
     selectColor(theColor:string);
 }
 
-angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics',
-    ($scope, TruckService, growl, $analytics) => new VendorProfileCtrl($scope, TruckService, growl, $analytics)]);
+angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics', '$modal',
+    function ($scope:IVendorProfileScope, TruckService:ITruckService, growl:IGrowlService, $analytics:IAngularticsService, $modal) {
 
-class VendorProfileCtrl {
-
-    constructor(private $scope:IVendorProfileScope, private TruckService:ITruckService, private growl:IGrowlService, private $analytics:IAngularticsService) {
         $scope.trucks = [];
         $scope.selectedTruck = new TruckProfile();
         $scope.tags = [];
@@ -129,5 +126,7 @@ class VendorProfileCtrl {
                 return {text: keyword};
             });
         }
-    }
-}
+
+
+    }]);
+
