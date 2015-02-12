@@ -27,9 +27,17 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.selectingColor = null;
         $scope.colorPicker = {color: ""};
 
+        (() => TruckService.getTrucksForVendor().then(function (response) {
+            $scope.trucks = _.sortBy(response.trucks, function(t){
+                return t.name.toLowerCase();
+            });
+            if ($scope.trucks.length > 0) {
+                $scope.selectedTruck = $scope.trucks[0];
+            }
+        }))();
+
         $scope.saveTruck = () => {
-            var tempWorkaround:Array<any> = $scope.tags;
-            var keywords = _.map(tempWorkaround, function (tag) {
+            var keywords = _.map($scope.tags, function (tag) {
                 return tag.text;
             });
 
@@ -70,8 +78,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         };
 
         function refreshTruck(truck:ITruckProfile) {
-            var tempWorkaround:Array<ITruckProfile> = $scope.trucks;
-            var index = _.findIndex(tempWorkaround, function (t) {
+            var index = _.findIndex($scope.trucks, function (t) {
                 return t.id === truck.id;
             });
             if (index >= 0) {
@@ -80,12 +87,6 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             }
         }
 
-        (() => TruckService.getTrucksForVendor().then(function (response) {
-            $scope.trucks = response.trucks;
-            if ($scope.trucks.length > 0) {
-                $scope.selectedTruck = $scope.trucks[0];
-            }
-        }))();
 
         $scope.$watch('selectedTruck', function () {
             $scope.setFormValuesFromSelectedTruck();

@@ -29,7 +29,8 @@ class ModalProfileImageService implements IModalProfileImageService {
         var modalInstance = this.$modal.open({
             template: "" +
             "<div class='col-xs-12 bg-color-white container-fluid'>" +
-            "  <div class='row'><div data-profile-image-upload='' data-upload-url='imageUploadUrl' data-uploaded-callback='onUploaded(cancelled)'></div></div>" +
+            "  <div class='row'><i class='fa fa-close fa-2x pull-right pointer' data-ng-click='onUploaded(true)'></i></div>" +
+            "  <div class='row form-group'><div data-profile-image-upload='' data-upload-url='imageUploadUrl' data-uploaded-callback='onUploaded(cancelled)'></div></div>" +
             "</div>",
             controller: modalCtrl,
             resolve: {
