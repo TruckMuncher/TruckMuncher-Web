@@ -104,7 +104,7 @@ describe('TruckMuncherApp', function () {
 
             expect(mockTruckProfileService.updateTruckProfiles).toHaveBeenCalled();
             mockTruckProfileService.cookieNeedsUpdate.restore();
-        })
+        });
 
     });
 

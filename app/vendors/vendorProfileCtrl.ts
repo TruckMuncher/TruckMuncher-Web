@@ -14,11 +14,11 @@ interface IVendorProfileScope extends ng.IScope {
     resetTruck();
     setFormValuesFromSelectedTruck();
     selectColor(theColor:string);
+    changeProfilePicture();
 }
 
-angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics', '$modal',
-    function ($scope:IVendorProfileScope, TruckService:ITruckService, growl:IGrowlService, $analytics:IAngularticsService, $modal) {
-
+angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics', 'modalProfileImageService',
+    function ($scope:IVendorProfileScope, TruckService:ITruckService, growl:IGrowlService, $analytics:IAngularticsService, modalProfileImageService:IModalProfileImageService) {
         $scope.trucks = [];
         $scope.selectedTruck = new TruckProfile();
         $scope.tags = [];
@@ -127,6 +127,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             });
         }
 
-
+        $scope.changeProfilePicture = function () {
+            modalProfileImageService.launch(TruckService.getImageUploadUrl($scope.selectedTruck.id))
+        }
     }]);
-
