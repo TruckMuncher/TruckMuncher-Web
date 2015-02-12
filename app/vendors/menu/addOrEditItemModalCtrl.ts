@@ -6,15 +6,13 @@ interface IAddOrEditItemModalScope extends ng.IScope {
 }
 
 angular.module('TruckMuncherApp').controller('addOrEditItemModalCtrl', ['$scope', 'MenuService', '$modalInstance', '$stateParams', '$state', '$analytics',
-    ($scope, MenuService, $modalInstance, $stateParams, $state, $analytics) => new AddOrEditItemModalCtrl($scope, MenuService, $modalInstance, $stateParams, $state, $analytics)]);
+    function ($scope:IAddOrEditItemModalScope,
+              MenuService:IMenuService,
+              $modalInstance:ng.ui.bootstrap.IModalServiceInstance,
+              $stateParams:ng.ui.IStateParamsService,
+              $state:ng.ui.IStateService,
+              $analytics:IAngularticsService) {
 
-class AddOrEditItemModalCtrl {
-    constructor(private $scope:IAddOrEditItemModalScope,
-                private MenuService:IMenuService,
-                private $modalInstance:ng.ui.bootstrap.IModalServiceInstance,
-                private $stateParams:ng.ui.IStateParamsService,
-                private $state:ng.ui.IStateService,
-                private $analytics:IAngularticsService) {
         $scope.requestInProgress = false;
         $scope.item = new MenuItem();
 
@@ -52,6 +50,5 @@ class AddOrEditItemModalCtrl {
         $scope.$on('$stateChangeSuccess', function () {
             $modalInstance.dismiss('dismissFromStateChange');
         });
-    }
-}
+    }]);
 

@@ -1,7 +1,7 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold
         .container-fluid.make-space-for-logo.ignore-padding-right.more-padding-left
-            <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+            div(data-ng-include="'/partials/shared/panelLeftMenu.jade'")
             .row.add-space-sidelabel
                 article.col-xs-12.col-sm-12
                     div.form-group.txt-color-white
@@ -11,23 +11,21 @@
                         a.btn.btn-pink(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
 
     #top-nav-wrapper
-        <div data-ng-include="'/partials/nav.jade'"></div>
+        div(data-ng-include="'/partials/nav.jade'")
 
     #page-content-wrapper.tm-main
         #content.container-fluid
-            .row(data-ng-show='selectedTruck !== null')
+            .row(data-ng-show='selectedTruck !== null' data-ng-cloak)
                 .col-xs-12.col-md-6.col-md-offset-1
                     article
                         .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
                             header
                                 h2 Main Profile
                             form(data-ng-submit='submit()').background-transparent
-                                img.img-responsive(data-ng-hide='imageLoading', data-ng-src='{{selectedTruck.imageUrl}}', alt='Profile Image',
-                                image-loader='', data-mysrc='selectedTruck.imageUrl', data-is-loading='imageLoading')
-                                div(data-ng-show='imageLoading')
-                                    .progress
-                                        .progress.progress-striped.active
-                                            .progress-bar.indeterminate.bg-color-darken(role='progressbar') Loading Image
+                                .col-xs-12.form-group
+                                    img.img-circle.img-responsive.pointer(data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Change Profile Picture', title='Change Profile Picture'
+                                    image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading' data-ng-click='changeProfilePicture()')
+                                    button.btn.bg-color-mold.txt-color-white(type='button' data-ng-click="changeProfilePicture()" data-ng-if='!selectedTruck.imageUrl') Upload Profile Picture
                                 .col-xs-12
                                     fieldset(class="form-group")
                                         section
@@ -66,12 +64,4 @@
                                             div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
                                                 .alert.alert-info
                                                     span You have not uploaded a profile image yet
-            .row
-                .col-xs-12
-                    article
-                        .jarviswidget.jarviswidget-color-blueDark
-                            header
-                                h2 Profile image
-                            section
-                                div.container-fluid.background-white-transparent
-                                    div(data-profile-image-upload='', data-truck='selectedTruck')
+                                        div.ignore-height(data-remote-image-analyzer='', data-image-url='selectedTruck.imageUrl', data-color-click-callback='selectColor(theColor)')

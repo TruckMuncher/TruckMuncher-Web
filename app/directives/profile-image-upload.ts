@@ -59,57 +59,19 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
                     return new Blob([new Uint8Array(array)], {type: mimeString});
                 };
 
-                uploader.onWhenAddingFileFailed = function (item, filter, options) {
-                    console.info('onWhenAddingFileFailed', item, filter, options);
-                };
-                uploader.onAfterAddingAll = function (addedFileItems) {
-                    console.info('onAfterAddingAll', addedFileItems);
-                };
-                uploader.onProgressItem = function (fileItem, progress) {
-                    console.info('onProgressItem', fileItem, progress);
-                };
-                uploader.onProgressAll = function (progress) {
-                    console.info('onProgressAll', progress);
-                };
-                uploader.onSuccessItem = function (fileItem, response, status, headers) {
-                    console.info('onSuccessItem', fileItem, response, status, headers);
-                };
-                uploader.onErrorItem = function (fileItem, response, status, headers) {
-                    console.info('onErrorItem', fileItem, response, status, headers);
-                };
-                uploader.onCancelItem = function (fileItem, response, status, headers) {
-                    console.info('onCancelItem', fileItem, response, status, headers);
-                };
-                uploader.onCompleteItem = function (fileItem, response, status, headers) {
-                    console.info('onCompleteItem', fileItem, response, status, headers);
+                uploader.onCancelItem = function () {
+                    scope.uploadedCallback({cancelled: true});
                 };
                 uploader.onCompleteAll = function () {
-                    console.info('onCompleteAll');
+                    scope.uploadedCallback({cancelled: false});
                 };
-
-                //scope.$watch('truck', function () {
-                //    uploader.url = TruckService.getImageUploadUrl(scope.truck.id);
-                //
-                //    if (scope.truck && scope.truck.imageUrl) {
-                //        if (stripUIDFromImageUrl(scope.displayImage) !== scope.truck.imageUrl)
-                //            scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
-                //    } else {
-                //        scope.displayImage = blankImageUri;
-                //    }
-                //});
-                //
-                //function stripUIDFromImageUrl(imageUrl) {
-                //    if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
-                //    else return "";
-                //}
-
             }
         };
 
         return {
             restrict: 'A',
             link: link,
-            scope: {uploadUrl: '='},
+            scope: {uploadUrl: '=', uploadedCallback:'&'},
             replace: true,
             templateUrl: '/partials/directiveTemplates/profile-image-upload.jade'
         };

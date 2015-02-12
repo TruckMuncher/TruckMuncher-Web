@@ -7,6 +7,7 @@ interface IVendorProfileScope extends ng.IScope {
     colorPicker: {color:string};
     requestInProgress: boolean;
     newName: string;
+    displayImage: string;
 
     saveTruck();
     createTruck();
@@ -88,6 +89,8 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
 
         $scope.$watch('selectedTruck', function () {
             $scope.setFormValuesFromSelectedTruck();
+            if ($scope.selectedTruck && stripUIDFromImageUrl($scope.displayImage) !== $scope.selectedTruck.imageUrl)
+                $scope.displayImage = $scope.selectedTruck.imageUrl;
         });
 
         $scope.resetTruck = () => {
@@ -128,6 +131,15 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         }
 
         $scope.changeProfilePicture = function () {
-            modalProfileImageService.launch(TruckService.getImageUploadUrl($scope.selectedTruck.id))
+            modalProfileImageService.launch(TruckService.getImageUploadUrl($scope.selectedTruck.id)).then(function (changed) {
+                if (changed) {
+                    $scope.displayImage = $scope.selectedTruck.imageUrl + '?' + new Date().getTime();
+                }
+            })
+        };
+
+        function stripUIDFromImageUrl(imageUrl) {
+            if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
+            else return "";
         }
     }]);
