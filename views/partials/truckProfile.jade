@@ -1,7 +1,7 @@
 #wrapper
    #sidebar-wrapper.bg-color-mold
       .container-fluid.make-space-for-logo.ignore-padding-right
-         <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+         div(data-ng-include="'/partials/shared/panelLeftMenu.jade'")
          div.col-xs-12(style="padding-top: 30px;")
             .input-group.form-group
                input.form-control(data-ng-model='searchQuery', data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
@@ -17,7 +17,7 @@
                         b There are no results!
                .row
                   hr
-            a.overflow-auto.container-fluid(data-ng-repeat='truck in allTrucks', data-ui-sref='truckProfile.truck({id: truck.id})')
+            a.overflow-auto.container-fluid(data-ng-repeat='truck in allTrucks', data-ui-sref='.truck({id: truck.id})')
                .row
                   .col-xs-3
                      img(data-ng-src='{{truck.imageUrl}}', style='width:50px; height:50px; border-radius:50%;')
@@ -35,7 +35,7 @@
                      button.btn.col-xs-8.col-xs-offset-2.col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.bg-color-pink.txt-color-white View Map
 
    #top-nav-wrapper
-      <div data-ng-include="'/partials/nav.jade'"></div>
+      div(data-ng-include="'/partials/nav.jade'")
 
    #page-content-wrapper.tm-main
       #content
