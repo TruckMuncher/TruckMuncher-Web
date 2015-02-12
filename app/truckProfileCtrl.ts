@@ -8,8 +8,7 @@ interface ITruckProfileScope extends ng.IScope {
     tempTrucks:Array<ITruckProfile>;
     map:{center:{}; zoom:number};
     truckCoords:{latitude:number; longitude:number};
-
-
+    selectedTruck:ITruckProfile;
 
     populateProfile(truck:IActiveTruck, lat:number, lon: number);
     onProfileClicked(truck);
@@ -38,6 +37,7 @@ class TruckProfileCtrl {
         $scope.customMenuColors = null;
         $scope.tempTrucks = null;
         $scope.loading = true;
+        $scope.selectedTruck = null;
 
 
         navigator.geolocation.getCurrentPosition(function (pos) {

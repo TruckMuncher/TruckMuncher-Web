@@ -34,12 +34,22 @@
                  .row-pointer(data-ui-sref='map')
                      button.btn.col-xs-8.col-xs-offset-2.col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.bg-color-pink.txt-color-white View Map
 
-   #top-nav-wrapper
+    #top-nav-wrapper
       div(data-ng-include="'/partials/nav.jade'")
 
-   #page-content-wrapper.tm-main
-      #content
+    #page-content-wrapper.tm-main
+        #content
+            .col-xs-12.col-sm-12.col-md-offset-2.col-md-8.col-lg-offset-2.col-lg-8(data-ng-show="!selectedTruck.id")
+                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                    header
+                        h2 Welcome!
+                    section
+                        .col-lg-12.col-md-12.col-sm-9
+                            fieldset(class="form-group")
+                                section
+                                    article.col-xs-12.col-lg-12(style="font-size:2em; text-align:center; padding: 25px;") Please select a truck from the left to view its profile!
 
-          div(data-ui-view="")
+
+            div(data-ui-view="")
 
 
