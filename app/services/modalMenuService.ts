@@ -23,6 +23,7 @@ class ModalMenuService implements IModalMenuService {
                 $scope.menu = null;
                 $scope.customMenuColors = customMenuColors;
 
+
                 MenuService.getMenu(truckId).then(function (response) {
                     $scope.menu = response.menu;
                 });
@@ -33,7 +34,11 @@ class ModalMenuService implements IModalMenuService {
             }];
 
         this.$modal.open({
-            templateUrl: "/partials/map/customer-menu.jade",
+            template: "" +
+            "<div class='col-xs-12 background-white-transparent container-fluid'>" +
+            "  <div class='row'><i class='fa fa-close fa-2x pull-right pointer' data-ng-click='close()'></i></div>" +
+            "  <div class='row'><div data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu'></div></div>" +
+            "</div>",
             controller: modalCtrl,
             resolve: {
                 truckId: function () {
