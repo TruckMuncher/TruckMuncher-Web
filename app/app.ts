@@ -86,7 +86,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         .state('truckProfile.truck', {
             url: "/:id",
             controller: 'truckProfileTruckCtrl',
-            templateUrl: 'partials/truckProfile.truck.jade'
+            templateUrl: 'partials/truckProfile.truck.jade',
+            authenticate: false
         })
         .state('privacyPolicy', {
             url: "/privacyPolicy",
