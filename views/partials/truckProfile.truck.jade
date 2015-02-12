@@ -61,34 +61,4 @@
                     .col-lg-12.col-md-12.col-sm-9
                         fieldset(class="form-group")
                             section
-                                article.col-xs-12.col-lg-12(data-ng-repeat="category in menu.categories")
-                                    .jarviswidget.background-white-transparent
-                                        header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
-                                            h2 {{category.name}}
-                                        section
-                                            .widget-body.col-xs-12
-                                                p.txt-color-black {{category.notes}}
-                                                .table-responsive
-                                                    table.table.table-bordered.bg-color-white
-                                                        tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id")
-                                                            tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
-                                                                td(data-ng-if='!item.isAvailable')
-                                                                    span(style='text-decoration: line-through')
-                                                                        b= ' ' + '{{item.name}}'
-                                                                td(data-ng-if='item.isAvailable')
-                                                                    span
-                                                                        b= ' ' + '{{item.name}}'
-                                                                td(data-ng-if='!item.isAvailable')
-                                                                    div(style='text-decoration: line-through') Price
-                                                                td(data-ng-if='item.isAvailable')
-                                                                    div Price
-
-                                                            tr.txt-color-black
-                                                                td.big-cell(data-ng-if='!item.isAvailable')
-                                                                    span(style='text-decoration: line-through') {{item.notes}}
-                                                                td.big-cell(data-ng-if='item.isAvailable')
-                                                                    span {{item.notes}}
-                                                                td(data-ng-if='!item.isAvailable')
-                                                                    span(style='text-decoration: line-through') {{item.price | currency:"$":2}}
-                                                                td(data-ng-if='item.isAvailable')
-                                                                    span {{item.price | currency:"$":2}}
+                                .jarviswidget.background-white-transparent(data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu')
