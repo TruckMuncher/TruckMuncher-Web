@@ -10,6 +10,7 @@ interface ITruckProfileScope extends ng.IScope {
     truckCoords:{latitude:number; longitude:number};
 
 
+
     populateProfile(truck:IActiveTruck, lat:number, lon: number);
     onProfileClicked(truck);
     simpleSearch(searchQuery:string);
@@ -37,6 +38,7 @@ class TruckProfileCtrl {
         $scope.customMenuColors = null;
         $scope.tempTrucks = null;
         $scope.loading = true;
+
 
         navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;

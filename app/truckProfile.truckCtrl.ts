@@ -10,6 +10,7 @@ interface ITruckProfileTruckScope extends ng.IScope {
     menu:IMenu;
     icon:string;
 
+
 }
 angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService',
     ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService)]);
@@ -37,6 +38,10 @@ class TruckProfilePartialCtrl {
         $scope.mapHeight = screen.height / 4 + 'px';
         $scope.truckCoords = {latitude: 0, longitude: 0};
         $scope.icon = 'img/map_marker_green.png';
+        $scope.activeTrucks = [];
+        $scope.customMenuColors = null;
+
+
 
         navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
@@ -75,8 +80,9 @@ class TruckProfilePartialCtrl {
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
                     $scope.menu = response.menu;
                 });
+                $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
             }
-            $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
+
         });
 
     }
