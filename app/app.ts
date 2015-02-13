@@ -112,7 +112,7 @@ app.config(['$httpProvider', function ($httpProvider: ng.IHttpProvider) {
 }]);
 
 app.config(['growlProvider', function (growlProvider) {
-    growlProvider.globalTimeToLive(3000);
+    growlProvider.globalTimeToLive(5000);
     growlProvider.onlyUniqueMessages(false);
 }]);
 

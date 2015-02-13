@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService',
-    function (TruckService:ITruckService, growl:IGrowlService, FileUploader, TimestampAndNonceService, TokenService:ITokenService) {
+angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', 'growl',
+    function (TruckService:ITruckService, growl:IGrowlService, FileUploader, TimestampAndNonceService, TokenService:ITokenService, growl:IGrowlService) {
         var link = {
             pre: function preLink(scope) {
                 scope.imageLoading = false;
@@ -63,7 +63,19 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
 
                 scope.cancel = function () {
                     scope.uploadedCallback({cancelled: true});
-                }
+                };
+
+                uploader.onWhenAddingFileFailed = function (item, filter) {
+                    if (filter && filter.name === "imageFilter") {
+                        growl.addErrorMessage("Unsupported file type");
+                    } else {
+                        growl.addErrorMessage("Error selecting file");
+                    }
+                };
+
+                uploader.onErrorItem = function () {
+                    growl.addErrorMessage("Error uploading file");
+                };
             }
         };
 
