@@ -11,7 +11,7 @@ interface ITruckProfileScope extends ng.IScope {
     selectedTruck:ITruckProfile;
     coords:{latitude:number; longitude:number};
 
-    populateProfile(truck:IActiveTruck, lat:number, lon: number);
+    populateProfile(truck:IActiveTruck, lat:number, lon:number);
     onProfileClicked(truck);
     simpleSearch(searchQuery:string);
 }
@@ -21,17 +21,15 @@ angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'gro
     ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, LocationService) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, LocationService)]);
 
 class TruckProfileCtrl {
-    constructor(
-        private $scope:ITruckProfileScope,
-        private growl:IGrowlService,
-        private colorService:IColorService,
-        private TruckService:ITruckService,
-        private TruckProfileService:ITruckProfileService,
-        private SearchService:ISearchService,
-        private MenuService:IMenuService,
-        private $analytics:IAngularticsService,
-        private LocationService:ILocationService
-    ) {
+    constructor(private $scope:ITruckProfileScope,
+                private growl:IGrowlService,
+                private colorService:IColorService,
+                private TruckService:ITruckService,
+                private TruckProfileService:ITruckProfileService,
+                private SearchService:ISearchService,
+                private MenuService:IMenuService,
+                private $analytics:IAngularticsService,
+                private LocationService:ILocationService) {
 
         $scope.allTrucks = [];
         $scope.truck = null;
@@ -40,9 +38,9 @@ class TruckProfileCtrl {
         $scope.loading = true;
         $scope.selectedTruck = null;
 
-        LocationService.getLocation().then(function (coords) {
+        LocationService.getLocation().then(function (pos) {
 
-            $scope.coords = coords;
+            $scope.coords = pos.coords;
 
             $scope.loading = true;
 
@@ -57,9 +55,9 @@ class TruckProfileCtrl {
                     $scope.loading = false;
                 } else {
 
-                    TruckProfileService.updateTruckProfiles($scope.coords.latitude, $scope.coords.longitude).then(function(response) {
+                    TruckProfileService.updateTruckProfiles($scope.coords.latitude, $scope.coords.longitude).then(function (response) {
 
-                        for(var i = 0; i < response.trucks.length; i++){
+                        for (var i = 0; i < response.trucks.length; i++) {
                             $scope.allTrucks.push(response.trucks[i]);
                         }
                         $scope.loading = false;

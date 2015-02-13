@@ -1,24 +1,22 @@
 interface ILocationService {
-    getLocation():{latitude:number; longitude:number};
+    getLocation():ng.IPromise<Position>;
 }
 
-angular.module('TruckMuncherApp').factory('LocationService', ['',
-    () => new LocationService()]);
+angular.module('TruckMuncherApp').factory('LocationService', ['$q',
+    ($q) => new LocationService($q)]);
 
 class LocationService implements ILocationService {
 
-    constructor () {
+    constructor(private $q:ng.IQService) {
     }
 
     getLocation() {
-        navigator.geolocation.getCurrentPosition(function (pos) {
-
-            return {latitude:pos.latitude, longitude:pos.longitude};
-
+        var deferred = this.$q.defer();
+        navigator.geolocation.getCurrentPosition(function (pos:Position) {
+            deferred.resolve(pos);
         }, function (error) {
-
-            console.log(error);
-
+            deferred.reject(error);
         });
+        return deferred.promise
     }
 }
