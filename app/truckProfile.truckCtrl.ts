@@ -29,7 +29,6 @@ class TruckProfilePartialCtrl {
                 private navigator:Navigator
     ) {
 
-        $scope.isOnline = false;
         $scope.selectedTruck = null;
         $scope.map = {
             center: {
@@ -78,16 +77,21 @@ class TruckProfilePartialCtrl {
         });
 
         $scope.activeTruckCheck = function (activeTrucks, selectedTruckString) {
+            $scope.isOnline = false;
             for (var i = 0; i < activeTrucks.length; i++) {
                 $scope.activeTrucks.push(activeTrucks[i]);
             }
 
             $scope.activeTruck = _.find($scope.activeTrucks, function (x) {
-                return x.id === $scope.selectedTruck.id;
+
+                return x.id === selectedTruckString;
             });
 
-            if ($scope.activeTruck !== null) {
+            if ($scope.activeTruck !== undefined) {
+
                 $scope.isOnline = true;
+            } else {
+                $scope.isOnline = false;
             }
 
         }
