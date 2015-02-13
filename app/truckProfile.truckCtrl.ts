@@ -9,11 +9,13 @@ interface ITruckProfileTruckScope extends ng.IScope {
     mapHeight: string;
     menu:IMenu;
     icon:string;
+    coords:{latitude:number; longitude:number};
 
+    activeTruckCheck(activeTrucks:Array<IActiveTruck>, selectedTruckString:string);
 
 }
-angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService',
-    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService)]);
+angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics',
+    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics)]);
 
 class TruckProfilePartialCtrl {
     constructor(private $scope:ITruckProfileTruckScope,
@@ -22,10 +24,10 @@ class TruckProfilePartialCtrl {
                 private TruckProfileService:ITruckProfileService,
                 private colorService:IColorService,
                 private TruckService:ITruckService,
-                private MenuService:IMenuService
+                private MenuService:IMenuService,
+                private $analytics:IAngularticsService
     ) {
 
-        var lat, lon;
         $scope.isOnline = false;
         $scope.selectedTruck = null;
         $scope.map = {
@@ -41,27 +43,17 @@ class TruckProfilePartialCtrl {
         $scope.activeTrucks = [];
         $scope.customMenuColors = null;
 
-
-
         navigator.geolocation.getCurrentPosition(function (pos) {
-            lat = pos.coords.latitude;
-            lon = pos.coords.longitude;
+            $scope.coords = {
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude
+            }
 
             $scope.selectedTruck = TruckProfileService.getTruckProfile($stateParams['id']);
 
-            TruckService.getActiveTrucks(lat, lon).then(function (results) {
+            TruckService.getActiveTrucks($scope.coords.latitude, $scope.coords.longitude).then(function (results) {
 
-                for (var i = 0; i < results.trucks.length; i++) {
-                    $scope.activeTrucks.push(results.trucks[i]);
-                }
-
-                $scope.activeTruck = _.find($scope.activeTrucks, function (x) {
-                    return x.id === $scope.selectedTruck.id;
-                });
-
-                if ($scope.activeTruck !== null) {
-                    $scope.isOnline = true;
-                }
+                $scope.activeTruckCheck(results.trucks, $scope.selectedTruck.id);
 
                 $scope.truckCoords = {latitude: $scope.activeTruck.latitude, longitude: $scope.activeTruck.longitude};
                 $scope.map.center = {
@@ -83,7 +75,25 @@ class TruckProfilePartialCtrl {
                 $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
             }
 
+            $analytics.eventTrack('profile', {category: 'truckProfile', label: $scope.selectedTruck.name});
+
+
         });
+
+        $scope.activeTruckCheck = function (activeTrucks, selectedTruckString) {
+            for (var i = 0; i < activeTrucks.length; i++) {
+                $scope.activeTrucks.push(activeTrucks[i]);
+            }
+
+            $scope.activeTruck = _.find($scope.activeTrucks, function (x) {
+                return x.id === $scope.selectedTruck.id;
+            });
+
+            if ($scope.activeTruck !== null) {
+                $scope.isOnline = true;
+            }
+
+        }
 
     }
 }

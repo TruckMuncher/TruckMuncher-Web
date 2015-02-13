@@ -16,8 +16,8 @@ interface ITruckProfileScope extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService',
-    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService)]);
+angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService', '$analytics',
+    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics)]);
 
 class TruckProfileCtrl {
     constructor(
@@ -27,7 +27,8 @@ class TruckProfileCtrl {
         private TruckService:ITruckService,
         private TruckProfileService:ITruckProfileService,
         private SearchService:ISearchService,
-        private MenuService:IMenuService
+        private MenuService:IMenuService,
+        private $analytics:IAngularticsService
     ) {
         var lat;
         var lon;
@@ -78,11 +79,13 @@ class TruckProfileCtrl {
             $scope.loading = true;
             SearchService.simpleSearch(query, 20, 0).then(function (results) {
                 for (var i = 0; i < results.searchResponse.length; i++) {
-                    console.log(results.searchResponse[i].truck);
+
                     $scope.allTrucks.push(results.searchResponse[i].truck);
                 }
                 $scope.loading = false;
             });
+
+            $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});
         };
 
     }
