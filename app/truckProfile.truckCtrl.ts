@@ -14,8 +14,8 @@ interface ITruckProfileTruckScope extends ng.IScope {
     activeTruckCheck(activeTrucks:Array<IActiveTruck>, selectedTruckString:string);
 
 }
-angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics',
-    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics)]);
+angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'LocationService',
+    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, LocationService) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, LocationService)]);
 
 class TruckProfilePartialCtrl {
     constructor(private $scope:ITruckProfileTruckScope,
@@ -25,7 +25,8 @@ class TruckProfilePartialCtrl {
                 private colorService:IColorService,
                 private TruckService:ITruckService,
                 private MenuService:IMenuService,
-                private $analytics:IAngularticsService
+                private $analytics:IAngularticsService,
+                private LocationService:ILocationService
     ) {
 
         $scope.isOnline = false;
@@ -43,27 +44,23 @@ class TruckProfilePartialCtrl {
         $scope.activeTrucks = [];
         $scope.customMenuColors = null;
 
-        navigator.geolocation.getCurrentPosition(function (pos) {
-            $scope.coords = {
-                latitude: pos.coords.latitude,
-                longitude: pos.coords.longitude
-            }
+        LocationService.getLocation().then(function (coords) {
+            $scope.coords = coords;
 
             $scope.selectedTruck = TruckProfileService.getTruckProfile($stateParams['id']);
 
-            TruckService.getActiveTrucks($scope.coords.latitude, $scope.coords.longitude).then(function (results) {
+                TruckService.getActiveTrucks($scope.coords.latitude, $scope.coords.longitude).then(function (results) {
 
-                $scope.activeTruckCheck(results.trucks, $scope.selectedTruck.id);
+                    $scope.activeTruckCheck(results.trucks, $scope.selectedTruck.id);
 
-                $scope.truckCoords = {latitude: $scope.activeTruck.latitude, longitude: $scope.activeTruck.longitude};
-                $scope.map.center = {
-                    latitude: $scope.activeTruck.latitude,
-                    longitude: $scope.activeTruck.longitude
-                }
+                    $scope.truckCoords = {latitude: $scope.activeTruck.latitude, longitude: $scope.activeTruck.longitude};
+                    $scope.map.center = {
+                        latitude: $scope.activeTruck.latitude,
+                        longitude: $scope.activeTruck.longitude
+                    }
 
-            });
-        }, function (error) {
-            growl.addErrorMessage('Unable to get location: ' + error.message);
+                });
+
         });
 
         $scope.$watch('selectedTruck', function () {

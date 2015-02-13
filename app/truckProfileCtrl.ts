@@ -9,6 +9,7 @@ interface ITruckProfileScope extends ng.IScope {
     map:{center:{}; zoom:number};
     truckCoords:{latitude:number; longitude:number};
     selectedTruck:ITruckProfile;
+    coords:{latitude:number; longitude:number};
 
     populateProfile(truck:IActiveTruck, lat:number, lon: number);
     onProfileClicked(truck);
@@ -16,8 +17,8 @@ interface ITruckProfileScope extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService', '$analytics',
-    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics)]);
+angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService', '$analytics', 'LocationService',
+    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, LocationService) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, LocationService)]);
 
 class TruckProfileCtrl {
     constructor(
@@ -28,10 +29,9 @@ class TruckProfileCtrl {
         private TruckProfileService:ITruckProfileService,
         private SearchService:ISearchService,
         private MenuService:IMenuService,
-        private $analytics:IAngularticsService
+        private $analytics:IAngularticsService,
+        private LocationService:ILocationService
     ) {
-        var lat;
-        var lon;
 
         $scope.allTrucks = [];
         $scope.truck = null;
@@ -40,14 +40,13 @@ class TruckProfileCtrl {
         $scope.loading = true;
         $scope.selectedTruck = null;
 
+        LocationService.getLocation().then(function (coords) {
 
-        navigator.geolocation.getCurrentPosition(function (pos) {
-            lat = pos.coords.latitude;
-            lon = pos.coords.longitude;
+            $scope.coords = coords;
 
             $scope.loading = true;
 
-            TruckService.getTruckProfiles(lat, lon).then(function (results) {
+            TruckService.getTruckProfiles($scope.coords.latitude, $scope.coords.longitude).then(function (results) {
 
                 if (TruckProfileService.allTrucksInStoredProfiles(results.trucks) && !TruckProfileService.cookieNeedsUpdate()) {
                     for (var i = 0; i < results.trucks.length; i++) {
@@ -58,7 +57,7 @@ class TruckProfileCtrl {
                     $scope.loading = false;
                 } else {
 
-                    TruckProfileService.updateTruckProfiles(lat, lon).then(function(response) {
+                    TruckProfileService.updateTruckProfiles($scope.coords.latitude, $scope.coords.longitude).then(function(response) {
 
                         for(var i = 0; i < response.trucks.length; i++){
                             $scope.allTrucks.push(response.trucks[i]);
@@ -67,9 +66,6 @@ class TruckProfileCtrl {
                     });
                 }
             });
-
-        }, function (error) {
-            growl.addErrorMessage('Unable to get location: ' + error.message);
         });
 
         $scope.simpleSearch = (query) => {
