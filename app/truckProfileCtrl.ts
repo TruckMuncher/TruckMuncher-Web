@@ -17,8 +17,8 @@ interface ITruckProfileScope extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService', '$analytics', 'LocationService',
-    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, LocationService) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, LocationService)]);
+angular.module('TruckMuncherApp').controller('truckProfileCtrl', ['$scope', 'growl', 'colorService', 'TruckService', 'TruckProfileService', 'SearchService', 'MenuService', '$analytics', 'navigator',
+    ($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, navigator) => new TruckProfileCtrl($scope, growl, ColorService, TruckService, TruckProfileService, SearchService, MenuService, $analytics, navigator)]);
 
 class TruckProfileCtrl {
     constructor(private $scope:ITruckProfileScope,
@@ -29,7 +29,7 @@ class TruckProfileCtrl {
                 private SearchService:ISearchService,
                 private MenuService:IMenuService,
                 private $analytics:IAngularticsService,
-                private LocationService:ILocationService) {
+                private navigator:Navigator) {
 
         $scope.allTrucks = [];
         $scope.truck = null;
@@ -38,7 +38,7 @@ class TruckProfileCtrl {
         $scope.loading = true;
         $scope.selectedTruck = null;
 
-        LocationService.getLocation().then(function (pos) {
+        this.navigator.geolocation.getCurrentPosition(function (pos) {
 
             $scope.coords = pos.coords;
 

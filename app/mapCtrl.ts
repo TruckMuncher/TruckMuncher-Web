@@ -15,8 +15,8 @@ interface IMapScope extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService',
-    ($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService) => new MapCtrl($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService)]);
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService', 'navigator',
+    ($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService, navigator) => new MapCtrl($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService, navigator)]);
 
 class MapCtrl {
     constructor(private $scope:IMapScope,
@@ -26,7 +26,8 @@ class MapCtrl {
                 private MarkerService:IMarkerService,
                 private $timeout:ng.ITimeoutService,
                 private $analytics:IAngularticsService,
-                private ModalMenuService:IModalMenuService) {
+                private ModalMenuService:IModalMenuService,
+                private navigator:Navigator) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
         $scope.loading = true;
         $scope.searchQuery = "";
@@ -55,7 +56,7 @@ class MapCtrl {
 
         $scope.currentPositionMarker = {};
 
-        navigator.geolocation.getCurrentPosition(function (pos) {
+        this.navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
             $scope.currentPositionMarker = {

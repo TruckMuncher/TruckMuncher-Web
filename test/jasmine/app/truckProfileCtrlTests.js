@@ -2,7 +2,9 @@ describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
     beforeEach(module(function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function() {return false;});
+        $urlRouterProvider.otherwise(function () {
+            return false;
+        });
     }));
 
     describe('truckProfileCtrl', function () {
@@ -10,13 +12,21 @@ describe('TruckMuncherApp', function () {
         var $scope;
         var createCtrlFn;
 
+        var navMock = {
+            geolocation: {
+                getCurrentPosition: function () {
+                }
+            }
+        };
+
         beforeEach(inject(function ($rootScope, $controller) {
 
             $scope = $rootScope.$new();
 
             createCtrlFn = function () {
                 $controller('truckProfileCtrl', {
-                    $scope: $scope
+                    $scope: $scope,
+                    navigator: navMock
                 });
             };
             createCtrlFn();

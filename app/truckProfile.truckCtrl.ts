@@ -14,8 +14,8 @@ interface ITruckProfileTruckScope extends ng.IScope {
     activeTruckCheck(activeTrucks:Array<IActiveTruck>, selectedTruckString:string);
 
 }
-angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'LocationService',
-    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, LocationService) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, LocationService)]);
+angular.module('TruckMuncherApp').controller('truckProfileTruckCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'navigator',
+    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, navigator) => new TruckProfilePartialCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, navigator)]);
 
 class TruckProfilePartialCtrl {
     constructor(private $scope:ITruckProfileTruckScope,
@@ -26,7 +26,7 @@ class TruckProfilePartialCtrl {
                 private TruckService:ITruckService,
                 private MenuService:IMenuService,
                 private $analytics:IAngularticsService,
-                private LocationService:ILocationService
+                private navigator:Navigator
     ) {
 
         $scope.isOnline = false;
@@ -44,8 +44,8 @@ class TruckProfilePartialCtrl {
         $scope.activeTrucks = [];
         $scope.customMenuColors = null;
 
-        LocationService.getLocation().then(function (coords) {
-            $scope.coords = coords;
+        this.navigator.geolocation.getCurrentPosition(function (pos) {
+            $scope.coords = pos.coords;
 
             $scope.selectedTruck = TruckProfileService.getTruckProfile($stateParams['id']);
 
