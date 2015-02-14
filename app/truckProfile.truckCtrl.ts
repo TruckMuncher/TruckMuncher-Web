@@ -43,10 +43,11 @@ class TruckProfilePartialCtrl {
         $scope.activeTrucks = [];
         $scope.customMenuColors = null;
 
+
+        $scope.selectedTruck = TruckProfileService.getTruckProfile($stateParams['id']);
+
         this.navigator.geolocation.getCurrentPosition(function (pos) {
             $scope.coords = pos.coords;
-
-            $scope.selectedTruck = TruckProfileService.getTruckProfile($stateParams['id']);
 
                 TruckService.getActiveTrucks($scope.coords.latitude, $scope.coords.longitude).then(function (results) {
 
@@ -63,36 +64,32 @@ class TruckProfilePartialCtrl {
         });
 
         $scope.$watch('selectedTruck', function () {
+
             if ($scope.selectedTruck !== null) {
 
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
                     $scope.menu = response.menu;
                 });
                 $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
+
+                $analytics.eventTrack('profile', {category: 'truckProfile', label: $scope.selectedTruck.name});
             }
 
-            $analytics.eventTrack('profile', {category: 'truckProfile', label: $scope.selectedTruck.name});
+
 
 
         });
 
         $scope.activeTruckCheck = function (activeTrucks, selectedTruckString) {
             $scope.isOnline = false;
-            for (var i = 0; i < activeTrucks.length; i++) {
-                $scope.activeTrucks.push(activeTrucks[i]);
-            }
+
+            $scope.activeTrucks = activeTrucks;
 
             $scope.activeTruck = _.find($scope.activeTrucks, function (x) {
-
                 return x.id === selectedTruckString;
             });
 
-            if ($scope.activeTruck !== undefined) {
-
-                $scope.isOnline = true;
-            } else {
-                $scope.isOnline = false;
-            }
+            $scope.isOnline = $scope.activeTruck !== undefined;
 
         }
 
