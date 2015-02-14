@@ -1,11 +1,11 @@
-angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService', '$timeout', '$analytics',
-    function (TruckService: ITruckService, growl: IGrowlService, FileUploader, TimestampAndNonceService, TokenService: ITokenService, $analytics: IAngularticsService) {
-        var blankImageUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService', 'growl', 'FileUploader', 'TimestampAndNonceService', 'TokenService',
+    function (TruckService:ITruckService, growl:IGrowlService, FileUploader, TimestampAndNonceService, TokenService:ITokenService) {
         var link = {
             pre: function preLink(scope) {
                 scope.imageLoading = false;
-                scope.uploader = new FileUploader({
-                    autoUpload: true,
+
+                var uploader = scope.uploader = new FileUploader({
+                    url: scope.uploadUrl,
                     removeAfterUpload: true,
                     headers: {
                         Authorization: 'session_token=' + TokenService.getToken(),
@@ -15,44 +15,74 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
                     }
                 });
 
+                uploader.filters.push({
+                    name: 'imageFilter',
+                    fn: function (item) {
+                        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+                    }
+                });
+
+                uploader.onAfterAddingFile = function (item) {
+                    item.croppedImage = '';
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        scope.$apply(function () {
+                            item.image = event.target.result;
+                        });
+                    };
+                    reader.readAsDataURL(item._file);
+                };
+
                 scope.uploader.onProgressItem = function (item, progress) {
                     scope.progress = progress;
                 };
 
-                scope.uploader.onErrorItem = function () {
-                    growl.addErrorMessage('Error: could not upload image');
+                uploader.onBeforeUploadItem = function (item) {
+                    item._file = dataURItoBlob(item.croppedImage);
                 };
 
-                scope.uploader.onSuccessItem = function (fileItem, response) {
-                    scope.truck.imageUrl = response.url + '?' + new Date().getTime();
-                    scope.displayImage = scope.truck.imageUrl;
-                    scope.progress = null;
-                    $analytics.eventTrack('Success', {category: 'ImageUpload'});
-                };
-
-                scope.$watch('truck', function () {
-                    scope.uploader.url = TruckService.getImageUploadUrl(scope.truck.id);
-
-                    if (scope.truck && scope.truck.imageUrl) {
-                        if (stripUIDFromImageUrl(scope.displayImage) !== scope.truck.imageUrl)
-                            scope.displayImage = scope.truck.imageUrl + '?' + new Date().getTime();
-                    } else {
-                        scope.displayImage = blankImageUri;
+                var dataURItoBlob = function (dataURI) {
+                    var binary = atob(dataURI.split(',')[1]);
+                    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                    var array = [];
+                    for (var i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i));
                     }
-                });
+                    return new Blob([new Uint8Array(array)], {type: mimeString});
+                };
 
-                function stripUIDFromImageUrl(imageUrl) {
-                    if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
-                    else return "";
-                }
+                uploader.onCancelItem = function () {
+                    scope.cancel();
+                };
 
+                uploader.onCompleteAll = function () {
+                    uploader.clearQueue();
+                    scope.uploadedCallback({cancelled: false});
+                };
+
+                scope.cancel = function () {
+                    scope.uploadedCallback({cancelled: true});
+                };
+
+                uploader.onWhenAddingFileFailed = function (item, filter) {
+                    if (filter && filter.name === "imageFilter") {
+                        growl.addErrorMessage("Unsupported file type");
+                    } else {
+                        growl.addErrorMessage("Error selecting file");
+                    }
+                };
+
+                uploader.onErrorItem = function () {
+                    growl.addErrorMessage("Error uploading file");
+                };
             }
         };
 
         return {
             restrict: 'A',
             link: link,
-            scope: {truck: '='},
+            scope: {uploadUrl: '=', uploadedCallback: '&'},
             replace: true,
             templateUrl: '/partials/directiveTemplates/profile-image-upload.jade'
         };

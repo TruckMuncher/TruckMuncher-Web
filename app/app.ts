@@ -11,7 +11,8 @@ var app = angular.module('TruckMuncherApp',
         'uiGmapgoogle-maps',
         'angularSpectrumColorpicker',
         'angulartics',
-        'angulartics.google.analytics'
+        'angulartics.google.analytics',
+        'ngImgCrop'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
@@ -111,7 +112,7 @@ app.config(['$httpProvider', function ($httpProvider: ng.IHttpProvider) {
 }]);
 
 app.config(['growlProvider', function (growlProvider) {
-    growlProvider.globalTimeToLive(3000);
+    growlProvider.globalTimeToLive(5000);
     growlProvider.onlyUniqueMessages(false);
 }]);
 

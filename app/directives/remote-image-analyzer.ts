@@ -17,7 +17,7 @@ angular.module('TruckMuncherApp').directive('remoteImageAnalyzer', ['$rootScope'
 
                 if (scope.imageUrl) {
                     scope.processing = true;
-                    crossOriginImage.src = scope.imageUrl + '?' + new Date().getTime();
+                    crossOriginImage.src = scope.imageUrl;
                 }
             });
 

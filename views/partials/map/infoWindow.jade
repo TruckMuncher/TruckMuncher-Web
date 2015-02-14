@@ -1,7 +1,6 @@
 div(style="height:100px; width:200px; overflow-y:auto;" )
     .col-xs-3(style="padding:0px")
-        .map-profile-image
-            img(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}' circular-image="" )
+        img.map-profile-image.img-circle(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}')
     .col-xs-9
         div(style="font-weight:bold") {{parameter.marker.truckProfile.name}}
         .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
