@@ -77,16 +77,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
             controller: 'vendorProfileCtrl',
             authenticate: true
         })
-        .state('truckProfile', {
-            url: "/truckProfile",
-            templateUrl: "/partials/truckProfile.jade",
-            controller: 'truckProfileCtrl',
+        .state('truckProfiles', {
+            url: "/trucks",
+            controller: 'truckProfilesCtrl',
+            templateUrl: "/partials/truckProfiles.jade",
             authenticate: false
         })
-        .state('truckProfile.truck', {
+        .state('trucks.details', {
             url: "/:id",
-            controller: 'truckProfileTruckCtrl',
-            templateUrl: '/partials/truckProfile.truck.jade',
+            controller: 'truckDetailsCtrl',
+            templateUrl: '/partials/truckDetails.jade',
             authenticate: false
         })
         .state('privacyPolicy', {

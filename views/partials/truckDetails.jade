@@ -15,7 +15,7 @@
                                 section
                                     span(data-ng-repeat="keywords in selectedTruck.keywords")
                                         span(data-ng-if="$first") {{keywords}}
-                                        span(data-ng-if="$index > $first") , {{keywords}}
+                                        span(data-ng-if="!$first") , {{keywords}}
 
         .row(data-ng-show='isOnline')
             article
