@@ -22,14 +22,10 @@ describe('TruckMuncherApp', function () {
         }
     };
     var mockTruckProfileService = {
-        allTrucksInStoredProfiles: function () {
-            return true;
-        },
-        cookieNeedsUpdate: function () {
-            return false;
-        },
-        getTruckProfile: function () {
-            return defaultTruckProfile;
+        tryGetTruckProfile: function () {
+            var deferred = $q.defer();
+            deferred.resolve(defaultTruckProfile);
+            return deferred.promise;
         },
         updateTruckProfiles: function () {
             var deferred = $q.defer();
@@ -57,13 +53,13 @@ describe('TruckMuncherApp', function () {
         }));
 
         it('should get active trucks from API with provided coordinates', function () {
-            var mock = sinon.mock(mockTruckService);
             var deferred = $q.defer();
-
-            mock.expects("getActiveTrucks").withArgs(1, 2).atLeast(1).returns(deferred.promise);
+            spyOn(mockTruckService, 'getActiveTrucks').and.callFake(function(){
+                return deferred.promise;
+            });
 
             sut.getMarkers({latitude: 1, longitude: 2});
-            mockTruckService.getActiveTrucks.restore();
+            expect(mockTruckService.getActiveTrucks).toHaveBeenCalled();
         });
 
         it('should assign the truck profile to the marker', function () {
@@ -81,31 +77,6 @@ describe('TruckMuncherApp', function () {
             });
             $rootScope.$apply();
         });
-
-        it('should update truck profiles when not all of the active trucks are stored in the cookie', function () {
-            var mock = sinon.mock(mockTruckProfileService);
-            mock.expects('allTrucksInStoredProfiles').atLeast(1).returns(false);
-            spyOn(mockTruckProfileService, 'updateTruckProfiles').and.callThrough();
-
-            sut.getMarkers({latitude: 1, longitude: 2});
-            $rootScope.$apply();
-
-            expect(mockTruckProfileService.updateTruckProfiles).toHaveBeenCalled();
-            mockTruckProfileService.allTrucksInStoredProfiles.restore();
-        });
-
-        it('should update truck profiles when cookie needs update', function () {
-            var mock = sinon.mock(mockTruckProfileService);
-            mock.expects('cookieNeedsUpdate').atLeast(1).returns(true);
-            spyOn(mockTruckProfileService, 'updateTruckProfiles').and.callThrough();
-
-            sut.getMarkers({latitude: 1, longitude: 2});
-            $rootScope.$apply();
-
-            expect(mockTruckProfileService.updateTruckProfiles).toHaveBeenCalled();
-            mockTruckProfileService.cookieNeedsUpdate.restore();
-        });
-
     });
 
 });

@@ -10,17 +10,17 @@
             .progress(data-ng-show='loading')
                .progress.progress-striped.active
                   .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
-            div.overflow-auto.container-fluid(data-ng-if='allTrucks.length == 0 && !loading')
+            .overflow-auto.container-fluid(data-ng-if='allTrucks.length == 0 && !loading')
                .row.pointer
                   .col-xs-12.text-align-center
                      div
                         b There are no results!
                .row
                   hr
-            a.overflow-auto.container-fluid(data-ng-repeat='truck in allTrucks', data-ui-sref='.details({id: truck.id})', style='color: inherit;')
+            .overflow-auto.container-fluid.pointer(data-ng-repeat='truck in allTrucks', data-ui-sref='.details({id: truck.id})', style='color: inherit;')
                .row
                   .col-xs-3
-                     img(data-ng-src='{{truck.imageUrl}}', style='width:50px; height:50px; border-radius:50%;')
+                     img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')
                   .col-xs-9
                      div
                         b {{truck.name}}
@@ -39,17 +39,6 @@
 
     #page-content-wrapper.tm-main
         #content
-            .col-xs-12.col-sm-12.col-md-offset-2.col-md-8.col-lg-offset-2.col-lg-8(data-ng-show="!selectedTruck.id")
-                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
-                    header
-                        h2 Welcome!
-                    section
-                        .col-lg-12.col-md-12.col-sm-9
-                            fieldset(class="form-group")
-                                section
-                                    article.col-xs-12.col-lg-12(style="font-size:2em; text-align:center; padding: 25px;") Please select a truck from the left to view its profile!
-
-
             div(data-ui-view="")
 
 

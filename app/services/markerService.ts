@@ -13,20 +13,11 @@ class MarkerService implements IMarkerService {
     getMarkers(userPosition:ICoordinates):ng.IPromise<Array<ITruckMarker>> {
         var deferred = this.$q.defer();
         var markers = [];
-        this.TruckService.getActiveTrucks(userPosition.latitude, userPosition.longitude).then((trucksResponse) => {
+        this.TruckService.getActiveTrucks().then((trucksResponse) => {
             var trucks = trucksResponse.trucks;
-            if (this.TruckProfileService.allTrucksInStoredProfiles(trucks) && !this.TruckProfileService.cookieNeedsUpdate()) {
-                for (var i = 0; i < trucks.length; i++) {
-                    var marker = this.populateMarker(trucks[i], userPosition);
-                    markers.push(marker);
-                }
-            } else {
-                this.TruckProfileService.updateTruckProfiles(userPosition.latitude, userPosition.longitude).then(() => {
-                    for (var i = 0; i < trucks.length; i++) {
-                        var marker = this.populateMarker(trucks[i], userPosition);
-                        markers.push(marker);
-                    }
-                });
+            for (var i = 0; i < trucks.length; i++) {
+                var marker = this.populateMarker(trucks[i], userPosition);
+                markers.push(marker);
             }
             deferred.resolve(markers);
         });
@@ -34,7 +25,6 @@ class MarkerService implements IMarkerService {
     }
 
     private populateMarker(truck:IActiveTruck, userPosition:ICoordinates):ITruckMarker {
-        var truckProfile = this.TruckProfileService.getTruckProfile(truck.id);
         var truckCoordinates = {latitude: truck.latitude, longitude: truck.longitude};
         var marker:ITruckMarker = {
             id: truck.id,
@@ -44,11 +34,11 @@ class MarkerService implements IMarkerService {
             truckProfile: new TruckProfile()
         };
 
-        if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-            marker.truckProfile = truckProfile;
-        } else {
+        this.TruckProfileService.tryGetTruckProfile(truck.id).then(function (response) {
+            marker.truckProfile = response
+        }, function () {
             marker.truckProfile.name = "Could not find profile for truck";
-        }
+        });
 
         return marker;
     }

@@ -20,8 +20,7 @@
                 .overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers | orderBy:"metersFromUser"')
                     .row.pointer(data-ng-click="onProfileClicked(marker)")
                         .col-xs-3
-                            .map-profile-image
-                                img(data-ng-src='{{marker.truckProfile.imageUrl}}' circular-image="")
+                            img.map-profile-image.img-circle(data-ng-src='{{marker.truckProfile.imageUrl}}')
                         .col-xs-9
                             div
                                 b {{marker.truckProfile.name}}
@@ -33,7 +32,7 @@
                         hr
 
                 div.overflow-auto.container-fluid
-                    .row-pointer(data-ui-sref='truckProfile')
+                    .row-pointer(data-ui-sref='truckProfiles')
                         button.btn.col-xs-8.col-xs-offset-2.col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.bg-color-pink.txt-color-white View All
 
     #top-nav-wrapper

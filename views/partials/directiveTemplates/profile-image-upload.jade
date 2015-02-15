@@ -1,16 +1,24 @@
-div
-    div(data-ng-show='imageLoading', class='progress-cssSlideUp')
-        .progress
-            .progress.progress-striped.active
-                .progress-bar.indeterminate.bg-color-darken(role='progressbar') Loading Image
-    div(class='image-cssSlideRight', data-ng-hide='imageLoading')
-        img.img-responsive(data-ng-src='{{displayImage}}', alt='Profile Image', image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading')
-    section
+div(nv-file-drop='', uploader='uploader')
+    .col-md-3
+        h3 Select Image
         .input.input-file
-            span.button Change Image
+            span.button Browse...
                 input(type='file', data-nv-file-select='', data-uploader='uploader')
             input(style="visibility: hidden")
-    section
-        .progress(data-ng-show='progress')
-            .progress.progress-striped.active
-                .progress-bar.bg-color-darken(role='progressbar', style="width: {{progress}}%")
+        br
+    .col-md-9
+        div(data-ng-repeat='item in uploader.queue' data-ng-show='$last')
+            .cropArea
+                img-crop(image='item.image', result-image='item.croppedImage')
+            div(ng-show='uploader.isHTML5', nowrap='') {{ item.file.size/1024/1024|number:2 }} MB
+            div(ng-show='uploader.isHTML5 && item.progress > 0')
+                .progress
+                    .progress.progress-striped.active
+                        .progress-bar.bg-color-darken(role='progressbar', style="width: {{item.progress}}%")
+            .text-align-right.btn-toolbar
+                button.btn.btn-danger(data-ng-show='item.isUploading' type='button', ng-click='item.cancel()', ng-disabled='!item.isUploading')
+                    i.fa.fa-times
+                    |  Cancel Upload
+                button.btn.bg-color-mold(type='button', ng-click='item.upload()', ng-disabled='item.isReady || item.isUploading || item.isSuccess')
+                    i.fa.fa-cloud-upload
+                    |  Upload

@@ -1,62 +1,78 @@
 interface ITruckProfileService {
-    updateTruckProfiles(latitude:number, longitude:number): ng.IPromise<ITruckProfilesResponse>;
-    cookieNeedsUpdate(): boolean;
-    allTrucksInStoredProfiles(trucks:Array < {id:string} >): boolean;
-    getTruckProfile(truckId:string): ITruckProfile;
+    updateTruckProfiles(): ng.IPromise<Array<ITruckProfile>>;
+    tryGetTruckProfile(truckId:string): ng.IPromise<ITruckProfile>;
     allTrucksFromCookie():Array<ITruckProfile>;
 }
 
-angular.module('TruckMuncherApp').factory('TruckProfileService', ['TruckService', '$q', '$cookieStore',
-    (TruckService, $q, $cookieStore) => new TruckProfileService(TruckService, $q, $cookieStore)]);
+angular.module('TruckMuncherApp').factory('TruckProfileService', ['$q', '$cookieStore', 'httpHelperService',
+    ($q, $cookieStore, httpHelperService) => new TruckProfileService($q, $cookieStore, httpHelperService)]);
 
 class TruckProfileService implements ITruckProfileService {
     private millisecondsInADay:number = 86400000;
+    private millisecondsInAMinute:number = 60000;
+    private milwaukeeLatitude:number = 43.05;
+    private milwaukeeLongitude:number = -87.95;
 
-    constructor(private TruckService:ITruckService, private  $q:ng.IQService, private $cookieStore:ng.cookies.ICookieStoreService) {
+    constructor(private  $q:ng.IQService, private $cookieStore:ng.cookies.ICookieStoreService, private httpHelperService:IHttpHelperService) {
     }
 
-    updateTruckProfiles(latitude:number, longitude:number):ng.IPromise<ITruckProfilesResponse> {
+    updateTruckProfiles() {
         var deferred = this.$q.defer();
-        this.TruckService.getTruckProfiles(latitude, longitude).then((response)=> {
+        var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
+
+        this.httpHelperService.post(url, {
+            'latitude': this.milwaukeeLatitude,
+            'longitude': this.milwaukeeLongitude
+        }).then((response:ITruckProfilesResponse)=> {
             this.$cookieStore.put('truckProfiles', response.trucks);
             this.$cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
-            deferred.resolve(response);
+            deferred.resolve(response.trucks);
         });
+
         return deferred.promise;
     }
 
-    cookieNeedsUpdate():boolean {
+    private cookieNeedsUpdate():boolean {
         var lastUpdated = this.$cookieStore.get('truckProfilesLastUpdatedDate');
         return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > this.millisecondsInADay;
     }
 
-    allTrucksInStoredProfiles(trucks:Array<{id:string} >):boolean {
-        var storedTrucks = this.$cookieStore.get('truckProfiles');
-        if (_.isNull(storedTrucks) || _.isUndefined(storedTrucks) || _.isNull(trucks) || _.isUndefined(trucks))
-            return false;
-
-        for (var i = 0; i < trucks.length; i++) {
-            if (!_.some(storedTrucks, {'id': trucks[i].id}))
-                return false;
-        }
-
-        return true;
-    }
-
-    getTruckProfile(truckId:string):ITruckProfile {
+    private getTruckProfileFromCookie(truckId:string):ITruckProfile {
         var profiles = this.getTruckProfilesFromCookie();
         return _.find(profiles, function (x) {
             return x.id === truckId;
         });
     }
 
+    tryGetTruckProfile(truckId) {
+        var deferred = this.$q.defer();
+
+        var truck = this.getTruckProfileFromCookie(truckId);
+        if (truck) deferred.resolve(truck);
+        else if (!this.profilesUpdatedInLastMinute() || this.cookieNeedsUpdate()) {
+            this.updateTruckProfiles().then((response:Array<ITruckProfile>) => {
+                truck = _.find(response, function (t) {
+                    return t.id === truckId;
+                });
+
+                if (truck) deferred.resolve(truck);
+                else deferred.reject('not found');
+            })
+        }
+
+        return deferred.promise;
+    }
+
+    private profilesUpdatedInLastMinute():boolean {
+        var lastUpdated = this.$cookieStore.get('truckProfilesLastUpdatedDate');
+        return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated < this.millisecondsInAMinute;
+    }
+
     private getTruckProfilesFromCookie():Array<ITruckProfile> {
         return this.$cookieStore.get('truckProfiles');
-
     }
 
     allTrucksFromCookie():Array<ITruckProfile> {
         return this.getTruckProfilesFromCookie();
     }
-
 }

@@ -11,24 +11,11 @@ interface ITruckDetailsScope extends ng.IScope {
 
 }
 angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'navigator',
-    ($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, navigator) => new TruckDetailsCtrl($scope, growl, $stateParams, TruckProfileService, ColorService, TruckService, MenuService, $analytics, navigator)]);
-
-class TruckDetailsCtrl {
-    constructor(private $scope:ITruckDetailsScope,
-                private growl:IGrowlService,
-                private $stateParams:ng.ui.IStateParamsService,
-                private TruckProfileService:ITruckProfileService,
-                private colorService:IColorService,
-                private TruckService:ITruckService,
-                private MenuService:IMenuService,
-                private $analytics:IAngularticsService,
-                private navigator:Navigator) {
-
-        $scope.selectedTruck = null;
+    function ($scope:ITruckDetailsScope, growl:IGrowlService, $stateParams:ng.ui.IStateParamsService, TruckProfileService:ITruckProfileService, colorService:IColorService, TruckService:ITruckService, MenuService:IMenuService, $analytics:IAngularticsService, navigator:Navigator) {
         $scope.map = {
             center: {
-                latitude: 43.05,
-                longitude: -87.95
+                latitude: 0,
+                longitude: 0
             },
             zoom: 13
         };
@@ -36,21 +23,24 @@ class TruckDetailsCtrl {
         $scope.truckCoords = {latitude: 0, longitude: 0};
         $scope.icon = 'img/map_marker_green.png';
         $scope.customMenuColors = null;
+        $scope.selectedTruck = null;
 
-        $scope.selectedTruck = TruckProfileService.getTruckProfile($stateParams['id']);
 
-        this.navigator.geolocation.getCurrentPosition(function (pos) {
-            $scope.coords = pos.coords;
+        TruckProfileService.tryGetTruckProfile($stateParams['id']).then(function (truck) {
+            $scope.selectedTruck = truck
+        }, function () {
+            growl.addErrorMessage("Could not find truck profile");
         });
 
-        $scope.$watch('coords', function () {
-            if(!$scope.selectedTruck && $stateParams['id']){
-                //update truck profiles
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            $scope.coords = pos.coords;
+
+            if (!$scope.selectedTruck && $stateParams['id']) {
             }
+        });
 
-            TruckService.getActiveTrucks($scope.coords.latitude, $scope.coords.longitude).then(function (results) {
-                $scope.isOnline = false;
-
+        function determineIfTruckIsServing() {
+            TruckService.getActiveTrucks().then(function (results) {
                 var activeTruck = _.find(results.trucks, function (truck) {
                     return truck.id === $scope.selectedTruck.id;
                 });
@@ -58,21 +48,22 @@ class TruckDetailsCtrl {
                 if (activeTruck) {
                     $scope.isOnline = true;
                     $scope.truckCoords = {latitude: activeTruck.latitude, longitude: activeTruck.longitude};
-                    $scope.map.center = $scope.truckCoords;
+                    $scope.map.center = _.clone($scope.truckCoords)
                 }
             });
-        });
+        }
 
         $scope.$watch('selectedTruck', function () {
+            $scope.isOnline = false;
+
             if ($scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
                     $scope.menu = response.menu;
                 });
                 $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
 
+                determineIfTruckIsServing();
                 $analytics.eventTrack('truckDetails', {label: $scope.selectedTruck.name});
             }
         });
-
-    }
-}
+    }]);

@@ -7,6 +7,7 @@ interface IVendorProfileScope extends ng.IScope {
     colorPicker: {color:string};
     requestInProgress: boolean;
     newName: string;
+    displayImage: string;
 
     saveTruck();
     createTruck();
@@ -14,10 +15,11 @@ interface IVendorProfileScope extends ng.IScope {
     resetTruck();
     setFormValuesFromSelectedTruck();
     selectColor(theColor:string);
+    changeProfilePicture();
 }
 
-angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics',
-    function ($scope:IVendorProfileScope, TruckService:ITruckService, growl:IGrowlService, $analytics:IAngularticsService) {
+angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics', 'modalProfileImageService',
+    function ($scope:IVendorProfileScope, TruckService:ITruckService, growl:IGrowlService, $analytics:IAngularticsService, modalProfileImageService:IModalProfileImageService) {
         $scope.trucks = [];
         $scope.selectedTruck = new TruckProfile();
         $scope.tags = [];
@@ -25,9 +27,17 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.selectingColor = null;
         $scope.colorPicker = {color: ""};
 
+        (() => TruckService.getTrucksForVendor().then(function (response) {
+            $scope.trucks = _.sortBy(response.trucks, function(t){
+                return t.name.toLowerCase();
+            });
+            if ($scope.trucks.length > 0) {
+                $scope.selectedTruck = $scope.trucks[0];
+            }
+        }))();
+
         $scope.saveTruck = () => {
-            var tempWorkaround:Array<any> = $scope.tags;
-            var keywords = _.map(tempWorkaround, function (tag) {
+            var keywords = _.map($scope.tags, function (tag) {
                 return tag.text;
             });
 
@@ -68,8 +78,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         };
 
         function refreshTruck(truck:ITruckProfile) {
-            var tempWorkaround:Array<ITruckProfile> = $scope.trucks;
-            var index = _.findIndex(tempWorkaround, function (t) {
+            var index = _.findIndex($scope.trucks, function (t) {
                 return t.id === truck.id;
             });
             if (index >= 0) {
@@ -78,15 +87,11 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             }
         }
 
-        (() => TruckService.getTrucksForVendor().then(function (response) {
-            $scope.trucks = response.trucks;
-            if ($scope.trucks.length > 0) {
-                $scope.selectedTruck = $scope.trucks[0];
-            }
-        }))();
 
         $scope.$watch('selectedTruck', function () {
             $scope.setFormValuesFromSelectedTruck();
+            if ($scope.selectedTruck && stripUIDFromImageUrl($scope.displayImage) !== $scope.selectedTruck.imageUrl)
+                $scope.displayImage = $scope.selectedTruck.imageUrl;
         });
 
         $scope.resetTruck = () => {
@@ -124,5 +129,18 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             $scope.tags = _.map($scope.selectedTruck.keywords, function (keyword) {
                 return {text: keyword};
             });
+        }
+
+        $scope.changeProfilePicture = function () {
+            modalProfileImageService.launch(TruckService.getImageUploadUrl($scope.selectedTruck.id)).then(function (changed) {
+                if (changed) {
+                    $scope.displayImage = $scope.selectedTruck.imageUrl + '?' + new Date().getTime();
+                }
+            })
+        };
+
+        function stripUIDFromImageUrl(imageUrl) {
+            if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
+            else return "";
         }
     }]);

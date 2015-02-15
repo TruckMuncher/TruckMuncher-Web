@@ -26,7 +26,9 @@ class VendorMenuCtrl {
                 private $analytics:IAngularticsService) {
 
         TruckService.getTrucksForVendor().then(function (response) {
-            $scope.trucks = response.trucks || [];
+            $scope.trucks = _.sortBy(response.trucks || [], function(t){
+                return t.name.toLowerCase();
+            });
             if ($scope.trucks.length > 0) {
                 $scope.selectedTruck = $scope.trucks[0].id;
             }

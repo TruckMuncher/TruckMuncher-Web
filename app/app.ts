@@ -11,7 +11,8 @@ var app = angular.module('TruckMuncherApp',
         'uiGmapgoogle-maps',
         'angularSpectrumColorpicker',
         'angulartics',
-        'angulartics.google.analytics'
+        'angulartics.google.analytics',
+        'ngImgCrop'
     ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
@@ -83,7 +84,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
             templateUrl: "/partials/truckProfiles.jade",
             authenticate: false
         })
-        .state('trucks.details', {
+        .state('truckProfiles.details', {
             url: "/:id",
             controller: 'truckDetailsCtrl',
             templateUrl: '/partials/truckDetails.jade',
@@ -123,7 +124,7 @@ app.config(['$httpProvider', function ($httpProvider: ng.IHttpProvider) {
 }]);
 
 app.config(['growlProvider', function (growlProvider) {
-    growlProvider.globalTimeToLive(3000);
+    growlProvider.globalTimeToLive(5000);
     growlProvider.onlyUniqueMessages(false);
 }]);
 
@@ -132,6 +133,14 @@ app.config(['$analyticsProvider', function ($analyticsProvider: IAngularticsProv
     /* Records pages that don't use $state or $route */
     $analyticsProvider.withAutoBase(true);
     /* Records full path */
+}]);
+
+app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider){
+    uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyDRhwlG46TWsBLMs-2aL5ge0k3m6ywGl-I',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization'
+    });
 }]);
 
 app.run(['$rootScope', '$state', 'TokenService', function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {
