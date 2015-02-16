@@ -33,12 +33,12 @@ describe('TruckMuncherApp', function () {
                 "menuItems": []
             }]
         }};
-        var defaultTruckColors = {
-            "primary": "#3344BB",
-            "secondary": "#CFEA22",
-            "primaryContrast": "#FFFFFF",
-            "secondaryContrast": "#000000"
-        };
+        //var defaultTruckColors = {
+        //    "primary": "#3344BB",
+        //    "secondary": "#CFEA22",
+        //    "primaryContrast": "#FFFFFF",
+        //    "secondaryContrast": "#000000"
+        //};
         var selectedId = 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521';
         var selectedWrongId = '12345678-wron-gsel-ecte-did12345679';
         var createCtrlFn;
@@ -80,9 +80,6 @@ describe('TruckMuncherApp', function () {
         };
         var mockColorService = {
             getCustomMenuColorsForTruck: function () {
-                var deferred = $q.defer();
-                deferred.resolve(defaultTruckColors);
-                return deferred.promise;
             }
         };
 
@@ -151,19 +148,26 @@ describe('TruckMuncherApp', function () {
             expect($scope.truckCoords.longitude).toEqual(defaultTruckLocation.longitude);
         });
 
-        it('should call the getCustomMenuColorsForTruck function', function () {
-            spyOn(mockColorService, 'getCustomMenuColorsForTruck').and.callThrough();
-            $scope.selectedTruck = defaultTruckProfile;
-            $scope.$apply();
-
-            expect(mockColorService.getCustomMenuColorsForTruck).toHaveBeenCalledWith(defaultTruckProfile);
-        });
-
         it('should return the colors for the truck', function () {
+            spyOn(mockColorService, 'getCustomMenuColorsForTruck').and.callFake(function () {
+                    return {
+                        "primary": "#3344BB",
+                        "secondary": "#CFEA22",
+                        "primaryContrast": "#FFFFFF",
+                        "secondaryContrast": "#000000"
+                    };
+                }
+            );
+
             $scope.selectedTruck = defaultTruckProfile;
             $scope.$apply();
 
-            expect($scope.customMenuColors.primary).toEqual(defaultTruckColors.primary);
+            expect($scope.customMenuColors).toEqual({
+                "primary": "#3344BB",
+                "secondary": "#CFEA22",
+                "primaryContrast": "#FFFFFF",
+                "secondaryContrast": "#000000"
+            });
         });
 
     });
