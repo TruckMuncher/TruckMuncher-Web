@@ -21,12 +21,12 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
     $stateProvider
         .state('login', {
             url: "/login",
-            templateUrl: "partials/login.jade",
+            templateUrl: "/partials/login.jade",
             authenticate: false
         })
         .state('map', {
             url: "/map",
-            templateUrl: "partials/map/map.jade",
+            templateUrl: "/partials/map/map.jade",
             controller: 'mapCtrl',
             authenticate: false
         })
@@ -48,7 +48,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         .state('menu.addItem', {
             url: '/:truckId/category/:categoryId/item',
             data: {
-                templateUrl: 'partials/vendors/itemDetails.jade',
+                templateUrl: '/partials/vendors/itemDetails.jade',
                 controller: 'addOrEditItemModalCtrl'
             },
             controller: 'menuActionModalCtrl',
@@ -57,7 +57,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         .state('menu.editCategory', {
             url: "/:truckId/category/:categoryId",
             data: {
-                templateUrl: 'partials/vendors/categoryDetails.jade',
+                templateUrl: '/partials/vendors/categoryDetails.jade',
                 controller: 'addOrEditCategoryModalCtrl'
             },
             controller: 'menuActionModalCtrl',
@@ -66,7 +66,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         .state('menu.addCategory', {
             url: "/:truckId/category",
             data: {
-                templateUrl: 'partials/vendors/categoryDetails.jade',
+                templateUrl: '/partials/vendors/categoryDetails.jade',
                 controller: 'addOrEditCategoryModalCtrl'
             },
             controller: 'menuActionModalCtrl',

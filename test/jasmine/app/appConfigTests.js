@@ -28,7 +28,7 @@ describe('TruckMuncherApp', function () {
     it('should redirect to the login page if the user tries to go to a route that requires authentication and is not logged in', function () {
         $state.go('menu');
 
-        $httpBackend.expect('GET', 'partials/login.jade', undefined).respond(200, '');
+        $httpBackend.expect('GET', '/partials/login.jade', undefined).respond(200, '');
         $httpBackend.flush();
         $httpBackend.verifyNoOutstandingRequest();
     });

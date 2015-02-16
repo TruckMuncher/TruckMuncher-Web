@@ -61,7 +61,7 @@ class MapCtrl {
             lon = pos.coords.longitude;
             $scope.currentPositionMarker = {
                 id: 1,
-                icon: 'img/map_marker_green.png',
+                icon: '/img/map_marker_green.png',
                 coords: {
                     latitude: lat,
                     longitude: lon

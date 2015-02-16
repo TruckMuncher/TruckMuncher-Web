@@ -98,7 +98,7 @@ describe('authHelpers', function () {
             $http({method: 'POST', data: {'abc': 'def'}, url: '/'});
 
             $httpBackend.expect('POST', '/', undefined).respond(401, '');
-            $httpBackend.expect('GET', 'partials/login.jade', undefined).respond(200, '');
+            $httpBackend.expect('GET', '/partials/login.jade', undefined).respond(200, '');
             $httpBackend.flush();
 
             expect($location.path()).toBe('/login');
