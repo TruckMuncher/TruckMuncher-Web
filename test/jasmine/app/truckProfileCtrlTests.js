@@ -33,12 +33,6 @@ describe('TruckMuncherApp', function () {
                 "menuItems": []
             }]
         }};
-        //var defaultTruckColors = {
-        //    "primary": "#3344BB",
-        //    "secondary": "#CFEA22",
-        //    "primaryContrast": "#FFFFFF",
-        //    "secondaryContrast": "#000000"
-        //};
         var selectedId = 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521';
         var selectedWrongId = '12345678-wron-gsel-ecte-did12345679';
         var createCtrlFn;
@@ -162,12 +156,15 @@ describe('TruckMuncherApp', function () {
             $scope.selectedTruck = defaultTruckProfile;
             $scope.$apply();
 
-            expect($scope.customMenuColors).toEqual({
-                "primary": "#3344BB",
-                "secondary": "#CFEA22",
-                "primaryContrast": "#FFFFFF",
-                "secondaryContrast": "#000000"
-            });
+            expect($scope.customMenuColors.primary).toEqual("#3344BB");
+        });
+
+        it('should set the map center to the truckCoords', function () {
+            $scope.selectedTruck = defaultTruckProfile;
+            $scope.$apply();
+
+            expect($scope.map.center).toEqual($scope.truckCoords);
+
         });
 
     });
