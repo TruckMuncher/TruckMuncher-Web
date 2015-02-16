@@ -26,7 +26,7 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
                 url: '/img/ic_map_marker.png',
                 scaledSize: new google.maps.Size(21, 30)
             }
-        }
+        };
         $scope.customMenuColors = null;
         $scope.selectedTruck = null;
 
@@ -39,9 +39,6 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
 
         navigator.geolocation.getCurrentPosition(function (pos) {
             $scope.coords = pos.coords;
-
-            if (!$scope.selectedTruck && $stateParams['id']) {
-            }
         });
 
         function determineIfTruckIsServing() {

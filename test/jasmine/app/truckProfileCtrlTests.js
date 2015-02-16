@@ -23,19 +23,19 @@ describe('TruckMuncherApp', function () {
             "primaryColor": "#3344BB",
             "secondaryColor": "#CFEA22"
         };
-        var defaultTruckMenu = {"menu": {
-            "truckId": 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521',
-            "categories": [{
-                "id": '1234',
-                "name": 'Burgers',
-                "notes": 'No Notes',
-                "orderInMenu": '1',
-                "menuItems": []
-            }]
-        }};
+        var defaultTruckMenu = {
+            "menu": {
+                "truckId": 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521',
+                "categories": [{
+                    "id": '1234',
+                    "name": 'Burgers',
+                    "notes": 'No Notes',
+                    "orderInMenu": '1',
+                    "menuItems": []
+                }]
+            }
+        };
         var selectedId = 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521';
-        var selectedWrongId = '12345678-wron-gsel-ecte-did12345679';
-        var createCtrlFn;
         var mockTruckService = {
             getActiveTrucks: function () {
                 var deferred = $q.defer();
@@ -77,14 +77,20 @@ describe('TruckMuncherApp', function () {
             }
         };
 
+        var growlMock = {
+            addErrorMessage: function () {
+            }
+        };
+        var createControllerFn;
+
         beforeEach(inject(function (_$q_, $rootScope, $controller) {
             $q = _$q_;
             $scope = $rootScope.$new();
 
-            createCtrlFn = function () {
-                $controller('truckDetailsCtrl',  {
+            createControllerFn = function(){
+                $controller('truckDetailsCtrl', {
                     $scope: $scope,
-                    //growl: growlMock,
+                    growl: growlMock,
                     TruckService: mockTruckService,
                     TruckProfileService: mockTruckProfileService,
                     MenuService: mockMenuService,
@@ -92,7 +98,7 @@ describe('TruckMuncherApp', function () {
                     navigator: navMock
                 });
             };
-            createCtrlFn();
+            createControllerFn();
 
         }));
 
@@ -128,14 +134,36 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should set online status to be true', function () {
-            spyOn(mockTruckService, 'getActiveTrucks').and.callThrough();
             $scope.$apply();
 
             expect($scope.isOnline).toBe(true);
         });
 
+        it('should not set online status to be true if selected truck is not active', function () {
+            spyOn(mockTruckService, 'getActiveTrucks').and.callFake(function () {
+                var deferred = $q.defer();
+                deferred.resolve({trucks: []});
+                return deferred.promise;
+            });
+            $scope.$apply();
+
+            expect($scope.isOnline).toBe(false);
+        });
+
+        it('should notify of error if cannot get truck profile from service', function () {
+            spyOn(mockTruckProfileService, 'tryGetTruckProfile').and.callFake(function () {
+                var deferred = $q.defer();
+                deferred.reject('');
+                return deferred.promise;
+            });
+            spyOn(growlMock, 'addErrorMessage');
+            createControllerFn();
+            $scope.$apply();
+
+            expect(growlMock.addErrorMessage).toHaveBeenCalled();
+        });
+
         it('should set the coords of the truck', function () {
-            spyOn(mockTruckService, 'getActiveTrucks').and.callThrough();
             $scope.$apply();
 
             expect($scope.truckCoords.latitude).toEqual(defaultTruckLocation.latitude);
