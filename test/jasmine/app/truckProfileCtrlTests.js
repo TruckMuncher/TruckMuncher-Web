@@ -15,6 +15,7 @@ describe('TruckMuncherApp', function () {
     };
     var selectedId = 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521';
     var selectedWrongId = '12345678-wron-gsel-ecte-did12345679';
+    var createCtrlFn;
     var mockTruckService = {
         getActiveTrucks: function () {
             var deferred = $q.defer();
@@ -39,34 +40,39 @@ describe('TruckMuncherApp', function () {
         }
     };
 
-    beforeEach(module('TruckMuncherApp', function ($provide, $urlRouterProvider) {
-        $provide.value('TruckService', mockTruckService);
-        $provide.value('TruckProfileService', mockTruckProfileService);
+    beforeEach(module('TruckMuncherApp', function ($urlRouterProvider) {
         $urlRouterProvider.otherwise(function () {
             return false;
         });
     }));
 
-    var service, $q, $rootScope;
+    var $q, $scope;
 
-    describe('truckDetailsCtrl', function () {
+    describe(function () {
 
-        beforeEach(inject(function (_$q_, _$rootScope_) {
+        beforeEach(inject(function (_$q_, $rootScope) {
             $q = _$q_;
-            $rootScope =_$rootScope_;
+            $scope = $rootScope.$new();
+
+            createCtrlFn = function () {
+                $controller('truckDetailsCtrl',  {
+                    $scope: $scope,
+                    //growl: growlMock,
+                    TruckService: mockTruckService,
+                    TruckProfileService: mockTruckProfileService
+                });
+            };
+            createCtrlFn();
+
         }));
 
         it('should check if selectedTruck is updated', function () {
-            var deferred = $q.defer();
+            spyOn(mockTruckProfileService, 'tryGetTruckProfile').and.callThrough();
+            $scope.$apply();
 
-            spyOn(mockTruckProfileService, 'tryGetTruckProfile').and.callFake(function() {
-                return deferred.promise;
-            });
-            $rootScope.$apply();
+            console.log($scope.selectedTruck);
 
-            console.log($rootScope.selectedTruck);
-
-            expect($rootScope.selectedTruck).toBe(true);
+            expect($scope.selectedTruck).toBe(true);
 
         });
 
