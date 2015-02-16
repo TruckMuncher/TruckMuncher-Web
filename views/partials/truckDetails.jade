@@ -37,8 +37,9 @@
                         .row.col-md-10.col-md-offset-1
                             article(data-ng-style="{'height': '{{mapHeight}}'}")
                                 ui-gmap-google-map(center="map.center", zoom="map.zoom", refresh='true')
-                                    ui-gmap-marker(idKey='selectedTruck.id', coords='truckCoords', icon='icon')
-                                        ui-gmap-window(options='{"content": "Our location"}')
+                                    ui-gmap-marker(idKey='selectedTruck.id', coords='truckCoords', options='options')
+                                        ui-gmap-window
+                                            div Our Location
 
 
 
