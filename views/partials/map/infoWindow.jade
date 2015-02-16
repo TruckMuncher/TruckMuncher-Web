@@ -1,14 +1,12 @@
-div(style="height:100px; width:200px; overflow-y:auto;" )
+div(style="height:100px; width:200px; overflow-y:auto" )
     .col-xs-3
         .row
-            div
-                img.map-profile-image.img-circle(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}')
-        .row
-
-    .col-xs-9(style="padding-left:20px;")
-        .row.pointer(style="padding:0px" data-bootstrap-tooltip data-toggle='tooltip' data-placement='top' title='More Info' data-ui-sref='truckProfiles.details({id: parameter.marker.truckProfile.id})')
+            img.map-profile-image.img-circle(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}')
+    .col-xs-9(style="padding-left:20px;" data-bootstrap-tooltip data-toggle='tooltip' data-placement='top' title='More Info' )
+        .row.pointer(style="padding:0px" data-ui-sref='truckProfiles.details({id: parameter.marker.truckProfile.id})')
             div(style="font-weight:bold; float:left; padding-right:20px;" ) {{parameter.marker.truckProfile.name}}
             i.fa.fa-info-circle
+    .col-xs-9(style="padding-left:20px;")
         .row
             .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
         .row
