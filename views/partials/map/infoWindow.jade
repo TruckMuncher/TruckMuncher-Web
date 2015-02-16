@@ -1,8 +1,8 @@
 div(style="height:100px; width:200px; overflow-y:auto;" )
-    .col-xs-3(style="padding:0px")
+    .col-xs-3.pointer(style="padding:0px" data-bootstrap-tooltip data-toggle='tooltip' data-placement='top' title='More Info' data-ui-sref='truckProfiles.details({id: parameter.marker.truckProfile.id})')
         img.map-profile-image.img-circle(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}')
     .col-xs-9
-        div(style="font-weight:bold") {{parameter.marker.truckProfile.name}}
+        div(style="font-weight:bold" ) {{parameter.marker.truckProfile.name}}
         .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
         span(data-ng-repeat="keywords in parameter.marker.truckProfile.keywords")
             span(data-ng-if="$first") {{keywords}}
