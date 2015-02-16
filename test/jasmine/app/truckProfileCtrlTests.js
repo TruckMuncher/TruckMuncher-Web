@@ -100,12 +100,22 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should make a call to getMenu', function () {
-            spyOn(mockTruckProfileService, 'tryGetTruckProfile').and.callThrough();
+            spyOn(mockMenuService, 'getMenu').and.callThrough();
             $scope.$apply();
 
             expect(mockMenuService.getMenu).toHaveBeenCalledWith(selectedId);
 
         });
 
+        it('should set the menu from the selected trucks profile', function () {
+            spyOn(mockMenuService, 'getMenu').and.callThrough();
+
+            $scope.$apply();
+
+            console.log($scope.menu);
+
+            expect($scope.menu).toEqual(defaultTruckMenu);
+
+        });
     });
 });
