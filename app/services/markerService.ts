@@ -1,6 +1,7 @@
 interface IMarkerService {
     getMarkers(userPosition:ICoordinates):ng.IPromise<Array<ITruckMarker>>;
 }
+var google = {};
 
 angular.module('TruckMuncherApp').factory('MarkerService', ['TruckService', 'TruckProfileService', '$q',
     (TruckService, TruckProfileService, $q) => new MarkerService(TruckService, TruckProfileService, $q)]);
@@ -28,10 +29,16 @@ class MarkerService implements IMarkerService {
         var truckCoordinates = {latitude: truck.latitude, longitude: truck.longitude};
         var marker:ITruckMarker = {
             id: truck.id,
-            icon: 'img/SingleTruckAnnotationIcon.png',
+            icon: 'img/ic_map_marker.png',
             coords: truckCoordinates,
             metersFromUser: MarkerService.getDistance(userPosition, truckCoordinates),
-            truckProfile: new TruckProfile()
+            truckProfile: new TruckProfile(),
+            options: {
+                icon: {
+                    url: '/img/ic_map_marker.png',
+                    scaledSize: new google.maps.Size(34, 44)
+                }
+            }
         };
 
         this.TruckProfileService.tryGetTruckProfile(truck.id).then(function (response) {
