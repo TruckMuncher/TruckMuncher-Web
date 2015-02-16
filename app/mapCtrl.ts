@@ -39,7 +39,7 @@ class MapCtrl {
             show: false,
             templateUrl: "/partials/map/infoWindow.jade",
             options: {
-                pixelOffset: {height: -20, width: 0}
+                pixelOffset: {height: -30, width: 0}
             },
             coords: {},
             templateParameter: {},

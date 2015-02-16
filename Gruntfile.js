@@ -203,6 +203,7 @@ module.exports = function (grunt) {
                 files: [
                     'public/js/vendorScripts.js',
                     'bower_components/angular-mocks/angular-mocks.js',
+                    'bower_components/google-maps-mock/google-maps-mock.js',
                     'bower_components/sinonjs/sinon.js',
                     'public/js/TruckMuncherApp.js',
                     'test/jasmine/**/*.js',
