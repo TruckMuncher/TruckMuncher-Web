@@ -1,58 +1,80 @@
 describe('TruckMuncherApp', function () {
-    beforeEach(module('TruckMuncherApp'));
 
-    beforeEach(module(function ($urlRouterProvider) {
+    var defaultTruckLocation = {
+        "id": "a8cf2d4d-318d-4f94-b3eb-ae13f4780521",
+        "latitude": 43.0500,
+        "longitude": 87.9500
+    };
+    var defaultTruckProfile = {
+        "id": "a8cf2d4d-318d-4f94-b3eb-ae13f4780521",
+        "name": "PizzaGuy",
+        "imageUrl": "http://pizzaguywi.com/lib/img/logo.png",
+        "keywords": ["pizza", "italian"],
+        "primaryColor": "#3344BB",
+        "secondaryColor": "#CFEA22"
+    };
+    var selectedId = 'a8cf2d4d-318d-4f94-b3eb-ae13f4780521';
+    var selectedWrongId = '12345678-wron-gsel-ecte-did12345679';
+    var createCtrlFn;
+    var mockTruckService = {
+        getActiveTrucks: function () {
+            var deferred = $q.defer();
+            deferred.resolve({
+                trucks: [defaultTruckLocation]
+            });
+            return deferred.promise;
+        }
+    };
+    var mockTruckProfileService = {
+        tryGetTruckProfile: function () {
+            var deferred = $q.defer();
+            deferred.resolve(defaultTruckProfile);
+            return deferred.promise;
+        },
+        updateTruckProfiles: function () {
+            var deferred = $q.defer();
+            deferred.resolve({
+                trucks: [defaultTruckProfile]
+            });
+            return deferred.promise;
+        }
+    };
+
+    beforeEach(module('TruckMuncherApp', function ($urlRouterProvider) {
         $urlRouterProvider.otherwise(function () {
             return false;
         });
     }));
 
-    describe('truckProfileTruckCtrl', function () {
+    var $q, $scope;
 
-        var $scope;
-        var createCtrlFn;
+    describe(function () {
 
-        var navMock = {
-            geolocation: {
-                getCurrentPosition: function () {
-                }
-            }
-        };
-
-        beforeEach(inject(function ($rootScope, $controller) {
-
+        beforeEach(inject(function (_$q_, $rootScope) {
+            $q = _$q_;
             $scope = $rootScope.$new();
 
             createCtrlFn = function () {
-                $controller('truckProfileTruckCtrl', {
+                $controller('truckDetailsCtrl',  {
                     $scope: $scope,
-                    navigator: navMock
+                    //growl: growlMock,
+                    TruckService: mockTruckService,
+                    TruckProfileService: mockTruckProfileService
                 });
             };
             createCtrlFn();
+
         }));
 
-        //it('should check active trucks for the current truck', function () {
-        //    var activeTrucks = [{id: '1234', latitude: 0, longitude: 0}, {id: "2345", latitude: 1, longitude: 1}];
-        //    var selectedTruckString = '1234';
-        //    $scope.isOnline = false;
-        //
-        //    $scope.activeTruckCheck(activeTrucks, selectedTruckString);
-        //
-        //    expect($scope.isOnline).toEqual(true);
-        //
-        //});
-        //
-        //it('should check active trucks for the current truck', function () {
-        //    var activeTrucks = [{id: '1234', latitude: 0, longitude: 0}, {id: "2345", latitude: 1, longitude: 1}];
-        //    var selectedTruckString = '8989';
-        //    $scope.isOnline = false;
-        //
-        //    $scope.activeTruckCheck(activeTrucks, selectedTruckString);
-        //
-        //    expect($scope.isOnline).toEqual(false);
-        //
-        //});
+        it('should check if selectedTruck is updated', function () {
+            spyOn(mockTruckProfileService, 'tryGetTruckProfile').and.callThrough();
+            $scope.$apply();
+
+            console.log($scope.selectedTruck);
+
+            expect($scope.selectedTruck).toBe(true);
+
+        });
 
     });
 });
