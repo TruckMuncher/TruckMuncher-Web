@@ -6,7 +6,7 @@ interface ITruckDetailsScope extends ng.IScope {
     map:{center:{}; zoom:number};
     mapHeight: string;
     menu:IMenu;
-    icon:string;
+    options:any;
     coords:{latitude:number; longitude:number};
 
 }
@@ -21,7 +21,12 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
         };
         $scope.mapHeight = screen.height / 4 + 'px';
         $scope.truckCoords = {latitude: 0, longitude: 0};
-        $scope.icon = 'img/map_marker_green.png';
+        $scope.options = {
+            icon: {
+                url: '/img/ic_map_marker.png',
+                scaledSize: new google.maps.Size(21, 30)
+            }
+        }
         $scope.customMenuColors = null;
         $scope.selectedTruck = null;
 
