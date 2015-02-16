@@ -78,6 +78,18 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
             controller: 'vendorProfileCtrl',
             authenticate: true
         })
+        .state('truckProfiles', {
+            url: "/trucks",
+            controller: 'truckProfilesCtrl',
+            templateUrl: "/partials/truckProfiles.jade",
+            authenticate: false
+        })
+        .state('truckProfiles.details', {
+            url: "/:id",
+            controller: 'truckDetailsCtrl',
+            templateUrl: '/partials/truckDetails.jade',
+            authenticate: false
+        })
         .state('privacyPolicy', {
             url: "/privacyPolicy",
             controller: ['$scope', function ($scope: ng.IScope) {
@@ -121,6 +133,14 @@ app.config(['$analyticsProvider', function ($analyticsProvider: IAngularticsProv
     /* Records pages that don't use $state or $route */
     $analyticsProvider.withAutoBase(true);
     /* Records full path */
+}]);
+
+app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider){
+    uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyDRhwlG46TWsBLMs-2aL5ge0k3m6ywGl-I',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization'
+    });
 }]);
 
 app.run(['$rootScope', '$state', 'TokenService', function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {

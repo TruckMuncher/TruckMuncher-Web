@@ -1,0 +1,53 @@
+.row
+    .col-xs-12.col-md-4.col-md-offset-1(data-ng-show="selectedTruck.id")
+        .row
+            article
+                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                    header
+                        h2 Main Profile
+                    section
+                        .col-lg-8.col-md-12.col-sm-12
+                            img.img-circle(data-ng-src='{{selectedTruck.imageUrl}}', style='width:315px; height:315px;')
+                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
+                            fieldset(class="form-group")
+                                section
+                                    label.control-label.txt-color-black(style="font-size: 3em;", for='truckName') {{selectedTruck.name}}
+                                section
+                                    span(data-ng-repeat="keywords in selectedTruck.keywords")
+                                        span(data-ng-if="$first") {{keywords}}
+                                        span(data-ng-if="!$first") , {{keywords}}
+
+        .row
+            article
+                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                    header
+                        h2 About the Truck
+                    section
+                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
+                            fieldset(class="form-group")
+                                section
+                                    label.control-label.txt-color-black(for='truckName') {{selectedTruck.description}}
+
+        .row(data-ng-if='isOnline')
+            article
+                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                    header
+                        h2 Currently Serving
+                    section
+                        .row.col-md-10.col-md-offset-1
+                            article(data-ng-style="{'height': '{{mapHeight}}'}")
+                                ui-gmap-google-map(center="map.center", zoom="map.zoom", refresh='true')
+                                    ui-gmap-marker(idKey='selectedTruck.id', coords='truckCoords', options='options')
+                                        ui-gmap-window
+                                            div Our Location
+
+
+
+
+    .col-xs-12.col-md-6(data-ng-show="selectedTruck.id")
+        article
+            .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                header
+                    h2 Menu
+                section
+                    div(data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu')

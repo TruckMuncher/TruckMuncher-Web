@@ -8,7 +8,7 @@
                         label(for='truckList') Profile for Truck:
                         select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
                     div.form-group.pull-right
-                        a.btn.btn-pink(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
+                        a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
 
     #top-nav-wrapper
         div(data-ng-include="'/partials/nav.jade'")

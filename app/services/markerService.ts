@@ -13,20 +13,11 @@ class MarkerService implements IMarkerService {
     getMarkers(userPosition:ICoordinates):ng.IPromise<Array<ITruckMarker>> {
         var deferred = this.$q.defer();
         var markers = [];
-        this.TruckService.getActiveTrucks(userPosition.latitude, userPosition.longitude).then((trucksResponse) => {
+        this.TruckService.getActiveTrucks().then((trucksResponse) => {
             var trucks = trucksResponse.trucks;
-            if (this.TruckProfileService.allTrucksInStoredProfiles(trucks) && !this.TruckProfileService.cookieNeedsUpdate()) {
-                for (var i = 0; i < trucks.length; i++) {
-                    var marker = this.populateMarker(trucks[i], userPosition);
-                    markers.push(marker);
-                }
-            } else {
-                this.TruckProfileService.updateTruckProfiles(userPosition.latitude, userPosition.longitude).then(() => {
-                    for (var i = 0; i < trucks.length; i++) {
-                        var marker = this.populateMarker(trucks[i], userPosition);
-                        markers.push(marker);
-                    }
-                });
+            for (var i = 0; i < trucks.length; i++) {
+                var marker = this.populateMarker(trucks[i], userPosition);
+                markers.push(marker);
             }
             deferred.resolve(markers);
         });
@@ -34,21 +25,25 @@ class MarkerService implements IMarkerService {
     }
 
     private populateMarker(truck:IActiveTruck, userPosition:ICoordinates):ITruckMarker {
-        var truckProfile = this.TruckProfileService.getTruckProfile(truck.id);
         var truckCoordinates = {latitude: truck.latitude, longitude: truck.longitude};
         var marker:ITruckMarker = {
             id: truck.id,
-            icon: 'img/SingleTruckAnnotationIcon.png',
             coords: truckCoordinates,
             metersFromUser: MarkerService.getDistance(userPosition, truckCoordinates),
-            truckProfile: new TruckProfile()
+            truckProfile: new TruckProfile(),
+            options: {
+                icon: {
+                    url: '/img/ic_map_marker.png',
+                    scaledSize: new google.maps.Size(21, 30)
+                }
+            }
         };
 
-        if (!_.isNull(truckProfile) && !_.isUndefined(truckProfile)) {
-            marker.truckProfile = truckProfile;
-        } else {
+        this.TruckProfileService.tryGetTruckProfile(truck.id).then(function (response) {
+            marker.truckProfile = response
+        }, function () {
             marker.truckProfile.name = "Could not find profile for truck";
-        }
+        });
 
         return marker;
     }
