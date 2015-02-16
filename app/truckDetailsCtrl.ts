@@ -63,6 +63,7 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
 
             if ($scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
+
                     $scope.menu = response.menu;
                 });
                 $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
