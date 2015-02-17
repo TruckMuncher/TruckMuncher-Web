@@ -1,6 +1,6 @@
 interface IMarkerService {
     getMarkers():ng.IPromise<Array<ITruckMarker>>;
-    calculateDistanceFromUserForMarkers(markers: Array<ITruckMarker>, userCoordinates: ICoordinates): Array<ITruckMarker>;
+    calculateDistanceFromUserForMarkers(markers: Array<ITruckMarker>, userCoordinates: ICoordinates): void;
 }
 
 angular.module('TruckMuncherApp').factory('MarkerService', ['TruckService', 'TruckProfileService', '$q',
