@@ -7,7 +7,7 @@ div(style="height:100px; width:200px; overflow-y:auto" )
             div(style="font-weight:bold; float:left; padding-right:20px;" ) {{parameter.marker.truckProfile.name}}
             i.fa.fa-info-circle
     .col-xs-9(style="padding-left:20px;")
-        .row
+        .row(data-ng-if='marker.metersFromUser')
             .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
         .row
             span(data-ng-repeat="keywords in parameter.marker.truckProfile.keywords")

@@ -1,5 +1,6 @@
 interface IMarkerService {
-    getMarkers(userPosition:ICoordinates):ng.IPromise<Array<ITruckMarker>>;
+    getMarkers():ng.IPromise<Array<ITruckMarker>>;
+    calculateDistanceFromUserForMarkers(markers: Array<ITruckMarker>, userCoordinates: ICoordinates): Array<ITruckMarker>;
 }
 
 angular.module('TruckMuncherApp').factory('MarkerService', ['TruckService', 'TruckProfileService', '$q',
@@ -10,13 +11,13 @@ class MarkerService implements IMarkerService {
     constructor(private TruckService:ITruckService, private TruckProfileService:ITruckProfileService, private $q:ng.IQService) {
     }
 
-    getMarkers(userPosition:ICoordinates):ng.IPromise<Array<ITruckMarker>> {
+    getMarkers():ng.IPromise<Array<ITruckMarker>> {
         var deferred = this.$q.defer();
         var markers = [];
         this.TruckService.getActiveTrucks().then((trucksResponse) => {
             var trucks = trucksResponse.trucks;
             for (var i = 0; i < trucks.length; i++) {
-                var marker = this.populateMarker(trucks[i], userPosition);
+                var marker = this.populateMarker(trucks[i]);
                 markers.push(marker);
             }
             deferred.resolve(markers);
@@ -24,12 +25,11 @@ class MarkerService implements IMarkerService {
         return deferred.promise;
     }
 
-    private populateMarker(truck:IActiveTruck, userPosition:ICoordinates):ITruckMarker {
+    private populateMarker(truck:IActiveTruck):ITruckMarker {
         var truckCoordinates = {latitude: truck.latitude, longitude: truck.longitude};
         var marker:ITruckMarker = {
             id: truck.id,
             coords: truckCoordinates,
-            metersFromUser: MarkerService.getDistance(userPosition, truckCoordinates),
             truckProfile: new TruckProfile(),
             options: {
                 icon: {
@@ -46,6 +46,12 @@ class MarkerService implements IMarkerService {
         });
 
         return marker;
+    }
+
+    calculateDistanceFromUserForMarkers(markers, userCoordinates){
+        _.forEach(markers, function(m: ITruckMarker){
+            m.metersFromUser = MarkerService.getDistance(m.coords, userCoordinates)
+        });
     }
 
     private static rad(x:number):number {
