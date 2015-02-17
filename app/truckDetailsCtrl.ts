@@ -7,8 +7,6 @@ interface ITruckDetailsScope extends ng.IScope {
     mapHeight: string;
     menu:IMenu;
     options:any;
-    coords:{latitude:number; longitude:number};
-
 }
 angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'navigator',
     function ($scope:ITruckDetailsScope, growl:IGrowlService, $stateParams:ng.ui.IStateParamsService, TruckProfileService:ITruckProfileService, colorService:IColorService, TruckService:ITruckService, MenuService:IMenuService, $analytics:IAngularticsService, navigator:Navigator) {
@@ -35,10 +33,6 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
             $scope.selectedTruck = truck
         }, function () {
             growl.addErrorMessage("Could not find truck profile");
-        });
-
-        navigator.geolocation.getCurrentPosition(function (pos) {
-            $scope.coords = pos.coords;
         });
 
         function determineIfTruckIsServing() {
