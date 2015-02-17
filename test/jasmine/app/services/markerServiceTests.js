@@ -58,12 +58,12 @@ describe('TruckMuncherApp', function () {
                 return deferred.promise;
             });
 
-            sut.getMarkers({latitude: 1, longitude: 2});
+            sut.getMarkers();
             expect(mockTruckService.getActiveTrucks).toHaveBeenCalled();
         });
 
         it('should assign the truck profile to the marker', function () {
-            sut.getMarkers({latitude: 1, longitude: 2}).then(function (markers) {
+            sut.getMarkers().then(function (markers) {
                 expect(markers[0].id).toEqual(defaultTruckProfile.id);
                 expect(markers[0].truckProfile).toEqual(defaultTruckProfile);
             });
@@ -71,7 +71,7 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should assign the truck coordinates to the marker', function () {
-            sut.getMarkers({latitude: 1, longitude: 2}).then(function (markers) {
+            sut.getMarkers().then(function (markers) {
                 expect(markers[0].coords.latitude).toEqual(defaultTruckLocation.latitude);
                 expect(markers[0].coords.longitude).toEqual(defaultTruckLocation.longitude);
             });

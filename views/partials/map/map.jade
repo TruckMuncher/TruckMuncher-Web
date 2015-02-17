@@ -24,7 +24,7 @@
                         .col-xs-9
                             div
                                 b {{marker.truckProfile.name}}
-                            .txt-subscript {{marker.metersFromUser|distance:'miles'|number:2}} mi
+                            .txt-subscript(data-ng-if='marker.metersFromUser') {{marker.metersFromUser|distance:'miles'|number:2}} mi
                             span(data-ng-repeat="keywords in marker.truckProfile.keywords")
                                 span(data-ng-if="$first") {{keywords}}
                                 span(data-ng-if="!$first") , {{keywords}}

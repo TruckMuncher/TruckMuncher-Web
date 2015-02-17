@@ -16,25 +16,15 @@ interface IMapScope extends ng.IScope {
 
 
 angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService', 'navigator',
-    ($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService, navigator) => new MapCtrl($scope, growl, colorService, SearchService, MarkerService, $timeout, $analytics, ModalMenuService, navigator)]);
-
-class MapCtrl {
-    constructor(private $scope:IMapScope,
-                private growl:IGrowlService,
-                private colorService:IColorService,
-                private SearchService:ISearchService,
-                private MarkerService:IMarkerService,
-                private $timeout:ng.ITimeoutService,
-                private $analytics:IAngularticsService,
-                private ModalMenuService:IModalMenuService,
-                private navigator:Navigator) {
+    function ($scope:IMapScope, growl:IGrowlService, colorService:IColorService, SearchService:ISearchService, MarkerService:IMarkerService, $timeout:ng.ITimeoutService, $analytics:IAngularticsService, ModalMenuService:IModalMenuService, navigator:Navigator) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
         $scope.loading = true;
         $scope.searchQuery = "";
-        var lat;
-        var lon;
+        var lat = null;
+        var lon = null;
         var allActiveTruckMarkers:Array<ITruckMarker> = [];
         $scope.displayedMarkers = [];
+        $scope.currentPositionMarker = {};
         $scope.infoWindow = {
             show: false,
             templateUrl: "/partials/map/infoWindow.jade",
@@ -54,9 +44,25 @@ class MapCtrl {
             zoom: 13
         };
 
-        $scope.currentPositionMarker = {};
+        getMarkers();
 
-        this.navigator.geolocation.getCurrentPosition(function (pos) {
+        function getMarkers() {
+            $scope.loading = true;
+            allActiveTruckMarkers = [];
+            MarkerService.getMarkers().then(function (markers) {
+                allActiveTruckMarkers = markers;
+                $scope.loading = false;
+                $scope.displayedMarkers = allActiveTruckMarkers;
+                tryAddUserDistanceToMarkers();
+            });
+        }
+
+        function tryAddUserDistanceToMarkers() {
+            if (!lat || allActiveTruckMarkers.length < 1) return;
+            MarkerService.calculateDistanceFromUserForMarkers(allActiveTruckMarkers, {latitude: lat, longitude: lon});
+        }
+
+        navigator.geolocation.getCurrentPosition(function (pos) {
             lat = pos.coords.latitude;
             lon = pos.coords.longitude;
             $scope.currentPositionMarker = {
@@ -70,22 +76,11 @@ class MapCtrl {
             };
 
             $scope.map.center = {latitude: lat, longitude: lon};
-
-            getMarkers();
+            tryAddUserDistanceToMarkers();
         }, function (error) {
             growl.addErrorMessage('Unable to get location: ' + error.message);
         });
 
-        function getMarkers() {
-            $scope.loading = true;
-            allActiveTruckMarkers = [];
-            var coords:ICoordinates = {latitude: lat, longitude: lon};
-            MarkerService.getMarkers(coords).then(function (markers) {
-                allActiveTruckMarkers = markers;
-                $scope.loading = false;
-                $scope.displayedMarkers = allActiveTruckMarkers;
-            });
-        }
 
         $scope.closeInfoWindow = () => {
             $scope.infoWindow.show = false;
@@ -149,5 +144,5 @@ class MapCtrl {
             $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});
         };
 
-    }
-}
+    }]);
+
