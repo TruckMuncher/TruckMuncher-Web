@@ -46,4 +46,6 @@
                         ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', click='onMarkerClicked' options='"options"')
                         ui-gmap-window(coords='infoWindow.coords', show='infoWindow.show', templateUrl='infoWindow.templateUrl', templateParameter='infoWindow.templateParameter', closeClick='closeInfoWindow', options='infoWindow.options')
                         ui-gmap-marker(data-ng-if='currentPositionMarker.id', idKey='currentPositionMarker.id', coords='currentPositionMarker.coords', icon='currentPositionMarker.icon')
-                            ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show', options='{"content": "Your Position"}')
+                            ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show')
+                                div Your Position
+

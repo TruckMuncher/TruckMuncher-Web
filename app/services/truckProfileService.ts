@@ -20,6 +20,8 @@ class TruckProfileService implements ITruckProfileService {
         var deferred = this.$q.defer();
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
 
+        if (this.profilesUpdatedInLastMinute()) return this.allTrucksFromCookie();
+
         this.httpHelperService.post(url, {
             'latitude': this.milwaukeeLatitude,
             'longitude': this.milwaukeeLongitude
@@ -38,7 +40,7 @@ class TruckProfileService implements ITruckProfileService {
     }
 
     private getTruckProfileFromCookie(truckId:string):ITruckProfile {
-        var profiles = this.getTruckProfilesFromCookie();
+        var profiles = this.allTrucksFromCookie();
         return _.find(profiles, function (x) {
             return x.id === truckId;
         });
@@ -47,9 +49,11 @@ class TruckProfileService implements ITruckProfileService {
     tryGetTruckProfile(truckId) {
         var deferred = this.$q.defer();
 
+        if (this.cookieNeedsUpdate()) this.updateTruckProfiles();
+
         var truck = this.getTruckProfileFromCookie(truckId);
         if (truck) deferred.resolve(truck);
-        else if (!this.profilesUpdatedInLastMinute() || this.cookieNeedsUpdate()) {
+        else {
             this.updateTruckProfiles().then((response:Array<ITruckProfile>) => {
                 truck = _.find(response, function (t) {
                     return t.id === truckId;
@@ -68,11 +72,7 @@ class TruckProfileService implements ITruckProfileService {
         return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated < this.millisecondsInAMinute;
     }
 
-    private getTruckProfilesFromCookie():Array<ITruckProfile> {
-        return this.$cookieStore.get('truckProfiles');
-    }
-
     allTrucksFromCookie():Array<ITruckProfile> {
-        return this.getTruckProfilesFromCookie();
+        return this.$cookieStore.get('truckProfiles');
     }
 }
