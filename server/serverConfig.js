@@ -17,7 +17,9 @@ if (host !== 'localhost') {
         cert: certificate,
         ca: [chain],
         secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_SSLv2,
-        secureProtocol: 'SSLv23_method'
+        secureProtocol: 'SSLv23_method',
+        ciphers: 'ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:AES128-GCM-SHA256:HIGH:!MD5:!aNULL',
+        honorCipherOrder: true
     };
 }
 
