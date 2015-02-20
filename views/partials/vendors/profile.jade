@@ -23,7 +23,7 @@
                                 h2 Main Profile
                             form(data-ng-submit='submit()').background-transparent
                                 .col-xs-12.form-group
-                                    img.img-circle.img-responsive.pointer(data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Change Profile Picture', title='Change Profile Picture'
+                                    img.img-circle.img-responsive.pointer(data-ng-if="imageUrl", data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Change Profile Picture', title='Change Profile Picture'
                                     image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading' data-ng-click='changeProfilePicture()')
                                     button.btn.bg-color-mold.txt-color-white(type='button' data-ng-click="changeProfilePicture()" data-ng-if='!selectedTruck.imageUrl') Upload Profile Picture
                                 .col-xs-12
@@ -56,7 +56,7 @@
                                                     input(type="radio" value="secondary" name="whichColor" data-ng-model="selectingColor")
                                                     i
                                                     = 'Secondary'
-                                    spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)")
+                                    spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)" format="'hex'")
                                     .widget-body
                                         div(data-ng-if='selectedTruck')
                                             label
