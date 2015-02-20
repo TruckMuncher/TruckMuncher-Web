@@ -4,6 +4,7 @@
   "description": "Tracking Food Trucks and Stuff!",
   "dependencies": {
     "compression": "^1.4.0",
+    "constants": "0.0.2",
     "ejs": "*",
     "express": "3.4.7",
     "express-session": "1.8.2",

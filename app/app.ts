@@ -135,14 +135,6 @@ app.config(['$analyticsProvider', function ($analyticsProvider: IAngularticsProv
     /* Records full path */
 }]);
 
-app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider){
-    uiGmapGoogleMapApiProvider.configure({
-        key: 'AIzaSyDRhwlG46TWsBLMs-2aL5ge0k3m6ywGl-I',
-        v: '3.17',
-        libraries: 'weather,geometry,visualization'
-    });
-}]);
-
 app.run(['$rootScope', '$state', 'TokenService', function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {
 
     $rootScope.$on("$stateChangeStart",
