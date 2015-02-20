@@ -20,16 +20,17 @@ class TruckProfileService implements ITruckProfileService {
         var deferred = this.$q.defer();
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
 
-        if (this.profilesUpdatedInLastMinute()) return this.allTrucksFromCookie();
-
-        this.httpHelperService.post(url, {
-            'latitude': this.milwaukeeLatitude,
-            'longitude': this.milwaukeeLongitude
-        }).then((response:ITruckProfilesResponse)=> {
-            this.$cookieStore.put('truckProfiles', response.trucks);
-            this.$cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
-            deferred.resolve(response.trucks);
-        });
+        if (this.profilesUpdatedInLastMinute()) deferred.resolve(this.allTrucksFromCookie());
+        else {
+            this.httpHelperService.post(url, {
+                'latitude': this.milwaukeeLatitude,
+                'longitude': this.milwaukeeLongitude
+            }).then((response:ITruckProfilesResponse)=> {
+                this.$cookieStore.put('truckProfiles', response.trucks);
+                this.$cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
+                deferred.resolve(response.trucks);
+            });
+        }
 
         return deferred.promise;
     }
