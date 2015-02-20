@@ -70,7 +70,8 @@ class TruckProfileService implements ITruckProfileService {
 
     private profilesUpdatedInLastMinute():boolean {
         var lastUpdated = this.$cookieStore.get('truckProfilesLastUpdatedDate');
-        return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated < this.millisecondsInAMinute;
+        if(_.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) )return false
+        else return Date.now() - lastUpdated < this.millisecondsInAMinute;
     }
 
     allTrucksFromCookie():Array<ITruckProfile> {
