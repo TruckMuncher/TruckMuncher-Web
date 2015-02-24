@@ -59,7 +59,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
         function tryAddUserDistanceToMarkers() {
             if (!lat || allActiveTruckMarkers.length < 1) return;
-            MarkerService.calculateDistanceFromUserForMarkers(allActiveTruckMarkers, {latitude: lat, longitude: lon});
+            $timeout(function(){
+                MarkerService.calculateDistanceFromUserForMarkers(allActiveTruckMarkers, {latitude: lat, longitude: lon});
+            });
         }
 
         navigator.geolocation.getCurrentPosition(function (pos) {
