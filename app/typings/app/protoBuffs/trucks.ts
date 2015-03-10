@@ -9,6 +9,8 @@ interface ITruckProfile {
     keywords:Array<string>;
     primaryColor:string;
     secondaryColor:string;
+    description:string;
+    phoneNumber:string;
 }
 
 class TruckProfile implements ITruckProfile{
@@ -18,6 +20,8 @@ class TruckProfile implements ITruckProfile{
     keywords:Array<string>;
     primaryColor:string;
     secondaryColor:string;
+    description:string;
+    phoneNumber:string;
 }
 
 interface IActiveTruck {

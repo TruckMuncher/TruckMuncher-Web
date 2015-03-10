@@ -3,17 +3,20 @@ interface ITruckProfileService {
     tryGetTruckProfile(truckId:string): ng.IPromise<ITruckProfile>;
     allTrucksFromCookie():Array<ITruckProfile>;
 }
-
-angular.module('TruckMuncherApp').factory('TruckProfileService', ['$q', '$cookieStore', 'httpHelperService',
-    ($q, $cookieStore, httpHelperService) => new TruckProfileService($q, $cookieStore, httpHelperService)]);
+angular.module('TruckMuncherApp').factory('TruckProfileService', ['$q', 'httpHelperService', '$cacheFactory',
+    ($q,  httpHelperService, $cacheFactory) => new TruckProfileService($q,  httpHelperService, $cacheFactory)]);
 
 class TruckProfileService implements ITruckProfileService {
     private millisecondsInADay:number = 86400000;
     private millisecondsInAMinute:number = 60000;
     private milwaukeeLatitude:number = 43.05;
     private milwaukeeLongitude:number = -87.95;
+    private myCache;
 
-    constructor(private  $q:ng.IQService, private $cookieStore:ng.cookies.ICookieStoreService, private httpHelperService:IHttpHelperService) {
+    constructor(private $q:ng.IQService,
+                private httpHelperService:IHttpHelperService,
+                $cacheFactory: ng.ICacheFactoryService) {
+        this.myCache = $cacheFactory('myData');
     }
 
     updateTruckProfiles() {
@@ -26,8 +29,8 @@ class TruckProfileService implements ITruckProfileService {
                 'latitude': this.milwaukeeLatitude,
                 'longitude': this.milwaukeeLongitude
             }).then((response:ITruckProfilesResponse)=> {
-                this.$cookieStore.put('truckProfiles', response.trucks);
-                this.$cookieStore.put('truckProfilesLastUpdatedDate', "" + Date.now());
+                this.myCache.put('truckProfiles', response.trucks);
+                this.myCache.put('truckProfilesLastUpdatedDate', "" + Date.now());
                 deferred.resolve(response.trucks);
             });
         }
@@ -36,7 +39,7 @@ class TruckProfileService implements ITruckProfileService {
     }
 
     private cookieNeedsUpdate():boolean {
-        var lastUpdated = this.$cookieStore.get('truckProfilesLastUpdatedDate');
+        var lastUpdated = this.myCache.get('truckProfilesLastUpdatedDate');
         return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > this.millisecondsInADay;
     }
 
@@ -69,12 +72,12 @@ class TruckProfileService implements ITruckProfileService {
     }
 
     private profilesUpdatedInLastMinute():boolean {
-        var lastUpdated = this.$cookieStore.get('truckProfilesLastUpdatedDate');
-        if(_.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) )return false
+        var lastUpdated = this.myCache.get('truckProfilesLastUpdatedDate');
+        if (_.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated))return false
         else return Date.now() - lastUpdated < this.millisecondsInAMinute;
     }
 
     allTrucksFromCookie():Array<ITruckProfile> {
-        return this.$cookieStore.get('truckProfiles');
+        return this.myCache.get('truckProfiles');
     }
 }
