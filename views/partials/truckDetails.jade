@@ -54,4 +54,9 @@
                 header
                     h2 Menu
                 section
-                    div(data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu')
+                    .progress-cssSlideUp(data-ng-hide='menu')
+                        .progress
+                            .progress.progress-striped.active
+                                .progress-bar.indeterminate.bg-color-darken(role='progressbar') Retrieving Menu
+                    div(data-ng-show='menu')
+                        div(data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu')
