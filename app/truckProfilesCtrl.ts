@@ -22,7 +22,7 @@ angular.module('TruckMuncherApp').controller('truckProfilesCtrl', ['$scope', 'Tr
         $scope.simpleSearch = (query) => {
             $scope.loading = true;
 
-            SearchService.simpleSearch(query, 20, 0).then((results)=> {
+            SearchService.simpleSearch(query, 100, 0).then((results)=> {
                 $scope.displayedTrucks = _.map(results.searchResponse, (truck) => {
                     return truck.truck;
                 });
