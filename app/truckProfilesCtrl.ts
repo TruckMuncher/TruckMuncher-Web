@@ -7,8 +7,8 @@ interface ITruckProfilesScope extends ng.IScope {
 }
 
 
-angular.module('TruckMuncherApp').controller('truckProfilesCtrl', ['$scope', 'TruckProfileService', 'SearchService', '$analytics', '$filter',
-    function ($scope:ITruckProfilesScope, TruckProfileService:ITruckProfileService, SearchService:ISearchService, $analytics:IAngularticsService, $filter:ng.IFilterService) {
+angular.module('TruckMuncherApp').controller('truckProfilesCtrl', ['$scope', 'TruckProfileService', 'SearchService', '$analytics',
+    function ($scope:ITruckProfilesScope, TruckProfileService:ITruckProfileService, SearchService:ISearchService, $analytics:IAngularticsService) {
         var allTrucks: Array<ITruckProfile> = TruckProfileService.allTrucksFromCookie();
         $scope.displayedTrucks = TruckProfileService.allTrucksFromCookie();
 
