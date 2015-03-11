@@ -17,7 +17,7 @@
                         b There are no results!
                .row
                   hr
-            .overflow-auto.container-fluid.pointer(data-ng-repeat='truck in allTrucks | orderBy:"name"', data-ui-sref='.details({id: truck.id})', style='color: inherit;')
+            .overflow-auto.container-fluid.pointer(data-ng-repeat='truck in displayedTrucks | orderBy:"name"', data-ui-sref='.details({id: truck.id})', style='color: inherit;')
                .row
                   .col-xs-3
                      img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')
