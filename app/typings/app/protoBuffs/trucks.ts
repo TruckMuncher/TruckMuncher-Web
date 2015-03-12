@@ -37,3 +37,7 @@ interface IActiveTruck {
 interface IActiveTrucksResponse {
     trucks: Array<IActiveTruck>;
 }
+
+interface IApprovalStatusResponsje{
+    status:string;
+}

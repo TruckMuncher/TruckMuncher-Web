@@ -78,6 +78,7 @@
             .row
                 .text-align-center
                     button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='infoForm.$valid && submit()', data-ng-disabled='requestInProgress', type='submit') Save Changes
+                        i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
             .row(data-ng-hide='selectedTruck.approved')
                 .col-xs-12.col-md-6.col-md-offset-3
                     article
@@ -94,9 +95,11 @@
                                                     | you must submit your profile for approval by TruckMuncher LLC so that we can
                                                     | verify your information is accurate. Request approval once your profile
                                                     | and menu have been completed.
+                                                .alert.alert-warning(data-ng-show='approvalStatus') Your approval status: {{approvalStatus}}
                                                 .form-group(data-ng-class='{"has-error":!approval.email || !approvalForm.$valid}')
-                                                    label.control-label(for="email") Email
+                                                    label.control-label(for="email") Your Email
                                                     input.form-control(id='email' name='email' data-ng-model='approval.email' type='email')
                                                 .pull-right
-                                                    button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='!approval.email || !approvalForm.$valid' type='submit') Request Approval
+                                                    button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='requestInProgress || !approval.email || !approvalForm.$valid' type='submit') Request Approval
+                                                        i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
 

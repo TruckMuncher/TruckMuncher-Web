@@ -6,6 +6,7 @@ interface IVendorProfileScope extends ng.IScope {
     colorPicker: {color:string};
     requestInProgress: boolean;
     displayImage: string;
+    approvalStatus:string;
     selectedTruckCopy:ITruckProfile;
 
 
@@ -105,6 +106,11 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
                 $scope.selectedTruckCopy = _.clone($scope.selectedTruck);
+                $scope.approvalStatus = null;
+                if($scope.selectedTruck.approved === false)
+                    TruckService.checkApprovalStatus($scope.selectedTruck.id).then((response) => {
+                        $scope.approvalStatus = response.status;
+                    });
             }
             $scope.selectingColor = "primary";
             $scope.selectColor($scope.selectedTruckCopy.primaryColor);
@@ -146,10 +152,14 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         }
 
         $scope.requestApproval = function (email:string) {
+            $scope.requestInProgress = true;
             TruckService.requestApproval($scope.selectedTruckCopy.id, email).then(()=> {
                 growl.addSuccessMessage('Approval request accepted. TruckMuncher LLC will review your profile shortly.');
                 $scope.selectedTruck.approvalPending = true;
                 $scope.selectedTruckCopy.approvalPending = true;
+                $scope.requestInProgress = false;
+            }, ()=> {
+                $scope.requestInProgress = false;
             });
         }
     }]);

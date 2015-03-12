@@ -9,7 +9,6 @@ describe('TruckMuncherApp', function () {
 
     describe('vendorProfileCtrl', function () {
         var $scope, $q;
-        var rejectRequests;
         var createCtrlFn;
         var modifyTruckResponse;
 
@@ -23,26 +22,22 @@ describe('TruckMuncherApp', function () {
         var TruckServiceMock = {
             modifyTruckProfile: function () {
                 var deferred = $q.defer();
-                if (rejectRequests) {
-                    deferred.reject({});
-                } else {
-                    deferred.resolve(modifyTruckResponse);
-                }
+                deferred.resolve(modifyTruckResponse);
                 return deferred.promise;
             },
             getTrucksForVendor: function () {
                 var deferred = $q.defer();
-                if (rejectRequests) {
-                    deferred.reject({});
-                } else {
-                    deferred.resolve({trucks: []});
-                }
+                deferred.resolve({trucks: []});
+                return deferred.promise;
+            },
+            checkApprovalStatus: function(){
+                var deferred = $q.defer();
+                deferred.resolve({});
                 return deferred.promise;
             }
         };
 
         beforeEach(inject(function ($rootScope, $controller, _$q_) {
-            rejectRequests = false;
             $scope = $rootScope.$new();
             $q = _$q_;
 
@@ -202,6 +197,22 @@ describe('TruckMuncherApp', function () {
             expect($scope.selectedTruckCopy.primaryColor).toEqual('#abc');
             expect($scope.selectedTruckCopy.secondaryColor).toEqual('#def');
         });
+
+        it('should not get the approval status if selected truck is already approved', function(){
+            spyOn(TruckServiceMock, 'checkApprovalStatus').and.callThrough();
+            $scope.selectedTruck = {approved:true, id:'1'};
+            $scope.$apply();
+
+            expect(TruckServiceMock.checkApprovalStatus).not.toHaveBeenCalled();
+        });
+
+        it('should get the approval status if selected truck is not approved', function(){
+            spyOn(TruckServiceMock, 'checkApprovalStatus').and.callThrough();
+            $scope.selectedTruck = {approved:false, id:'1'};
+            $scope.$apply();
+
+            expect(TruckServiceMock.checkApprovalStatus).toHaveBeenCalledWith('1');
+        })
 
     });
 });
