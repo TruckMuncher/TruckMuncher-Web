@@ -4,7 +4,7 @@ interface ITruckService {
     getImageUploadUrl(truckId:string):string;
     getActiveTrucks():ng.IPromise<IActiveTrucksResponse>;
     requestApproval(truckId: string, email:string):ng.IPromise<{}>;
-    checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponsje>;
+    checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponse>;
 }
 
 angular.module('TruckMuncherApp').factory('TruckService', ['httpHelperService',
@@ -53,7 +53,7 @@ class TruckService implements ITruckService {
         return this.httpHelperService.post(url, data);
     }
 
-    checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponsje>{
+    checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponse>{
         var url  =this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/checkApprovalStatus';
         var data = {'truckId': truckId};
         return this.httpHelperService.post(url, data);

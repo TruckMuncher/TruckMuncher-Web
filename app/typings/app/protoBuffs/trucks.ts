@@ -38,6 +38,6 @@ interface IActiveTrucksResponse {
     trucks: Array<IActiveTruck>;
 }
 
-interface IApprovalStatusResponsje{
+interface IApprovalStatusResponse{
     status:string;
 }
