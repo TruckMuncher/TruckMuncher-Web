@@ -1,6 +1,6 @@
 interface ITruckService {
     getTrucksForVendor():ng.IPromise<ITruckProfilesResponse>;
-    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string):ng.IPromise<ITruckProfile>;
+    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string, description:string, phoneNumber:string):ng.IPromise<ITruckProfile>;
     getImageUploadUrl(truckId:string):string;
     getActiveTrucks():ng.IPromise<IActiveTrucksResponse>;
 }
@@ -20,7 +20,7 @@ class TruckService implements ITruckService {
         return this.httpHelperService.post(url, {});
     }
 
-    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string):ng.IPromise<ITruckProfile> {
+    modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string, description:string, phoneNumber:string):ng.IPromise<ITruckProfile> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
         return this.httpHelperService.post(url,
             {
@@ -28,7 +28,9 @@ class TruckService implements ITruckService {
                 name: name,
                 keywords: keywords,
                 primaryColor: primaryColor,
-                secondaryColor: secondaryColor
+                secondaryColor: secondaryColor,
+                description: description,
+                phoneNumber: phoneNumber
             }
         );
     }

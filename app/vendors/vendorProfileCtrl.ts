@@ -2,12 +2,12 @@ interface IVendorProfileScope extends ng.IScope {
     trucks: Array<ITruckProfile>;
     selectedTruck: ITruckProfile;
     tags: Array<{text:string}>;
-    newColorSelection: {primaryColor:string; secondaryColor:string};
     selectingColor: string;
     colorPicker: {color:string};
     requestInProgress: boolean;
-    newName: string;
     displayImage: string;
+    selectedTruckCopy:ITruckProfile;
+
 
     saveTruck();
     createTruck();
@@ -22,13 +22,13 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
     function ($scope:IVendorProfileScope, TruckService:ITruckService, growl:IGrowlService, $analytics:IAngularticsService, modalProfileImageService:IModalProfileImageService) {
         $scope.trucks = [];
         $scope.selectedTruck = new TruckProfile();
+        $scope.selectedTruckCopy = new TruckProfile();
         $scope.tags = [];
-        $scope.newColorSelection = {primaryColor: undefined, secondaryColor: undefined};
         $scope.selectingColor = null;
         $scope.colorPicker = {color: ""};
 
         (() => TruckService.getTrucksForVendor().then(function (response) {
-            $scope.trucks = _.sortBy(response.trucks, function(t){
+            $scope.trucks = _.sortBy(response.trucks, function (t) {
                 return t.name.toLowerCase();
             });
             if ($scope.trucks.length > 0) {
@@ -43,11 +43,13 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
 
             $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(
-                $scope.selectedTruck.id,
-                $scope.newName,
+                $scope.selectedTruckCopy.id,
+                $scope.selectedTruckCopy.name,
                 keywords,
-                $scope.newColorSelection.primaryColor,
-                $scope.newColorSelection.secondaryColor
+                $scope.selectedTruckCopy.primaryColor,
+                $scope.selectedTruckCopy.secondaryColor,
+                $scope.selectedTruckCopy.description,
+                $scope.selectedTruckCopy.phoneNumber
             ).then(function (response) {
                     $scope.requestInProgress = false;
                     growl.addSuccessMessage('Profile Updated Successfully');
@@ -56,12 +58,12 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
                     $scope.requestInProgress = false;
                 });
 
-            $analytics.eventTrack('TruckUpdated', {category: 'VendorProfile', label: $scope.newName});
+            $analytics.eventTrack('TruckUpdated', {category: 'VendorProfile', label: $scope.selectedTruckCopy.name});
         };
 
         $scope.createTruck = () => {
             $scope.requestInProgress = true;
-            TruckService.modifyTruckProfile(null, 'New Truck', null, null, null).then(function (response) {
+            TruckService.modifyTruckProfile(null, 'New Truck', null, null, null, null, null).then(function (response) {
                 $scope.requestInProgress = false;
                 growl.addSuccessMessage('Truck Created Successfully');
                 $scope.trucks.push(response);
@@ -101,28 +103,26 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.setFormValuesFromSelectedTruck = () => {
             convertKeywordsToTags();
             if ($scope.selectedTruck) {
-                $scope.newName = $scope.selectedTruck.name;
-                $scope.newColorSelection.primaryColor = $scope.selectedTruck.primaryColor;
-                $scope.newColorSelection.secondaryColor = $scope.selectedTruck.secondaryColor;
+                $scope.selectedTruckCopy = _.clone($scope.selectedTruck);
             }
             $scope.selectingColor = "primary";
-            $scope.selectColor($scope.newColorSelection.primaryColor);
+            $scope.selectColor($scope.selectedTruckCopy.primaryColor);
         };
 
         $scope.selectColor = (theColor) => {
             if (theColor !== $scope.colorPicker.color)
                 $scope.colorPicker.color = theColor;
             if ($scope.selectingColor === "primary")
-                $scope.newColorSelection.primaryColor = theColor;
+                $scope.selectedTruckCopy.primaryColor = theColor;
             else if ($scope.selectingColor === "secondary")
-                $scope.newColorSelection.secondaryColor = theColor;
+                $scope.selectedTruckCopy.secondaryColor = theColor;
         };
 
         $scope.$watch('selectingColor', function () {
             if ($scope.selectingColor === "primary")
-                $scope.colorPicker.color = $scope.newColorSelection.primaryColor;
+                $scope.colorPicker.color = $scope.selectedTruckCopy.primaryColor;
             else if ($scope.selectingColor === "secondary")
-                $scope.colorPicker.color = $scope.newColorSelection.secondaryColor;
+                $scope.colorPicker.color = $scope.selectedTruckCopy.secondaryColor;
         });
 
         function convertKeywordsToTags() {

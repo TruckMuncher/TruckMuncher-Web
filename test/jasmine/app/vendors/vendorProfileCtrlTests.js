@@ -2,7 +2,9 @@ describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
     beforeEach(module(function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function(){return false;});
+        $urlRouterProvider.otherwise(function () {
+            return false;
+        });
     }));
 
     describe('vendorProfileCtrl', function () {
@@ -33,7 +35,7 @@ describe('TruckMuncherApp', function () {
                 if (rejectRequests) {
                     deferred.reject({});
                 } else {
-                    deferred.resolve({trucks:[]});
+                    deferred.resolve({trucks: []});
                 }
                 return deferred.promise;
             }
@@ -79,33 +81,37 @@ describe('TruckMuncherApp', function () {
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, ['abc', 'def', 'ghi'], undefined, undefined);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, ['abc', 'def', 'ghi'], undefined, undefined, undefined, undefined);
         });
 
         it('should save the truck with the selectedTruck id', function () {
-            $scope.selectedTruck = {id: 'a'};
+            $scope.selectedTruckCopy = {id: 'a'};
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', undefined, [], undefined, undefined);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith('a', undefined, [], undefined, undefined, undefined, undefined);
         });
 
         it('should save the truck with the new name', function () {
-            $scope.newName = 'newName';
+            $scope.selectedTruckCopy = {
+                name: 'newName'
+            };
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, 'newName', [], undefined, undefined);
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, 'newName', [], undefined, undefined, undefined, undefined);
         });
 
         it('should save the truck color selections', function () {
-            $scope.newColorSelection.primaryColor = "#fff";
-            $scope.newColorSelection.secondaryColor = "#000";
+            $scope.selectedTruckCopy = {
+                primaryColor: "#fff",
+                secondaryColor: "#000"
+            };
 
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
             $scope.saveTruck();
             $scope.$apply();
-            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, [], "#fff", "#000");
+            expect(TruckServiceMock.modifyTruckProfile).toHaveBeenCalledWith(undefined, undefined, [], "#fff", "#000", undefined, undefined);
         });
 
         it('should update the correct truck in the trucks Array when saving the profile is successful and set selectedTruck', function () {
@@ -128,14 +134,14 @@ describe('TruckMuncherApp', function () {
         it('should change back to the original name when reset', function () {
             $scope.selectedTruck = {name: 'somethingOld'};
             $scope.resetTruck();
-            expect($scope.newName).toEqual('somethingOld');
+            expect($scope.selectedTruckCopy.name).toEqual('somethingOld');
         });
 
         it('should change back to the original  colors when reset', function () {
             $scope.selectedTruck = {primaryColor: '#f1234', secondaryColor: '#ccc'};
             $scope.resetTruck();
-            expect($scope.newColorSelection.primaryColor).toEqual('#f1234');
-            expect($scope.newColorSelection.secondaryColor).toEqual('#ccc');
+            expect($scope.selectedTruckCopy.primaryColor).toEqual('#f1234');
+            expect($scope.selectedTruckCopy.secondaryColor).toEqual('#ccc');
         });
 
         it('should change back to the original tags when the truck is reset', function () {
@@ -150,8 +156,8 @@ describe('TruckMuncherApp', function () {
         it('should set the colorPicker to the correct color when changing which color is being selected', function () {
             $scope.selectingColor = "primary";
             $scope.$apply();
-            $scope.newColorSelection.primaryColor = "#ccc";
-            $scope.newColorSelection.secondaryColor = "#fff";
+            $scope.selectedTruckCopy.primaryColor = "#ccc";
+            $scope.selectedTruckCopy.secondaryColor = "#fff";
 
             $scope.selectingColor = "secondary";
             $scope.$apply();
@@ -163,13 +169,14 @@ describe('TruckMuncherApp', function () {
         });
 
         it('should set the correct new color selection when a color is selected', function () {
+            $scope.selectedTruckCopy = {};
             $scope.selectingColor = "primary";
             $scope.selectColor('#abc');
-            expect($scope.newColorSelection.primaryColor).toEqual('#abc');
+            expect($scope.selectedTruckCopy.primaryColor).toEqual('#abc');
 
             $scope.selectingColor = "secondary";
             $scope.selectColor('#ccc');
-            expect($scope.newColorSelection.secondaryColor).toEqual('#ccc');
+            expect($scope.selectedTruckCopy.secondaryColor).toEqual('#ccc');
         });
 
         it('should set the colorPickers color when a color is selected', function () {
@@ -189,11 +196,11 @@ describe('TruckMuncherApp', function () {
             $scope.selectedTruck = {primaryColor: '#abc', secondaryColor: '#def'};
             $scope.$apply();
 
-            $scope.newColorSelection = {};
+            $scope.selectedTruckCopy = {};
             $scope.resetTruck();
 
-            expect($scope.newColorSelection.primaryColor).toEqual('#abc');
-            expect($scope.newColorSelection.secondaryColor).toEqual('#def');
+            expect($scope.selectedTruckCopy.primaryColor).toEqual('#abc');
+            expect($scope.selectedTruckCopy.secondaryColor).toEqual('#def');
         });
 
     });

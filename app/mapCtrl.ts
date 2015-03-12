@@ -133,7 +133,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
         $scope.simpleSearch = (query) => {
             $scope.loading = true;
-            SearchService.simpleSearch(query, 20, 0).then(function (results) {
+            SearchService.simpleSearch(query, 100, 0).then(function (results) {
                 var resultTruckIds = _.map(results.searchResponse, function (r) {
                     return r.truck.id;
                 });

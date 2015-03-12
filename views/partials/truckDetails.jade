@@ -17,16 +17,20 @@
                                         span(data-ng-if="$first") {{keywords}}
                                         span(data-ng-if="!$first") , {{keywords}}
 
-        .row
+        .row(data-ng-if='selectedTruck.phoneNumber || selectedTruck.description')
             article
                 .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
                     header
                         h2 About the Truck
-                    section
-                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
-                            fieldset(class="form-group")
-                                section
-                                    label.control-label.txt-color-black(for='truckName') {{selectedTruck.description}}
+                    .col-xs-12
+                        section(data-ng-if='selectedTruck.phoneNumber')
+                            label
+                                b Phone:
+                            div {{selectedTruck.phoneNumber}}
+                        section(data-ng-if='selectedTruck.description')
+                            label
+                                b Description:
+                            div {{selectedTruck.description}}
 
         .row(data-ng-if='isOnline')
             article
@@ -50,4 +54,9 @@
                 header
                     h2 Menu
                 section
-                    div(data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu')
+                    .progress-cssSlideUp(data-ng-hide='menu')
+                        .progress
+                            .progress.progress-striped.active
+                                .progress-bar.indeterminate.bg-color-darken(role='progressbar') Retrieving Menu
+                    div(data-ng-show='menu')
+                        div(data-customer-menu='' data-custom-menu-colors='customMenuColors' data-menu='menu')
