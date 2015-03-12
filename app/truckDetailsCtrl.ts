@@ -15,7 +15,7 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
                 latitude: 0,
                 longitude: 0
             },
-            zoom: 13
+            zoom: 15
         };
         $scope.mapHeight = screen.height / 4 + 'px';
         $scope.truckCoords = {latitude: 0, longitude: 0};

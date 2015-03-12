@@ -11,6 +11,8 @@ interface ITruckProfile {
     secondaryColor:string;
     description:string;
     phoneNumber:string;
+    approved:boolean;
+    approvalPending:boolean;
 }
 
 class TruckProfile implements ITruckProfile{
@@ -22,6 +24,8 @@ class TruckProfile implements ITruckProfile{
     secondaryColor:string;
     description:string;
     phoneNumber:string;
+    approved:boolean;
+    approvalPending:boolean;
 }
 
 interface IActiveTruck {

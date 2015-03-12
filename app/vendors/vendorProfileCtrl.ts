@@ -16,6 +16,7 @@ interface IVendorProfileScope extends ng.IScope {
     setFormValuesFromSelectedTruck();
     selectColor(theColor:string);
     changeProfilePicture();
+    requestApproval(email:string);
 }
 
 angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'TruckService', 'growl', '$analytics', 'modalProfileImageService',
@@ -142,5 +143,13 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         function stripUIDFromImageUrl(imageUrl) {
             if (imageUrl)return imageUrl.substring(0, imageUrl.lastIndexOf('?'));
             else return "";
+        }
+
+        $scope.requestApproval = function (email:string) {
+            TruckService.requestApproval($scope.selectedTruckCopy.id, email).then(()=> {
+                growl.addSuccessMessage('Approval request accepted. TruckMuncher LLC will review your profile shortly.');
+                $scope.selectedTruck.approvalPending = true;
+                $scope.selectedTruckCopy.approvalPending = true;
+            });
         }
     }]);
