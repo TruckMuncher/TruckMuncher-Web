@@ -48,7 +48,12 @@
                             section
                                 .container-fluid.background-white-transparent
                                     .row
-                                        .col-xs-12.form-group
+                                        .col-xs-12
+                                            label
+                                                b Preview
+                                            div(data-menu-preview='', data-primary-color='selectedTruckCopy.primaryColor' data-secondary-color='selectedTruckCopy.secondaryColor')
+                                    .row
+                                        .col-xs-8.form-group
                                             label
                                                 b Color Selection For:
                                             .smart-form
