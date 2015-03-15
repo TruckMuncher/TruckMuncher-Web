@@ -53,7 +53,7 @@
                                                 b Preview
                                             div(data-menu-preview='', data-primary-color='selectedTruckCopy.primaryColor' data-secondary-color='selectedTruckCopy.secondaryColor')
                                     .row
-                                        .col-xs-8.form-group
+                                        .col-xs-12.form-group
                                             label
                                                 b Color Selection For:
                                             .smart-form
@@ -68,8 +68,8 @@
                                                         = 'Secondary'
                                         .col-xs-12
                                             spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)" format="'hex'")
-                                        .col-xs-12.form-group
-                                            input(data-ng-model='colorPicker.color')
+                                        .col-xs-6.form-group
+                                            input.form-control(data-ng-model='colorPicker.color')
                                     .row
                                         .col-xs-12
                                             .widget-body
