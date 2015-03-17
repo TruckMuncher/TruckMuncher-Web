@@ -73,13 +73,11 @@ describe('TruckMuncherApp', function () {
             }
         };
         var mockColorService = {
-            getCustomMenuColorsForTruck: function () {
-            }
+            getCustomMenuColorsForTruck: function () { }
         };
 
         var growlMock = {
-            addErrorMessage: function () {
-            }
+            addErrorMessage: function () { }
         };
         var createControllerFn;
 
@@ -87,7 +85,7 @@ describe('TruckMuncherApp', function () {
             $q = _$q_;
             $scope = $rootScope.$new();
 
-            createControllerFn = function(){
+            createControllerFn = function () {
                 $controller('truckDetailsCtrl', {
                     $scope: $scope,
                     growl: growlMock,
@@ -194,6 +192,7 @@ describe('TruckMuncherApp', function () {
             expect($scope.map.center).toEqual($scope.truckCoords);
 
         });
+
 
     });
 });
