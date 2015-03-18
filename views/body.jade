@@ -2,9 +2,13 @@ body
     div(data-growl='')
 
     #background.col-xs-12
+
+    #top-nav-wrapper
+        div(data-ng-include="'/partial/nav.jade'")
+
     div(data-ui-view="")
 
-    .page-footer.text-align-right
+    .page-footer.text-align-right.navbar-fixed-bottom
         a(data-ui-sref='map', title="Map") Map
         //span= ' | '
         //a(data-ui-sref='about', title="About") About

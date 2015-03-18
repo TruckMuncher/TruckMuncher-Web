@@ -308,7 +308,7 @@ h2 {
 
 #sidebar-wrapper {
   z-index: 1000;
-  position: absolute;
+  position: fixed;
   left: 250px;
   width: 0;
   height: 100%;
@@ -327,10 +327,17 @@ h2 {
   width: 250px;
 }
 
+.collapse.navbar-collapse {
+  padding-left: 10px;
+}
+
+.navbar-brand {
+  padding: 8px;
+}
+
 #page-content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 15px;
 }
 
 @media (min-width: 768px) {
@@ -343,9 +350,18 @@ h2 {
     left: 40px;
   }
 
+  #tm-header img {
+    position: absolute;
+    height: 60px;
+    width: auto;
+    z-index: 999999;
+    top: 10px;
+    left: 55px;
+    display: inherit;
+  }
+
   #page-content-wrapper {
-    padding: 20px 0 0 250px;
-    position: relative;
+    padding-left: 250px;
   }
 
   .make-space-for-logo {
@@ -354,7 +370,7 @@ h2 {
 
   #top-nav-wrapper {
     overflow-y: auto;
-    padding-left: 0;
+    padding-left: 250px;
     position: relative;
   }
 

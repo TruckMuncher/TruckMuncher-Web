@@ -50,7 +50,7 @@ describe('TruckMuncherApp', function () {
             $scope.simpleSearch('asdf');
             $scope.$apply();
 
-            expect($scope.displayedTrucks).toEqual([{'id': 1}, {'id': 2}])
+            expect($scope.displayedTrucks).toEqual([{'id': 1}, {'id': 2}]);
         });
     });
 });
