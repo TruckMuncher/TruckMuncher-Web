@@ -1,7 +1,10 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold
         .container-fluid.make-space-for-logo.ignore-padding-right.more-padding-left
-            div(data-ng-include="'/partials/shared/panelLeftMenu.jade'")
+            //div(data-ng-include="'/partials/shared/panelLeftMenu.jade'")
+            span#tm-logo
+                img(src='/img/logo.png', alt='TruckMuncher')
+
             .row.add-space-sidelabel
                 article.col-xs-12.col-sm-12
                     div.form-group.txt-color-white
@@ -10,11 +13,8 @@
                     div.form-group.pull-right
                         a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
 
-    #top-nav-wrapper
-        div(data-ng-include="'/partials/nav.jade'")
-
     #page-content-wrapper.tm-main
-        #content.container-fluid(data-ng-show='selectedTruck.id !== null' data-ng-cloak)
+        #content.container-fluid.make-space-for-logo(data-ng-show='selectedTruck.id !== null' data-ng-cloak)
             .row
                 .col-xs-12.col-md-6.col-md-offset-1
                     article
@@ -103,3 +103,9 @@
                                                     button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='requestInProgress || !approval.email || !approvalForm.$valid' type='submit') Request Approval
                                                         i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
 
+
+
+    #top-nav-wrapper
+        div(data-ng-include="'/partials/nav.jade'")
+    #bottom-nav-wrapper
+        div(data-ng-include="'/partials/footer.jade'")

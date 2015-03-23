@@ -1,10 +1,14 @@
 #wrapper
+
     #sidebar-wrapper.bg-color-mold
         .container-fluid.make-space-for-logo.ignore-padding-right
-            <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+            //<div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
+            span#tm-logo
+                img(src='/img/logo.png', alt='TruckMuncher')
+
             div.col-xs-12(style="padding-top: 30px;")
                 .input-group.form-group
-                    input.form-control(data-ng-model='searchQuery' data-ng-disabled='loading' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
+                    input.form-control(data-ng-model='searchQuery', data-ng-disabled='loading', data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
                     span.input-group-btn
                         button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
                 .progress-cssSlideUp(data-ng-show='loading')
@@ -38,6 +42,9 @@
 
     #top-nav-wrapper
         div(data-ng-include="'/partials/nav.jade'")
+    #bottom-nav-wrapper
+        div(data-ng-include="'/partials/footer.jade'")
+
 
     #page-content-wrapper.tm-main
         #content

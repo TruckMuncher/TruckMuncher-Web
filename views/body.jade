@@ -3,23 +3,7 @@ body
 
     #background.col-xs-12
 
-    #top-nav-wrapper
-        div(data-ng-include="'/partial/nav.jade'")
-
     div(data-ui-view="")
-
-    nav.navbar.navbar-inverse.navbar-fixed-bottom
-        .navbar-header
-
-        .collapse.navbar-collapse
-            ul.nav.navbar-nav(style="font-size: 1.25em")
-                li
-                    a(data-ui-sref='map', title="Map") Map
-                li
-                    span= ' | '
-                li
-                    a(data-ui-sref='privacyPolicy.detail({name: "main"})', title="Privacy Policy") Privacy Policy
-
 
     include init.jade
     script(src='//maps.googleapis.com/maps/api/js?sensor=false')
