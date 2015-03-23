@@ -14,7 +14,7 @@
                         a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
 
     #page-content-wrapper.tm-main
-        #content.container-fluid.make-space-for-logo(data-ng-show='selectedTruck.id !== null' data-ng-cloak)
+        #content.container-fluid.make-space-for-logo(style="margin-bottom:10%;", data-ng-show='selectedTruck.id !== null' data-ng-cloak)
             .row
                 .col-xs-12.col-md-6.col-md-offset-1
                     article
@@ -107,5 +107,3 @@
 
     #top-nav-wrapper
         div(data-ng-include="'/partials/nav.jade'")
-    #bottom-nav-wrapper
-        div(data-ng-include="'/partials/footer.jade'")

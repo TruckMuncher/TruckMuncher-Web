@@ -13,19 +13,25 @@
 
             ul.nav.navbar-nav(style="font-size: 1.25em")
                 li
-                    a(data-ui-sref='vendorProfile', ui-sref-active="active", data-ng-show='loggedIn()')
-                        i.fa.fa-lg.fa-fw.fa-truck
-                        span.menu-item-parent Profile
+                    span.login-out
+                        a(data-ui-sref='map')
+                            i.fa.fa-lg.fa-fw.fa-map-marker(style="color:gray;")
+                            span.menu-item-parent(style="color:gray;") Map
                 li
-                    a(data-ui-sref='menu', ui-sref-active="active", data-ng-show='loggedIn()')
-                        i.fa.fa-lg.fa-fw.fa-bars
-                        span.menu-item-parent My Menu
+                    span.login-out
+                        a(data-ui-sref='vendorProfile', ui-sref-active="active", data-ng-show='loggedIn()')
+                            i.fa.fa-lg.fa-fw.fa-truck(style="color:gray;")
+                            span.menu-item-parent(style="color:gray;") Profile
                 li
-                    a(data-ui-sref='map')
-                        i.fa.fa-lg.fa-fw.fa-map-marker
-                        span.menu-item-parent Map
+                    span.login-out
+                        a(data-ui-sref='menu', ui-sref-active="active", data-ng-show='loggedIn()')
+                            i.fa.fa-lg.fa-fw.fa-bars(style="color:gray;")
+                            span.menu-item-parent(style="color:gray;") My Menu
 
             ul.nav.navbar-nav.navbar-right(style="font-size: 1.25em")
+                li
+                    span.login-out
+                        a(data-ui-sref='privacyPolicy.detail({name: "main"})', title="Privacy Policy") Privacy Policy
                 li
                     span.login-out(data-ng-show='loggedIn()')
                         span
@@ -38,33 +44,8 @@
                                 i.fa.fa-lg.fa-sign-in
                                 |  Sign in
 
-
-
     script.
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
             $("#sidebar-wrapper").toggleClass("hidden-xs-animated")
         });
-
-
-    //a#menu-toggle.container-fluid.show-panel.fa-2x.visible-xs-block(href="#menu-toggle")
-    //    i.fa.fa-align-justify
-    //
-    //.container-fluid.login-out
-    //    div
-    //        span(data-ng-show='loggedIn()')
-    //            span
-    //                a.nav-bar-sign(href="/beta/logout")
-    //                    i.fa.fa-sign-out
-    //                    |  Sign out
-    //        span(data-ng-hide='loggedIn()')
-    //            span
-    //                a.nav-bar-sign(href="/beta/logout")
-    //                    i.fa.fa-sign-in
-    //                    |  Sign in
-    //
-    //script.
-    //    $("#menu-toggle").click(function(e) {
-    //        e.preventDefault();
-    //        $("#sidebar-wrapper").toggleClass("hidden-xs-animated")
-    //    });
