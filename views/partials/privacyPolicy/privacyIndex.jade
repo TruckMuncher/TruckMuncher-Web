@@ -8,10 +8,6 @@
                     div.left-menu.txt-color-white(data-ui-sref-active="menu-active")
                         a(data-ui-sref='.detail({name: page.name})', title="page.title")
                             span.menu-item-parent= ' ' + '{{page.title}}'
-
-    #top-nav-wrapper
-        <div data-ng-include="'/partials/nav.jade'"></div>
-
     #page-content-wrapper.tm-main
         #content
             .slide(data-ui-view="")

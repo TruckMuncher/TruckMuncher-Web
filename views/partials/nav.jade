@@ -19,6 +19,11 @@
                             span.menu-item-parent(style="color:gray;") Map
                 li
                     span.login-out
+                        a(data-ui-sref='truckProfiles' title="All Trucks")
+                            i.fa.fa-lg.fa-fw.fa-users(style="color:gray;")
+                            span.menu-item-parent(style="color:gray;") All Trucks
+                li
+                    span.login-out
                         a(data-ui-sref='vendorProfile', ui-sref-active="active", data-ng-show='loggedIn()')
                             i.fa.fa-lg.fa-fw.fa-truck(style="color:gray;")
                             span.menu-item-parent(style="color:gray;") Profile
@@ -32,6 +37,9 @@
                 li
                     span.login-out
                         a(data-ui-sref='privacyPolicy.detail({name: "main"})', title="Privacy Policy") Privacy Policy
+                li
+                    span.login-out
+                        a(data-ui-sref='about', title="About") About
                 li
                     span.login-out(data-ng-show='loggedIn()')
                         span

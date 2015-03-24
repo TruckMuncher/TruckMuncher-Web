@@ -3,6 +3,9 @@ body
 
     #background.col-xs-12
 
+    #top-nav-wrapper
+        div(data-ng-include="'/partials/nav.jade'")
+
     div(data-ui-view="")
 
     include init.jade

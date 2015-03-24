@@ -111,6 +111,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
             templateUrl: function ($stateParams: ng.ui.IStateParamsService) {
                 return '/partials/privacyPolicy/' + $stateParams['name'] + '.jade';
             }
+        })
+        .state('about',{
+            url: '/about',
+            templateUrl: "/partials/about.jade",
+            authenticate: false
         });
 }]);
 
