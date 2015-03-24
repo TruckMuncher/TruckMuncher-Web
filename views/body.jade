@@ -5,8 +5,8 @@ body
 
     #top-nav-wrapper
         div(data-ng-include="'/partials/nav.jade'")
-
-    div(data-ui-view="")
+    div(style='padding-top:50px')
+        div(data-ui-view="")
 
     include init.jade
     script(src='//maps.googleapis.com/maps/api/js?sensor=false')
