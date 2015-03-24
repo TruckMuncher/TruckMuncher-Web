@@ -212,7 +212,7 @@ describe('TruckMuncherApp', function () {
             $scope.$apply();
 
             expect(TruckServiceMock.checkApprovalStatus).toHaveBeenCalledWith('1');
-        })
+        });
 
     });
 });
