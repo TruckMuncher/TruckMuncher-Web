@@ -1,11 +1,7 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold
-        .container-fluid.make-space-for-logo.ignore-padding-right.more-padding-left
-            //<div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
-            span#tm-logo
-                img(src='/img/logo.png', alt='TruckMuncher')
-
-            .row.add-space-sidelabel(data-ng-cloak='')
+        .container-fluid.make-space-for-logo
+            .row(data-ng-cloak='')
                 article.col-xs-12
                     div.form-group.txt-color-white
                         label(for='truckList') Menu for Truck:
@@ -15,7 +11,7 @@
 
     #page-content-wrapper.tm-main
         #content.container-fluid.make-space-for-logo
-            .row(data-ng-cloak='')
+            .row
                 article.col-xs-12.col-lg-8.col-lg-offset-2(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
                     .jarviswidget.background-white-transparent
                         header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
@@ -65,8 +61,4 @@
                                 div.form-group.pull-right(data-ng-show='selectedTruck')
                                     button.btn.bg-color-mold.txt-color-white(data-ng-click='addItem(selectedTruck, category.id)') Add Menu Item
 
-            <div data-ui-view></div>
-
-    #top-nav-wrapper
-        div(data-ng-include="'/partials/nav.jade'")
-
+            div(data-ui-view='')
