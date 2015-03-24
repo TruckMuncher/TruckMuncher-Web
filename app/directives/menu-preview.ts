@@ -5,8 +5,8 @@ angular.module('TruckMuncherApp').directive('menuPreview', ['colorService',
 
             var canvasHeight = 150;
             var canvasWidth = 100;
-            canvas.setAttribute('height', canvasHeight);
-            canvas.setAttribute('width', canvasWidth);
+            canvas.setAttribute('height', canvasHeight + 'px');
+            canvas.setAttribute('width', canvasWidth + 'px');
             var ctx = canvas.getContext('2d');
             var itemOffset = 8;
             var rowHeight = 8;
