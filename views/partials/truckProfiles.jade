@@ -1,7 +1,6 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold
         .container-fluid.make-space-for-logo.ignore-padding-right
-            div(data-ng-include="'/partials/shared/panelLeftMenu.jade'")
             .col-xs-12
                 .input-group.form-group
                     input.form-control(data-ng-model='searchQuery', data-ng-disabled='loading' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")

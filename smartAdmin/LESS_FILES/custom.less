@@ -65,8 +65,9 @@
 
 #top-nav-wrapper {
   overflow-y: auto;
-  padding-left: 0px;
+  padding-left: 0;
   position: relative;
+  z-index:1001;
 }
 
 .tm-main {
@@ -180,7 +181,7 @@ td.merge-with-left {
 
 @logoHeight: 120px;
 #tm-logo img {
-  position: absolute;
+  position: fixed;
   height: 60px;
   width: auto;
   z-index: 999999;
@@ -189,7 +190,7 @@ td.merge-with-left {
 }
 
 #tm-logo {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .submit-button {
@@ -311,6 +312,7 @@ h2 {
   position: fixed;
   left: 250px;
   width: 250px;
+  top: 0;
   height: 100%;
   margin-left: -250px;
   margin-right: 0;
@@ -342,7 +344,6 @@ h2 {
 
 @media (min-width: 768px) {
   #tm-logo img {
-    position: absolute;
     height: 120px;
     width: auto;
     z-index: 999999;
@@ -365,12 +366,7 @@ h2 {
   }
 
   .make-space-for-logo {
-    margin-top: 120px;
-  }
-
-  #top-nav-wrapper {
-    overflow-y: auto;
-    position: relative;
+    margin-top: 70px;
   }
 
   #login-logo-font {
