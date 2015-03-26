@@ -1,5 +1,5 @@
-.container-fluid.ignore-padding-right
-    .col-xs-12
+.container-fluid(style="padding: 0;")
+    .col-xs-12.bg-color-mold
         .input-group.form-group(style="padding-top:20px")
             input.form-control(data-ng-model='searchQuery', data-ng-disabled='loading' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
             span.input-group-btn
