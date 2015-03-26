@@ -6,12 +6,12 @@
                     header
                         h2 Main Profile
                     section
-                        .col-lg-8.col-md-12.col-sm-12
-                            img.img-circle(data-ng-src='{{selectedTruck.imageUrl}}', style='width:315px; height:315px;')
-                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-9
+                        .col-lg-8.col-md-12.col-sm-7.col-xs-4
+                            img.img-circle.img-size(data-ng-src='{{selectedTruck.imageUrl}}')
+                        .col-lg-10.col-lg-offset-1.col-md-10.col-md-offset-1.col-sm-5.col-xs-8.padding-top-15
                             fieldset(class="form-group")
                                 section
-                                    label.control-label.txt-color-black(style="font-size: 3em;", for='truckName') {{selectedTruck.name}}
+                                    label.control-label.txt-color-black.header-txt-size(for='truckName') {{selectedTruck.name}}
                                 section
                                     span(data-ng-repeat="keywords in selectedTruck.keywords")
                                         span(data-ng-if="$first") {{keywords}}
