@@ -1,11 +1,11 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold
-        div(data-ng-include="'/partials/map/onlineList.jade'")
+        div(data-ng-include="'/partials/map/onlineList.jade'", style="padding-top:70px;")
 
 
     #page-content-wrapper.tm-main
         #content
-            .row.col-md-10.col-md-offset-1.map-padding
+            .col-lg-10-col-lg-offset-1.col-md-10.col-md-offset-1.col-xs-12.map-padding
                 article(data-ng-style="{'height': '{{mapHeight}}'}")
                     ui-gmap-google-map(center="map.center", data-ng-if='mapHeight' data-refresh='true', zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', click='onMarkerClicked' options='"options"')
@@ -14,6 +14,6 @@
                             ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show')
                                 div Your Position
 
-        .bg-color-mold.visible-sm.visible-xs
+        .visible-xs.col-xs-12(style="padding:25px")
             div(data-ng-include="'/partials/map/onlineList.jade'")
 

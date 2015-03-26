@@ -346,7 +346,6 @@ h2 {
 }
 
 .row {
-  padding: 0;
   margin: 0;
 }
 
@@ -361,6 +360,10 @@ h2 {
 }
 
 @media (min-width: 768px) {
+  .row {
+    margin: inherit;
+  }
+  
   .header-txt-size {
     font-size: 3em;
     padding-top: 12%;
