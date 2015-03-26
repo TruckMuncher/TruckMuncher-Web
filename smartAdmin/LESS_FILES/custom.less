@@ -295,9 +295,16 @@ h2 {
 }
 
 .login-out {
-  float: right;
   padding: 10px;
   z-index: 0;
+  float: left;
+}
+
+.nav-items {
+  float: left;
+  padding: 10px;
+  z-index: 0;
+  width: 100%;
 }
 
 #wrapper {
@@ -309,21 +316,8 @@ h2 {
 }
 
 #sidebar-wrapper {
-  z-index: 1000;
-  position: fixed;
-  left: 250px;
-  width: 250px;
-  top: 0;
-  height: 100%;
-  margin-left: -250px;
-  margin-right: 0;
-  overflow-y: auto;
-  background: #000;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  max-height: 100%;
+
+  display: none;
 }
 
 .collapse.navbar-collapse {
@@ -343,7 +337,31 @@ h2 {
   position: absolute;
 }
 
+#small-screen {
+  display: inherit;
+}
+
+#map-height {
+  height: 50%;
+}
+
+.map-padding {
+  padding-top: 25px;
+}
+
 @media (min-width: 768px) {
+  #small-screen {
+    display: none;
+  }
+
+  .map-padding {
+    padding-top: 50px;
+  }
+
+  #map-height {
+    height: 100%;
+  }
+
   #tm-logo img {
     height: 120px;
     width: auto;
@@ -372,5 +390,24 @@ h2 {
 
   #login-logo-font {
     font-size: 5.5em;
+  }
+
+  #sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 250px;
+    top: 0;
+    height: 100%;
+    margin-left: -250px;
+    margin-right: 0;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    max-height: 100%;
+    display: inherit;
   }
 }

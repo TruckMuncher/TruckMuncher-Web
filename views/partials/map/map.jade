@@ -2,7 +2,7 @@
     #sidebar-wrapper.bg-color-mold
         .container-fluid.make-space-for-logo.ignore-padding-right
             div.col-xs-12
-                .input-group.form-group
+                .input-group.form-group(style="padding-top:20px")
                     input.form-control(data-ng-model='searchQuery', data-ng-disabled='loading', data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
                     span.input-group-btn
                         button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
@@ -31,9 +31,10 @@
                     .row
                         hr
 
+
     #page-content-wrapper.tm-main
         #content
-            .row.col-md-10.col-md-offset-1(style="padding-top: 50px")
+            .row.col-md-10.col-md-offset-1.map-padding
                 article(data-ng-style="{'height': '{{mapHeight}}'}")
                     ui-gmap-google-map(center="map.center", data-ng-if='mapHeight' data-refresh='true', zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', click='onMarkerClicked' options='"options"')
@@ -42,3 +43,33 @@
                             ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show')
                                 div Your Position
 
+        #small-screen.bg-color-mold
+            div.col-xs-12.bg-color-mold
+                .input-group.form-group(style="padding-top:20px")
+                    input.form-control(data-ng-model='searchQuery', data-ng-disabled='loading', data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
+                    span.input-group-btn
+                        button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
+                .progress-cssSlideUp(data-ng-show='loading')
+                    .progress
+                        .progress.progress-striped.active
+                            .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
+                div.overflow-auto.container-fluid(data-ng-if='displayedMarkers.length == 0 && !loading')
+                    .row
+                        .col-xs-12.text-align-center
+                            div
+                                b There are no results!
+                    .row
+                        hr
+                .overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers | orderBy:"metersFromUser"')
+                    .row.pointer(data-ng-click="onProfileClicked(marker)")
+                        .col-xs-3
+                            img.map-profile-image.img-circle(data-ng-src='{{marker.truckProfile.imageUrl}}')
+                        .col-xs-9
+                            div
+                                b {{marker.truckProfile.name}}
+                            .txt-subscript(data-ng-if='marker.metersFromUser') {{marker.metersFromUser|distance:'miles'|number:2}} mi
+                            span(data-ng-repeat="keywords in marker.truckProfile.keywords")
+                                span(data-ng-if="$first") {{keywords}}
+                                span(data-ng-if="!$first") , {{keywords}}
+                    .row
+                        hr

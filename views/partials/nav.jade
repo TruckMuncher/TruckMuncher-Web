@@ -13,29 +13,29 @@
 
             ul.nav.navbar-nav(style="font-size: 1.25em")
                 li
-                    span.login-out
+                    span.nav-items
                         a(data-ui-sref='map')
                             i.fa.fa-lg.fa-fw.fa-map-marker(style="color:gray;")
                             span.menu-item-parent(style="color:gray;") Map
                 li
-                    span.login-out
+                    span.nav-items
                         a(data-ui-sref='truckProfiles' title="All Trucks")
                             i.fa.fa-lg.fa-fw.fa-users(style="color:gray;")
                             span.menu-item-parent(style="color:gray;") All Trucks
                 li
-                    span.login-out
+                    span.nav-items
                         a(data-ui-sref='vendorProfile', ui-sref-active="active", data-ng-show='loggedIn()')
                             i.fa.fa-lg.fa-fw.fa-truck(style="color:gray;")
                             span.menu-item-parent(style="color:gray;") Profile
                 li
-                    span.login-out
+                    span.nav-items
                         a(data-ui-sref='menu', ui-sref-active="active", data-ng-show='loggedIn()')
                             i.fa.fa-lg.fa-fw.fa-bars(style="color:gray;")
                             span.menu-item-parent(style="color:gray;") My Menu
 
             ul.nav.navbar-nav.navbar-right(style="font-size: 1.25em")
                 li
-                    span.login-out
+                    span.nav-items
                         a(data-ui-sref='about', title="About") About
                 li
                     span.login-out(data-ng-show='loggedIn()')
