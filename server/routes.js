@@ -26,7 +26,7 @@ var routes = {
     },
     logout: function (req, res) {
         logout(req);
-        res.redirect('/beta#/login');
+        res.redirect('/beta/login');
     }
 };
 
