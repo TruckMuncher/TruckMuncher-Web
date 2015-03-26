@@ -1,5 +1,5 @@
-.container-fluid.ignore-padding-right
-    .col-xs-12
+.container-fluid(style="padding: 0;")
+    .col-xs-12.bg-color-mold
         .input-group.form-group(style="padding-top:20px")
             input.form-control(data-ng-model='searchQuery', data-ng-disabled='loading' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
             span.input-group-btn
@@ -17,9 +17,9 @@
                 hr
         .overflow-auto.container-fluid.pointer(data-ng-repeat='truck in displayedTrucks | orderBy:"name"', data-ui-sref='.details({id: truck.id})', style='color: inherit;')
             .row
-                .col-xs-3
+                .col-xs-4
                     img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')
-                .col-xs-9
+                .col-xs-8
                     div
                         b {{truck.name}}
                     span(data-ng-repeat="keywords in truck.keywords")
