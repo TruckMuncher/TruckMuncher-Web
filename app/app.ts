@@ -81,13 +81,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         .state('truckProfiles', {
             url: "/trucks",
             controller: 'truckProfilesCtrl',
-            templateUrl: "/partials/truckProfiles.jade",
+            templateUrl: "/partials/profiles/truckProfiles.jade",
             authenticate: false
         })
         .state('truckProfiles.details', {
             url: "/:id",
             controller: 'truckDetailsCtrl',
-            templateUrl: '/partials/truckDetails.jade',
+            templateUrl: '/partials/profiles/truckDetails.jade',
             authenticate: false
         })
         .state('privacyPolicy', {
