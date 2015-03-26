@@ -157,11 +157,17 @@ app.get('/auth/facebook/callback', function (req, res, next) {
 
 app.all('/:request*', function (req, res, next) {
     var request = req.params.request;
-    if (request === 'stylesheets' || request === 'js' || request === 'img' || request === 'fonts') {
-        next();
-    } else {
+    //doing this until we deploy the real thing
+    if(request === 'beta'){
         routes.beta(req, res);
+    }else{
+        next();
     }
+    //if (request === 'stylesheets' || request === 'js' || request === 'img' || request === 'fonts') {
+    //    next();
+    //} else {
+    //    routes.beta(req, res);
+    //}
 });
 
 passport.serializeUser(function (user, done) {
