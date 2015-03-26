@@ -23,8 +23,6 @@
                             div.form-group.pull-right(data-ng-show='selectedTruck')
                                 a.btn.bg-color-pink.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
 
-
-
             .container-fluid
                 .row(data-ng-cloak='')
                     article.col-xs-12.col-lg-8.col-lg-offset-2(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
