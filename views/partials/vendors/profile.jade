@@ -1,6 +1,6 @@
 #wrapper
-    #sidebar-wrapper.bg-color-mold
-        .container-fluid(style="padding-top:70px")
+    #sidebar-wrapper.bg-color-mold.hidden-xs
+        .container-fluid.make-space-for-logo
             .row
                 article.col-xs-12.col-sm-12
                     div.form-group.txt-color-white
@@ -80,16 +80,6 @@
                                                 spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)" format="'hex'")
                                             .col-xs-6.form-group
                                                 input.form-control(data-ng-model='colorPicker.color')
-                                        //.row
-                                            .col-xs-12
-                                                .widget-body
-                                                    div(data-ng-if='selectedTruck')
-                                                        label
-                                                            b Colors From Profile Image
-                                                        div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
-                                                            .alert.alert-info
-                                                                span You have not uploaded a profile image yet
-                                                    div.ignore-height(data-remote-image-analyzer='', data-image-url='displayImage', data-color-click-callback='selectColor(theColor)')
             .row
                 .text-align-center
                     button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='infoForm.$valid && submit()', data-ng-disabled='requestInProgress', type='submit') Save Changes
