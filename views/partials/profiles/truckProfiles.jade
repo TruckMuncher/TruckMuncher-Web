@@ -1,6 +1,7 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold.hidden-xs
-        .make-space-for-logo(data-ng-include="'/partials/profiles/allTrucks.jade'")
+        .make-space-for-logo
+            include allTrucks.jade
 
 
     #page-content-wrapper.tm-main
@@ -8,4 +9,4 @@
             div(data-ui-view="")
 
             .visible-xs.col-xs-12
-                div(data-ng-include="'/partials/profiles/allTrucks.jade'")
+                include allTrucks.jade
