@@ -1,26 +1,12 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold.hidden-xs
-        .container-fluid.make-space-for-logo
-            .row
-                article.col-xs-12.col-sm-12
-                    div.form-group.txt-color-white
-                        label(for='truckList') Profile for Truck:
-                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
-                    div.form-group.pull-right
-                        a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
-
+        .make-space-for-logo
+            include profileSelect.jade
 
     #page-content-wrapper.tm-main
         #content
             .visible-xs
-                article.col-xs-12.col-sm-12
-                    div.form-group.txt-color-white
-                        label(for='truckList') Profile for Truck:
-                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
-                    div.form-group.pull-right
-                        a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
-
-
+                include profileSelect.jade
 
             div(data-ng-show='selectedTruck.id !== null', data-ng-cloak)
                 .col-xs-12.col-md-6.col-md-offset-1

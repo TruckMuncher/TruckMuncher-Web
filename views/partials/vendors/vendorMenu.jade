@@ -1,27 +1,12 @@
 #wrapper
     #sidebar-wrapper.bg-color-mold.hidden-xs
-        .container-fluid.make-space-for-logo
-            .row(data-ng-cloak='')
-                article.col-xs-12
-                    div.form-group.txt-color-white
-                        label(for='truckList') Menu for Truck:
-                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
-                    div.form-group.pull-right(data-ng-show='selectedTruck')
-                        a.btn.bg-color-pink.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
-
+        include menuSelect.jade
 
 
     #page-content-wrapper.tm-main
         #content
-            .container-fluid.visible-xs
-                .container-fluid
-                    .row(data-ng-cloak='')
-                        article.col-xs-12
-                            div.form-group.txt-color-white
-                                label(for='truckList') Menu for Truck:
-                                select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
-                            div.form-group.pull-right(data-ng-show='selectedTruck')
-                                a.btn.bg-color-pink.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
+            .visible-xs
+                include menuSelect.jade
 
             .container-fluid
                 .row(data-ng-cloak='')
