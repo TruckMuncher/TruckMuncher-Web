@@ -1,32 +1,15 @@
 #wrapper
-    #sidebar-wrapper.bg-color-mold
-        .container-fluid(style="padding-top:70px")
-            .row(data-ng-cloak='')
-                article.col-xs-12
-                    div.form-group.txt-color-white
-                        label(for='truckList') Menu for Truck:
-                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
-                    div.form-group.pull-right(data-ng-show='selectedTruck')
-                        a.btn.bg-color-pink.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
-
+    #sidebar-wrapper.bg-color-mold.hidden-xs
+        include menuSelect.jade
 
 
     #page-content-wrapper.tm-main
         #content
-            .container-fluid.visible-xs
-                .container-fluid
-                    .row(data-ng-cloak='')
-                        article.col-xs-12
-                            div.form-group.txt-color-white
-                                label(for='truckList') Menu for Truck:
-                                select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck.id as truck.name for truck in trucks')
-                            div.form-group.pull-right(data-ng-show='selectedTruck')
-                                a.btn.bg-color-pink.txt-color-white(data-ui-sref='.addCategory({truckId: selectedTruck})') Add Menu Category
+            .visible-xs
+                include menuSelect.jade
 
-
-
-            .container-fluid.make-space-for-logo
-                .row
+            .container-fluid
+                .row(data-ng-cloak='')
                     article.col-xs-12.col-lg-8.col-lg-offset-2(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false track by category.id")
                         .jarviswidget.background-white-transparent
                             header(data-ng-style='{"background-color": "{{customMenuColors.secondary}}", "color": "{{customMenuColors.secondaryContrast}}"}')
@@ -48,30 +31,31 @@
                             section
                                 .widget-body.background-transparent.col-xs-12
                                     p {{category.notes}}
-                                    table.table-bordered.bg-color-white
-                                        tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
-                                            tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
-                                                td
-                                                    span
-                                                        i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
-                                                        i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')
-                                                        b= ' ' + '{{item.name}}'
-                                                td.text-center Price
-                                                td.text-center Available
-                                                td(colspan='2')
-                                            tr
-                                                td.big-cell {{item.notes}}
-                                                td.text-center
-                                                    span {{item.price | currency:"$":2}}
-                                                td.text-center
-                                                    i.fa.fa-check.pointer(data-ng-if='item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
-                                                    i.fa.fa-close.pointer(data-ng-if='!item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
-                                                td.pack-column.merge-with-right
-                                                    a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
-                                                        i.fa.fa-edit.fa-lg.txt-color-mold
-                                                td.pack-column.merge-with-left
-                                                    a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
-                                                        i.fa.fa-trash.fa-lg.txt-color-mold
+                                    .table-responsive
+                                        table.table.table-bordered.bg-color-white
+                                            tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
+                                                tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}')
+                                                    td
+                                                        span
+                                                            i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
+                                                            i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')
+                                                            b= ' ' + '{{item.name}}'
+                                                    td.text-center Price
+                                                    td.text-center Available
+                                                    td(colspan='2')
+                                                tr
+                                                    td.big-cell {{item.notes}}
+                                                    td.text-center
+                                                        span {{item.price | currency:"$":2}}
+                                                    td.text-center
+                                                        i.fa.fa-check.pointer(data-ng-if='item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
+                                                        i.fa.fa-close.pointer(data-ng-if='!item.isAvailable', data-ng-click='toggleItemAvailability(item, category.id)')
+                                                    td.pack-column.merge-with-right
+                                                        a(data-ui-sref='.editItem({truckId: selectedTruck, categoryId: category.id, itemId: item.id})', title="Edit Item")
+                                                            i.fa.fa-edit.fa-lg.txt-color-mold
+                                                    td.pack-column.merge-with-left
+                                                        a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
+                                                            i.fa.fa-trash.fa-lg.txt-color-mold
                                     div.form-group.pull-right(data-ng-show='selectedTruck')
                                         button.btn.bg-color-mold.txt-color-white(data-ng-click='addItem(selectedTruck, category.id)') Add Menu Item
 

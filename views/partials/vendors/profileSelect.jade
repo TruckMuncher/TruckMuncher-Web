@@ -1,0 +1,7 @@
+.make-space-for-logo
+    article.col-xs-12
+        div.form-group.txt-color-white
+            label(for='truckList') Profile for Truck:
+            select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
+        div.form-group.pull-right
+            a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck

@@ -4,6 +4,7 @@
 @import "../custom/form-fields.less";
 @import "../custom/map-page.less";
 @import "../custom/login-page.less";
+@import "bootstrap.less";
 
 .logo-container {
   max-width: 30%;
@@ -315,11 +316,6 @@ h2 {
   transition: all 0.5s ease;
 }
 
-#sidebar-wrapper {
-
-  display: none;
-}
-
 .collapse.navbar-collapse {
   padding-left: 10px;
 }
@@ -337,19 +333,6 @@ h2 {
   position: absolute;
 }
 
-#map-height {
-  height: 50%;
-}
-
-.map-padding {
-  padding-top: 25px;
-}
-
-.row {
-  padding: 0;
-  margin: 0;
-}
-
 .img-size {
   height: 100px;
   width: 100px;
@@ -359,7 +342,7 @@ h2 {
   font-size: 1.5em;
 }
 
-@media (min-width: 768px) {
+@media (min-width: @screen-sm-min) {
   .header-txt-size {
     font-size: 3em;
   }
@@ -367,14 +350,6 @@ h2 {
   .img-size {
     height: 315px;
     width: 315px;
-  }
-
-  .map-padding {
-    padding-top: 50px;
-  }
-
-  #map-height {
-    height: 100%;
   }
 
   #tm-logo img {
@@ -408,21 +383,13 @@ h2 {
   }
 
   #sidebar-wrapper {
-    z-index: 1000;
     position: fixed;
-    left: 250px;
+    z-index:1000;
     width: 250px;
     top: 0;
     height: 100%;
-    margin-left: -250px;
+    max-height: 100%;
     margin-right: 0;
     overflow-y: auto;
-    background: #000;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    max-height: 100%;
-    display: inherit;
   }
 }
