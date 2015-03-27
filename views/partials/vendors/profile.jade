@@ -12,98 +12,93 @@
 
     #page-content-wrapper.tm-main
         #content
-            .container-fluid.visible-xs
-                .container-fluid
-                    .row
-                        article.col-xs-12.col-sm-12
-                            div.form-group.txt-color-white
-                                label(for='truckList') Profile for Truck:
-                                select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
-                            div.form-group.pull-right
-                                a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
+            .visible-xs
+                article.col-xs-12.col-sm-12
+                    div.form-group.txt-color-white
+                        label(for='truckList') Profile for Truck:
+                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
+                    div.form-group.pull-right
+                        a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
 
 
 
-            .container-fluid(data-ng-show='selectedTruck.id !== null', data-ng-cloak)
-                .row
-                    .col-xs-12.col-md-6.col-md-offset-1
-                        article
-                            .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
-                                header
-                                    h2 Main Profile
-                                form(data-ng-submit='submit()' name="infoForm" id="infoForm").background-transparent
-                                    .col-xs-12.form-group
-                                        img.img-circle.img-responsive.pointer(data-ng-if="selectedTruck.imageUrl", data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Change Profile Picture', title='Change Profile Picture'
-                                        image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading' data-ng-click='changeProfilePicture()')
-                                        button.btn.bg-color-mold.txt-color-white(type='button' data-ng-click="changeProfilePicture()" data-ng-if='!selectedTruck.imageUrl') Upload Profile Picture
-                                    .col-xs-12
-                                        fieldset(class="form-group")
-                                            section
-                                                label.control-label(for='truckName') Truck Name
-                                                input.form-control(id='truckName', data-ng-model='selectedTruckCopy.name', data-ng-disabled='selectedTruckCopy.approved')
-                                            section
-                                                label.control-label(for='keywords') Keywords
-                                                tags-input(id='keywords', data-ng-model='tags')
-                                            section
-                                                label.control-label(for='description') Description
-                                                textarea.form-control(id='description', data-ng-model='selectedTruckCopy.description')
-                                            section
-                                                label.control-label(for='phone') Phone Number
-                                                input.form-control(id='phone', data-ng-model='selectedTruckCopy.phoneNumber')
-                    .col-xs-12.col-md-4
-                        article
-                            .jarviswidget.jarviswidget-color-blueDark
-                                header
-                                    h2 Color Customization
-                                section
-                                    .container-fluid.background-white-transparent
-                                        .row
-                                            .col-xs-12
-                                                label
-                                                    b Preview
-                                                div(data-menu-preview='', data-primary-color='selectedTruckCopy.primaryColor' data-secondary-color='selectedTruckCopy.secondaryColor')
-                                        .row
-                                            .col-xs-12.form-group
-                                                label
-                                                    b Color Selection For:
-                                                .smart-form
-                                                    .inline-group
-                                                        label.radio
-                                                            input(type="radio" value="primary" name="whichColor" data-ng-model="selectingColor")
-                                                            i
-                                                            = 'Primary'
-                                                        label.radio
-                                                            input(type="radio" value="secondary" name="whichColor" data-ng-model="selectingColor")
-                                                            i
-                                                            = 'Secondary'
-                                            .col-xs-12
-                                                spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)" format="'hex'")
-                                            .col-xs-6.form-group
-                                                input.form-control(data-ng-model='colorPicker.color')
-            .row
-                .text-align-center
-                    button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='infoForm.$valid && submit()', data-ng-disabled='requestInProgress', type='submit') Save Changes
-                        i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
-            .row(data-ng-hide='selectedTruck.approved')
-                .col-xs-12.col-md-6.col-md-offset-3
+            div(data-ng-show='selectedTruck.id !== null', data-ng-cloak)
+                .col-xs-12.col-md-6.col-md-offset-1
+                    article
+                        .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                            header
+                                h2 Main Profile
+                            form(data-ng-submit='submit()' name="infoForm" id="infoForm").background-transparent
+                                .col-xs-12.form-group
+                                    img.img-circle.img-responsive.pointer(data-ng-if="selectedTruck.imageUrl", data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip data-ng-hide='imageLoading', data-ng-src='{{displayImage}}', alt='Change Profile Picture', title='Change Profile Picture'
+                                    image-loader='', data-mysrc='displayImage', data-is-loading='imageLoading' data-ng-click='changeProfilePicture()')
+                                    button.btn.bg-color-mold.txt-color-white(type='button' data-ng-click="changeProfilePicture()" data-ng-if='!selectedTruck.imageUrl') Upload Profile Picture
+                                .col-xs-12
+                                    fieldset(class="form-group")
+                                        section
+                                            label.control-label(for='truckName') Truck Name
+                                            input.form-control(id='truckName', data-ng-model='selectedTruckCopy.name', data-ng-disabled='selectedTruckCopy.approved')
+                                        section
+                                            label.control-label(for='keywords') Keywords
+                                            tags-input(id='keywords', data-ng-model='tags')
+                                        section
+                                            label.control-label(for='description') Description
+                                            textarea.form-control(id='description', data-ng-model='selectedTruckCopy.description')
+                                        section
+                                            label.control-label(for='phone') Phone Number
+                                            input.form-control(id='phone', data-ng-model='selectedTruckCopy.phoneNumber')
+                .col-xs-12.col-md-4
                     article
                         .jarviswidget.jarviswidget-color-blueDark
                             header
-                                h2 Approval
+                                h2 Color Customization
                             section
                                 .container-fluid.background-white-transparent
                                     .row
-                                        form(name='approvalForm' id='approvalForm')
-                                            .col-xs-12
-                                                .alert.alert-info
-                                                    | Before customers are able to view your truck on the site,
-                                                    | you must submit your profile for approval by TruckMuncher LLC so that we can
-                                                    | verify your information is accurate. Request approval once your profile
-                                                    | and menu have been completed.
-                                                .alert.alert-warning(data-ng-show='approvalStatus') Your approval status: {{approvalStatus}}
-                                                .form-group(data-ng-class='{"has-error":!approval.email || !approvalForm.$valid}')
-                                                    label.control-label(for="email") Your Email
-                                                    input.form-control(id='email' name='email' data-ng-model='approval.email' type='email')
-                                                .pull-right
-                                                    button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='requestInProgress || !approval.email || !approvalForm.$valid' type='submit') Request Approval
-                                                        i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
+                                        .col-xs-12
+                                            label
+                                                b Preview
+                                            div(data-menu-preview='', data-primary-color='selectedTruckCopy.primaryColor' data-secondary-color='selectedTruckCopy.secondaryColor')
+                                    .row
+                                        .col-xs-12.form-group
+                                            label
+                                                b Color Selection For:
+                                            .smart-form
+                                                .inline-group
+                                                    label.radio
+                                                        input(type="radio" value="primary" name="whichColor" data-ng-model="selectingColor")
+                                                        i
+                                                        = 'Primary'
+                                                    label.radio
+                                                        input(type="radio" value="secondary" name="whichColor" data-ng-model="selectingColor")
+                                                        i
+                                                        = 'Secondary'
+                                        .col-xs-12
+                                            spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)" format="'hex'")
+                                        .col-xs-6.form-group
+                                            input.form-control(data-ng-model='colorPicker.color')
+            .text-align-center
+                button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='infoForm.$valid && submit()', data-ng-disabled='requestInProgress', type='submit') Save Changes
+                    i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
+            .col-xs-12.col-md-6.col-md-offset-3(data-ng-hide='selectedTruck.approved')
+                article
+                    .jarviswidget.jarviswidget-color-blueDark
+                        header
+                            h2 Approval
+                        section
+                            .container-fluid.background-white-transparent
+                                .row
+                                    form(name='approvalForm' id='approvalForm')
+                                        .col-xs-12
+                                            .alert.alert-info
+                                                | Before customers are able to view your truck on the site,
+                                                | you must submit your profile for approval by TruckMuncher LLC so that we can
+                                                | verify your information is accurate. Request approval once your profile
+                                                | and menu have been completed.
+                                            .alert.alert-warning(data-ng-show='approvalStatus') Your approval status: {{approvalStatus}}
+                                            .form-group(data-ng-class='{"has-error":!approval.email || !approvalForm.$valid}')
+                                                label.control-label(for="email") Your Email
+                                                input.form-control(id='email' name='email' data-ng-model='approval.email' type='email')
+                                            .pull-right
+                                                button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='requestInProgress || !approval.email || !approvalForm.$valid' type='submit') Request Approval
+                                                    i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')

@@ -5,7 +5,7 @@
 
     #page-content-wrapper.tm-main
         #content
-            .row.col-md-10.col-md-offset-1
+            .col-md-10.col-md-offset-1
                 article(data-ng-style="{'height': '{{mapHeight}}'}")
                     ui-gmap-google-map(center="map.center", data-ng-if='mapHeight' data-refresh='true', zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', click='onMarkerClicked' options='"options"')
