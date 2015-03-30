@@ -60,10 +60,6 @@ the sources as well as runs the karma tests, jshint and starts a nodemon instanc
 
         grunt dev
         
-* If you do not wish to have nodemon or karma running, simply run the following command to only compile sources on change:
-
-        grunt watch
-        
 * To build the production, minified javascripts, run:
 
         grunt build-prod
