@@ -4,6 +4,7 @@
 @import "../custom/form-fields.less";
 @import "../custom/map-page.less";
 @import "../custom/login-page.less";
+@import "bootstrap.less";
 
 .logo-container {
   max-width: 30%;
@@ -65,8 +66,10 @@
 
 #top-nav-wrapper {
   overflow-y: auto;
-  padding-left: 0px;
-  position: relative;
+  padding-left: 0;
+  position: fixed;
+  width: 100%;
+  z-index:1001;
 }
 
 .tm-main {
@@ -180,7 +183,7 @@ td.merge-with-left {
 
 @logoHeight: 120px;
 #tm-logo img {
-  position: absolute;
+  position: fixed;
   height: 60px;
   width: auto;
   z-index: 999999;
@@ -189,7 +192,7 @@ td.merge-with-left {
 }
 
 #tm-logo {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .submit-button {
@@ -293,9 +296,16 @@ h2 {
 }
 
 .login-out {
-  float: right;
-  padding: 20px;
+  padding: 10px;
   z-index: 0;
+  float: left;
+}
+
+.nav-items {
+  float: left;
+  padding: 10px;
+  z-index: 0;
+  width: 100%;
 }
 
 #wrapper {
@@ -306,36 +316,43 @@ h2 {
   transition: all 0.5s ease;
 }
 
-#sidebar-wrapper {
-  z-index: 1000;
-  position: absolute;
-  left: 250px;
-  width: 0;
-  height: 100%;
-  margin-left: -250px;
-  margin-right: 0;
-  overflow-y: auto;
-  background: #000;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  max-height: 100%;
+.collapse.navbar-collapse {
+  padding-left: 10px;
 }
 
-#sidebar-wrapper {
-  width: 250px;
+.nav.navbar-nav li {
+  padding: 5px 0 0 0;
+}
+
+.navbar-brand {
+  padding: 8px;
 }
 
 #page-content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 15px;
 }
 
-@media (min-width: 768px) {
+.img-size {
+  height: 100px;
+  width: 100px;
+}
+
+.header-txt-size {
+  font-size: 1.5em;
+}
+
+@media (min-width: @screen-sm-min) {
+  .header-txt-size {
+    font-size: 3em;
+  }
+
+  .img-size {
+    height: 315px;
+    width: 315px;
+  }
+
   #tm-logo img {
-    position: absolute;
     height: 120px;
     width: auto;
     z-index: 999999;
@@ -343,22 +360,36 @@ h2 {
     left: 40px;
   }
 
+  #tm-header img {
+    position: absolute;
+    height: 60px;
+    width: auto;
+    z-index: 999999;
+    top: 10px;
+    left: 55px;
+    display: inherit;
+  }
+
   #page-content-wrapper {
-    padding: 20px 0 0 250px;
-    position: relative;
+    padding-left: 250px;
   }
 
   .make-space-for-logo {
     margin-top: 70px;
   }
 
-  #top-nav-wrapper {
-    overflow-y: auto;
-    padding-left: 0;
-    position: relative;
-  }
-
   #login-logo-font {
     font-size: 5.5em;
+  }
+
+  #sidebar-wrapper {
+    position: fixed;
+    z-index:1000;
+    width: 250px;
+    top: 0;
+    height: 100%;
+    max-height: 100%;
+    margin-right: 0;
+    overflow-y: auto;
   }
 }

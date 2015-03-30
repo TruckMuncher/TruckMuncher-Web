@@ -141,6 +141,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
                     return _.contains(resultTruckIds, marker.truckProfile.id);
                 });
                 $scope.loading = false;
+            }, () => {
+                $scope.displayedMarkers = allActiveTruckMarkers;
+                $scope.loading = false;
             });
 
             $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});

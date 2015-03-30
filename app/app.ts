@@ -81,13 +81,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         .state('truckProfiles', {
             url: "/trucks",
             controller: 'truckProfilesCtrl',
-            templateUrl: "/partials/truckProfiles.jade",
+            templateUrl: "/partials/profiles/truckProfiles.jade",
             authenticate: false
         })
         .state('truckProfiles.details', {
             url: "/:id",
             controller: 'truckDetailsCtrl',
-            templateUrl: '/partials/truckDetails.jade',
+            templateUrl: '/partials/profiles/truckDetails.jade',
             authenticate: false
         })
         .state('privacyPolicy', {
@@ -111,6 +111,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
             templateUrl: function ($stateParams: ng.ui.IStateParamsService) {
                 return '/partials/privacyPolicy/' + $stateParams['name'] + '.jade';
             }
+        })
+        .state('about',{
+            url: '/about',
+            templateUrl: "/partials/about.jade",
+            authenticate: false
         });
 }]);
 

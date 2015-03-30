@@ -1,47 +1,12 @@
 #wrapper
-    #sidebar-wrapper.bg-color-mold
-        .container-fluid.make-space-for-logo.ignore-padding-right
-            <div data-ng-include="'/partials/shared/panelLeftMenu.jade'"></div>
-            div.col-xs-12(style="padding-top: 30px;")
-                .input-group.form-group
-                    input.form-control(data-ng-model='searchQuery' data-ng-disabled='loading' data-ng-keyup="searchQuery.length > 0 && $event.keyCode == 13 && simpleSearch(searchQuery)")
-                    span.input-group-btn
-                        button.btn.bg-color-pink.txt-color-white(type='button', data-ng-disabled='loading', data-ng-click='simpleSearch(searchQuery)') Search
-                .progress-cssSlideUp(data-ng-show='loading')
-                    .progress
-                        .progress.progress-striped.active
-                            .progress-bar.indeterminate.bg-color-darken(role='progressbar') Searching for Trucks
-                div.overflow-auto.container-fluid(data-ng-if='displayedMarkers.length == 0 && !loading')
-                    .row
-                        .col-xs-12.text-align-center
-                            div
-                                b There are no results!
-                    .row
-                        hr
-                .overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers | orderBy:"metersFromUser"')
-                    .row.pointer(data-ng-click="onProfileClicked(marker)")
-                        .col-xs-3
-                            img.map-profile-image.img-circle(data-ng-src='{{marker.truckProfile.imageUrl}}')
-                        .col-xs-9
-                            div
-                                b {{marker.truckProfile.name}}
-                            .txt-subscript(data-ng-if='marker.metersFromUser') {{marker.metersFromUser|distance:'miles'|number:2}} mi
-                            span(data-ng-repeat="keywords in marker.truckProfile.keywords")
-                                span(data-ng-if="$first") {{keywords}}
-                                span(data-ng-if="!$first") , {{keywords}}
-                    .row
-                        hr
+    #sidebar-wrapper.bg-color-mold.hidden-xs
+        .make-space-for-logo
+            include onlineList.jade
 
-                div.overflow-auto.container-fluid
-                    .row-pointer(data-ui-sref='truckProfiles')
-                        button.btn.col-xs-8.col-xs-offset-2.col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.bg-color-pink.txt-color-white View All
-
-    #top-nav-wrapper
-        div(data-ng-include="'/partials/nav.jade'")
 
     #page-content-wrapper.tm-main
         #content
-            .row.col-md-10.col-md-offset-1(style="padding-top: 50px")
+            .col-md-10.col-md-offset-1
                 article(data-ng-style="{'height': '{{mapHeight}}'}")
                     ui-gmap-google-map(center="map.center", data-ng-if='mapHeight' data-refresh='true', zoom="map.zoom", draggable="true", options="map.options", data-ng-style="{'height': '{{mapHeight}}'}")
                         ui-gmap-markers(models='displayedMarkers', idKey='"id"', doCluster='true', coords='"coords"', show='true', click='onMarkerClicked' options='"options"')
@@ -49,4 +14,7 @@
                         ui-gmap-marker(data-ng-if='currentPositionMarker.id', idKey='currentPositionMarker.id', coords='currentPositionMarker.coords', icon='currentPositionMarker.icon')
                             ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show')
                                 div Your Position
+
+        .bg-color-mold.visible-xs
+            include onlineList
 

@@ -1,21 +1,14 @@
 #wrapper
-    #sidebar-wrapper.bg-color-mold
-        .container-fluid.make-space-for-logo.ignore-padding-right.more-padding-left
-            div(data-ng-include="'/partials/shared/panelLeftMenu.jade'")
-            .row.add-space-sidelabel
-                article.col-xs-12.col-sm-12
-                    div.form-group.txt-color-white
-                        label(for='truckList') Profile for Truck:
-                        select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruck', ng-options='truck as truck.name for truck in trucks')
-                    div.form-group.pull-right
-                        a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create New Truck
-
-    #top-nav-wrapper
-        div(data-ng-include="'/partials/nav.jade'")
+    #sidebar-wrapper.bg-color-mold.hidden-xs
+        .make-space-for-logo
+            include profileSelect.jade
 
     #page-content-wrapper.tm-main
-        #content.container-fluid(data-ng-show='selectedTruck.id !== null' data-ng-cloak)
-            .row
+        #content
+            .visible-xs
+                include profileSelect.jade
+
+            div(data-ng-show='selectedTruck.id !== null', data-ng-cloak)
                 .col-xs-12.col-md-6.col-md-offset-1
                     article
                         .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
@@ -70,41 +63,28 @@
                                             spectrum-colorpicker(data-ng-model="colorPicker.color" on-change="selectColor(color)" format="'hex'")
                                         .col-xs-6.form-group
                                             input.form-control(data-ng-model='colorPicker.color')
-                                    .row
+            .text-align-center.col-xs-12
+                button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='infoForm.$valid && submit()', data-ng-disabled='requestInProgress', type='submit') Save Changes
+                    i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
+            .col-xs-12.col-md-6.col-md-offset-3(data-ng-hide='selectedTruck.approved')
+                article
+                    .jarviswidget.jarviswidget-color-blueDark
+                        header
+                            h2 Approval
+                        section
+                            .container-fluid.background-white-transparent
+                                .row
+                                    form(name='approvalForm' id='approvalForm')
                                         .col-xs-12
-                                            .widget-body
-                                                div(data-ng-if='selectedTruck')
-                                                    label
-                                                        b Colors From Profile Image
-                                                    div(data-ng-if='selectedTruck && !selectedTruck.imageUrl')
-                                                        .alert.alert-info
-                                                            span You have not uploaded a profile image yet
-                                                div.ignore-height(data-remote-image-analyzer='', data-image-url='displayImage', data-color-click-callback='selectColor(theColor)')
-            .row
-                .text-align-center
-                    button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='infoForm.$valid && submit()', data-ng-disabled='requestInProgress', type='submit') Save Changes
-                        i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
-            .row(data-ng-hide='selectedTruck.approved')
-                .col-xs-12.col-md-6.col-md-offset-3
-                    article
-                        .jarviswidget.jarviswidget-color-blueDark
-                            header
-                                h2 Approval
-                            section
-                                .container-fluid.background-white-transparent
-                                    .row
-                                        form(name='approvalForm' id='approvalForm')
-                                            .col-xs-12
-                                                .alert.alert-info
-                                                    | Before customers are able to view your truck on the site,
-                                                    | you must submit your profile for approval by TruckMuncher LLC so that we can
-                                                    | verify your information is accurate. Request approval once your profile
-                                                    | and menu have been completed.
-                                                .alert.alert-warning(data-ng-show='approvalStatus') Your approval status: {{approvalStatus}}
-                                                .form-group(data-ng-class='{"has-error":!approval.email || !approvalForm.$valid}')
-                                                    label.control-label(for="email") Your Email
-                                                    input.form-control(id='email' name='email' data-ng-model='approval.email' type='email')
-                                                .pull-right
-                                                    button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='requestInProgress || !approval.email || !approvalForm.$valid' type='submit') Request Approval
-                                                        i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
-
+                                            .alert.alert-info
+                                                | Before customers are able to view your truck on the site,
+                                                | you must submit your profile for approval by TruckMuncher LLC so that we can
+                                                | verify your information is accurate. Request approval once your profile
+                                                | and menu have been completed.
+                                            .alert.alert-warning(data-ng-show='approvalStatus') Your approval status: {{approvalStatus}}
+                                            .form-group(data-ng-class='{"has-error":!approval.email || !approvalForm.$valid}')
+                                                label.control-label(for="email") Your Email
+                                                input.form-control(id='email' name='email' data-ng-model='approval.email' type='email')
+                                            .pull-right
+                                                button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-click='requestApproval(approval.email)', data-ng-disabled='requestInProgress || !approval.email || !approvalForm.$valid' type='submit') Request Approval
+                                                    i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
