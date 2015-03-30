@@ -29,6 +29,9 @@ angular.module('TruckMuncherApp').controller('truckProfilesCtrl', ['$scope', 'Tr
                         .uniq('id')
                         .value();
                 $scope.loading = false;
+            }, () => {
+                $scope.displayedTrucks = allTrucks;
+                $scope.loading = false;
             });
             $analytics.eventTrack('SimpleSearch', {category: 'TruckProfiles', label: query});
         };
