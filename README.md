@@ -6,6 +6,9 @@ Downloading and Running the Project Locally
 2. Install all node dependencies:
 
         npm install
+3. Install grunt-cli:
+
+        sudo npm install -g grunt-cli
 3. To make the requests to the API, you should be running it locally. The easiest way to do this would be by running the vagrant VM provided in the API repository.
 3. Set the environment variables for OAuth:
 
@@ -37,11 +40,9 @@ Karma and Jasmine Tests Locally
 
         sudo npm install -g karma-cli
         
-3. Install grunt-cli:
 
-        sudo npm install -g grunt-cli
 
-4. Run karma
+3. Run karma
 
         grunt karma:unit 
 
