@@ -6,14 +6,14 @@ Downloading and Running the Project Locally
 2. Install all node dependencies:
 
         npm install
-        
+3. To make the requests to the API, you should be running it locally. The easiest way to do this would be by running the vagrant VM provided in the API repository.
 3. Set the environment variables for OAuth:
 
         export FACEBOOK_CLIENT_ID=[key]
         export FACEBOOK_CLIENT_SECRET=[key]
         export TWITTER_CONSUMER_KEY=[key]
         export TWITTER_CONSUMER_SECRET=[key]
-        export API_URL=https://api.truckmuncher.com:8443
+        export API_URL=truckmuncher:8443
         
 	Note, to do for environment variables to be permanent, you will need to put these in one of the following:
 	* ~/.profile
@@ -25,7 +25,7 @@ Downloading and Running the Project Locally
 
 4. Start the server
 
-        nodemon app.js
+        node app.js
         
 Karma and Jasmine Tests Locally
 -----------------------------------
