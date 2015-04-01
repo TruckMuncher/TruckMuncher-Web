@@ -14,9 +14,6 @@ var routes = {
     index: function (req, res) {
         res.render('index');
     },
-    beta: function(req, res){
-      res.render('beta');
-    },
     partials: function (req, res) {
         var partial = req.url.substring('/partials/'.length);
         if (partial === 'login.jade' && req.session.sessionToken) {
@@ -26,7 +23,7 @@ var routes = {
     },
     logout: function (req, res) {
         logout(req);
-        res.redirect('/beta#/login');
+        res.redirect('/#/login');
     }
 };
 
