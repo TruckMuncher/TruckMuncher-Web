@@ -6,13 +6,6 @@
 @import "../custom/login-page.less";
 @import "bootstrap.less";
 
-.logo-container {
-  max-width: 30%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10px;
-}
-
 .unavailable{
   text-decoration: line-through;
 }
@@ -75,7 +68,7 @@
 }
 
 .nav.navbar-nav{
-  font-size: 1.25em;
+ font-size: 1.25em;
 }
 .nav.navbar-nav li {
   padding: 5px 0 0 0;
@@ -117,6 +110,9 @@
   color: white!important;
 }
 
+/**********************************
+* END NAVIGATION
+***********************************/
 .btn-pink {
   border: solid;
   border-width: 1px;
@@ -125,28 +121,6 @@
   background: @truckMuncherPinkBase;
   color: white;
 }
-
-.add-space-sidelabel {
-  padding: 20px 10px 0px 10px;
-}
-
-.ignore-padding-right {
-  padding-right: 0px;
-}
-
-.ignore-height {
-  height: auto !important;
-}
-
-.more-padding-left {
-  padding-left: 30px;
-}
-
-.more-padding-right {
-  padding-right: 30px;
-}
-
-
 
 #background {
   position: fixed;
@@ -190,18 +164,6 @@ td.merge-with-left {
 }
 
 @logoHeight: 120px;
-#tm-logo img {
-  position: fixed;
-  height: 60px;
-  width: auto;
-  z-index: 999999;
-  top: 10px;
-  left: 55px;
-}
-
-#tm-logo {
-  margin-top: 0;
-}
 
 .submit-button {
   margin-right: 10px;
@@ -212,7 +174,6 @@ td.merge-with-left {
 .panel-body {
   padding: 30px;
 }
-
 
 .sign-out {
   font-weight: normal;
@@ -297,23 +258,12 @@ h2 {
   background: rgba(255, 255, 255, 0);
 }
 
-.padding-left-50 {
-  padding-left: 50px;
-}
-
 .show-panel {
   float: left;
   padding-top: 20px;
   z-index: 1001;
   position: relative;
 }
-
-.login-out {
-  padding: 10px;
-  z-index: 0;
-  float: left;
-}
-
 
 #wrapper {
   padding-left: 0;
@@ -322,7 +272,6 @@ h2 {
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-
 
 #page-content-wrapper {
   width: 100%;
@@ -341,25 +290,6 @@ h2 {
 @media (min-width: @screen-sm-min) {
   .header-txt-size {
     font-size: 3em;
-  }
-
-
-  #tm-logo img {
-    height: 120px;
-    width: auto;
-    z-index: 999999;
-    top: 15px;
-    left: 40px;
-  }
-
-  #tm-header img {
-    position: absolute;
-    height: 60px;
-    width: auto;
-    z-index: 999999;
-    top: 10px;
-    left: 55px;
-    display: inherit;
   }
 
   #page-content-wrapper {
