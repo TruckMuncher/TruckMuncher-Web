@@ -57,12 +57,16 @@ function buildHeader() {
 
 var api = {
     login: function (twitter_token, twitter_secret, facebook_token) {
+        var host = (process.env.VCAP_APP_HOST || 'localhost');
         var header = buildHeader();
         if (twitter_token) {
             header.Authorization = 'oauth_token=' + twitter_token + ', oauth_secret=' + twitter_secret;
         }
         if (facebook_token) {
             header.Authorization = 'access_token=' + facebook_token;
+        }
+        if (host === 'localhost') {
+            header = {'Authorization': 'oauth_token=tw985c9758-e11b-4d02-9b39-98aa8d00d429, oauth_secret=munch'};
         }
         return makeRequest(apiUrl + 'getAuth', 'POST', header);
     },
