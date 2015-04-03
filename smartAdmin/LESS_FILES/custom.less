@@ -6,32 +6,8 @@
 @import "../custom/login-page.less";
 @import "bootstrap.less";
 
-.logo-container {
-  max-width: 30%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10px;
-}
-
 .unavailable{
   text-decoration: line-through;
-}
-
-.featurette-title {
-  font-size: 30px;
-  font-weight: 400;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-@media (min-width: 768px) {
-  .featurette-title {
-    font-size: 40px;
-  }
-
-  .logo-container {
-    max-width: 20%;
-  }
 }
 
 .cropArea {
@@ -64,6 +40,10 @@
   color: white;
 }
 
+
+/**********************************
+* NAVIGATION
+***********************************/
 #top-nav-wrapper {
   overflow-y: auto;
   padding-left: 0;
@@ -72,6 +52,31 @@
   z-index:1001;
 }
 
+.nav-items {
+  float: left;
+  padding: 10px;
+  z-index: 0;
+  width: 100%;
+}
+
+.nav-items > a{
+  color: grey
+}
+
+.collapse.navbar-collapse {
+  padding-left: 10px;
+}
+
+.nav.navbar-nav{
+ font-size: 1.25em;
+}
+.nav.navbar-nav li {
+  padding: 5px 0 0 0;
+}
+
+.navbar-brand {
+  padding: 8px;
+}
 .tm-main {
   background: none;
 }
@@ -101,42 +106,19 @@
   color: black;
 }
 
+.menu-active {
+  color: white!important;
+}
+
+/**********************************
+* END NAVIGATION
+***********************************/
 .btn-pink {
   border: solid;
   border-width: 1px;
   font-size: 1em;
   -moz-border-radius: 10px;
   background: @truckMuncherPinkBase;
-  color: white;
-}
-
-.add-space-sidelabel {
-  padding: 20px 10px 0px 10px;
-}
-
-.ignore-padding-right {
-  padding-right: 0px;
-}
-
-.ignore-height {
-  height: auto !important;
-}
-
-.more-padding-left {
-  padding-left: 30px;
-}
-
-.more-padding-right {
-  padding-right: 30px;
-}
-
-.menu-active > a {
-  color: white;
-  padding-left: 30px;
-}
-
-.menu-active {
-  background: black;
   color: white;
 }
 
@@ -182,18 +164,6 @@ td.merge-with-left {
 }
 
 @logoHeight: 120px;
-#tm-logo img {
-  position: fixed;
-  height: 60px;
-  width: auto;
-  z-index: 999999;
-  top: 10px;
-  left: 55px;
-}
-
-#tm-logo {
-  margin-top: 0;
-}
 
 .submit-button {
   margin-right: 10px;
@@ -204,7 +174,6 @@ td.merge-with-left {
 .panel-body {
   padding: 30px;
 }
-
 
 .sign-out {
   font-weight: normal;
@@ -289,28 +258,11 @@ h2 {
   background: rgba(255, 255, 255, 0);
 }
 
-.padding-left-50 {
-  padding-left: 50px;
-}
-
 .show-panel {
   float: left;
   padding-top: 20px;
   z-index: 1001;
   position: relative;
-}
-
-.login-out {
-  padding: 10px;
-  z-index: 0;
-  float: left;
-}
-
-.nav-items {
-  float: left;
-  padding: 10px;
-  z-index: 0;
-  width: 100%;
 }
 
 #wrapper {
@@ -319,18 +271,6 @@ h2 {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
-}
-
-.collapse.navbar-collapse {
-  padding-left: 10px;
-}
-
-.nav.navbar-nav li {
-  padding: 5px 0 0 0;
-}
-
-.navbar-brand {
-  padding: 8px;
 }
 
 #page-content-wrapper {
@@ -350,25 +290,6 @@ h2 {
 @media (min-width: @screen-sm-min) {
   .header-txt-size {
     font-size: 3em;
-  }
-
-
-  #tm-logo img {
-    height: 120px;
-    width: auto;
-    z-index: 999999;
-    top: 15px;
-    left: 40px;
-  }
-
-  #tm-header img {
-    position: absolute;
-    height: 60px;
-    width: auto;
-    z-index: 999999;
-    top: 10px;
-    left: 55px;
-    display: inherit;
   }
 
   #page-content-wrapper {
