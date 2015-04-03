@@ -16,22 +16,27 @@
                     span.nav-items
                         a(data-ui-sref='map' data-ui-sref-active='menu-active')
                             i.fa.fa-lg.fa-fw.fa-map-marker
-                            span.menu-item-parent Map
+                            span Map
                 li
                     span.nav-items
                         a(data-ui-sref='truckProfiles' data-ui-sref-active='menu-active' title="All Trucks")
                             i.fa.fa-lg.fa-fw.fa-users
-                            span.menu-item-parent All Trucks
+                            span All Trucks
                 li
                     span.nav-items
                         a(data-ui-sref='vendorProfile', ui-sref-active="menu-active", data-ng-show='loggedIn()')
                             i.fa.fa-lg.fa-fw.fa-truck
-                            span.menu-item-parent Profile
+                            span Truck Profile
                 li
                     span.nav-items
                         a(data-ui-sref='menu', ui-sref-active="menu-active", data-ng-show='loggedIn()')
                             i.fa.fa-lg.fa-fw.fa-bars
-                            span.menu-item-parent My Menu
+                            span Truck Menu
+                li
+                    span.nav-items
+                        a(data-ui-sref='userProfile', ui-sref-active="menu-active", data-ng-show='loggedIn()')
+                            i.fa.fa-lg.fa-fw.fa-user
+                            span My Profile
 
             ul.nav.navbar-nav.navbar-right
                 li
