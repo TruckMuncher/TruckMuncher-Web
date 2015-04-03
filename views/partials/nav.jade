@@ -11,43 +11,41 @@
 
         #navbar-collapse.collapse.navbar-collapse
 
-            ul.nav.navbar-nav(style="font-size: 1.25em")
+            ul.nav.navbar-nav()
                 li
                     span.nav-items
-                        a(data-ui-sref='map')
-                            i.fa.fa-lg.fa-fw.fa-map-marker(style="color:gray;")
-                            span.menu-item-parent(style="color:gray;") Map
+                        a(data-ui-sref='map' data-ui-sref-active='menu-active')
+                            i.fa.fa-lg.fa-fw.fa-map-marker
+                            span.menu-item-parent Map
                 li
                     span.nav-items
-                        a(data-ui-sref='truckProfiles' title="All Trucks")
-                            i.fa.fa-lg.fa-fw.fa-users(style="color:gray;")
-                            span.menu-item-parent(style="color:gray;") All Trucks
+                        a(data-ui-sref='truckProfiles' data-ui-sref-active='menu-active' title="All Trucks")
+                            i.fa.fa-lg.fa-fw.fa-users
+                            span.menu-item-parent All Trucks
                 li
                     span.nav-items
-                        a(data-ui-sref='vendorProfile', ui-sref-active="active", data-ng-show='loggedIn()')
-                            i.fa.fa-lg.fa-fw.fa-truck(style="color:gray;")
-                            span.menu-item-parent(style="color:gray;") Profile
+                        a(data-ui-sref='vendorProfile', ui-sref-active="menu-active", data-ng-show='loggedIn()')
+                            i.fa.fa-lg.fa-fw.fa-truck
+                            span.menu-item-parent Profile
                 li
                     span.nav-items
-                        a(data-ui-sref='menu', ui-sref-active="active", data-ng-show='loggedIn()')
-                            i.fa.fa-lg.fa-fw.fa-bars(style="color:gray;")
-                            span.menu-item-parent(style="color:gray;") My Menu
+                        a(data-ui-sref='menu', ui-sref-active="menu-active", data-ng-show='loggedIn()')
+                            i.fa.fa-lg.fa-fw.fa-bars
+                            span.menu-item-parent My Menu
 
-            ul.nav.navbar-nav.navbar-right(style="font-size: 1.25em")
+            ul.nav.navbar-nav.navbar-right
                 li
                     span.nav-items
-                        a(data-ui-sref='about', title="About") About
+                        a(data-ui-sref='about' data-ui-sref-active='menu-active' title="About") About
                 li
-                    span.login-out(data-ng-show='loggedIn()')
-                        span
-                            a(href="/logout")
-                                i.fa.fa-lg.fa-sign-out
-                                |  Sign out
-                    span.login-out(data-ng-hide='loggedIn()')
-                        span
-                            a(href="/logout")
-                                i.fa.fa-lg.fa-sign-in
-                                |  Sign in
+                    span.nav-items(data-ng-show='loggedIn()')
+                        a(href="/logout")
+                            i.fa.fa-lg.fa-sign-out
+                            |  Sign out
+                    span.nav-items(data-ng-hide='loggedIn()')
+                        a(href="/logout")
+                            i.fa.fa-lg.fa-sign-in
+                            |  Sign in
 
     script.
         $("#menu-toggle").click(function(e) {

@@ -17,23 +17,6 @@
   text-decoration: line-through;
 }
 
-.featurette-title {
-  font-size: 30px;
-  font-weight: 400;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-@media (min-width: 768px) {
-  .featurette-title {
-    font-size: 40px;
-  }
-
-  .logo-container {
-    max-width: 20%;
-  }
-}
-
 .cropArea {
   background: #E4E4E4;
   overflow: hidden;
@@ -64,6 +47,10 @@
   color: white;
 }
 
+
+/**********************************
+* NAVIGATION
+***********************************/
 #top-nav-wrapper {
   overflow-y: auto;
   padding-left: 0;
@@ -72,6 +59,31 @@
   z-index:1001;
 }
 
+.nav-items {
+  float: left;
+  padding: 10px;
+  z-index: 0;
+  width: 100%;
+}
+
+.nav-items > a{
+  color: grey
+}
+
+.collapse.navbar-collapse {
+  padding-left: 10px;
+}
+
+.nav.navbar-nav{
+  font-size: 1.25em;
+}
+.nav.navbar-nav li {
+  padding: 5px 0 0 0;
+}
+
+.navbar-brand {
+  padding: 8px;
+}
 .tm-main {
   background: none;
 }
@@ -99,6 +111,10 @@
   font-size: 1.75em;
   background: white;
   color: black;
+}
+
+.menu-active {
+  color: white!important;
 }
 
 .btn-pink {
@@ -130,15 +146,7 @@
   padding-right: 30px;
 }
 
-.menu-active > a {
-  color: white;
-  padding-left: 30px;
-}
 
-.menu-active {
-  background: black;
-  color: white;
-}
 
 #background {
   position: fixed;
@@ -306,12 +314,6 @@ h2 {
   float: left;
 }
 
-.nav-items {
-  float: left;
-  padding: 10px;
-  z-index: 0;
-  width: 100%;
-}
 
 #wrapper {
   padding-left: 0;
@@ -321,17 +323,6 @@ h2 {
   transition: all 0.5s ease;
 }
 
-.collapse.navbar-collapse {
-  padding-left: 10px;
-}
-
-.nav.navbar-nav li {
-  padding: 5px 0 0 0;
-}
-
-.navbar-brand {
-  padding: 8px;
-}
 
 #page-content-wrapper {
   width: 100%;
