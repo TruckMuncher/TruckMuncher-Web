@@ -2,7 +2,7 @@ describe('TruckMuncherApp', function () {
     beforeEach(module('TruckMuncherApp'));
 
     beforeEach(module(function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function(){return false;});
+        $urlRouterProvider.otherwise(function () {return false;});
     }));
 
     describe('navCtrl', function () {
