@@ -37,7 +37,7 @@ describe('TruckMuncherApp', function () {
             });
         }));
 
-        it('should retrive the user\'s trucks and set them in the state service on initialization', function () {
+        it('should retrieve the user\'s trucks and set them in the state service on initialization if logged in', function () {
             var trucks = ['a', 'b', 'c'];
 
             spyOn(TruckService, 'getTrucksForVendor').and.callFake(function () {
@@ -48,14 +48,14 @@ describe('TruckMuncherApp', function () {
 
             spyOn(StateService, 'setTrucks');
 
-            $scope.initializeToken();
+            $scope.initialize('abcd');
             $scope.$apply();
 
             expect(StateService.setTrucks).toHaveBeenCalledWith(trucks);
 
         });
 
-        it('should retrive the user\'s favorites and set them in the state service on initialization', function () {
+        it('should retrieve the user\'s favorites and set them in the state service on initialization if logged in', function () {
             var favorites = ['a', 'b', 'c'];
 
             spyOn(UserService, 'getFavorites').and.callFake(function () {
@@ -66,12 +66,25 @@ describe('TruckMuncherApp', function () {
 
             spyOn(StateService, 'setFavorites');
 
-            $scope.initializeToken();
+            $scope.initialize('abcd');
             $scope.$apply();
 
             expect(StateService.setFavorites).toHaveBeenCalledWith(favorites);
+        });
 
+        it('should NOT retrieve the user\'s favorites or trucks logged not in', function () {
+            spyOn(TruckService, 'getTrucksForVendor');
+            spyOn(UserService, 'getFavorites');
+            spyOn(StateService, 'setFavorites');
+            spyOn(StateService, 'setTrucks');
+
+            $scope.initialize();
+            $scope.$apply();
+
+            expect(TruckService.getTrucksForVendor).not.toHaveBeenCalled();
+            expect(UserService.getFavorites).not.toHaveBeenCalled();
+            expect(StateService.setFavorites).toHaveBeenCalledWith([]);
+            expect(StateService.setTrucks).toHaveBeenCalledWith([]);
         });
     });
-})
-;
+}) ;

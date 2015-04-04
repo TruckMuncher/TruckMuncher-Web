@@ -4,6 +4,7 @@ interface IStateService {
     setFavorites(favorites:Array<string>):void;
     setTrucks(trucks:Array<string>):void;
     isVendor():boolean;
+    isFavorite(truckId:string):boolean;
 }
 
 angular.module('TruckMuncherApp').factory('StateService', [() => new StateService]);
@@ -15,6 +16,10 @@ class StateService implements IStateService {
 
     setFavorites(favorites:Array<string>):void {
         this.favorites = favorites;
+    }
+
+    isFavorite(truckId:string):boolean{
+        return _.contains(this.favorites, truckId);
     }
 
     setTrucks(trucks:Array<string>):void {

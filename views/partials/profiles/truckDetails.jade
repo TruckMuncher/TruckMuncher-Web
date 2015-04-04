@@ -6,9 +6,9 @@
                     header
                         h2 Main Profile
                         .jarviswidget-ctrls
-                            a.button-icon.jarviswidget-toggle-btn
-                                i.fa.fa-star.fa-lg
-                                i.fa.fa-star-o.fa-lg
+                            a.button-icon.jarviswidget-toggle-btn.pointer(data-ng-show='loggedIn()')
+                                i.fa.fa-star.fa-lg(data-ng-show='isFavorite', title='Remove Favorite' data-ng-click='removeFavorite(selectedTruck.id)', style="color:yellow;")
+                                i.fa.fa-star-o.fa-lg(data-ng-hide='isFavorite' title='Add Favorite', data-ng-click='addFavorite(selectedTruck.id)')
                     section
                         .col-lg-8.col-md-5.col-sm-5.col-xs-4.padding-10
                             img.img-circle.img-size(data-ng-src='{{selectedTruck.imageUrl}}')

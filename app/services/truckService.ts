@@ -23,6 +23,7 @@ class TruckService implements ITruckService {
     }
 
     modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string, description:string, phoneNumber:string):ng.IPromise<ITruckProfile> {
+        //TODO: Figure out a way to update the state service
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyTruckProfile';
         return this.httpHelperService.post(url,
             {
