@@ -12,7 +12,7 @@
             .col-xs-12.text-align-center
                 div
                     b There are no results!
-    .separator.overflow-auto.container-fluid.pointer(data-ng-repeat='truck in displayedTrucks | orderBy:"name"', data-ui-sref='truckProfiles.details({id: truck.id})', style='color: inherit;')
+    .separator.overflow-auto.container-fluid.pointer(data-ng-repeat='truck in displayedTrucks | orderBy:"name"', data-ui-sref='truckProfiles.details({id: truck.id})')
         .row
             .col-xs-4
                 img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')

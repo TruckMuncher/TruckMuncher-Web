@@ -1,7 +1,7 @@
 #wrapper(data-ng-show='user')
     #sidebar-wrapper.bg-color-mold.hidden-xs
         .make-space-for-logo
-            h1 Nothing here yet
+            include favoriteList
 
     #page-content-wrapper.tm-main
         #content
@@ -53,4 +53,4 @@
                     a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create a Truck
 
             .visible-xs.col-xs-12
-                h1 Nothing here yet
+                include favoriteList

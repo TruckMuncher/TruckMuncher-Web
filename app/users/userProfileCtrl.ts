@@ -5,14 +5,23 @@ interface IUserProfileCtrlScope {
     requestInProgress: boolean;
     createTruck():void;
     unlinkAccounts(unlinkTwitter:boolean, unlinkFacebook:boolean): void;
+    favorites: Array<ITruckProfile>;
 }
-angular.module('TruckMuncherApp').controller('userProfileCtrl', ['$scope', 'StateService', 'UserService', 'TruckService', 'growl',
-    function ($scope:IUserProfileCtrlScope, StateService, UserService, TruckService, growl: IGrowlService) {
+angular.module('TruckMuncherApp').controller('userProfileCtrl', ['$scope', 'StateService', 'UserService', 'TruckService', 'growl', 'TruckProfileService',
+    function ($scope:IUserProfileCtrlScope, StateService, UserService, TruckService, growl:IGrowlService, TruckProfileService:ITruckProfileService) {
         $scope.isVendor = StateService.isVendor();
         $scope.requestInProgress = false;
 
         UserService.getAccount().then((response)=> {
             $scope.user = response;
+        });
+
+        UserService.getFavorites().then((favoritesResponse)=> {
+            TruckProfileService.updateTruckProfiles().then((profiles)=> {
+                $scope.favorites = _.filter(profiles, (profile:ITruckProfile) => {
+                    return _.contains(favoritesResponse.favorites, profile.id);
+                });
+            });
         });
 
         $scope.submit = ()=> {
@@ -40,9 +49,9 @@ angular.module('TruckMuncherApp').controller('userProfileCtrl', ['$scope', 'Stat
 
         $scope.unlinkAccounts = (unlinkTwitter, unlinkFacebook)=> {
             $scope.requestInProgress = true;
-            UserService.unlinkAccounts(unlinkTwitter, unlinkFacebook).then(()=>{
+            UserService.unlinkAccounts(unlinkTwitter, unlinkFacebook).then(()=> {
                 $scope.requestInProgress = false;
-            },()=>{
+            }, ()=> {
                 $scope.requestInProgress = false;
             });
         }
