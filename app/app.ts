@@ -146,7 +146,7 @@ app.config(['$analyticsProvider', function ($analyticsProvider:IAngularticsProvi
     /* Records full path */
 }]);
 
-app.run(['$rootScope', '$state', 'TokenService', function ($rootScope:ng.IRootScopeService, $state:ng.ui.IStateService, TokenService:ITokenService) {
+app.run(['$rootScope', '$state', 'StateService', function ($rootScope:ng.IRootScopeService, $state:ng.ui.IStateService, TokenService:IStateService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {

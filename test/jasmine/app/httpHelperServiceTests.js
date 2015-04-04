@@ -1,5 +1,5 @@
 describe('httpHelperService', function () {
-    var $httpBackend, $http, interceptor, $state, tokenService, growl, service;
+    var $httpBackend, $http, interceptor, $state, stateService, growl, service;
 
     beforeEach(module('TruckMuncherApp'));
 
@@ -8,12 +8,12 @@ describe('httpHelperService', function () {
     }));
 
 
-    beforeEach(inject(function (_$httpBackend_, _$http_, httpInterceptor, _$state_, TokenService, _growl_, httpHelperService) {
+    beforeEach(inject(function (_$httpBackend_, _$http_, httpInterceptor, _$state_, StateService, _growl_, httpHelperService) {
         $httpBackend = _$httpBackend_;
         $http = _$http_;
         interceptor = httpInterceptor;
         $state = _$state_;
-        tokenService = TokenService;
+        stateService = StateService;
         growl = _growl_;
         service = httpHelperService;
     }));

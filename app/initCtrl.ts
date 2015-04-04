@@ -3,17 +3,25 @@ interface IInitScope extends ng.IScope {
     initializeApiUrl(url:string);
 }
 
-angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
-    ($scope, TokenService, httpHelperService) => new InitCtrl($scope, TokenService, httpHelperService)]);
+angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'StateService', 'httpHelperService', 'UserService', 'TruckService',
+    ($scope, StateService, httpHelperService, UserService, TruckService) => new InitCtrl($scope, StateService, httpHelperService, UserService, TruckService)]);
 
 class InitCtrl {
-    constructor(private $scope:IInitScope, private TokenService:ITokenService, private httpHelperService:IHttpHelperService) {
+    constructor(private $scope:IInitScope, private StateService:IStateService, private httpHelperService:IHttpHelperService, private UserService:IUserService, private TruckService:ITruckService) {
         $scope.initializeToken = (sessionToken) => {
             if (sessionToken !== 'undefined' && sessionToken !== 'null') {
-                TokenService.setToken(sessionToken);
+                StateService.setToken(sessionToken);
             } else {
-                TokenService.setToken(null);
+                StateService.setToken(null);
             }
+
+            UserService.getFavorites().then((response)=> {
+                StateService.setFavorites(response.favorites);
+            });
+
+            TruckService.getTrucksForVendor().then((response)=> {
+                StateService.setTrucks(response.trucks);
+            });
         };
 
         $scope.initializeApiUrl = (url) => {

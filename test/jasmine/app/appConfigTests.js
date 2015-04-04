@@ -1,5 +1,5 @@
 describe('TruckMuncherApp', function () {
-    var $httpBackend, $http, interceptor, $state, tokenService;
+    var $httpBackend, $http, interceptor, $state, stateService;
 
     beforeEach(module('TruckMuncherApp'));
 
@@ -7,12 +7,12 @@ describe('TruckMuncherApp', function () {
         $urlRouterProvider.otherwise(function(){return false;});
     }));
 
-    beforeEach(inject(function (_$httpBackend_, _$http_, httpInterceptor, _$state_, TokenService) {
+    beforeEach(inject(function (_$httpBackend_, _$http_, httpInterceptor, _$state_, StateService) {
         $httpBackend = _$httpBackend_;
         $http = _$http_;
         interceptor = httpInterceptor;
         $state = _$state_;
-        tokenService = TokenService;
+        stateService = StateService;
     }));
 
     it('should put the x-timestamp in the header on all requests', function () {
@@ -34,7 +34,7 @@ describe('TruckMuncherApp', function () {
     });
 
     it('should allow the user to get to pages that require authentication when the user is logged in', function () {
-        tokenService.setToken('abcdefg');
+        stateService.setToken('abcdefg');
         $state.go('menu');
 
         $httpBackend.expect('GET', '/partials/vendors/vendorMenu.jade', undefined).respond(200, '');
