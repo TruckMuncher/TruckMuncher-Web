@@ -41,7 +41,9 @@
             ul.nav.navbar-nav.navbar-right
                 li
                     span.nav-items
-                        a(data-ui-sref='about' data-ui-sref-active='menu-active' title="About") About
+                        a(data-ui-sref='about' data-ui-sref-active='menu-active' title="About")
+                            i.fa.fa-lg.fa-fw.fa-question-circle
+                            | About
                 li
                     span.nav-items(data-ng-show='loggedIn()')
                         a(href="/logout")
