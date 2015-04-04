@@ -3,11 +3,33 @@
         .make-space-for-logo
             h1 Nothing here yet
 
-
     #page-content-wrapper.tm-main
         #content
-            div
-                h1 Nothing here yet
+            div(data-ng-show='isVendor', data-ng-cloak)
+                .col-xs-12.col-md-6.col-md-offset-1
+                    article
+                        .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                            header
+                                h2 Settings
+                            form.background-transparent(data-ng-submit='submit()' name="userForm" id="userForm")
+                                .col-xs-12
+                                    p
+                                    fieldset(class="form-group")
+                                        h4 Social Media Forwarding
+                                        .form-group
+                                            small Post to your linked social media pages when you go into serving mode.
+                                        .smart-form
+                                            label.checkbox(for='postToTw')
+                                                input.form-control(type='checkbox' id='postToTw', data-ng-model='user.postToTw')
+                                                i
+                                                = 'Post to Twitter'
+                                            label.checkbox(for='postToFb')
+                                                input(type="checkbox" id='postToFb', data-ng-model='user.postToFb')
+                                                i
+                                                = 'Post to Facebook'
+                                    .pull-right
+                                        button.btn.bg-color-mold.txt-color-white.submit-button(data-ng-disabled='requestInProgress') Save Changes
+                                            i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
 
             .visible-xs.col-xs-12
                 h1 Nothing here yet

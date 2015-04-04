@@ -2,8 +2,8 @@ interface IUser{
     id: string;
     fbUsername:string;
     twUsername:string;
-    postToFb:string;
-    postToTw:string;
+    postToFb:boolean;
+    postToTw:boolean;
 }
 
 interface IFavoriteResponse{
