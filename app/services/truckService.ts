@@ -3,18 +3,18 @@ interface ITruckService {
     modifyTruckProfile(truckId:string, name:string, keywords:Array<string>, primaryColor:string, secondaryColor:string, description:string, phoneNumber:string):ng.IPromise<ITruckProfile>;
     getImageUploadUrl(truckId:string):string;
     getActiveTrucks():ng.IPromise<IActiveTrucksResponse>;
-    requestApproval(truckId: string, email:string):ng.IPromise<{}>;
+    requestApproval(truckId:string, email:string):ng.IPromise<{}>;
     checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponse>;
 }
 
-angular.module('TruckMuncherApp').factory('TruckService', ['httpHelperService',
-    (httpHelperService) => new TruckService(httpHelperService)]);
+angular.module('TruckMuncherApp').factory('TruckService', ['httpHelperService', 'StateService',
+    (httpHelperService, StateService) => new TruckService(httpHelperService, StateService)]);
 
 class TruckService implements ITruckService {
     private milwaukeeLatitude:number = 43.05;
     private milwaukeeLongitude:number = -87.95;
 
-    constructor(private httpHelperService:IHttpHelperService) {
+    constructor(private httpHelperService:IHttpHelperService, private StateService: IStateService) {
     }
 
     getTrucksForVendor():ng.IPromise<ITruckProfilesResponse> {
@@ -35,7 +35,13 @@ class TruckService implements ITruckService {
                 description: description,
                 phoneNumber: phoneNumber
             }
-        );
+        ).then((response)=> {
+                //this is okay for now since there is no way to delete a truck. This won't work if they go ahead and delete this truck right away (if there is ever a delete option)
+                this.StateService.setTrucks([response]);
+                return response;
+            }, (error)=> {
+                return error;
+            });
     }
 
     getImageUploadUrl(truckId:string):string {
@@ -48,14 +54,14 @@ class TruckService implements ITruckService {
         return this.httpHelperService.post(url, data);
     }
 
-    requestApproval(truckId:string, email:string):ng.IPromise<{}>{
-        var url  =this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/requestApproval';
+    requestApproval(truckId:string, email:string):ng.IPromise<{}> {
+        var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/requestApproval';
         var data = {'truckId': truckId, 'email': email};
         return this.httpHelperService.post(url, data);
     }
 
-    checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponse>{
-        var url  =this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/checkApprovalStatus';
+    checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponse> {
+        var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/checkApprovalStatus';
         var data = {'truckId': truckId};
         return this.httpHelperService.post(url, data);
     }

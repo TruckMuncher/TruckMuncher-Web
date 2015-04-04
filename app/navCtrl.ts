@@ -7,13 +7,13 @@ angular.module('TruckMuncherApp').controller('navCtrl', ['$scope',  'StateServic
     ($scope,  StateService) => new NavCtrl($scope, StateService)]);
 
 class NavCtrl {
-    constructor(private $scope:INavScope, private TokenService:IStateService) {
+    constructor(private $scope:INavScope, private StateService:IStateService) {
         $scope.loggedIn = () => {
-            return !_.isNull(TokenService.getToken());
+            return !_.isNull(StateService.getToken());
         };
 
         $scope.isVendor = () => {
-            return false;
+            return StateService.isVendor();
         }
     }
 

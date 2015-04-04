@@ -132,6 +132,30 @@ app.get('/auth/twitter/callback', function (req, res, next) {
     })(req, res, next);
 });
 
+
+app.get('/linkAccount/twitter', passport.authenticate('twitter'));
+app.get('/linkAccount/twitter/callback', function (req, res, next) {
+    passport.authenticate('twitter', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            api.link(info.token, info.tokenSecret, null).then(function (response) {
+                req.session.sessionToken = response.sessionToken;
+                return res.redirect('/#/user/profile');
+            }, function () {
+                return next(err);
+            });
+        });
+    })(req, res, next);
+});
+
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', function (req, res, next) {
     passport.authenticate('facebook', function (err, user, info) {
@@ -146,6 +170,29 @@ app.get('/auth/facebook/callback', function (req, res, next) {
                 return next(err);
             }
             api.login(null, null, info.accessToken).then(function (response) {
+                req.session.sessionToken = response.sessionToken;
+                return res.redirect('/#/user/profile');
+            }, function () {
+                return next(err);
+            });
+        });
+    })(req, res, next);
+});
+
+app.get('/linkAccount/facebook', passport.authenticate('facebook'));
+app.get('/linkAccount/facebook/callback', function (req, res, next) {
+    passport.authenticate('facebook', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            api.link(null, null, info.accessToken).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
                 return res.redirect('/#/user/profile');
             }, function () {

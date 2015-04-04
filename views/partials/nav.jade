@@ -11,7 +11,7 @@
 
         #navbar-collapse.collapse.navbar-collapse
 
-            ul.nav.navbar-nav()
+            ul.nav.navbar-nav
                 li
                     span.nav-items
                         a(data-ui-sref='map' data-ui-sref-active='menu-active')
@@ -22,19 +22,19 @@
                         a(data-ui-sref='truckProfiles' data-ui-sref-active='menu-active' title="All Trucks")
                             i.fa.fa-lg.fa-fw.fa-users
                             span All Trucks
-                li
+                li( data-ng-show='loggedIn() && isVendor()')
                     span.nav-items
-                        a(data-ui-sref='vendorProfile', ui-sref-active="menu-active", data-ng-show='loggedIn()')
+                        a(data-ui-sref='vendorProfile', ui-sref-active="menu-active")
                             i.fa.fa-lg.fa-fw.fa-truck
                             span Truck Profile
-                li
+                li( data-ng-show='loggedIn() && isVendor()')
                     span.nav-items
-                        a(data-ui-sref='menu', ui-sref-active="menu-active", data-ng-show='loggedIn()')
+                        a(data-ui-sref='menu', ui-sref-active="menu-active")
                             i.fa.fa-lg.fa-fw.fa-bars
                             span Truck Menu
-                li
+                li(data-ng-show='loggedIn()')
                     span.nav-items
-                        a(data-ui-sref='userProfile', ui-sref-active="menu-active", data-ng-show='loggedIn()')
+                        a(data-ui-sref='userProfile', ui-sref-active="menu-active")
                             i.fa.fa-lg.fa-fw.fa-user
                             span My Profile
 

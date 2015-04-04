@@ -1,4 +1,5 @@
 interface IUserService {
+    getAccount():ng.IPromise<IUser>;
     linkAccount(postActivity:boolean):ng.IPromise<IUser>;
     unlinkAccounts(twitter:boolean, facebook:boolean):ng.IPromise<IUser>;
     modifyAccount(postToFb:boolean, postToTw:boolean):ng.IPromise<IUser>;
@@ -12,6 +13,11 @@ angular.module('TruckMuncherApp').factory('UserService', ['httpHelperService', '
 
 class UserService implements IUserService {
     constructor(private httpHelperService:IHttpHelperService, private StateService:IStateService) { }
+
+    getAccount():ng.IPromise<IUser>{
+        var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.user.UserService/getAccount';
+        return this.httpHelperService.post(url, {});
+    }
 
     linkAccount(postActivity:boolean):ng.IPromise<IUser> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.user.UserService/linkAccount';

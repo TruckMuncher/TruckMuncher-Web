@@ -9,6 +9,9 @@ angular.module('TruckMuncherApp').controller('userProfileCtrl', ['$scope', 'Stat
         $scope.isVendor = StateService.isVendor();
         $scope.requestInProgress = false;
 
+        UserService.getAccount().then((response)=> {
+            $scope.user = response;
+        });
 
         $scope.submit = ()=> {
             $scope.requestInProgress = true;
