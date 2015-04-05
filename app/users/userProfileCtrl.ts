@@ -1,5 +1,5 @@
 interface IUserProfileCtrlScope {
-    isVendor: boolean;
+    isVendor(): boolean;
     submit(): void;
     user: IUser;
     requestInProgress: boolean;
@@ -9,8 +9,11 @@ interface IUserProfileCtrlScope {
 }
 angular.module('TruckMuncherApp').controller('userProfileCtrl', ['$scope', 'StateService', 'UserService', 'TruckService', 'growl', 'TruckProfileService',
     function ($scope:IUserProfileCtrlScope, StateService, UserService, TruckService, growl:IGrowlService, TruckProfileService:ITruckProfileService) {
-        $scope.isVendor = StateService.isVendor();
         $scope.requestInProgress = false;
+
+        $scope.isVendor = ()=> {
+            return StateService.isVendor();
+        };
 
         UserService.getAccount().then((response)=> {
             $scope.user = response;
@@ -40,7 +43,6 @@ angular.module('TruckMuncherApp').controller('userProfileCtrl', ['$scope', 'Stat
         $scope.createTruck = () => {
             $scope.requestInProgress = true;
             TruckService.modifyTruckProfile(null, 'New Truck', null, null, null, null, null).then(()=> {
-                $scope.isVendor = true;
                 $scope.requestInProgress = false;
             }, ()=> {
                 $scope.requestInProgress = false;

@@ -6,7 +6,7 @@
     #page-content-wrapper.tm-main
         #content
             .col-xs-12.col-lg-6.col-lg-offset-3.col-md-10.col-md-offset-1
-                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent(data-ng-show='isVendor', data-ng-cloak)
+                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent(data-ng-show='isVendor()', data-ng-cloak)
                     header
                         h2 Vendor Settings
                     form.background-transparent(data-ng-submit='submit()' name="userForm" id="userForm")
@@ -48,7 +48,7 @@
                                 div(data-ng-if='!user.fbUsername')
                                     a.btn.txt-color-black.facebook(href='/linkAccount/facebook')
                                         i.fa.fa-facebook= '  Link a Facebook Account'
-                .alert.alert-info(data-ng-show='!isVendor')
+                .alert.alert-info(data-ng-show='!isVendor()')
                     span.padding-10 Are you a vendor?
                     a.btn.bg-color-pink.txt-color-white(data-ng-click='createTruck()', data-ng-disabled='requestInProgress') Create a Truck
 
