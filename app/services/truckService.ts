@@ -35,7 +35,7 @@ class TruckService implements ITruckService {
                 description: description,
                 phoneNumber: phoneNumber
             }
-        ).then((response)=> {
+        ).then((response: ITruckProfile)=> {
                 //this is okay for now since there is no way to delete a truck. This won't work if they go ahead and delete this truck right away (if there is ever a delete option)
                 this.StateService.setTrucks([response]);
                 return response;

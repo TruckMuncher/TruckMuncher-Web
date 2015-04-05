@@ -41,7 +41,7 @@ class UserService implements IUserService {
 
     addFavorite(truckId:string):ng.IPromise<IFavoriteResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.user.UserService/addFavorite';
-        return this.httpHelperService.post(url, {truckId: truckId}).then((success)=> {
+        return this.httpHelperService.post(url, {truckId: truckId}).then((success: IFavoriteResponse)=> {
             this.StateService.setFavorites(success.favorites);
             return success;
         }, (error)=> {
@@ -51,7 +51,7 @@ class UserService implements IUserService {
 
     removeFavorite(truckId:string):ng.IPromise<IFavoriteResponse> {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.user.UserService/removeFavorite';
-        return this.httpHelperService.post(url, {truckId: truckId}).then((success)=> {
+        return this.httpHelperService.post(url, {truckId: truckId}).then((success: IFavoriteResponse)=> {
             this.StateService.setFavorites(success.favorites);
             return success;
         }, (error)=> {

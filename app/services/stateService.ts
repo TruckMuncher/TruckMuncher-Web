@@ -2,7 +2,7 @@ interface IStateService {
     setToken(token:string): void;
     getToken(): string;
     setFavorites(favorites:Array<string>):void;
-    setTrucks(trucks:Array<string>):void;
+    setTrucks(trucks:Array<ITruckProfile>):void;
     isVendor():boolean;
     isFavorite(truckId:string):boolean;
 }
@@ -12,7 +12,7 @@ angular.module('TruckMuncherApp').factory('StateService', [() => new StateServic
 class StateService implements IStateService {
     private session_token:string = null;
     private favorites:Array<string> = [];
-    private trucks:Array<string> = [];
+    private trucks:Array<ITruckProfile> = [];
 
     setFavorites(favorites:Array<string>):void {
         this.favorites = favorites;
@@ -22,7 +22,7 @@ class StateService implements IStateService {
         return _.contains(this.favorites, truckId);
     }
 
-    setTrucks(trucks:Array<string>):void {
+    setTrucks(trucks:Array<ITruckProfile>):void {
         this.trucks = trucks;
     }
 
