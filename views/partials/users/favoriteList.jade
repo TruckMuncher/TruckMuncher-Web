@@ -1,6 +1,6 @@
 .col-xs-12.bg-color-mold
     h1 Favorites
-    .separator.overflow-auto.container-fluid.pointer(data-ng-repeat='truck in favorites | orderBy:"name"', data-ui-sref='truckProfiles.details({id: truck.id})')
+    .list-item.overflow-auto.container-fluid.pointer(data-ng-repeat='truck in favorites | orderBy:"name"', data-ui-sref='truckProfiles.details({id: truck.id})')
         .row
             .col-xs-4
                 img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')
