@@ -4,7 +4,7 @@
             article
                 .jarviswidget.jarviswidget-color-blueDark.background-white-transparent
                     header
-                        h2 Main Profile
+                        h2 About {{selectedTruck.name}}
                         .jarviswidget-ctrls
                             a.button-icon.jarviswidget-toggle-btn.pointer(data-ng-show='loggedIn()')
                                 i.fa.fa-star.fa-lg(data-ng-show='isFavorite', title='Remove Favorite' data-ng-click='removeFavorite(selectedTruck.id)', style="color:yellow;")
@@ -14,27 +14,14 @@
                             img.img-circle.img-size(data-ng-src='{{selectedTruck.imageUrl}}')
                         .col-lg-10.col-md-5.col-sm-5.col-sm-offset-1.col-xs-8.padding-top-15
                             fieldset(class="form-group")
-                                section
-                                    label.control-label.txt-color-black.header-txt-size(for='truckName') {{selectedTruck.name}}
-                                section
-                                    span(data-ng-repeat="keywords in selectedTruck.keywords")
-                                        span(data-ng-if="$first") {{keywords}}
-                                        span(data-ng-if="!$first") , {{keywords}}
-
-        .row(data-ng-if='selectedTruck.phoneNumber || selectedTruck.description')
-            article
-                .jarviswidget.jarviswidget-color-blueDark.background-white-transparent
-                    header
-                        h2 About the Truck
-                    .col-xs-12
-                        section.padding-bottom-10(data-ng-if='selectedTruck.phoneNumber')
-                            label
-                                b Phone:
-                            div {{selectedTruck.phoneNumber}}
-                        section(data-ng-if='selectedTruck.description')
-                            label
-                                b Description:
-                            div {{selectedTruck.description}}
+                                section.padding-bottom-10(data-ng-if='selectedTruck.description')
+                                    label
+                                        b Description:
+                                    div {{selectedTruck.description}}
+                                section(data-ng-if='selectedTruck.phoneNumber')
+                                    label
+                                        b Phone:
+                                    div {{selectedTruck.phoneNumber}}
 
         .row(data-ng-if='isOnline')
             article
