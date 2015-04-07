@@ -19,7 +19,7 @@ class TruckProfileService implements ITruckProfileService {
         this.myCache = $cacheFactory('myData');
     }
 
-    updateTruckProfiles() {
+    updateTruckProfiles(): ng.IPromise<Array<ITruckProfile>> {
         var deferred = this.$q.defer();
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
 

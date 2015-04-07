@@ -7,9 +7,13 @@ interface ITruckDetailsScope extends ng.IScope {
     mapHeight: string;
     menu:IMenu;
     options:any;
+    isFavorite: boolean;
+    loggedIn():boolean;
+    addFavorite(truckId:string): void;
+    removeFavorite(truckId:string):void;
 }
-angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'navigator',
-    function ($scope:ITruckDetailsScope, growl:IGrowlService, $stateParams:ng.ui.IStateParamsService, TruckProfileService:ITruckProfileService, colorService:IColorService, TruckService:ITruckService, MenuService:IMenuService, $analytics:IAngularticsService, navigator:Navigator) {
+angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'growl', '$stateParams', 'TruckProfileService', 'colorService', 'TruckService', 'MenuService', '$analytics', 'StateService', 'UserService',
+    function ($scope:ITruckDetailsScope, growl:IGrowlService, $stateParams:ng.ui.IStateParamsService, TruckProfileService:ITruckProfileService, colorService:IColorService, TruckService:ITruckService, MenuService:IMenuService, $analytics:IAngularticsService, StateService:IStateService, UserService:IUserService) {
         $scope.map = {
             center: {
                 latitude: 0,
@@ -54,13 +58,31 @@ angular.module('TruckMuncherApp').controller('truckDetailsCtrl', ['$scope', 'gro
 
             if ($scope.selectedTruck) {
                 MenuService.getMenu($scope.selectedTruck.id).then(function (response) {
-
                     $scope.menu = response.menu;
                 });
                 $scope.customMenuColors = colorService.getCustomMenuColorsForTruck($scope.selectedTruck);
 
                 determineIfTruckIsServing();
+                $scope.isFavorite = StateService.isFavorite($scope.selectedTruck.id);
+
                 $analytics.eventTrack('truckDetails', {label: $scope.selectedTruck.name});
             }
         });
+
+        $scope.loggedIn = ()=> {
+            return StateService.getToken() !== null;
+        };
+
+        $scope.addFavorite = (truckId:string)=> {
+            UserService.addFavorite(truckId).then(()=> {
+                $scope.isFavorite = StateService.isFavorite($scope.selectedTruck.id);
+            });
+        };
+
+        $scope.removeFavorite = (truckId:string)=> {
+            UserService.removeFavorite(truckId).then(()=> {
+                $scope.isFavorite = StateService.isFavorite($scope.selectedTruck.id);
+            });
+        };
+
     }]);

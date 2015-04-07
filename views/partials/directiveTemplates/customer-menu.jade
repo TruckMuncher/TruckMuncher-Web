@@ -5,24 +5,21 @@ div(data-ng-repeat="category in menu.categories | orderBy:'orderInMenu':false tr
         section
             .widget-body.col-xs-12
                 p {{category.notes}}
-                .table-responsive
-                    table.table.table-bordered.bg-color-white
-                        tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id" )
-                            tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}' data-ng-class="{unavailable: !item.isAvailable}")
-                                td
-                                    span
-                                        b= ' ' + '{{item.name}}'
-                                    i.flaticon-vegetable(data-ng-show='item.gluten' title='Gluten Free' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
-                                    i.flaticon-carrot3(data-ng-show='item.vegetarian' title='Vegetarian' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
-                                    i.flaticon-eggs(data-ng-show='item.vegan' title='Vegan' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
-                                    i.flaticon-peanut(data-ng-show='item.peanuts' title='Contains Peanuts' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
-                                    i.flaticon-sushi13(data-ng-show='item.raw' title='Raw' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
-                                td
-                                    div 
-
-                            tr(data-ng-class="{unavailable: !item.isAvailable}")
-                                td.big-cell
-                                    span {{item.notes}}
-                                td
-                                    span {{item.price | currency:"$":2}}
+                table.table.table-bordered.bg-color-white
+                    tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory': false track by item.id" )
+                        tr(data-ng-style='{"background-color": "{{customMenuColors.primary}}", "color": "{{customMenuColors.primaryContrast}}"}' data-ng-class="{unavailable: !item.isAvailable}")
+                            td
+                                span
+                                    b= ' ' + '{{item.name}}'
+                                i.flaticon-vegetable(data-ng-show='item.gluten' title='Gluten Free' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                i.flaticon-carrot3(data-ng-show='item.vegetarian' title='Vegetarian' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                i.flaticon-eggs(data-ng-show='item.vegan' title='Vegan' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                i.flaticon-peanut(data-ng-show='item.peanuts' title='Contains Peanuts' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                i.flaticon-sushi13(data-ng-show='item.raw' title='Raw' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                            td
+                        tr(data-ng-class="{unavailable: !item.isAvailable}")
+                            td.big-cell
+                                span {{item.notes}}
+                            td
+                                span {{item.price | currency:"$":2}}
 

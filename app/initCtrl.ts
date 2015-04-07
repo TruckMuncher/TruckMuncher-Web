@@ -1,23 +1,30 @@
 interface IInitScope extends ng.IScope {
-    initializeToken(sessionToken:string);
-    initializeApiUrl(url:string);
+    initialize(sessionToken:string, apiUrl:string);
 }
 
-angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'TokenService', 'httpHelperService',
-    ($scope, TokenService, httpHelperService) => new InitCtrl($scope, TokenService, httpHelperService)]);
+angular.module('TruckMuncherApp').controller('initCtrl', ['$scope', 'StateService', 'httpHelperService', 'UserService', 'TruckService',
+    ($scope, StateService, httpHelperService, UserService, TruckService) => new InitCtrl($scope, StateService, httpHelperService, UserService, TruckService)]);
 
 class InitCtrl {
-    constructor(private $scope:IInitScope, private TokenService:ITokenService, private httpHelperService:IHttpHelperService) {
-        $scope.initializeToken = (sessionToken) => {
-            if (sessionToken !== 'undefined' && sessionToken !== 'null') {
-                TokenService.setToken(sessionToken);
-            } else {
-                TokenService.setToken(null);
-            }
-        };
+    constructor(private $scope:IInitScope, private StateService:IStateService, private httpHelperService:IHttpHelperService, private UserService:IUserService, private TruckService:ITruckService) {
+        $scope.initialize = (sessionToken, apiUrl) => {
+            httpHelperService.setApiUrl(apiUrl);
 
-        $scope.initializeApiUrl = (url) => {
-            httpHelperService.setApiUrl(url);
+            if (sessionToken && sessionToken !== 'undefined' && sessionToken !== 'null') {
+                StateService.setToken(sessionToken);
+
+                UserService.getFavorites().then((response)=> {
+                    StateService.setFavorites(response.favorites);
+                });
+
+                TruckService.getTrucksForVendor().then((response)=> {
+                    StateService.setTrucks(response.trucks);
+                });
+            } else {
+                StateService.setToken(null);
+                StateService.setFavorites([]);
+                StateService.setTrucks([]);
+            }
         };
     }
 }

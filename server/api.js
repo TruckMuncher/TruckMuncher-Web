@@ -2,7 +2,7 @@ var request = require('request'),
     q = require('q'),
     guid = require('./guid');
 
-var apiUrl = process.env.API_URL + '/com.truckmuncher.api.auth.AuthService/';
+var apiUrl = process.env.API_URL;
 
 var nonceAndTimestampHelper = {
     getTimestamp: function () {
@@ -57,6 +57,7 @@ function buildHeader() {
 
 var api = {
     login: function (twitter_token, twitter_secret, facebook_token) {
+        var host = (process.env.VCAP_APP_HOST || 'localhost');
         var header = buildHeader();
         if (twitter_token) {
             header.Authorization = 'oauth_token=' + twitter_token + ', oauth_secret=' + twitter_secret;
@@ -64,12 +65,24 @@ var api = {
         if (facebook_token) {
             header.Authorization = 'access_token=' + facebook_token;
         }
-        return makeRequest(apiUrl + 'getAuth', 'POST', header);
+        if (host === 'localhost') {
+            header.Authorization =  'oauth_token=tw985c9758-e11b-4d02-9b39-98aa8d00d429, oauth_secret=munch';
+        }
+        return makeRequest(apiUrl + '/com.truckmuncher.api.auth.AuthService/getAuth', 'POST', header);
     },
     logout: function (sessionToken) {
         var header = buildHeader();
         header.session_token = sessionToken;
-        return makeRequest(apiUrl + 'deleteAuth', 'POST', header);
+        return makeRequest(apiUrl + '/com.truckmuncher.api.auth.AuthService/deleteAuth', 'POST', header);
+    }, link: function (twitter_token, twitter_secret, facebook_token) {
+        var header = buildHeader();
+        if (twitter_token) {
+            header.Authorization = 'oauth_token=' + twitter_token + ', oauth_secret=' + twitter_secret;
+        }
+        if (facebook_token) {
+            header.Authorization = 'access_token=' + facebook_token;
+        }
+        return makeRequest(apiUrl + '/com.truckmuncher.api.user.UserService/linkAccount', 'POST', header);
     }
 };
 

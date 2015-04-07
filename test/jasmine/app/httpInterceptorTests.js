@@ -4,41 +4,16 @@ describe('authHelpers', function () {
     }));
 
     beforeEach(module(function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function(){return false;});
+        $urlRouterProvider.otherwise(function () {return false;});
     }));
 
-    describe('TimestampAndNonceService', function () {
-        var service;
-
-        beforeEach(inject(function (TimestampAndNonceService) {
-            service = TimestampAndNonceService;
-        }));
-
-        describe('getTimestamp', function () {
-            it('should return a time in the format yyyy-mm-ddT##:##:##Z', function () {
-                var actual = service.getTimestamp();
-                var regexPattern = new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$');
-
-                expect(regexPattern.test(actual)).toBe(true, 'Date not in correct format: ' + actual);
-            });
-        });
-
-        describe('getNonce', function () {
-            it('return an encoded 32 byte thingy', function () {
-                var actual = service.getNonce();
-
-                expect(base64.decode(actual).length).toBe(32);
-            });
-        });
-    });
-
     describe('httpInterceptor', function () {
-        var $httpBackend, $http, TokenService, $location;
+        var $httpBackend, $http, StateService, $location;
 
-        beforeEach(inject(function (_$httpBackend_, _$http_, _TokenService_, _$location_) {
+        beforeEach(inject(function (_$httpBackend_, _$http_, _StateService_, _$location_) {
             $httpBackend = _$httpBackend_;
             $http = _$http_;
-            TokenService = _TokenService_;
+            StateService = _StateService_;
             $location = _$location_;
         }));
 
@@ -63,7 +38,7 @@ describe('authHelpers', function () {
         });
 
         it('should put the put token in the Authentication header when available', function () {
-            TokenService.setToken('token');
+            StateService.setToken('token');
 
             $http({method: 'GET', url: '/'});
 
@@ -102,6 +77,21 @@ describe('authHelpers', function () {
             $httpBackend.flush();
 
             expect($location.path()).toBe('/login');
+        });
+
+        it('should set the token to nothing, clear favorites, and clear trucks when getting a 401', function () {
+            $http({method: 'POST', data: {'abc': 'def'}, url: '/'});
+            spyOn(StateService,'setToken');
+            spyOn(StateService,'setFavorites');
+            spyOn(StateService,'setTrucks');
+
+            $httpBackend.expect('POST', '/', undefined).respond(401, '');
+            $httpBackend.expect('GET', '/partials/login.jade', undefined).respond(200, '');
+            $httpBackend.flush();
+
+            expect(StateService.setToken).toHaveBeenCalledWith(null);
+            expect(StateService.setFavorites).toHaveBeenCalledWith([]);
+            expect(StateService.setTrucks).toHaveBeenCalledWith([]);
         });
     });
 });

@@ -1,3 +1,4 @@
+@import "../LESS_FILES/bootstrap.less";
 
 @font-face {
   font-family: "MagentaFont";
@@ -8,6 +9,11 @@
   font-family: "MagentaFont", sans-serif;
 }
 
+@media (min-width: @screen-sm-min) {
+  #login-logo-font {
+    font-size: 5.5em;
+  }
+}
 
 #login-logo-font {
   color: black;

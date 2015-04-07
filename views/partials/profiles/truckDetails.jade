@@ -2,9 +2,13 @@
     .col-lg-4.col-lg-offset-1.col-md-10.col-md-offset-1.col-xs-12(data-ng-show="selectedTruck.id")
         .row
             article
-                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                .jarviswidget.jarviswidget-color-blueDark.background-white-transparent
                     header
                         h2 Main Profile
+                        .jarviswidget-ctrls
+                            a.button-icon.jarviswidget-toggle-btn.pointer(data-ng-show='loggedIn()')
+                                i.fa.fa-star.fa-lg(data-ng-show='isFavorite', title='Remove Favorite' data-ng-click='removeFavorite(selectedTruck.id)', style="color:yellow;")
+                                i.fa.fa-star-o.fa-lg(data-ng-hide='isFavorite' title='Add Favorite', data-ng-click='addFavorite(selectedTruck.id)')
                     section
                         .col-lg-8.col-md-5.col-sm-5.col-xs-4.padding-10
                             img.img-circle.img-size(data-ng-src='{{selectedTruck.imageUrl}}')
@@ -19,7 +23,7 @@
 
         .row(data-ng-if='selectedTruck.phoneNumber || selectedTruck.description')
             article
-                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                .jarviswidget.jarviswidget-color-blueDark.background-white-transparent
                     header
                         h2 About the Truck
                     .col-xs-12
@@ -34,7 +38,7 @@
 
         .row(data-ng-if='isOnline')
             article
-                .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+                .jarviswidget.jarviswidget-color-blueDark.background-white-transparent
                     header
                         h2 Currently Serving
                     section
@@ -50,7 +54,7 @@
 
     .col-lg-6.col-lg-offset-0.col-md-10.col-md-offset-1.col-xs-12(data-ng-show="selectedTruck.id")
         article
-            .jarviswidget.jarviswidget-color-blueDark.tm-jarviswidget.background-white-transparent
+            .jarviswidget.jarviswidget-color-blueDark.background-white-transparent
                 header
                     h2 Menu
                 section

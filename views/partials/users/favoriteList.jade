@@ -1,0 +1,12 @@
+.col-xs-12.bg-color-mold
+    h1 Favorites
+    .list-item.overflow-auto.container-fluid.pointer(data-ng-repeat='truck in favorites | orderBy:"name"', data-ui-sref='truckProfiles.details({id: truck.id})')
+        .row
+            .col-xs-4
+                img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')
+            .col-xs-8
+                div
+                    b {{truck.name}}
+                span(data-ng-repeat="keywords in truck.keywords")
+                    span(data-ng-if="$first") {{keywords}}
+                    span(data-ng-if="!$first") , {{keywords}}

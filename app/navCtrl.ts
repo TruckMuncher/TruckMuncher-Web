@@ -1,14 +1,20 @@
 interface INavScope extends ng.IScope {
     loggedIn();
+    isVendor();
 }
 
-angular.module('TruckMuncherApp').controller('navCtrl', ['$scope', '$rootScope', 'TokenService',
-    ($scope, $rootScope, TokenService) => new NavCtrl($scope, TokenService)]);
+angular.module('TruckMuncherApp').controller('navCtrl', ['$scope',  'StateService',
+    ($scope,  StateService) => new NavCtrl($scope, StateService)]);
 
 class NavCtrl {
-    constructor(private $scope:INavScope, private TokenService:ITokenService) {
+    constructor(private $scope:INavScope, private StateService:IStateService) {
         $scope.loggedIn = () => {
-            return !_.isNull(TokenService.getToken());
+            return !_.isNull(StateService.getToken());
         };
+
+        $scope.isVendor = () => {
+            return StateService.isVendor();
+        }
     }
+
 }

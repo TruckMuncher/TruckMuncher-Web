@@ -93,6 +93,10 @@ app.use(function (req, res, next) {
 app.use(app.router);
 app.use(express.static(__dirname + '/public')); //setup static public directory
 
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
+
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
 
@@ -120,10 +124,33 @@ app.get('/auth/twitter/callback', function (req, res, next) {
             }
             api.login(info.token, info.tokenSecret, null).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/vendors/menu');
+                return res.redirect('/#/user/profile');
             }, function () {
-                //TODO: handle error
-                return next();
+                return next(err);
+            });
+        });
+    })(req, res, next);
+});
+
+
+app.get('/linkAccount/twitter', passport.authenticate('twitter'));
+app.get('/linkAccount/twitter/callback', function (req, res, next) {
+    passport.authenticate('twitter', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            api.link(info.token, info.tokenSecret, null).then(function (response) {
+                req.session.sessionToken = response.sessionToken;
+                return res.redirect('/#/user/profile');
+            }, function () {
+                return next(err);
             });
         });
     })(req, res, next);
@@ -144,10 +171,32 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             }
             api.login(null, null, info.accessToken).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/vendors/menu');
+                return res.redirect('/#/user/profile');
             }, function () {
-                //TODO: handle error
-                return next;
+                return next(err);
+            });
+        });
+    })(req, res, next);
+});
+
+app.get('/linkAccount/facebook', passport.authenticate('facebook'));
+app.get('/linkAccount/facebook/callback', function (req, res, next) {
+    passport.authenticate('facebook', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            api.link(null, null, info.accessToken).then(function (response) {
+                req.session.sessionToken = response.sessionToken;
+                return res.redirect('/#/user/profile');
+            }, function () {
+                return next(err);
             });
         });
     })(req, res, next);
@@ -159,6 +208,23 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
+
+//Error handlers
+function logErrors(err, req, res, next) {
+    console.error(err.stack);
+    next(err);
+}
+function clientErrorHandler(err, req, res, next) {
+    if (req.xhr) {
+        res.status(500).send({error: 'Something blew up!'});
+    } else {
+        next(err);
+    }
+}
+function errorHandler(err, req, res, next) {
+    res.status(500);
+    res.render('error', {error: err});
+}
 
 servers.getHttpServer(app);
 servers.getHttpsServer(app);

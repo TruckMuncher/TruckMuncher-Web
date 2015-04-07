@@ -21,7 +21,7 @@ describe('TruckMuncherApp', function () {
     };
 
     beforeEach(module('TruckMuncherApp', function ($provide) {
-        $provide.value('TokenService', mockTokenService);
+        $provide.value('StateService', mockTokenService);
         $provide.value('TimestampAndNonceService', mockTimestampAndNonceService);
         $provide.value('TruckService', mockTruckService);
     }));

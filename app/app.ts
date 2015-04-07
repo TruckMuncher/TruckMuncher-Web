@@ -15,7 +15,7 @@ var app = angular.module('TruckMuncherApp',
         'ngImgCrop'
     ]);
 
-app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider:ng.ui.IStateProvider, $urlRouterProvider:ng.ui.IUrlRouterProvider) {
     $urlRouterProvider.otherwise("map");
 
     $stateProvider
@@ -90,9 +90,15 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
             templateUrl: '/partials/profiles/truckDetails.jade',
             authenticate: false
         })
+        .state('userProfile', {
+            url: '/user/profile',
+            controller: 'userProfileCtrl',
+            templateUrl: '/partials/users/profile.jade',
+            authenticate: true
+        })
         .state('privacyPolicy', {
             url: "/privacyPolicy",
-            controller: ['$scope', function ($scope: ng.IScope) {
+            controller: ['$scope', function ($scope:ng.IScope) {
                 $scope['pages'] = [
                     {name: 'main', title: 'Home'},
                     {name: 'data-collection', title: 'Data Collection'},
@@ -108,11 +114,12 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider: ng
         })
         .state('privacyPolicy.detail', {
             url: '/{name}',
-            templateUrl: function ($stateParams: ng.ui.IStateParamsService) {
+            templateUrl: function ($stateParams:ng.ui.IStateParamsService) {
                 return '/partials/privacyPolicy/' + $stateParams['name'] + '.jade';
-            }
+            },
+            authenticate:false
         })
-        .state('about',{
+        .state('about', {
             url: '/about',
             templateUrl: "/partials/about.jade",
             authenticate: false
@@ -124,7 +131,7 @@ app.factory('myInterceptor', ['httpInterceptor', function (httpInterceptor) {
     return httpInterceptor;
 }]);
 
-app.config(['$httpProvider', function ($httpProvider: ng.IHttpProvider) {
+app.config(['$httpProvider', function ($httpProvider:ng.IHttpProvider) {
     $httpProvider.interceptors.push('myInterceptor');
 }]);
 
@@ -133,14 +140,14 @@ app.config(['growlProvider', function (growlProvider) {
     growlProvider.onlyUniqueMessages(false);
 }]);
 
-app.config(['$analyticsProvider', function ($analyticsProvider: IAngularticsProvider) {
+app.config(['$analyticsProvider', function ($analyticsProvider:IAngularticsProvider) {
     $analyticsProvider.firstPageview(true);
     /* Records pages that don't use $state or $route */
     $analyticsProvider.withAutoBase(true);
     /* Records full path */
 }]);
 
-app.run(['$rootScope', '$state', 'TokenService', function ($rootScope: ng.IRootScopeService, $state: ng.ui.IStateService, TokenService: ITokenService) {
+app.run(['$rootScope', '$state', 'StateService', function ($rootScope:ng.IRootScopeService, $state:ng.ui.IStateService, TokenService:IStateService) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {
@@ -150,4 +157,3 @@ app.run(['$rootScope', '$state', 'TokenService', function ($rootScope: ng.IRootS
             }
         });
 }]);
-

@@ -1,11 +1,11 @@
 
-app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$location', '$q', 'growl',
-    function (TokenService: ITokenService, TimestampAndNonceService: ITimestampAndNonceService, $location: ng.ILocationService, $q: ng.IQService) {
+angular.module('TruckMuncherApp').factory('httpInterceptor', ['StateService', 'TimestampAndNonceService', '$location', '$q', 'growl',
+    function (StateService: IStateService, TimestampAndNonceService: ITimestampAndNonceService, $location: ng.ILocationService, $q: ng.IQService) {
         return {
             request: function (config) {
                 // oauth headers
-                if (TokenService.getToken()) {
-                    config.headers.Authorization = 'session_token=' + TokenService.getToken();
+                if (StateService.getToken()) {
+                    config.headers.Authorization = 'session_token=' + StateService.getToken();
                 }
 
                 //nonce and timestamp headers
@@ -24,7 +24,9 @@ app.factory('httpInterceptor', ['TokenService', 'TimestampAndNonceService', '$lo
             },
             responseError: function (rejection) {
                 if (rejection.status === 401) {
-                    TokenService.setToken(null);
+                    StateService.setToken(null);
+                    StateService.setFavorites([]);
+                    StateService.setTrucks([]);
                     $location.path('/login');
                 }
                 return $q.reject(rejection);
