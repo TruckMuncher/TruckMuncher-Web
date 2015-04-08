@@ -1,9 +1,3 @@
-//interface IModalCtrlScope extends ng.IScope {
-//    menu: IMenu;
-//    customMenuColors: CustomMenuColors;
-//    close();
-//}
-
 interface IModalProfileImageService {
     launch(imageUploadUrl:string): ng.IPromise<boolean>;
 }
@@ -37,7 +31,8 @@ class ModalProfileImageService implements IModalProfileImageService {
                 imageUploadUrl: function () {
                     return imageUploadUrl;
                 }
-            }
+            },
+            backdrop:'static'
         });
 
         modalInstance.result.then(function () {

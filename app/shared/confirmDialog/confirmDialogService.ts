@@ -15,7 +15,8 @@ angular.module('TruckMuncherApp').factory('confirmDialogService', ['$modal', fun
                             rejectText: rejectText
                         };
                     }
-                }
+                },
+                backdrop: 'static'
             });
 
             return modalInstance.result;

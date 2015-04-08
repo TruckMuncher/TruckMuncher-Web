@@ -1,5 +1,4 @@
 interface IMenuActionModalScope extends ng.IScope {
-    openModal();
     modalInstance;
 }
 
@@ -11,10 +10,11 @@ class MenuActionModalCtrl {
                 private $stateParams:ng.ui.IStateParamsService,
                 private $modal:ng.ui.bootstrap.IModalService,
                 private $state:ng.ui.IStateService) {
-        $scope.openModal = function () {
+        (()=> {
             $scope.modalInstance = $modal.open({
                 templateUrl: $state.current.data.templateUrl,
-                controller: $state.current.data.controller
+                controller: $state.current.data.controller,
+                backdrop: 'static'
             });
 
             $scope.modalInstance.result.then(function (response) {
@@ -25,8 +25,6 @@ class MenuActionModalCtrl {
                     $state.go('menu');
                 }
             });
-        };
-
-        $scope.openModal();
+        })();
     }
 }
