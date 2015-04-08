@@ -137,7 +137,7 @@ app.config(['$httpProvider', function ($httpProvider:ng.IHttpProvider) {
 
 app.config(['growlProvider', function (growlProvider) {
     growlProvider.globalTimeToLive(5000);
-    growlProvider.onlyUniqueMessages(false);
+    growlProvider.onlyUniqueMessages(true);
 }]);
 
 app.config(['$analyticsProvider', function ($analyticsProvider:IAngularticsProvider) {
@@ -147,7 +147,7 @@ app.config(['$analyticsProvider', function ($analyticsProvider:IAngularticsProvi
     /* Records full path */
 }]);
 
-app.run(['$rootScope', '$state', 'StateService', function ($rootScope:ng.IRootScopeService, $state:ng.ui.IStateService, TokenService:IStateService) {
+app.run(['$rootScope', '$state', 'StateService', '$stateParams', function ($rootScope:ng.IRootScopeService, $state:ng.ui.IStateService, TokenService:IStateService, $stateParams: ng.ui.IStateParams) {
 
     $rootScope.$on("$stateChangeStart",
         function (event, toState) {
@@ -156,4 +156,7 @@ app.run(['$rootScope', '$state', 'StateService', function ($rootScope:ng.IRootSc
                 event.preventDefault();
             }
         });
+
+    $rootScope['$state'] = $state;
+    $rootScope['$stateParams'] = $stateParams;
 }]);
