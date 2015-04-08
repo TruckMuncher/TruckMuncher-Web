@@ -19,7 +19,7 @@ describe('TruckMuncherApp', function () {
                 deferred.resolve({});
                 return deferred.promise;
             },
-            allTrucksFromCookie: function () {}
+            allTrucksFromCache: function () {}
         };
 
         beforeEach(inject(function (_$q_, $rootScope, $controller) {

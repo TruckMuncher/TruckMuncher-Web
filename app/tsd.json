@@ -20,9 +20,6 @@
     "lodash/lodash.d.ts": {
       "commit": "5c59a734fdee76e135fe8eb63299d27244499031"
     },
-    "angularjs/angular-cookies.d.ts": {
-      "commit": "5c59a734fdee76e135fe8eb63299d27244499031"
-    },
     "googlemaps/google.maps.d.ts": {
       "commit": "5c59a734fdee76e135fe8eb63299d27244499031"
     }

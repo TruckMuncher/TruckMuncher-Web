@@ -1,7 +1,7 @@
 interface ITruckProfileService {
     updateTruckProfiles(): ng.IPromise<Array<ITruckProfile>>;
     tryGetTruckProfile(truckId:string): ng.IPromise<ITruckProfile>;
-    allTrucksFromCookie():Array<ITruckProfile>;
+    allTrucksFromCache():Array<ITruckProfile>;
 }
 angular.module('TruckMuncherApp').factory('TruckProfileService', ['$q', 'httpHelperService', '$cacheFactory',
     ($q,  httpHelperService, $cacheFactory) => new TruckProfileService($q,  httpHelperService, $cacheFactory)]);
@@ -23,7 +23,7 @@ class TruckProfileService implements ITruckProfileService {
         var deferred = this.$q.defer();
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/getTruckProfiles';
 
-        if (this.profilesUpdatedInLastMinute()) deferred.resolve(this.allTrucksFromCookie());
+        if (this.profilesUpdatedInLastMinute()) deferred.resolve(this.allTrucksFromCache());
         else {
             this.httpHelperService.post(url, {
                 'latitude': this.milwaukeeLatitude,
@@ -38,13 +38,13 @@ class TruckProfileService implements ITruckProfileService {
         return deferred.promise;
     }
 
-    private cookieNeedsUpdate():boolean {
+    private cacheNeedsUpdate():boolean {
         var lastUpdated = this.myCache.get('truckProfilesLastUpdatedDate');
         return _.isNull(lastUpdated) || _.isUndefined(lastUpdated) || _.isNaN(lastUpdated) || Date.now() - lastUpdated > this.millisecondsInADay;
     }
 
-    private getTruckProfileFromCookie(truckId:string):ITruckProfile {
-        var profiles = this.allTrucksFromCookie();
+    private getTruckProfileFromCache(truckId:string):ITruckProfile {
+        var profiles = this.allTrucksFromCache();
         return _.find(profiles, function (x) {
             return x.id === truckId;
         });
@@ -53,9 +53,9 @@ class TruckProfileService implements ITruckProfileService {
     tryGetTruckProfile(truckId) {
         var deferred = this.$q.defer();
 
-        if (this.cookieNeedsUpdate()) this.updateTruckProfiles();
+        if (this.cacheNeedsUpdate()) this.updateTruckProfiles();
 
-        var truck = this.getTruckProfileFromCookie(truckId);
+        var truck = this.getTruckProfileFromCache(truckId);
         if (truck) deferred.resolve(truck);
         else {
             this.updateTruckProfiles().then((response:Array<ITruckProfile>) => {
@@ -77,7 +77,7 @@ class TruckProfileService implements ITruckProfileService {
         else return Date.now() - lastUpdated < this.millisecondsInAMinute;
     }
 
-    allTrucksFromCookie():Array<ITruckProfile> {
+    allTrucksFromCache():Array<ITruckProfile> {
         return this.myCache.get('truckProfiles');
     }
 }
