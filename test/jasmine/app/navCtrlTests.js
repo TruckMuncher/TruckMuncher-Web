@@ -6,12 +6,23 @@ describe('TruckMuncherApp', function () {
     }));
 
     describe('navCtrl', function () {
-        var $scope, rootScope;
+        var $scope, rootScope, $state;
 
-        beforeEach(inject(function ($rootScope, $controller) {
+        beforeEach(inject(function ($rootScope, $controller, _$state_) {
             $scope = $rootScope.$new();
             rootScope = $rootScope;
+            $state = _$state_;
             $controller('navCtrl', {$scope: $scope});
         }));
+
+        it('should set navbarCollapsed to true initially', function(){
+           expect($scope.navbarCollapsed).toEqual(true);
+        });
+
+        it('should set navbarCollapsed to true when state changes', function(){
+            $scope.navbarCollapsed = false;
+            $state.go('map');
+            expect($scope.navbarCollapsed).toEqual(true);
+        });
     });
 });

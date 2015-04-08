@@ -3,13 +3,13 @@
         .navbar-header
             img.navbar-brand.pointer(src='/img/logo.png', alt='TruckMuncher Map', data-ui-sref='map')
 
-            button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-collapse')
+            button.navbar-toggle(type='button', data-ng-click="navbarCollapsed = !navbarCollapsed")
                 span.sr-only Toggle navigation
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
 
-        #navbar-collapse.collapse.navbar-collapse
+        .collapse.navbar-collapse(collapse="navbarCollapsed")
 
             ul.nav.navbar-nav
                 li
