@@ -154,7 +154,7 @@ angular.module('TruckMuncherApp').controller('vendorProfileCtrl', ['$scope', 'Tr
         $scope.requestApproval = function (email:string) {
             $scope.requestInProgress = true;
             TruckService.requestApproval($scope.selectedTruckCopy.id, email).then(()=> {
-                growl.addSuccessMessage('Approval request accepted. TruckMuncher LLC will review your profile shortly.');
+                growl.addSuccessMessage('Approval request accepted. TruckMuncher, LLC will review your profile shortly.');
                 $scope.selectedTruck.approvalPending = true;
                 $scope.selectedTruckCopy.approvalPending = true;
                 $scope.requestInProgress = false;
