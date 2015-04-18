@@ -15,7 +15,7 @@
     .list-item.overflow-auto.container-fluid(data-ng-repeat='marker in displayedMarkers | orderBy:"metersFromUser"')
         .row.pointer(data-ng-click="onProfileClicked(marker)")
             .col-xs-4
-                img.map-profile-image.img-circle(data-ng-src='{{marker.truckProfile.imageUrl}}')
+                img.map-profile-image.img-circle.shadow(data-ng-src='{{marker.truckProfile.imageUrl}}')
             .col-xs-8
                 div
                     b {{marker.truckProfile.name}}

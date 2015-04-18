@@ -11,7 +11,7 @@
                                 i.fa.fa-star-o.fa-lg(data-ng-hide='isFavorite' title='Add Favorite', data-ng-click='addFavorite(selectedTruck.id)')
                     section
                         .col-lg-8.col-md-5.col-sm-5.col-xs-4.padding-10
-                            img.img-circle.img-responsive(data-ng-src='{{selectedTruck.imageUrl}}')
+                            img.img-circle.shadow.img-responsive(data-ng-src='{{selectedTruck.imageUrl}}')
                         .col-lg-10.col-md-5.col-sm-5.col-sm-offset-1.col-xs-8.padding-top-15
                             fieldset(class="form-group")
                                 section.padding-bottom-10(data-ng-if='selectedTruck.description')

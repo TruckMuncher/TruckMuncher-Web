@@ -15,7 +15,7 @@
     .list-item.overflow-auto.container-fluid.pointer(data-ng-repeat='truck in displayedTrucks | orderBy:"name"', data-ui-sref='truckProfiles.details({id: truck.id})')
         .row
             .col-xs-4
-                img.map-profile-image.img-circle(data-ng-src='{{truck.imageUrl}}')
+                img.map-profile-image.img-circle.shadow(data-ng-src='{{truck.imageUrl}}')
             .col-xs-8
                 div
                     b {{truck.name}}

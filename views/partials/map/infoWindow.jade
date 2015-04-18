@@ -10,9 +10,5 @@ div(style="height:100px; width:200px; overflow-y:auto" )
         .row(data-ng-if='marker.metersFromUser')
             .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
         .row
-            span(data-ng-repeat="keywords in parameter.marker.truckProfile.keywords")
-                span(data-ng-if="$first") {{keywords}}
-                span(data-ng-if="!$first") , {{keywords}}
-        .row
             div
                 button.bg-color-mold.txt-color-white(style="border: none;", data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu
