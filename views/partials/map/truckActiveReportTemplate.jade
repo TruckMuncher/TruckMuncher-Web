@@ -1,0 +1,21 @@
+.modal-header
+    .row
+        .col-xs-10
+            .fa-2x Report Serving Truck
+        .col-xs-2.pull-right
+            button.btn.btn-xs.btn-default.pointer.pull-right(data-ng-click='close()')
+                i.fa.fa-close.fa-2x
+.modal-body.container-fluid
+    .row
+        .col-xs-12.form-group(data-ng-style="{'height': '{{mapHeight}}'}")
+            ui-gmap-google-map(center="map.center" data-ng-if='mapHeight' data-refresh='true' zoom="map.zoom" draggable="false" data-ng-style="{'height': '{{mapHeight}}'}")
+                ui-gmap-markers(models='markers' coords='"coords"' icon='"icon"')
+                    ui-gmap-windows
+                        div(data-ng-non-bindable) {{title}}
+    .row
+        .col-xs-12.form-group
+            select.form-control.form-group(id='truckList', data-chosen='', data-ng-model='selectedTruck')
+.modal-footer
+    .form-group.pull-right.btn-toolbar
+        button.btn.btn-default(data-ng-click='close()') Cancel
+        button.btn.bg-color-mold.txt-color-white Report

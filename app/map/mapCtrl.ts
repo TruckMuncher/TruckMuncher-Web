@@ -12,11 +12,12 @@ interface IMapScope extends ng.IScope {
     onProfileClicked(marker:ITruckMarker);
     showMenuModal(truckId:string);
     simpleSearch(query:string);
+    report();
 }
 
 
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService', 'navigator',
-    function ($scope:IMapScope, growl:IGrowlService, colorService:IColorService, SearchService:ISearchService, MarkerService:IMarkerService, $timeout:ng.ITimeoutService, $analytics:IAngularticsService, ModalMenuService:IModalMenuService, navigator:Navigator) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalService', 'navigator',
+    function ($scope:IMapScope, growl:IGrowlService, colorService:IColorService, SearchService:ISearchService, MarkerService:IMarkerService, $timeout:ng.ITimeoutService, $analytics:IAngularticsService, ModalService:IModalService, navigator:Navigator) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
         $scope.loading = true;
         $scope.searchQuery = "";
@@ -118,7 +119,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
                 return marker.truckProfile.id === truckId;
             });
             var customMenuColors = colorService.getCustomMenuColorsForTruck(marker.truckProfile);
-            ModalMenuService.launch(truckId, customMenuColors);
+            ModalService.menu(truckId, customMenuColors);
 
             $analytics.eventTrack('ViewMenu', {category: 'Map', label: marker.truckProfile.name});
         };
@@ -148,6 +149,11 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
             $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});
         };
+
+
+        $scope.report = () => {
+            ModalService.reportTruckModal($scope.map.center);
+        }
 
     }]);
 
