@@ -6,7 +6,7 @@ interface IModalCtrlScope extends ng.IScope {
 
 interface IModalService {
     menu(truckId:string, colors:CustomMenuColors): void;
-    reportTruckModal(coords);
+    reportActiveTruck(coords);
 }
 
 angular.module('TruckMuncherApp').factory('ModalService', ['$modal', ($modal) => new ModalService($modal)]);
@@ -44,7 +44,7 @@ class ModalService implements IModalService {
         });
     }
 
-    reportTruckModal(coords) {
+    reportActiveTruck(coords) {
         this.$modal.open({
                 templateUrl: '/partials/map/truckActiveReportTemplate.jade',
                 controller: 'truckActiveReportCtrl',

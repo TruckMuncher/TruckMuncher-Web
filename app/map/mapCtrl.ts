@@ -152,7 +152,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
 
         $scope.report = () => {
-            ModalService.reportTruckModal($scope.map.center);
+            ModalService.reportActiveTruck($scope.map.center);
         }
 
     }]);

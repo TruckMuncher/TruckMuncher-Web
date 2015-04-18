@@ -15,7 +15,7 @@
                             ui-gmap-window(coords='locationWindow.coords', show='locationWindow.show')
                                 div Your Position
 
-            .col-xs-12.text-center.form-group
+            .col-xs-12.text-center.form-group(data-ng-hide='loading')
                 button.btn.btn-default.bg-color-pink.txt-color-white(data-ng-click='report()') Report Serving Truck
 
         .bg-color-mold.visible-xs
