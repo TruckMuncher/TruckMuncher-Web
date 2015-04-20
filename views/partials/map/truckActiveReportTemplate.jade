@@ -14,7 +14,7 @@
                         div(data-ng-non-bindable) {{title}}
     .row
         .col-xs-12.form-group
-            select.form-control.form-group(id='truckList', data-chosen='', data-ng-model='selectedTruck' data-ng-options='truck.id as truck.name for truck in allTrucks')
+            select.form-control(id='truckList', data-ng-model='selectedTruck' data-ng-options='truck.id as truck.name for truck in allTrucks')
 .modal-footer
     .form-group.pull-right.btn-toolbar
         button.btn.btn-default(data-ng-click='close()') Cancel
