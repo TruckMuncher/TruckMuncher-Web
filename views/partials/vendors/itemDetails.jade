@@ -2,9 +2,9 @@
 .modal-body.smart-form
     form(name='itemForm', id='itemForm', focus-invalid-form='')
         section(data-ng-class="{ 'has-error' : itemForm.itemName.$invalid}")
-            label.label(for='itemName') Item Name
+            label.label(for='itemName' ) Item Name
             .input
-                input(id='itemName', name='itemName', type='text', placeholder='Ex: Pizza Burger', data-ng-model='item.name', required='')
+                input(id='itemName', autofocus, name='itemName', type='text', placeholder='Ex: Pizza Burger', data-ng-model='item.name', required='')
         section(data-ng-class="{ 'has-error' : itemForm.itemPrice.$invalid}")
             label.label(for='itemPrice') Price
             .input
