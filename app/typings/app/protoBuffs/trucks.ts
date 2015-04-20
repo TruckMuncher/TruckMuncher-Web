@@ -32,6 +32,9 @@ interface IActiveTruck {
     id: string;
     latitude: number;
     longitude: number;
+    verified: boolean;
+    score: number;
+    userVote: boolean;
 }
 
 interface IActiveTrucksResponse {
