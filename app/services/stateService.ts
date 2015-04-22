@@ -5,6 +5,8 @@ interface IStateService {
     setTrucks(trucks:Array<ITruckProfile>):void;
     isVendor():boolean;
     isFavorite(truckId:string):boolean;
+    getIsInitialized():boolean;
+    setIsInitialized(value: boolean):void;
 }
 
 angular.module('TruckMuncherApp').factory('StateService', [() => new StateService]);
@@ -13,6 +15,7 @@ class StateService implements IStateService {
     private session_token:string = null;
     private favorites:Array<string> = [];
     private trucks:Array<ITruckProfile> = [];
+    private isInitialized = false;
 
     setFavorites(favorites:Array<string>):void {
         this.favorites = favorites;
@@ -36,6 +39,14 @@ class StateService implements IStateService {
 
     getToken():string {
         return this.session_token;
+    }
+
+    getIsInitialized():boolean {
+        return this.isInitialized;
+    }
+
+    setIsInitialized(value):void {
+        this.isInitialized = value;
     }
 
 }

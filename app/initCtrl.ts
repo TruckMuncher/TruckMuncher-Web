@@ -25,6 +25,8 @@ class InitCtrl {
                 StateService.setFavorites([]);
                 StateService.setTrucks([]);
             }
+
+            StateService.setIsInitialized(true);
         };
     }
 }

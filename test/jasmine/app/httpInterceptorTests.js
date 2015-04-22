@@ -69,7 +69,8 @@ describe('authHelpers', function () {
             $httpBackend.flush();
         });
 
-        it('should send the user to the login page when getting a 401', function () {
+        it('should send the user to the login page when getting a 401 if the app is initialized', function () {
+            StateService.setIsInitialized(true);
             $http({method: 'POST', data: {'abc': 'def'}, url: '/'});
 
             $httpBackend.expect('POST', '/', undefined).respond(401, '');
@@ -86,12 +87,22 @@ describe('authHelpers', function () {
             spyOn(StateService,'setTrucks');
 
             $httpBackend.expect('POST', '/', undefined).respond(401, '');
-            $httpBackend.expect('GET', '/partials/login.jade', undefined).respond(200, '');
             $httpBackend.flush();
 
             expect(StateService.setToken).toHaveBeenCalledWith(null);
             expect(StateService.setFavorites).toHaveBeenCalledWith([]);
             expect(StateService.setTrucks).toHaveBeenCalledWith([]);
+        });
+
+        it('should NOT send user to login page when getting a 401 if the app is not initialized yet', function () {
+            StateService.setIsInitialized(false);
+
+            $http({method: 'POST', data: {'abc': 'def'}, url: '/'});
+
+            $httpBackend.expect('POST', '/', undefined).respond(401, '');
+            $httpBackend.flush();
+
+            $httpBackend.verifyNoOutstandingRequest();
         });
     });
 });
