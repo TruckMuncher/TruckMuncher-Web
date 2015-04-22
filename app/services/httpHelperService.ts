@@ -9,10 +9,6 @@ angular.module('TruckMuncherApp').factory('httpHelperService', ['$http', '$q', '
 
 class HttpHelperService implements IHttpHelperService {
     private apiUrl:string;
-    $http:ng.IHttpService;
-    $q:ng.IQService;
-    growl:IGrowlService;
-    $analytics:IAngularticsService;
 
     constructor(private $http:ng.IHttpService, private $q:ng.IQService, private growl:IGrowlService, private $analytics:IAngularticsService, private StateService:IStateService) {
         this.apiUrl = 'https://api.truckmuncher.com:8443';
