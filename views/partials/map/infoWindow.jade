@@ -11,6 +11,11 @@ div.container-fluid(style="height:140px; width:200px; overflow-y:auto" )
                 .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
             div
                 button.btn.btn-sm.bg-color-mold.txt-color-white(data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu
+    .row(data-ng-if='parameter.marker.verified')
+        .col-xs-12
+            i Verified location
+        .col-xs-12.small
+            span This location has been reported by the owner of {{parameter.marker.truckProfile.name}}.
     .row(data-ng-if='!parameter.marker.verified')
         .col-xs-12.small
             i Unverified location
