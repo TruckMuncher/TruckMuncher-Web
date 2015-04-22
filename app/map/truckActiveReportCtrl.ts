@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope', 'coords', '$modalInstance', '$state', 'TruckProfileService',
-    function ($scope, coords, $modalInstance:ng.ui.bootstrap.IModalServiceInstance, $state:ng.ui.IStateService, TruckProfileService) {
+angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope', 'coords', '$modalInstance', '$state', 'TruckProfileService', 'TruckService',
+    function ($scope, coords, $modalInstance:ng.ui.bootstrap.IModalServiceInstance, $state:ng.ui.IStateService, TruckProfileService:ITruckProfileService, TruckService:ITruckService) {
         $scope.mapHeight = screen.height / 2.3 + 'px';
         $scope.allTrucks = [];
         $scope.selectedTruck = null;
@@ -26,8 +26,15 @@ angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope',
         };
 
         $scope.report = function () {
-            alert('Report location: ' + $scope.map.center.latitude + ", " + $scope.map.center.longitude + "\n"
-            + "Report truck: " + $scope.selectedTruck);
+            TruckService.reportServingMode(
+                {
+                    isInServingMode: true,
+                    truckLatitude: parseFloat("" + $scope.map.center.latitude),
+                    truckLongitude: parseFloat("" + $scope.map.center.longitude),
+                    truckId: $scope.selectedTruck
+                }).then(()=> {
+                    alert('success')
+                });
         };
 
         $scope.$on('$stateChangeSuccess', function () {
