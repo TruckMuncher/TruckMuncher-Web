@@ -13,12 +13,18 @@ class InitCtrl {
             if (sessionToken && sessionToken !== 'undefined' && sessionToken !== 'null') {
                 StateService.setToken(sessionToken);
 
+                var gotFavorites = false;
+                var gotTrucks = false;
                 UserService.getFavorites().then((response)=> {
                     StateService.setFavorites(response.favorites);
+                    gotFavorites = true;
+                    if (gotTrucks) StateService.setIsInitialized(true);
                 });
 
                 TruckService.getTrucksForVendor().then((response)=> {
                     StateService.setTrucks(response.trucks);
+                    gotTrucks = true;
+                    if (gotFavorites) StateService.setIsInitialized(true);
                 });
             } else {
                 StateService.setToken(null);
@@ -26,7 +32,6 @@ class InitCtrl {
                 StateService.setTrucks([]);
             }
 
-            StateService.setIsInitialized(true);
         };
     }
 }
