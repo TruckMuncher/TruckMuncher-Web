@@ -1,5 +1,5 @@
-angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope', 'coords', '$modalInstance', '$state', 'TruckProfileService', 'TruckService',
-    function ($scope, coords, $modalInstance:ng.ui.bootstrap.IModalServiceInstance, $state:ng.ui.IStateService, TruckProfileService:ITruckProfileService, TruckService:ITruckService) {
+angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope', 'coords', '$modalInstance', '$state', 'TruckProfileService', 'TruckService','growl',
+    function ($scope, coords, $modalInstance:ng.ui.bootstrap.IModalServiceInstance, $state:ng.ui.IStateService, TruckProfileService:ITruckProfileService, TruckService:ITruckService, growl: IGrowlService) {
         $scope.mapHeight = screen.height / 2.3 + 'px';
         $scope.allTrucks = [];
         $scope.selectedTruck = null;
@@ -33,7 +33,8 @@ angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope',
                     truckLongitude: parseFloat("" + $scope.map.center.longitude),
                     truckId: $scope.selectedTruck
                 }).then(()=> {
-                    alert('success')
+                    growl.addSuccessMessage('Successfully reported active vendor');
+                    $modalInstance.dismiss();
                 });
         };
 
