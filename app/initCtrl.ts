@@ -30,6 +30,7 @@ class InitCtrl {
                 StateService.setToken(null);
                 StateService.setFavorites([]);
                 StateService.setTrucks([]);
+                StateService.setIsInitialized(true);
             }
 
         };
