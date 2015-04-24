@@ -112,11 +112,11 @@ describe('TruckMuncherApp', function () {
         it('should update the correct truck in the trucks Array when saving the profile is successful and set selectedTruck', function () {
             $scope.$apply();
             $scope.trucks = [
-                {id: '1', name: 'name'},
-                {id: '2', name: 'name'},
-                {id: '3', name: 'name'}
+                {id: '1', name: 'name', menu: {categories: []}},
+                {id: '2', name: 'name', menu: {categories: []}},
+                {id: '3', name: 'name', menu: {categories: []}}
             ];
-            modifyTruckResponse = {id: '2', name: 'newName'};
+            modifyTruckResponse = {id: '2', name: 'newName', menu: {categories: []}};
             spyOn(TruckServiceMock, 'modifyTruckProfile').and.callThrough();
 
             $scope.saveTruck();
