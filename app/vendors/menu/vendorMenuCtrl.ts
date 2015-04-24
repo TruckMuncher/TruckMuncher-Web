@@ -26,7 +26,7 @@ class VendorMenuCtrl {
                 private $analytics:IAngularticsService) {
 
         TruckService.getTrucksForVendor().then(function (response) {
-            $scope.trucks = _.sortBy(response.trucks || [], function(t){
+            $scope.trucks = _.sortBy(response.trucks || [], function (t) {
                 return t.name.toLowerCase();
             });
             if ($scope.trucks.length > 0) {
@@ -40,15 +40,17 @@ class VendorMenuCtrl {
                 MenuService.getMenu($scope.selectedTruck).then(function (response) {
                     $scope.menu = response.menu;
 
-                    _.forEach($scope.menu.categories, function (category:ICategory) {
-                        _.forEach(category.menuItems, function (item:IMenuItem) {
-                            item['vegan'] = _.contains(item.tags, "vegan");
-                            item['vegetarian'] = _.contains(item.tags, "vegetarian");
-                            item['peanuts'] = _.contains(item.tags, "contains peanuts");
-                            item['raw'] = _.contains(item.tags, "raw");
-                            item['gluten'] = _.contains(item.tags, "gluten free");
+                    if ($scope.menu && $scope.menu.categories) {
+                        _.forEach($scope.menu.categories, function (category:ICategory) {
+                            _.forEach(category.menuItems, function (item:IMenuItem) {
+                                item['vegan'] = _.contains(item.tags, "vegan");
+                                item['vegetarian'] = _.contains(item.tags, "vegetarian");
+                                item['peanuts'] = _.contains(item.tags, "contains peanuts");
+                                item['raw'] = _.contains(item.tags, "raw");
+                                item['gluten'] = _.contains(item.tags, "gluten free");
+                            })
                         })
-                    })
+                    }
 
                 });
             }
