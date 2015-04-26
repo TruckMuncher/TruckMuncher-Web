@@ -21,7 +21,7 @@ div.container-fluid(style="height:140px; width:200px; overflow-y:auto" )
             i Unverified location
         .col-xs-12
             div Is this location accurate?
-            i.fa.fa-thumbs-o-up.fa-2x.pointer(style='margin-right:20px' data-ng-hide='parameter.marker.userVote')
-            i.fa.fa-thumbs-up.fa-2x.pointer(style='margin-right:20px' data-ng-show='parameter.marker.userVote')
-            i.fa.fa-thumbs-o-down.fa-2x.pointer(data-ng-hide='parameter.marker.userVote === false')
-            i.fa.fa-thumbs-down.fa-2x.pointer(data-ng-show='parameter.marker.userVote === false')
+            i.fa.fa-thumbs-o-up.fa-2x.pointer(style='margin-right:20px' data-ng-hide='parameter.marker.userVote' data-ng-click='parameter.voteCallback(parameter.marker, true)')
+            i.fa.fa-thumbs-up.fa-2x(style='margin-right:20px' data-ng-show='parameter.marker.userVote')
+            i.fa.fa-thumbs-o-down.fa-2x.pointer(data-ng-hide='parameter.marker.userVote === false' data-ng-click='parameter.voteCallback(parameter.marker, false)')
+            i.fa.fa-thumbs-down.fa-2x(data-ng-show='parameter.marker.userVote === false')

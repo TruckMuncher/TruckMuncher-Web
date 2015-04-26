@@ -19,10 +19,16 @@ class InitCtrl {
                     StateService.setFavorites(response.favorites);
                     gotFavorites = true;
                     if (gotTrucks) StateService.setIsInitialized(true);
+                }, ()=> {
+                    gotFavorites = true;
+                    if (gotTrucks) StateService.setIsInitialized(true);
                 });
 
                 TruckService.getTrucksForVendor().then((response)=> {
                     StateService.setTrucks(response.trucks);
+                    gotTrucks = true;
+                    if (gotFavorites) StateService.setIsInitialized(true);
+                }, ()=> {
                     gotTrucks = true;
                     if (gotFavorites) StateService.setIsInitialized(true);
                 });
