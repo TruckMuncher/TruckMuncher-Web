@@ -20,10 +20,10 @@
         .row(data-ng-show='userOwnsTruck')
             .col-xs-12.form-group
                 div How long will you be here?
-            .col-xs-6.form-group(data-ng-class='{"has-error": !hours}')
+            .col-xs-6.form-group(data-ng-class='{"has-error": !hours && hours !== 0}')
                 label.control-label(for='hours') Hours
                 select.form-control(data-ng-options='hour for hour in durationOptions.hours' data-ng-model='hours' data-ng-required='userOwnsTruck')
-            .col-xs-6.form-group(data-ng-class='{"has-error": !minutes}')
+            .col-xs-6.form-group(data-ng-class='{"has-error": !minutes && minutes !== 0}')
                 label.control-label(for='minutes') Minutes
                 select.form-control(data-ng-options='minute for minute in durationOptions.minutes' data-ng-model='minutes' data-ng-required='userOwnsTruck')
 

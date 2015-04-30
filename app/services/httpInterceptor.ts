@@ -19,7 +19,6 @@ angular.module('TruckMuncherApp').factory('httpInterceptor', ['StateService', 'T
                 // json headers
                 config.headers.Accept = 'application/json';
                 config.headers['Content-Type'] = 'application/json';
-                config.headers['Sent-From-Website'] = true;
 
                 return config;
             },

@@ -58,7 +58,9 @@ angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope',
         $scope.report = function () {
             $scope.requestInProgress = true;
             var duration = null;
-            if ($scope.minutes && $scope.hours) duration = $scope.minutes + $scope.hours * 60;
+            if (angular.isNumber($scope.minutes) && angular.isNumber($scope.hours)){
+              duration = $scope.minutes + $scope.hours * 60;
+            }
 
             TruckService.reportServingMode(
                 {
