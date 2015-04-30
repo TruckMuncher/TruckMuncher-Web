@@ -10,19 +10,23 @@ interface IActiveReportScope {
     $watch:any;
     userOwnsTruck:boolean;
     durationOptions:{};
+    requestInProgress: boolean;
+    minutes: number;
+    hours: number;
 }
 angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope', 'coords', '$modalInstance', 'TruckProfileService', 'TruckService', 'growl', 'StateService',
     function ($scope:IActiveReportScope, coords, $modalInstance:ng.ui.bootstrap.IModalServiceInstance, TruckProfileService:ITruckProfileService, TruckService:ITruckService, growl:IGrowlService, StateService:IStateService) {
         $scope.mapHeight = screen.height / 2.3 + 'px';
         $scope.selectedTruckId = null;
         $scope.userOwnsTruck = false;
+        $scope.requestInProgress = false;
         $scope.durationOptions = {
             hours: _.range(12),
             minutes: _.range(61)
         };
 
         TruckProfileService.updateTruckProfiles().then((response) => {
-            $scope.allTrucks = _.sortBy(response || [], function(t){
+            $scope.allTrucks = _.sortBy(response || [], function (t) {
                 return t.name.toLowerCase();
             });
             if ($scope.allTrucks.length > 0) {
@@ -52,15 +56,22 @@ angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope',
         });
 
         $scope.report = function () {
+            $scope.requestInProgress = true;
+            var duration = null;
+            if ($scope.minutes && $scope.hours) duration = $scope.minutes + $scope.hours * 60;
+
             TruckService.reportServingMode(
                 {
                     isInServingMode: true,
                     truckLatitude: parseFloat("" + $scope.map.center.latitude),
                     truckLongitude: parseFloat("" + $scope.map.center.longitude),
-                    truckId: $scope.selectedTruckId
+                    truckId: $scope.selectedTruckId,
+                    durationMinutes: duration
                 }).then(()=> {
                     growl.addSuccessMessage('Successfully reported active vendor');
                     $modalInstance.dismiss();
+                }, ()=> {
+                    $scope.requestInProgress = false;
                 });
         };
 

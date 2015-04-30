@@ -50,4 +50,5 @@ interface IServingModeRequest {
     isInServingMode:boolean;
     truckLatitude:number;
     truckLongitude:number;
+    durationMinutes: number;
 }

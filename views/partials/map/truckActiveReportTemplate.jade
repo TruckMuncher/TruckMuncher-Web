@@ -6,27 +6,29 @@
             button.btn.btn-xs.btn-default.pointer.pull-right(data-ng-click='close()')
                 i.fa.fa-close.fa-2x
 .modal-body.container-fluid
-    .row
-        .col-xs-12.form-group(data-ng-style="{'height': '{{mapHeight}}'}")
-            ui-gmap-google-map(center="map.center" data-ng-if='mapHeight' data-refresh='true' zoom="map.zoom" draggable="false" data-ng-style="{'height': '{{mapHeight}}'}")
-                ui-gmap-markers(models='markers' coords='"coords"' icon='"icon"')
-                    ui-gmap-windows
-                        div(data-ng-non-bindable) {{title}}
-    .row
-        .col-xs-12.form-group
-            label(for='truckList') Truck
-            select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruckId' data-ng-options='truck.id as truck.name for truck in allTrucks')
-    .row(data-ng-show='userOwnsTruck')
-        .col-xs-12.form-group
-            div How long will you be here?
-        .col-xs-6.form-group
-            label(for='hours') Hours
-            select.form-control(data-ng-options='hour for hour in durationOptions.hours' data-ng-model='hours')
-        .col-xs-6.form-group
-            label(for='minutes') Minutes
-            select.form-control(data-ng-options='minute for minute in durationOptions.minutes' data-ng-model='minutes')
+    form(name='reportForm', id='reportForm', focus-invalid-form='')
+        .row
+            .col-xs-12.form-group(data-ng-style="{'height': '{{mapHeight}}'}")
+                ui-gmap-google-map(center="map.center" data-ng-if='mapHeight' data-refresh='true' zoom="map.zoom" draggable="false" data-ng-style="{'height': '{{mapHeight}}'}")
+                    ui-gmap-markers(models='markers' coords='"coords"' icon='"icon"')
+                        ui-gmap-windows
+                            div(data-ng-non-bindable) {{title}}
+        .row
+            .col-xs-12.form-group
+                label(for='truckList') Truck
+                select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruckId' data-ng-options='truck.id as truck.name for truck in allTrucks')
+        .row(data-ng-show='userOwnsTruck')
+            .col-xs-12.form-group
+                div How long will you be here?
+            .col-xs-6.form-group(data-ng-class='{"has-error": !hours}')
+                label.control-label(for='hours') Hours
+                select.form-control(data-ng-options='hour for hour in durationOptions.hours' data-ng-model='hours' data-ng-required='userOwnsTruck')
+            .col-xs-6.form-group(data-ng-class='{"has-error": !minutes}')
+                label.control-label(for='minutes') Minutes
+                select.form-control(data-ng-options='minute for minute in durationOptions.minutes' data-ng-model='minutes' data-ng-required='userOwnsTruck')
 
 .modal-footer
     .form-group.pull-right.btn-toolbar
         button.btn.btn-default(data-ng-click='close()') Cancel
-        button.btn.bg-color-mold.txt-color-white(data-ng-click='report()') Report
+        button.btn.bg-color-mold.txt-color-white(data-ng-click='reportForm.$valid && report()', data-ng-disabled='requestInProgress') Submit
+            i.fa.fa-spinner.fa-spin(data-ng-if='requestInProgress')
