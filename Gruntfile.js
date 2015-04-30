@@ -187,7 +187,8 @@ module.exports = function (grunt) {
             //shared config
             options: {
                 preprocessors: {
-                    '**/*.jade': ['ng-jade2js']
+                    '**/*.jade': ['ng-jade2js'],
+                    '**/public/js/TruckMuncherApp.js': 'coverage'
                 },
                 logLevel: 'INFO',
                 colors: true,
@@ -197,7 +198,8 @@ module.exports = function (grunt) {
                     'karma-ng-jade2js-preprocessor',
                     'karma-phantomjs-launcher',
                     'karma-jasmine',
-                    'karma-growl-reporter'
+                    'karma-growl-reporter',
+                    'karma-coverage'
                 ],
                 files: [
                     'public/js/vendorScripts.js',
@@ -214,7 +216,11 @@ module.exports = function (grunt) {
                 },
                 frameworks: [ 'jasmine'],
                 browsers: ['PhantomJS'],
-                basePath: ''
+                basePath: '',
+                coverageReporter: {
+                    type: "lcov",
+                    dir: "coverage/"
+                }
             },
             //run this one in dev
             unit: {
@@ -223,7 +229,7 @@ module.exports = function (grunt) {
             //run on CI
             continuous: {
                 singleRun: true,
-                reporters: ['dots', 'junit']
+                reporters: ['dots', 'junit', 'coverage']
             }
         },
         'concurrent': {
@@ -232,6 +238,15 @@ module.exports = function (grunt) {
                 options: {
                     logConcurrentOutput: true
                 }
+            }
+        },
+        'coveralls': {
+            options: {
+                debug: true,
+                coverageDir: 'coverage',
+                dryRun: true,
+                force: true,
+                recursive: true
             }
         }
     });
@@ -248,6 +263,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-tsd');
     grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks('grunt-karma-coveralls');;
+
 
     // A test task.  Uncomment to use if you have tests
     // grunt.registerTask('test', ['jshint', 'qunit']);

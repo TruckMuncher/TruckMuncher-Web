@@ -7,6 +7,7 @@ test:
     - mkdir -p $CIRCLE_TEST_REPORTS/jasmine
     - grunt karma:continuous
     - mv test-results.xml $CIRCLE_TEST_REPORTS/jasmine/test-results.xml
+    - grunt coveralls
 general:
   artifacts:
     - public/*
