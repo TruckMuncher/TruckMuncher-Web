@@ -5,3 +5,7 @@ dependencies:
 test:
   override:
     - grunt karma:continuous
+general:
+  artifacts:
+    - test-results.xml
+    - public/*
