@@ -1,4 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/TruckMuncher/TruckMuncher-Web/badge.svg?branch=master)](https://coveralls.io/r/TruckMuncher/TruckMuncher-Web?branch=master)
+[![Build Status](https://circleci.com/gh/TruckMuncher/TruckMuncher-Web.svg?style=shield&circle-token=9e5e686029037aa93e837791c2223e0f94010ee5)](https://circleci.com/gh/TruckMuncher/TruckMuncher-Web)
 
 Downloading and Running the Project Locally
 ===========================================
