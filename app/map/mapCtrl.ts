@@ -160,7 +160,9 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
 
         $scope.report = () => {
-            ModalService.reportActiveTruck($scope.map.center);
+            ModalService.reportActiveTruck($scope.map.center).then(()=>{
+                getMarkers();
+            });
         };
 
         $scope.vote = (marker:ITruckMarker, isInServingMode:boolean) => {
@@ -168,7 +170,8 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
                 truckId: marker.id,
                 truckLatitude: marker.coords.latitude,
                 truckLongitude: marker.coords.longitude,
-                isInServingMode: isInServingMode
+                isInServingMode: isInServingMode,
+                durationMinutes: null
             }).then(() => {
                 marker.userVote = isInServingMode;
             });

@@ -10,12 +10,12 @@ interface IModalService {
 }
 
 angular.module('TruckMuncherApp').factory('ModalService',
-    ['$modal', ($modal) => new ModalService($modal)]);
+    ['$modal', '$q', ($modal, $q) => new ModalService($modal, $q)]);
 
 class ModalService implements IModalService {
 
 
-    constructor(private $modal:ng.ui.bootstrap.IModalService) {
+    constructor(private $modal:ng.ui.bootstrap.IModalService, private $q:ng.IQService) {
 
     }
 
@@ -46,15 +46,23 @@ class ModalService implements IModalService {
     }
 
     reportActiveTruck(coords) {
-        this.$modal.open({
-                templateUrl: '/partials/map/truckActiveReportTemplate.jade',
-                controller: 'truckActiveReportCtrl',
-                resolve: {
-                    coords: function () { return _.clone(coords); }
-                },
-                backdrop: 'static'
-            }
-        )
+        var deferred = this.$q.defer();
+        var modal = this.$modal.open({
+            templateUrl: '/partials/map/truckActiveReportTemplate.jade',
+            controller: 'truckActiveReportCtrl',
+            resolve: {
+                coords: function () { return _.clone(coords); }
+            },
+            backdrop: 'static'
+        });
+
+        modal.result.then(()=> {
+            deferred.resolve({});
+        }, ()=> {
+            deferred.resolve({});
+        });
+
+        return deferred.promise;
     }
 
 }
