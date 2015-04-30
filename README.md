@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/TruckMuncher/TruckMuncher-Web/badge.svg?branch=master)](https://coveralls.io/r/TruckMuncher/TruckMuncher-Web?branch=master)
+
 Downloading and Running the Project Locally
 ===========================================
 
