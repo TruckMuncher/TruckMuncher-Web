@@ -5,10 +5,11 @@ dependencies:
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/jasmine
+    - mkdir -p $CIRCLE_TEST_REPORTS/coverage
     - grunt karma:continuous
     - mv test-results.xml $CIRCLE_TEST_REPORTS/jasmine/test-results.xml
+    - cp -r coverage $CIRCLE_TEST_REPORTS/coverage
     - grunt coveralls
 general:
   artifacts:
     - public/*
-    - coverage/*
