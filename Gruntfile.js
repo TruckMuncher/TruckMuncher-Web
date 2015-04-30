@@ -137,7 +137,7 @@ module.exports = function (grunt) {
                 ext: '.min.css'
             }
         },
-        'tsd':{
+        'tsd': {
             refresh: {
                 options: {
                     // execute a command
@@ -156,12 +156,12 @@ module.exports = function (grunt) {
                 }
             }
         },
-        'ts':{
-            default:{
-                files:{
+        'ts': {
+            default: {
+                files: {
                     'public/js/TruckMuncherApp.js': ['app/**/*.ts']
                 },
-                options:{
+                options: {
                     fast: 'never',
                     sourceMap: false
                 }
@@ -214,7 +214,7 @@ module.exports = function (grunt) {
                     stripPrefix: 'views',
                     templateExtension: 'jade'
                 },
-                frameworks: [ 'jasmine'],
+                frameworks: ['jasmine'],
                 browsers: ['PhantomJS'],
                 basePath: '',
                 coverageReporter: {
@@ -242,9 +242,10 @@ module.exports = function (grunt) {
         },
         'coveralls': {
             options: {
-                coverageDir: 'coverage',
-                force: true,
-                recursive: true
+                force: true
+            },
+            your_target: {
+                src: 'coverage/**/lcov.info'
             }
         }
     });
@@ -261,7 +262,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-tsd');
     grunt.loadNpmTasks("grunt-ts");
-    grunt.loadNpmTasks('grunt-karma-coveralls');
+    grunt.loadNpmTasks('grunt-coveralls');
 
 
     // A test task.  Uncomment to use if you have tests
