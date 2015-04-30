@@ -1,5 +1,6 @@
 dependencies:
   post:
+    - bower install
     - grunt build-prod
 test:
   override:
