@@ -1,7 +1,7 @@
 dependencies:
   post:
     - bower install
-    - grunt build-prod
+    - grunt
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/jasmine
