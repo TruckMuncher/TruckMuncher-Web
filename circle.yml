@@ -4,8 +4,9 @@ dependencies:
     - grunt build-prod
 test:
   override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/jasmine
     - grunt karma:continuous
+    - mv test-results.xml $CIRCLE_TEST_REPORTS/jasmine/test-results.xml
 general:
   artifacts:
-    - test-results.xml
     - public/*
