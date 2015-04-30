@@ -1,6 +1,6 @@
 dependencies:
   post:
-    - grunt build:prod
+    - grunt build-prod
 test:
   override:
     - grunt karma:continuous
