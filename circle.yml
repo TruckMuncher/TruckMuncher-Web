@@ -11,3 +11,4 @@ test:
 general:
   artifacts:
     - public/*
+    - coverage/*
