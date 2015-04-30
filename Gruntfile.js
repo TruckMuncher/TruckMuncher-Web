@@ -261,7 +261,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-tsd');
     grunt.loadNpmTasks("grunt-ts");
-    grunt.loadNpmTasks('grunt-karma-coveralls');;
+    grunt.loadNpmTasks('grunt-karma-coveralls');
 
 
     // A test task.  Uncomment to use if you have tests
