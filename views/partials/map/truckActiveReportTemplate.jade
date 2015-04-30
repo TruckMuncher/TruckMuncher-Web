@@ -14,7 +14,18 @@
                         div(data-ng-non-bindable) {{title}}
     .row
         .col-xs-12.form-group
-            select.form-control(id='truckList', data-ng-model='selectedTruck' data-ng-options='truck.id as truck.name for truck in allTrucks')
+            label(for='truckList') Truck
+            select.form-control(id='truckList', data-chosen='', data-ng-model='selectedTruckId' data-ng-options='truck.id as truck.name for truck in allTrucks')
+    .row(data-ng-show='userOwnsTruck')
+        .col-xs-12.form-group
+            div How long will you be here?
+        .col-xs-6.form-group
+            label(for='hours') Hours
+            select.form-control(data-ng-options='hour for hour in durationOptions.hours' data-ng-model='hours')
+        .col-xs-6.form-group
+            label(for='minutes') Minutes
+            select.form-control(data-ng-options='minute for minute in durationOptions.minutes' data-ng-model='minutes')
+
 .modal-footer
     .form-group.pull-right.btn-toolbar
         button.btn.btn-default(data-ng-click='close()') Cancel

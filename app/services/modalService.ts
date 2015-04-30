@@ -9,13 +9,14 @@ interface IModalService {
     reportActiveTruck(coords);
 }
 
-angular.module('TruckMuncherApp').factory('ModalService', ['$modal', ($modal) => new ModalService($modal)]);
+angular.module('TruckMuncherApp').factory('ModalService',
+    ['$modal', ($modal) => new ModalService($modal)]);
 
 class ModalService implements IModalService {
-    $modal:ng.ui.bootstrap.IModalService;
 
-    constructor($modal:ng.ui.bootstrap.IModalService) {
-        this.$modal = $modal;
+
+    constructor(private $modal:ng.ui.bootstrap.IModalService) {
+
     }
 
     menu(truckId:string, colors:CustomMenuColors):void {
