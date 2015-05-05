@@ -20,6 +20,7 @@ angular.module('TruckMuncherApp').controller('truckActiveReportCtrl', ['$scope',
         $scope.selectedTruckId = null;
         $scope.userOwnsTruck = false;
         $scope.requestInProgress = false;
+        $scope.minutes = 0;
         $scope.durationOptions = {
             hours: _.range(12),
             minutes: _.range(61)
