@@ -29,6 +29,7 @@ class MarkerService implements IMarkerService {
         var truckCoordinates = {latitude: truck.latitude, longitude: truck.longitude};
         var marker:ITruckMarker = {
             id: truck.id,
+            random: Math.random() + Date.now(),
             coords: truckCoordinates,
             truckProfile: new TruckProfile(),
             options: {
