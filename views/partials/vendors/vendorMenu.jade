@@ -29,7 +29,7 @@
                                     .button-icon.jarvis-widget-toggle-btn.pointer.text-center
                                         .fa.fa-sort-desc.fa-lg
                             section
-                                .widget-body.background-transparent.col-xs-12
+                                .widget-body.background-transparent.col-xs-12(style="padding: 10px;")
                                     p {{category.notes}}
                                     table.table.table-bordered.bg-color-white
                                         tbody(data-ng-repeat="item in category.menuItems | orderBy:'orderInCategory':false track by item.id  ")
@@ -39,6 +39,11 @@
                                                         i.fa.fa-angle-up.fa-lg.pointer(data-ng-hide='$first', data-ng-click='moveItemUp(category.id, $index)')
                                                         i.fa.fa-angle-down.fa-lg.pointer(data-ng-hide='$last', data-ng-click='moveItemDown(category.id, $index)')
                                                         b= ' ' + '{{item.name}}'
+                                                    i.flaticon-vegetable(data-ng-show='{{item.gluten}}' title='Gluten Free' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                                    i.flaticon-carrot3(data-ng-show='item.vegetarian' title='Vegetarian' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                                    i.flaticon-eggs(data-ng-show='item.vegan' title='Vegan' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                                    i.flaticon-peanut(data-ng-show='item.peanuts' title='Contains Peanuts' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
+                                                    i.flaticon-sushi13(data-ng-show='item.raw' title='Raw' data-toggle="tooltip" data-placement="right" data-bootstrap-tooltip)
                                                 td.text-center Price
                                                 td.text-center Available
                                                 td(colspan='2')
@@ -55,7 +60,7 @@
                                                 td.pack-column.merge-with-left
                                                     a(data-ui-sref='menu', data-ng-click='deleteItem(item.id)', title="Delete Item")
                                                         i.fa.fa-trash.fa-lg.txt-color-mold
-                                    div.form-group.pull-right(data-ng-show='selectedTruck')
+                                    div.form-group.pull-right(data-ng-show='selectedTruck', style="padding-top:15px;")
                                         button.btn.bg-color-mold.txt-color-white(data-ng-click='addItem(selectedTruck, category.id)') Add Menu Item
 
             div(data-ui-view='')
