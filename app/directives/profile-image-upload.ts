@@ -28,7 +28,7 @@ angular.module('TruckMuncherApp').directive('profileImageUpload', ['TruckService
                     var reader = new FileReader();
                     reader.onload = function (event) {
                         scope.$apply(function () {
-                            item.image = event.target.result;
+                            item.image = event.target['result'];
                         });
                     };
                     reader.readAsDataURL(item._file);
