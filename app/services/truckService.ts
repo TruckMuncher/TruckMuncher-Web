@@ -5,6 +5,7 @@ interface ITruckService {
     getActiveTrucks():ng.IPromise<IActiveTrucksResponse>;
     requestApproval(truckId:string, email:string):ng.IPromise<{}>;
     checkApprovalStatus(truckId:string):ng.IPromise<IApprovalStatusResponse>;
+    reportServingMode(report:IServingModeRequest):ng.IPromise<{}>;
 }
 
 angular.module('TruckMuncherApp').factory('TruckService', ['httpHelperService', 'StateService',
@@ -14,7 +15,7 @@ class TruckService implements ITruckService {
     private milwaukeeLatitude:number = 43.05;
     private milwaukeeLongitude:number = -87.95;
 
-    constructor(private httpHelperService:IHttpHelperService, private StateService: IStateService) {
+    constructor(private httpHelperService:IHttpHelperService, private StateService:IStateService) {
     }
 
     getTrucksForVendor():ng.IPromise<ITruckProfilesResponse> {
@@ -35,7 +36,7 @@ class TruckService implements ITruckService {
                 description: description,
                 phoneNumber: phoneNumber
             }
-        ).then((response: ITruckProfile)=> {
+        ).then((response:ITruckProfile)=> {
                 //this is okay for now since there is no way to delete a truck. This won't work if they go ahead and delete this truck right away (if there is ever a delete option)
                 this.StateService.setTrucks([response]);
                 return response;
@@ -64,5 +65,10 @@ class TruckService implements ITruckService {
         var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/checkApprovalStatus';
         var data = {'truckId': truckId};
         return this.httpHelperService.post(url, data);
+    }
+
+    reportServingMode(report:IServingModeRequest):ng.IPromise<{}> {
+        var url = this.httpHelperService.getApiUrl() + '/com.truckmuncher.api.trucks.TruckService/modifyServingMode';
+        return this.httpHelperService.post(url, report);
     }
 }

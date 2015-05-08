@@ -27,7 +27,10 @@ angular.module('TruckMuncherApp').factory('httpInterceptor', ['StateService', 'T
                     StateService.setToken(null);
                     StateService.setFavorites([]);
                     StateService.setTrucks([]);
-                    $location.path('/login');
+
+                    if(StateService.getIsInitialized()){
+                        $location.path('/login');
+                    }
                 }
                 return $q.reject(rejection);
             }

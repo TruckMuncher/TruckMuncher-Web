@@ -4,4 +4,6 @@ interface ITruckMarker {
     coords: ICoordinates;
     metersFromUser?: number;
     options: any;
+    verified: boolean;
+    userVote: boolean;
 }

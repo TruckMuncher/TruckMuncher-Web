@@ -1,6 +1,6 @@
 interface IMarkerService {
     getMarkers():ng.IPromise<Array<ITruckMarker>>;
-    calculateDistanceFromUserForMarkers(markers: Array<ITruckMarker>, userCoordinates: ICoordinates): void;
+    calculateDistanceFromUserForMarkers(markers:Array<ITruckMarker>, userCoordinates:ICoordinates): void;
 }
 
 angular.module('TruckMuncherApp').factory('MarkerService', ['TruckService', 'TruckProfileService', '$q',
@@ -29,14 +29,17 @@ class MarkerService implements IMarkerService {
         var truckCoordinates = {latitude: truck.latitude, longitude: truck.longitude};
         var marker:ITruckMarker = {
             id: truck.id,
+            random: Math.random() + Date.now(),
             coords: truckCoordinates,
             truckProfile: new TruckProfile(),
             options: {
                 icon: {
-                    url: '/img/ic_map_marker.png',
+                    url: truck.verified ? '/img/ic_map_marker.png' : '/img/ic_map_marker_unverified.png',
                     scaledSize: new google.maps.Size(21, 30)
                 }
-            }
+            },
+            verified: truck.verified,
+            userVote: truck.userVote
         };
 
         this.TruckProfileService.tryGetTruckProfile(truck.id).then(function (response) {
@@ -48,8 +51,8 @@ class MarkerService implements IMarkerService {
         return marker;
     }
 
-    calculateDistanceFromUserForMarkers(markers, userCoordinates){
-        _.forEach(markers, function(m: ITruckMarker){
+    calculateDistanceFromUserForMarkers(markers, userCoordinates) {
+        _.forEach(markers, function (m:ITruckMarker) {
             m.metersFromUser = MarkerService.getDistance(m.coords, userCoordinates)
         });
     }

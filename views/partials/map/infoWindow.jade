@@ -1,14 +1,26 @@
-div(style="height:100px; width:200px; overflow-y:auto" )
-    .col-xs-3
-        .row
+div.container-fluid(style="height:140px; width:200px; overflow-y:auto" )
+    .row.form-group
+        .col-xs-3
             img.map-profile-image.img-circle(data-ng-src='{{parameter.marker.truckProfile.imageUrl}}')
-    .col-xs-9(style="padding-left:20px;" data-bootstrap-tooltip data-toggle='tooltip' data-placement='top' title='More Info' )
-        .row.pointer(style="padding:0px" data-ui-sref='truckProfiles.details({id: parameter.marker.truckProfile.id})')
-            div(style="font-weight:bold; float:left; padding-right:20px;" ) {{parameter.marker.truckProfile.name}}
-            i.fa.fa-info-circle
-    .col-xs-9(style="padding-left:20px;")
-        .row(data-ng-if='marker.metersFromUser')
-            .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
-        .row
+        .col-xs-9(style="padding-left:20px;" data-bootstrap-tooltip data-toggle='tooltip' data-placement='top' title='More Info' )
+            .pointer(style="padding:0px" data-ui-sref='truckProfiles.details({id: parameter.marker.truckProfile.id})')
+                div(style="font-weight:bold; float:left; padding-right:20px;" ) {{parameter.marker.truckProfile.name}}
+                i.fa.fa-info-circle
+        .col-xs-9(style="padding-left:20px;")
+            div(data-ng-if='parameter.marker.metersFromUser')
+                .txt-subscript {{parameter.marker.metersFromUser|distance:'miles'|number:2}} mi
             div
-                button.bg-color-mold.txt-color-white(style="border: none;", data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu
+                button.btn.btn-sm.bg-color-mold.txt-color-white(data-ng-click='parameter.showMenuCallback(parameter.marker.id)') View Menu
+    .row(data-ng-if='parameter.marker.verified')
+        .col-xs-12
+            i Verified location
+        .col-xs-12.small
+            span This location has been reported by the owner of {{parameter.marker.truckProfile.name}}.
+    .row(data-ng-if='!parameter.marker.verified')
+        .col-xs-12.small
+            i Unverified location
+        .col-xs-12
+            div Is this location accurate?
+            .btn-toolbar
+                button.btn.btn-default.btn-xs(data-ng-disabled='parameter.marker.userVote' data-ng-click='parameter.voteCallback(parameter.marker, true)') Yes
+                button.btn.btn-default.btn-xs(data-ng-disabled='parameter.marker.userVote === false' data-ng-click='parameter.voteCallback(parameter.marker, false)') No

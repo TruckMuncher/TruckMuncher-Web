@@ -148,7 +148,7 @@ app.get('/linkAccount/twitter/callback', function (req, res, next) {
             }
             api.link(info.token, info.tokenSecret, null).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/user/profile');
+                return res.redirect('/#/map');
             }, function () {
                 return next(err);
             });
@@ -171,7 +171,7 @@ app.get('/auth/facebook/callback', function (req, res, next) {
             }
             api.login(null, null, info.accessToken).then(function (response) {
                 req.session.sessionToken = response.sessionToken;
-                return res.redirect('/#/user/profile');
+                return res.redirect('/#/map');
             }, function () {
                 return next(err);
             });

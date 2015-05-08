@@ -12,11 +12,13 @@ interface IMapScope extends ng.IScope {
     onProfileClicked(marker:ITruckMarker);
     showMenuModal(truckId:string);
     simpleSearch(query:string);
+    report();
+    vote(marker:ITruckMarker, isInServingMode:boolean);
 }
 
 
-angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalMenuService', 'navigator',
-    function ($scope:IMapScope, growl:IGrowlService, colorService:IColorService, SearchService:ISearchService, MarkerService:IMarkerService, $timeout:ng.ITimeoutService, $analytics:IAngularticsService, ModalMenuService:IModalMenuService, navigator:Navigator) {
+angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'colorService', 'SearchService', 'MarkerService', '$timeout', '$analytics', 'ModalService', 'navigator', 'TruckService',
+    function ($scope:IMapScope, growl:IGrowlService, colorService:IColorService, SearchService:ISearchService, MarkerService:IMarkerService, $timeout:ng.ITimeoutService, $analytics:IAngularticsService, ModalService:IModalService, navigator:Navigator, TruckService:ITruckService) {
         $scope.mapHeight = screen.height / 1.7 + 'px';
         $scope.loading = true;
         $scope.searchQuery = "";
@@ -59,8 +61,11 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
         function tryAddUserDistanceToMarkers() {
             if (!lat || allActiveTruckMarkers.length < 1) return;
-            $timeout(function(){
-                MarkerService.calculateDistanceFromUserForMarkers(allActiveTruckMarkers, {latitude: lat, longitude: lon});
+            $timeout(function () {
+                MarkerService.calculateDistanceFromUserForMarkers(allActiveTruckMarkers, {
+                    latitude: lat,
+                    longitude: lon
+                });
             });
         }
 
@@ -108,7 +113,11 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
                     $scope.infoWindow.coords = marker.coords;
                     $scope.infoWindow.show = true;
-                    $scope.infoWindow.templateParameter = {marker: marker, showMenuCallback: $scope.showMenuModal};
+                    $scope.infoWindow.templateParameter = {
+                        marker: marker,
+                        showMenuCallback: $scope.showMenuModal,
+                        voteCallback: $scope.vote
+                    };
                 });
             });
         }
@@ -118,7 +127,7 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
                 return marker.truckProfile.id === truckId;
             });
             var customMenuColors = colorService.getCustomMenuColorsForTruck(marker.truckProfile);
-            ModalMenuService.launch(truckId, customMenuColors);
+            ModalService.menu(truckId, customMenuColors);
 
             $analytics.eventTrack('ViewMenu', {category: 'Map', label: marker.truckProfile.name});
         };
@@ -148,6 +157,25 @@ angular.module('TruckMuncherApp').controller('mapCtrl', ['$scope', 'growl', 'col
 
             $analytics.eventTrack('SimpleSearch', {category: 'Map', label: query});
         };
+
+
+        $scope.report = () => {
+            ModalService.reportActiveTruck($scope.map.center).then(()=>{
+                getMarkers();
+            });
+        };
+
+        $scope.vote = (marker:ITruckMarker, isInServingMode:boolean) => {
+            TruckService.reportServingMode({
+                truckId: marker.id,
+                truckLatitude: marker.coords.latitude,
+                truckLongitude: marker.coords.longitude,
+                isInServingMode: isInServingMode,
+                durationMinutes: null
+            }).then(() => {
+                marker.userVote = isInServingMode;
+            });
+        }
 
     }]);
 

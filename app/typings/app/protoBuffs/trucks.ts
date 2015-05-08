@@ -1,4 +1,4 @@
-interface ITruckProfilesResponse{
+interface ITruckProfilesResponse {
     trucks: Array<ITruckProfile>;
 }
 
@@ -15,7 +15,7 @@ interface ITruckProfile {
     approvalPending:boolean;
 }
 
-class TruckProfile implements ITruckProfile{
+class TruckProfile implements ITruckProfile {
     id:string;
     name:string;
     imageUrl:string;
@@ -32,12 +32,23 @@ interface IActiveTruck {
     id: string;
     latitude: number;
     longitude: number;
+    verified: boolean;
+    score: number;
+    userVote: boolean;
 }
 
 interface IActiveTrucksResponse {
     trucks: Array<IActiveTruck>;
 }
 
-interface IApprovalStatusResponse{
+interface IApprovalStatusResponse {
     status:string;
+}
+
+interface IServingModeRequest {
+    truckId:string;
+    isInServingMode:boolean;
+    truckLatitude:number;
+    truckLongitude:number;
+    durationMinutes: number;
 }
